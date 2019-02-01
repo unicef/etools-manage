@@ -11,7 +11,7 @@ module.exports = {
     rules: {
         'array-bracket-spacing': ['error', 'never'],
         'eol-last': ['error', 'always'],
-        'indent': ['error', 4],
+        indent: ['error', 4],
         'keyword-spacing': ['error'],
         'no-tabs': ['error'],
         'object-curly-spacing': ['error', 'always'],

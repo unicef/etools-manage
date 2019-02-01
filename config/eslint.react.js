@@ -1,6 +1,6 @@
 
 module.exports = {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
     plugins: [
         'react'
     ],
@@ -19,7 +19,7 @@ module.exports = {
     },
     settings: {
         react: {
-            version: '16.4'
+            version: '16.8'
         }
     },
     rules: {}
