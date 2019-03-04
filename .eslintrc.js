@@ -2,11 +2,12 @@ module.exports = {
     parser: '@typescript-eslint/parser',
 
     extends: [
+        'plugin:@typescript-eslint/recommended',
         './config/eslintDefaults.js',
         './config/eslint.react.js',
         'plugin:import/errors'
     ],
-    plugins: ['@typescript-eslint', 'babel'],
+    plugins: ['@typescript-eslint', 'babel', 'react-hooks'],
     settings: {
         'import/resolver': {
             webpack: {
@@ -346,6 +347,8 @@ module.exports = {
         yoda: [
             'error',
             'never'
-        ]
+        ],
+        "react-hooks/rules-of-hooks": "error"
+
     }
 };
