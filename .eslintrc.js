@@ -2,18 +2,30 @@ module.exports = {
     parser: '@typescript-eslint/parser',
 
     extends: [
-        'plugin:@typescript-eslint/recommended',
         './config/eslintDefaults.js',
         './config/eslint.react.js',
-        'plugin:import/errors'
+        'plugin:import/errors',
+        'plugin:@typescript-eslint/recommended',
+
     ],
     plugins: ['@typescript-eslint', 'babel', 'react-hooks'],
+    // parser:  '@typescript-eslint/parser',  // Specifies the ESLint parser
+    // extends:  [
+    //   '@logojoy',
+    //   '@logojoy/mocha',
+    //   'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    // ],
+   parserOptions:  {
+      ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features
+      sourceType:  'module',  // Allows for the use of imports
+    },
     settings: {
         'import/resolver': {
             webpack: {
                 config: `${__dirname}/build-tools/webpack.config.js`
             }
-        }
+        },
+
     },
     globals: {
         System: true
@@ -236,6 +248,7 @@ module.exports = {
         ],
         'no-unused-expressions': 'off',
         'no-use-before-define': 'off',
+        "@typescript-eslint/no-use-before-define":"off",
         'no-useless-call': 'error',
         'no-useless-computed-key': 'error',
         'no-useless-concat': 'error',

@@ -4,7 +4,7 @@ import Counter from './Counter';
 
 const App = () => (
     <div>
-        <h1>Hello, world. asdsds</ h1>
+        <h1>Hello, world. </ h1>
         <Counter/>
     </div>
 );

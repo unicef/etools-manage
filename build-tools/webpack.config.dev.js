@@ -2,7 +2,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const config = require('./webpack.config');
-
+const webpack = require('webpack');
 const backendUrl = 'http://localhost:8082';
 
 const proxy = {
@@ -23,5 +23,8 @@ module.exports = merge(config, {
         historyApiFallback: true,
         inline: true,
         proxy
-    }
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ]
 });

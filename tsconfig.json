@@ -1,11 +1,31 @@
+// {
+//   "compilerOptions": {
+//     "outDir": "./dist/",
+//     "lib": ["es2018", "esnext.asynciterable"],
+//     "sourceMap": true,
+//     "noImplicitAny": true,
+//     "target": "es6",
+//     "jsx": "react"
+//   },
+//   "include": ["./src/**/*"]
+// }
 {
-  "compilerOptions": {
-    "outDir": "./dist/",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "es6",
-    "jsx": "react"
-  },
-  "include": ["./src/**/*"]
+    "compilerOptions": {
+        "lib": [
+            "dom",
+            "es2015",
+            "es2017"
+        ],
+        "baseUrl": "./src",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "declaration": true,
+        "jsx": "react",
+        "sourceMap": true,
+
+    },
+    "include": [
+        "./src/**/*"
+    ]
+
 }
