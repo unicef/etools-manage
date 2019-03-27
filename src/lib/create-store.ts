@@ -10,6 +10,13 @@ import thunkMiddleware from './thunk-middleware';
 // import createRouter from './create-router';
 // import eventsMiddleware from './events';
 // import createReducer from './reducer';
+interface Action {
+    type: string;
+}
+
+class something implements IterableIterator<Action> {
+
+}
 
 
 export default () => {
