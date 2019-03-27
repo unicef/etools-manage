@@ -7,15 +7,11 @@ import { dynamicMiddleware } from './redux-dynamic-middleware';
 import thunkMiddleware from './thunk-middleware';
 // import authHydrater from './auth-hydrater-next';
 // import injectReducers from './inject-reducers';
-// import createRouter from './create-router';
+import createRouter from './create-router';
 // import eventsMiddleware from './events';
 // import createReducer from './reducer';
 interface Action {
     type: string;
-}
-
-class something implements IterableIterator<Action> {
-
 }
 
 
