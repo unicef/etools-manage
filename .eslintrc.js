@@ -4,7 +4,7 @@ module.exports = {
     extends: [
         './config/eslintDefaults.js',
         './config/eslint.react.js',
-        'plugin:import/errors',
+        // 'plugin:import/errors',
         'plugin:@typescript-eslint/recommended',
 
     ],
@@ -18,6 +18,7 @@ module.exports = {
    parserOptions:  {
       ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features
       sourceType:  'module',  // Allows for the use of imports
+      jsx: true
     },
     settings: {
         'import/resolver': {
@@ -309,6 +310,7 @@ module.exports = {
             component: true,
             html: true
         }],
+        'react/prop-types': 'off',
         'semi-spacing': [
             'error',
             {
