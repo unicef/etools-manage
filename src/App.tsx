@@ -1,13 +1,14 @@
 import { hot } from 'react-hot-loader/root';
-import * as React from 'react';
+import React from 'react';
 import AppProviders from './components/app-providers';
 import Counter from './Counter';
-import { Store } from 'redux';
-import { AppState } from 'lib/reducer';
+import PageLoader from './containers/page-loader';
+import { AppStore } from 'types';
 
-const App = ({ store }: {store: Store<AppState>}) => (
+/* eslint-disable */
+const App = ({ store }: {store: AppStore}) => (
     <AppProviders store={store}>
-        {/* <PageLoader /> */}
+        <PageLoader />
         <Counter />
     </AppProviders>
 

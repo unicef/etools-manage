@@ -18,6 +18,7 @@ module.exports = {
         'prefer-const': ['error'],
         semi: ['error', 'always'],
         'space-before-blocks': ['error', 'always'],
-        quotes: ['error', 'single']
+        quotes: ['error', 'single'],
+        'func-names': ['off']
     }
 };

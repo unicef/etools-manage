@@ -1,4 +1,5 @@
-import { Component, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
+import PropTypes from 'prop-types';
 import autoBind from 'auto-bind';
 import shortid from 'shortid';
 import breakpoints, { MD_BREAKPOINT, SM_BREAKPOINT } from '../lib/media-queries';
@@ -16,6 +17,10 @@ export default class MatchMediaProvider extends Component<MediaProps> {
     public constructor(props: MediaProps) {
         super(props);
         autoBind(this);
+    }
+
+    public static childContextTypes = {
+        addChildListener: PropTypes.func
     }
 
     private listeners = []

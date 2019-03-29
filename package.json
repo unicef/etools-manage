@@ -15,6 +15,7 @@
     "combine-nested-reducers": "^1.0.4",
     "express": "^4.16.4",
     "isomorphic-fetch": "^2.2.1",
+    "micro-dash": "^5.5.0",
     "query-string": "^5.1.1",
     "ramda": "^0.26.1",
     "react": "^16.8.3",

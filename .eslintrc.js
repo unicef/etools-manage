@@ -29,7 +29,8 @@ module.exports = {
 
     },
     globals: {
-        System: true
+        System: true,
+        env: true
     },
     rules: {
         'accessor-pairs': 'error',
@@ -94,15 +95,16 @@ module.exports = {
         'func-name-matching': 'error',
         'func-names': [
             'error',
-            'never'
+            'always'
         ],
-        'func-style': [
-            'error',
-            'declaration',
-            {
-                allowArrowFunctions: true
-            }
-        ],
+
+        // 'func-style': [
+        //     'error',
+        //     'expression',
+        //     {
+        //         allowArrowFunctions: true
+        //     }
+        // ],
         'function-paren-newline': 'off',
         'generator-star-spacing': 'off',
         'global-require': 'error',
@@ -250,6 +252,7 @@ module.exports = {
         'no-unused-expressions': 'off',
         'no-use-before-define': 'off',
         "@typescript-eslint/no-use-before-define":"off",
+        "@typescript-eslint/explicit-function-return-type":"off",
         'no-useless-call': 'error',
         'no-useless-computed-key': 'error',
         'no-useless-concat': 'error',

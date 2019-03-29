@@ -1,15 +1,12 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
-import { Store } from 'redux';
 // import CustomContextProvider from './context-provider';
 import MatchMediaProvider from './match-media-provider';
-import { AppState } from '../lib/reducer';
+import { ProviderStore } from 'types';
 
-interface ProviderStore {
-    state: AppState;
-}
 
-const AppProviders: React.FunctionComponent<{children: ReactNode; store: Store<AppState>}> = ({ children, store }) => {
+/* eslint-disable */
+const AppProviders: React.FunctionComponent<ProviderStore> = ({ children, store }) => {
     return (
         <Provider store={store}>
             <MatchMediaProvider>
