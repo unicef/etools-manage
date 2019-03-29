@@ -10,4 +10,4 @@ const ROUTE_MAPPING = {
     [PAGE_THREE]: PAGE_THREE
 };
 
-export default (state = null, action) => ROUTE_MAPPING[action.type] || state;
+export default (state = PAGE_ONE, action) => ROUTE_MAPPING[action.type] || state;

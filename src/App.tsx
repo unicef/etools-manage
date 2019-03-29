@@ -1,7 +1,6 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import AppProviders from './components/app-providers';
-import Counter from './Counter';
 import PageLoader from './containers/page-loader';
 import { AppStore } from 'types';
 
@@ -9,7 +8,6 @@ import { AppStore } from 'types';
 const App = ({ store }: {store: AppStore}) => (
     <AppProviders store={store}>
         <PageLoader />
-        <Counter />
     </AppProviders>
 
 );

@@ -1,8 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
+import Box from 'components/box';
 
-
-export default function Page(): FunctionComponent<{}> {
+export default function Page() {
     return (
-        <div>PAGE 2</div>
+        <Box>
+            PAGE 1
+        </Box>
     );
 }
