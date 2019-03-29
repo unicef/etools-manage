@@ -19,15 +19,16 @@
         "baseUrl": "./src",
         "rootDir": "./src",
         "outDir": "./dist",
-        "declaration": true,
+        // "declaration": true,
         "target": "es2017",
+        "allowSyntheticDefaultImports":true,
         "jsx": "react",
         "sourceMap": true,
         "module":"commonjs"
 
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
     ]
 
 }

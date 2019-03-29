@@ -1,18 +1,13 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from '../sagas';
-// import dispatchFromQueryString from './dispatch-from-query-string';
-// import { createApolloFetchClient } from './create-apollo-fetch';
-import { dynamicMiddleware } from './redux-dynamic-middleware';
+// import rootSaga from '../sagas';
+import dispatchFromQueryString from './dispatch-from-query-string';
+// import { dynamicMiddleware } from './redux-dynamic-middleware';
 import thunkMiddleware from './thunk-middleware';
-// import authHydrater from './auth-hydrater-next';
-// import injectReducers from './inject-reducers';
+import injectReducers from './inject-reducers';
 import createRouter from './create-router';
 // import eventsMiddleware from './events';
-// import createReducer from './reducer';
-interface Action {
-    type: string;
-}
+import createReducer from './reducer';
 
 
 export default () => {
@@ -22,16 +17,15 @@ export default () => {
     const middleware = [
         thunkMiddleware,
         sagas,
-        router.middleware,
-        // authMiddleware,
+        router.middleware
         // eventsMiddleware,
-        dynamicMiddleware
+        // dynamicMiddleware
     ];
 
     let composeEnhancers = compose;
 
-    if (window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-        composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+    if (window && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
+        composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
     }
 
     const reducer = createReducer({
@@ -46,7 +40,7 @@ export default () => {
     ));
 
     // Run the saga that is used across the app
-    sagas.run(rootSaga);
+    // sagas.run(rootSaga);
 
     const store = {
         ...rootStore,
@@ -64,13 +58,7 @@ export default () => {
         history: router.history
     };
 
-    // We want to bind the apollo fetch client with the
-    // redux store in order to access tokens.
-    createApolloFetchClient(rootStore);
     dispatchFromQueryString(store);
-
-    // KEEP THIS LAST, THIS IS IMPORTANT
-    authHydrater(rootStore);
 
     return store;
 };

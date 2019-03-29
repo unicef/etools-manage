@@ -1,12 +1,17 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
-import Counter from './Counter';
+import AppProviders from './components/app-providers';
+// import Counter from './Counter';
+import { Provider } from 'react-redux';
+import { Store } from 'redux';
+import { AppState } from 'lib/reducer';
 
-const App = () => (
-    <div>
-        <h1>Hello, world. </ h1>
-        <Counter/>
-    </div>
+const App = ({ store }: Store<AppState>) => (
+    <AppProviders store={store}>
+        {/* <PageLoader /> */}
+        <div />
+    </AppProviders>
+
 );
 (async () => {
     console.log('You have async support if you read this instead of "ReferenceError: regeneratorRuntime is not defined" error.');

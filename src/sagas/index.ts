@@ -1,9 +1,9 @@
-import { all, AllEffect } from 'redux-saga/effects';
+// TODO: put sagas taht need to run onLoad etc here
+// import { all, AllEffect } from 'redux-saga/effects';
 
-import authSaga from './auth';
 
-export default function * (): AllEffect {
-    yield all([
-        authSaga()
-    ]);
-}
+// export default function * (): AllEffect {
+//     yield all([
+//         authSaga()
+//     ]);
+// }
