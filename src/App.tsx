@@ -1,8 +1,8 @@
-import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import AppProviders from './components/app-providers';
 import PageLoader from './containers/page-loader';
 import { AppStore } from 'types';
+import { hot } from 'react-hot-loader/root';
 
 /* eslint-disable */
 const App = ({ store }: {store: AppStore}) => (
