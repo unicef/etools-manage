@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
     "@material-ui/styles": "^3.0.0-alpha.10",
     "arrify": "^1.0.1",
     "auto-bind": "^2.0.0",

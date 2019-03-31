@@ -23,8 +23,8 @@ module.exports = merge(config, {
         historyApiFallback: true,
         inline: true,
         proxy
-    },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin()
-    ]
+    }
+    // plugins: [
+    //     new webpack.HotModuleReplacementPlugin()
+    // ]
 });

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { lazy } from 'react';
 import asyncPageMap from 'lib/async-page-map';
 import injectReducers from 'lib/inject-reducers';
 import injectSagas from 'lib/inject-sagas';

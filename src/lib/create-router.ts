@@ -13,7 +13,7 @@ import { onRouteTransition } from '../actions';
 
 // TODO: check if constants should be  defined here
 const ROUTE_MAPPING = {
-    [PAGE_ONE]: '/one',
+    [PAGE_ONE]: '/',
     [PAGE_TWO]: '/two',
     [PAGE_THREE]: '/three'
     // [ID_PAGE]: `/page/${idMatcher}`,
