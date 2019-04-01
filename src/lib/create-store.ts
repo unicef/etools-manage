@@ -39,7 +39,7 @@ export default () => {
         applyMiddleware(...middleware)
     ));
 
-    // Run the saga that is used across the app
+    // Run the saga that is used across the app ie. fetch initial user or any data needed upon load
     // sagas.run(rootSaga);
 
     const store = {
@@ -55,9 +55,9 @@ export default () => {
         // Keep track of all running sagas
         runningSagas: {},
         // Store the history object in store
+        // @ts-ignore
         history: router.history
     };
-
     dispatchFromQueryString(store);
 
     return store;

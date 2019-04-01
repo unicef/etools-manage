@@ -1,7 +1,7 @@
-import React, { useState, useEffect, ReactChildren } from 'react';
+import React, { useState, useEffect, ReactChildren, MouseEvent, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Theme } from '@material-ui/core/styles';
-import { makeStyles, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -18,7 +18,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MessageIcon from '@material-ui/icons/Message';
-import { MenuItem } from 'types';
+import { MenuItem } from 'global-types';
 import { AnyAction } from 'redux';
 
 const drawerWidth = 240;
@@ -88,18 +88,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export interface AppFrameProps{
     menuItems: MenuItem[];
-    onGoToPage(url: string): () => AnyAction;
-    children: ReactChildren;
+    onGoToPage(): AnyAction;
+    children: ReactNode;
 }
 
-export default function AppFrame({ menuItems, onGoToPage, children }: AppFrameProps) {
+
+const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, onGoToPage, children }) => {
     const [open, setOpen] = useState<boolean>(false);
-    useEffect(
-        () => {
-            setOpen(!open);
-        },
-        [open]
-    );
+
     const toggleOpen = () => setOpen(!open);
     const classes = useStyles();
 
@@ -142,8 +138,8 @@ export default function AppFrame({ menuItems, onGoToPage, children }: AppFramePr
                 </div>
                 <Divider />
                 <List>
-                    {menuItems.map(({ text, icon, url }) => (
-                        <ListItem button key={text} onClick={onGoToPage(url)}>
+                    {menuItems.map(({ text, icon, type }) => (
+                        <ListItem button key={text} onClick={() => onGoToPage()}>
                             <ListItemIcon>{IconMapping[icon]}</ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItem>
@@ -155,6 +151,7 @@ export default function AppFrame({ menuItems, onGoToPage, children }: AppFramePr
             </main>
         </div>
     );
-}
+};
 
+export default AppFrame;
 

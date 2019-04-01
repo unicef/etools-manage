@@ -3,9 +3,9 @@ import { items } from '../actions';
 
 
 const prop2Reducer = createReducer(
-    [],
+    ['item1', 'item2', 'item3'],
     {
-        [items.toString()]: (state, action) => action.payload
+        [items.type]: (state, action) => action.payload
     }
 );
 

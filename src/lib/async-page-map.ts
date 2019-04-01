@@ -2,7 +2,7 @@ import {
     PAGE_ONE,
     PAGE_TWO
     // PAGE_THREE
-} from '../constants';
+} from '../global-constants';
 
 export default {
     [PAGE_ONE]: () => import('pages/one'),

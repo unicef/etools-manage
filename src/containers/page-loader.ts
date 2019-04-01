@@ -9,16 +9,17 @@ import { AppState } from 'lib/reducer';
 interface CompState {
     page: string;
 }
-const mapStateToProps = ({ page }: (AppState)): CompState => ({
-    page
-});
+const mapStateToProps = ({ page }: (AppState)): CompState => {
+    return ({
+        page
+    });
+};
 
 
 export default connect(mapStateToProps)(asyncImport<CompState>(props => asyncPageMap[props.page](),
     {
         // @ts-ignore
         onLoad({ reducer, rootSaga }, info, props, { store }) {
-            console.log('zzzz', info, props, store);
             injectReducers(store, reducer());
             injectSagas(store, rootSaga);
         },

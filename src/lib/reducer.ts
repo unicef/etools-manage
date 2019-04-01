@@ -1,17 +1,19 @@
 import combineNestedReducers from 'combine-nested-reducers';
-import { isSidebarOpenReducer } from '../reducers/sidebar';
+import { menuItemsReducer } from '../reducers/menu';
 import pageReducer from '../reducers/page';
-// import { version } from '../../package';
+import { ReducerMap } from 'global-types';
 
-export default function rootReducer(additionalReducers = { location: '' }) {
+export default function createReducer(additionalReducers: ReducerMap) {
     return combineNestedReducers({
-        // version: () => version,
+
+        // add some ui global state if needed here
         ui: {
-            isSidebarOpen: isSidebarOpenReducer
+            menuItems: menuItemsReducer
         },
+
         page: pageReducer,
         ...additionalReducers
     });
 }
 
-export type AppState = ReturnType<typeof rootReducer>
+export type AppState = ReturnType<typeof createReducer>

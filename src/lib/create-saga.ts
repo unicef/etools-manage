@@ -6,7 +6,7 @@ import { onRouteTransition } from '../actions';
 export function* createSaga(sagas: CallEffectFn<any>, ...args) {
     // @ts-ignore
     const runningSagas = yield all(arrify(sagas).map(saga => fork(saga, ...args)));
-    yield take(onRouteTransition.toString());
+    yield take(onRouteTransition.type);
     runningSagas.forEach(saga => saga.cancel());
 }
 

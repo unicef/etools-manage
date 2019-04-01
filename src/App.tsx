@@ -1,13 +1,16 @@
 import React from 'react';
 import AppProviders from './components/app-providers';
 import PageLoader from './containers/page-loader';
-import { StoreShape } from 'types';
+import AppFrame from './containers/app-frame';
 import { hot } from 'react-hot-loader/root';
+import { BaseStoreShape } from 'global-types';
 
 /* eslint-disable */
-const App = ({ store }: {store: StoreShape}) => (
+const App = ({ store }: {store: BaseStoreShape}) => (
     <AppProviders store={store}>
-        <PageLoader />
+        <AppFrame>
+         <PageLoader />
+        </AppFrame>
     </AppProviders>
 
 );

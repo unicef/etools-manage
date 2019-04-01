@@ -5,25 +5,23 @@ import {
     PAGE_ONE,
     PAGE_TWO,
     PAGE_THREE
-} from '../constants';
+} from '../global-constants';
 import { onRouteTransition } from '../actions';
 
 // const idMatcher = ':id(\\d+)';
 
 
 // TODO: check if constants should be  defined here
-const ROUTE_MAPPING = {
+export const ROUTE_MAPPING = {
     [PAGE_ONE]: '/',
     [PAGE_TWO]: '/two',
     [PAGE_THREE]: '/three'
-    // [ID_PAGE]: `/page/${idMatcher}`,
 };
 
 const shouldPerformAction = (action: AnyAction): boolean => {
     if (!action) {
         return false;
     }
-
     const {
         meta: {
             location: {
@@ -32,11 +30,12 @@ const shouldPerformAction = (action: AnyAction): boolean => {
             }
         }
     } = action;
+
     return currentType !== prevType && prevType;
 };
 
 
-const onBeforeChange = (dispatch, getState, { action }: AnyAction): void => {
+const onBeforeChange = (dispatch, getState, { action }): void => {
     // Make sure the two routes are different.
     if (shouldPerformAction(action)) {
         dispatch(onRouteTransition());

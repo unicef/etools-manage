@@ -4,7 +4,7 @@ import { createAction } from 'redux-starter-kit';
 const onBack = createAction('ON_BACK');
 
 export default function * () {
-    yield takeLatest(onBack.toString(), handleBack);
+    yield takeLatest(onBack.type, handleBack);
 }
 
 export function * handleBack() {
