@@ -11,7 +11,7 @@ const proxy = {
 
 module.exports = merge(config, {
     mode: 'development',
-    devtool: 'source-map',
+    devtool: 'cheap-eval-source-map',
     output: {
         publicPath: '/dist'
     },
@@ -19,7 +19,7 @@ module.exports = merge(config, {
         contentBase: path.join(process.cwd(), 'dist'),
         port: 8080,
         host: '0.0.0.0',
-        disableHostCheck: true,
+        // disableHostCheck: true,
         historyApiFallback: true,
         inline: true,
         proxy
