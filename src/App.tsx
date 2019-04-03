@@ -6,10 +6,10 @@ import { hot } from 'react-hot-loader/root';
 import { BaseStoreShape } from 'global-types';
 
 /* eslint-disable */
-const App = ({ store }: {store: BaseStoreShape}) => (
+const App = ({ store }: { store: BaseStoreShape }) => (
     <AppProviders store={store}>
         <AppFrame>
-         <PageLoader />
+            <PageLoader />
         </AppFrame>
     </AppProviders>
 
@@ -19,3 +19,4 @@ const App = ({ store }: {store: BaseStoreShape}) => (
 })();
 
 export default hot(App);
+

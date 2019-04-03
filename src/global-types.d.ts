@@ -42,5 +42,5 @@ interface UiNamespaceShape {
 export interface MenuItem {
     text: string;
     icon: string;
-    type: string;
+    url: string;
 }

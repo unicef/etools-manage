@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactChildren, MouseEvent, ReactNode } from 'react';
 import classNames from 'classnames';
+import Link from 'redux-first-router-link';
 import { Theme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -19,7 +20,6 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MessageIcon from '@material-ui/icons/Message';
 import { MenuItem } from 'global-types';
-import { AnyAction } from 'redux';
 
 const drawerWidth = 240;
 
@@ -30,6 +30,7 @@ const IconMapping = {
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
+
     root: {
         display: 'flex'
     },
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing.unit * 8,
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
@@ -88,12 +89,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export interface AppFrameProps{
     menuItems: MenuItem[];
-    onGoToPage(): AnyAction;
     children: ReactNode;
 }
 
 
-const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, onGoToPage, children }) => {
+const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children }) => {
     const [open, setOpen] = useState<boolean>(false);
 
     const toggleOpen = () => setOpen(!open);
@@ -138,15 +138,19 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, onGoToPag
                 </div>
                 <Divider />
                 <List>
-                    {menuItems.map(({ text, icon, type }) => (
-                        <ListItem button key={text} onClick={() => onGoToPage()}>
-                            <ListItemIcon>{IconMapping[icon]}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
+                    {menuItems.map(({ text, icon, url }) => (
+                        <Link key={text} to={url}>
+                            <ListItem button>
+                                <ListItemIcon>{IconMapping[icon]}</ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        </Link>
                     ))}
                 </List>
             </Drawer>
-            <main>
+            <main className={classNames(classes.content, {
+                [classes.contentShift]: open
+            })}>
                 {children}
             </main>
         </div>

@@ -11,10 +11,6 @@ const ROUTE_MAPPING = {
 };
 
 export default (state = PAGE_ONE, action) => {
-    console.log('ROUTE ACTIONS', action);
-    if (action.type === '@@redux-first-router/NOT_FOUND') {
-        debugger;
-    }
     return ROUTE_MAPPING[action.type] || state;
 
 };

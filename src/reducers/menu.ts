@@ -1,11 +1,11 @@
-import { menuItems, pageOne, pageTwo } from '../actions';
+import { menuItems } from '../actions';
 import { createReducer } from 'redux-starter-kit';
 import { MenuItem } from 'global-types';
 
 
 const defaultMenuItems: MenuItem[] = [
-    { text: 'Page One', icon: 'inbox', type: pageOne.type },
-    { text: 'Page Two', icon: 'starred', type: pageTwo.type }
+    { text: 'Page One', icon: 'inbox', url: '/' },
+    { text: 'Page Two', icon: 'starred', url: '/two' }
 ];
 
 export const menuItemsReducer = createReducer(

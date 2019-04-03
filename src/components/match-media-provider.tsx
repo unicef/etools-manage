@@ -83,11 +83,3 @@ export default class MatchMediaProvider extends Component<MediaProps> {
         return this.props.children;
     }
 }
-
-// MatchMediaProvider.childContextTypes = {
-//     addChildListener: PropTypes.func
-// };
-
-// MatchMediaProvider.propTypes = {
-//     children: PropTypes.node
-// };
