@@ -5,6 +5,7 @@ import injectSagas from 'lib/inject-sagas';
 import LoadingFallback from 'components/page-loader';
 import asyncImport from 'react-universal-component';
 import { AppState } from 'lib/reducer';
+import { hot } from 'react-hot-loader/root';
 
 interface CompState {
     page: string;
@@ -15,10 +16,9 @@ const mapStateToProps = ({ page }: (AppState)): CompState => {
     });
 };
 
-
-export default connect(mapStateToProps)(asyncImport<CompState>(({ page }) => asyncPageMap[page](),
+const pageLoader = connect(mapStateToProps)(asyncImport<CompState>(({ page }) => asyncPageMap[page](),
     {
-    // @ts-ignore
+        // @ts-ignore
         onLoad({ reducer, rootSaga }, info, props, { store }) {
             injectReducers(store, reducer());
             injectSagas(store, rootSaga);
@@ -26,5 +26,6 @@ export default connect(mapStateToProps)(asyncImport<CompState>(({ page }) => asy
         loading: LoadingFallback
     }
 ));
+export default hot(pageLoader);
 
 

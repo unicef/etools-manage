@@ -17,10 +17,11 @@ module.exports = merge(config, {
     devServer: {
         contentBase: path.join(process.cwd(), 'dist'),
         port: 8080,
-        host: '0.0.0.0',
+        // host: '0.0.0.0', // uncomment for docker run
         // disableHostCheck: true,
         historyApiFallback: true,
         inline: true,
+        hot: true,
         proxy
     }
     // plugins: [

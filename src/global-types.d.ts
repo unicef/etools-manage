@@ -44,3 +44,10 @@ export interface MenuItem {
     icon: string;
     url: string;
 }
+
+export interface GithubUser {
+    id: number;
+    name: string;
+    location: string;
+    bio: string;
+}

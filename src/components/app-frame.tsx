@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactChildren, MouseEvent, ReactNode } from 'react';
+import React, { useState, useContext, ReactNode } from 'react';
 import classNames from 'classnames';
 import Link from 'redux-first-router-link';
 import { Theme } from '@material-ui/core/styles';
@@ -19,7 +19,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MessageIcon from '@material-ui/icons/Message';
-import { MenuItem } from 'global-types';
+import { MenuItem, GithubUser } from 'global-types';
+import { UserContext } from '../contexts/user';
 
 const drawerWidth = 240;
 
@@ -38,7 +39,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
-        })
+        }),
+        paddingRight: 16
     },
     appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -84,6 +86,9 @@ const useStyles = makeStyles((theme: Theme) => ({
             duration: theme.transitions.duration.enteringScreen
         }),
         marginLeft: 0
+    },
+    grow: {
+        flexGrow: 1
     }
 }));
 
@@ -95,6 +100,7 @@ export interface AppFrameProps{
 
 const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children }) => {
     const [open, setOpen] = useState<boolean>(false);
+    const userData: GithubUser = useContext(UserContext);
 
     const toggleOpen = () => setOpen(!open);
     const classes = useStyles();
@@ -117,8 +123,11 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        Persistent drawer
+                    <Typography className={classes.grow} variant="h6" color="inherit" noWrap>
+                        App One
+                    </Typography>
+                    <Typography variant="h6" color="inherit">
+                        {userData && `Welcome ${userData.name}`}
                     </Typography>
                 </Toolbar>
             </AppBar>

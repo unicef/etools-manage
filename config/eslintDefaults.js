@@ -19,6 +19,7 @@ module.exports = {
         semi: ['error', 'always'],
         'space-before-blocks': ['error', 'always'],
         quotes: ['error', 'single'],
-        'func-names': ['off']
+        'func-names': ['off'],
+        'no-nested-ternary': ['off']
     }
 };

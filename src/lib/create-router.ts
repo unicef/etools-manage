@@ -30,7 +30,6 @@ const shouldPerformAction = (action: AnyAction): boolean => {
             }
         }
     } = action;
-    console.log('SHOULD PERFORMA ACTION', currentType !== prevType);
     return currentType !== prevType && prevType;
 };
 

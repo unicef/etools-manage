@@ -59,6 +59,7 @@ module.exports = {
         camelcase: 'off',
         'capitalized-comments': 'off',
         'class-methods-use-this': 'off',
+
         'comma-dangle': 'error',
         'comma-spacing': [
             'error',
@@ -203,7 +204,7 @@ module.exports = {
         'no-native-reassign': 'error',
         'no-negated-condition': 'error',
         'no-negated-in-lhs': 'error',
-        'no-nested-ternary': 'error',
+        'no-nested-ternary': 'off',
         'no-new': 'error',
         'no-new-func': 'error',
         'no-new-object': 'error',
