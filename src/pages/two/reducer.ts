@@ -1,11 +1,11 @@
-import prop1Reducer from './reducers/prop1';
-import prop2Reducer from './reducers/prop2';
+import userDataReducer from './reducers/user-data';
+import userReposReducer from './reducers/user-repos';
 
 
 export default () => ({
     name: 'pageTwo',
     reducer: {
-        prop1: prop1Reducer,
-        prop2: prop2Reducer
+        userData: userDataReducer,
+        userRepos: userReposReducer
     }
 });

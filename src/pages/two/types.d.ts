@@ -1,12 +1,12 @@
-import prop1Reducer from './reducers/prop1';
-import prop2Reducer from './reducers/prop2';
+import userReposReducer from './reducers/user-repos';
+import userDataReducer from './reducers/user-data';
 
 export interface PageTwoProps {
-    hasBack: boolean;
-    prop2: any[];
+    userData: object;
+    userRepos: any[];
 }
 
 export interface PageTwoNamespaceShape {
-    prop1: ReturnType<typeof prop1Reducer>;
-    prop2: ReturnType<typeof prop2Reducer>;
+    userRepos: ReturnType<typeof userReposReducer>;
+    userData: ReturnType<typeof userDataReducer>;
 }

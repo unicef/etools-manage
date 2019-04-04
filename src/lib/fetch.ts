@@ -1,25 +1,6 @@
 import fetch from 'isomorphic-fetch';
-import { useEffect, useRef, useReducer } from 'react';
-
-function useSetState(initialState) {
-    return useReducer(
-        (state, newState) => ({ ...state, ...newState }),
-        initialState,
-    );
-}
-
-function useSafeSetState(initialState) {
-    const [state, setState] = useSetState(initialState);
-
-    const mountedRef = useRef(false);
-    useEffect(() => {
-        mountedRef.current = true;
-        return () => (mountedRef.current = false);
-    }, []);
-    const safeSetState = (...args) => mountedRef.current && setState(...args);
-
-    return [state, safeSetState];
-}
+import { useEffect } from 'react';
+import { useSafeSetState } from 'utils/helpers';
 
 
 export function checkStatus(response, raw): void {
@@ -47,7 +28,7 @@ const wrappedFetch = (url, {
     ...opts
 } = {}) => {
     return fetch(url, {
-        // credentials: 'same-origin',
+        credentials: 'same-origin', // send cookies for etools auth
         ...opts })
         .then(response => checkStatus(response, raw))
         .then(response => {
@@ -63,7 +44,7 @@ const wrappedFetch = (url, {
 };
 
 export function useFetch(url) {
-    const [state, setState] = useSetState({
+    const [state, setState] = useSafeSetState({
         loaded: false,
         fetching: false,
         data: null,

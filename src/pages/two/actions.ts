@@ -1,8 +1,6 @@
 import { createAction } from 'redux-starter-kit';
 
-export const increment = createAction('INCREMENT');
-export const decrement = createAction('DECREMENT');
-export const multiply = createAction('MULTIPLY');
 export const items = createAction('ITEMS');
-export const onBack = createAction('ON_BACK');
-
+export const onInitFetch = createAction('ON_INIT_FETCH');
+export const onSetUserData = createAction('ON_SET_USER_DATA');
+export const onSetUserRepos = createAction('ON_SET_USER_REPOS');

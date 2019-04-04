@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
-import { onBack } from '../actions';
+import { onInitFetch } from '../actions';
+import { selectUserData, selectUserRepos } from '../selectors/user';
 import Page from '../components/page';
 
+
+// TODO: add type to props
 const mapStateToProps = state => ({
-    hasBack: true,
-    prop2: state.pageTwo.items
+    userData: selectUserData(state),
+    userRepos: selectUserRepos(state)
 });
 
 const mapDispatchToProps = {
-    onBack
+    onInitFetch
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Page);

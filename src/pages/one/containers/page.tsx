@@ -5,7 +5,6 @@ import { PageOneProps } from '../types';
 
 
 const mapStateToProps = (state): PageOneProps => ({
-    hasBack: true,
     prop2: state.pageOne.prop2
 });
 

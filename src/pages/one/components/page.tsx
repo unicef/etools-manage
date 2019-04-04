@@ -3,11 +3,10 @@ import { PageOneProps } from '../types';
 import { UserContext } from 'contexts/user';
 import Typography from '@material-ui/core/Typography';
 
-const Page: React.FunctionComponent<PageOneProps> = ({ hasBack, prop2 }) => {
+const Page: React.FunctionComponent<PageOneProps> = ({ prop2 }) => {
     const userData = useContext(UserContext);
     return (
         <div>
-            {hasBack && <button>back</button>}
 
             {userData && <section>
                 <h2>{userData.name} </h2>
@@ -18,7 +17,7 @@ const Page: React.FunctionComponent<PageOneProps> = ({ hasBack, prop2 }) => {
                     {userData.bio}
                 </Typography>
                 <Typography variant="h5">
-                    Props redux store sasd
+                    Props from redux store
                 </Typography>
                 <ul>
                     {prop2.map(

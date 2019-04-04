@@ -2,7 +2,6 @@ import prop1Reducer from './reducers/prop1';
 import prop2Reducer from './reducers/prop2';
 
 export interface PageOneProps {
-    hasBack: boolean;
     prop2: any[];
 }
 
