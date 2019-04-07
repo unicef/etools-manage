@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import createStore from './lib/create-store';
-import 'components/bootstrap';
 
 import App from './App';
 
