@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { isEmpty } from 'ramda';
 import Box from 'components/box';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';

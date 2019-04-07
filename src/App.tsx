@@ -8,10 +8,10 @@ import { Typography } from '@material-ui/core';
 /* eslint-disable */
 const App = ({ store }: { store: BaseStoreShape }) => (
     <AppProviders store={store}>
-        <AppFrame>
+        {/* <AppFrame> */}
             <PageLoader />
             {/* <Typography variant="h3">Check this out</Typography> */}
-        </AppFrame>
+        {/* </AppFrame> */}
     </AppProviders>
 
 );

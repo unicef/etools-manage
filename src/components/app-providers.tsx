@@ -17,9 +17,6 @@ function CustomFallbackComponent({ error, message }) {
 }
 
 
-console.log('theme', theme);
-
-
 const AppProviders: React.FunctionComponent<ProviderStore> = ({ children, store }) => {
     return (
         <ThemeProvider theme={theme}>

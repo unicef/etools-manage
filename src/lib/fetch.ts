@@ -44,7 +44,7 @@ const wrappedFetch = (url, {
 };
 
 export function useFetch(url) {
-    const [state, setState] = useSetState({
+    const [state, setState] = useSafeSetState({
         loaded: false,
         fetching: false,
         data: null,

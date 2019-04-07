@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { PageOneProps } from '../types';
 import { UserContext } from 'contexts/user';
+
 import Typography from '@material-ui/core/Typography';
 
 const Page: React.FunctionComponent<PageOneProps> = ({ prop2 }) => {

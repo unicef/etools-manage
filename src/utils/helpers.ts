@@ -23,7 +23,7 @@ export function useSafeSetState(initialState) {
 }
 
 
-export const getStateAtNamespaceKey = <T extends NamespaceKey>(namespace: T) => (state: StoreShape) => {
+export const getStateAtNamespaceKey = <T extends NamespaceKey>(namespace: T) => (state: StoreShape): Partial<AppStore>[T] => {
     const namespaceState = state[namespace];
     if (!namespaceState) {
         throw new Error(
