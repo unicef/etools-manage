@@ -9,8 +9,8 @@ const Page: React.FunctionComponent<PageOneProps> = ({ prop2 }) => {
         <div>
 
             {userData && <section>
-                <h2>{userData.name} </h2>
-                <Typography variant="subheading">
+                <Typography variant="h3">{userData.name} </Typography>
+                <Typography variant="subtitle1">
                 Bio
                 </Typography>
                 <Typography variant="body1">

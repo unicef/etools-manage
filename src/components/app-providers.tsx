@@ -17,19 +17,23 @@ function CustomFallbackComponent({ error, message }) {
 }
 
 
+console.log('theme', theme);
+
+
 const AppProviders: React.FunctionComponent<ProviderStore> = ({ children, store }) => {
     return (
-        <UserProvider username="marko911">
-            <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
-                <Provider store={store}>
-                    <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+            <UserProvider username="marko911">
+                <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
+                    <Provider store={store}>
                         <MatchMediaProvider>
                             {children}
                         </MatchMediaProvider>
-                    </ThemeProvider>
-                </Provider>
-            </ErrorBoundary>
-        </UserProvider>
+                    </Provider>
+                </ErrorBoundary>
+            </UserProvider>
+        </ThemeProvider>
+
 
     );
 };

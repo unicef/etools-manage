@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import { useEffect } from 'react';
-import { useSafeSetState } from 'utils/helpers';
+import { useSafeSetState, useSetState } from 'utils/helpers';
 
 
 export function checkStatus(response, raw): void {
@@ -44,7 +44,7 @@ const wrappedFetch = (url, {
 };
 
 export function useFetch(url) {
-    const [state, setState] = useSafeSetState({
+    const [state, setState] = useSetState({
         loaded: false,
         fetching: false,
         data: null,
