@@ -4,26 +4,23 @@ module.exports = {
     extends: [
         './config/eslintDefaults.js',
         './config/eslint.react.js',
-        // 'plugin:import/errors',
+        // // 'plugin:import/errors',
         'plugin:@typescript-eslint/recommended',
 
     ],
     plugins: ['@typescript-eslint', 'babel', 'react-hooks'],
-    // parser:  '@typescript-eslint/parser',  // Specifies the ESLint parser
-    // extends:  [
-    //   '@logojoy',
-    //   '@logojoy/mocha',
-    //   'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-    // ],
+    
    parserOptions:  {
       ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features
       sourceType:  'module',  // Allows for the use of imports
-      jsx: true
+      "ecmaFeatures": {
+        "jsx": true
+      },
     },
     settings: {
         'import/resolver': {
             webpack: {
-                config: `${__dirname}/build-tools/webpack.config.js`
+                config: `${__dirname}/config/webpack.config.js`
             }
         },
 
@@ -94,10 +91,7 @@ module.exports = {
         eqeqeq: 'error',
         'func-call-spacing': 'error',
         'func-name-matching': 'error',
-        'func-names': [
-            'error',
-            'always'
-        ],
+        'func-names': 'off',
 
         // 'func-style': [
         //     'error',

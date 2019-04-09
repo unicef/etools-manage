@@ -3,7 +3,6 @@ import { onBack } from '../actions';
 import Page from '../components/page';
 import { PageOneProps } from '../types';
 
-
 const mapStateToProps = (state): PageOneProps => ({
     prop2: state.pageOne.prop2
 });

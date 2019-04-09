@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import classnames from 'classnames';
+import classnames from 'clsx';
 
 const useStyles = makeStyles({
     box: { display: 'flex' },

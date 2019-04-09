@@ -1,3 +1,5 @@
+
+
 import * as React from 'react';
 import { render } from 'react-dom';
 import createStore from './lib/create-store';
@@ -11,3 +13,4 @@ const renderApp = (Component, elementId = 'root'): void => {
 };
 
 renderApp(App);
+ 

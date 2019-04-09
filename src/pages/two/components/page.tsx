@@ -35,8 +35,6 @@ export default function Page({ userData, userRepos, onInitFetch }) {
             onInitFetch();
         }, []
     );
-    console.log('user', userData);
-    console.log('repos', userRepos);
 
     return (
         <Box column>

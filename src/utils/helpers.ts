@@ -17,6 +17,8 @@ export function useSafeSetState(initialState) {
         mountedRef.current = true;
         return () => (mountedRef.current = false);
     }, []);
+    //@ts-ignore
+
     const safeSetState = (...args) => mountedRef.current && setState(...args);
 
     return [state, safeSetState];

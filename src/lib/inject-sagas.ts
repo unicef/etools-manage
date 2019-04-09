@@ -8,9 +8,9 @@ export default (store, rootSaga, { uid } = { uid: null }) => {
 
         store.runningSagas[uid] = true;
     }
-
+   
     store.runSaga(rootSaga)
-        .done
+        .toPromise()
         .catch(err => {
             throw new Error(err);
         });
