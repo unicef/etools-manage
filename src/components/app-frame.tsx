@@ -19,7 +19,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import MessageIcon from '@material-ui/icons/Message';
 import { MenuItem, GithubUser } from 'global-types';
-import { UserContext } from '../contexts/user'; 
+import { UserContext } from '../contexts/user';
 
 const drawerWidth = 240;
 
@@ -32,61 +32,61 @@ const IconMapping = {
 
 const useStyles = makeStyles(theme => ({
     root: {
-      display: 'flex',
+        display: 'flex'
     },
     appBar: {
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen
+        })
     },
     appBarShift: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen
+        })
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+        marginRight: theme.spacing(2)
     },
     hide: {
-      display: 'none',
+        display: 'none'
     },
     drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
+        width: drawerWidth,
+        flexShrink: 0
     },
     drawerPaper: {
-      width: drawerWidth,
+        width: drawerWidth
     },
     drawerHeader: {
-      display: 'flex',
-      alignItems: 'center',
-      padding: '0 8px',
-      ...theme.mixins.toolbar,
-      justifyContent: 'flex-end',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 8px',
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end'
     },
     content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      marginLeft: -drawerWidth,
+        flexGrow: 1,
+        padding: theme.spacing(3),
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen
+        }),
+        marginLeft: -drawerWidth
     },
     contentShift: {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    },
-  }));
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen
+        }),
+        marginLeft: 0
+    }
+}));
 
-  
+
 export interface AppFrameProps{
     menuItems: MenuItem[];
     children: ReactNode;
@@ -98,48 +98,48 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
     const userData: GithubUser = useContext(UserContext);
     const toggleDrawer = () => setOpen(!open);
     const classes = useStyles();
-     console.log(menuItems);
-     
+    console.log(menuItems);
+
     return (
         <div className={classes.root}>
-       <CssBaseline /> 
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })} 
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={toggleDrawer}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" noWrap>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                className={clsx(classes.appBar, {
+                    [classes.appBarShift]: open
+                })}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="Open drawer"
+                        onClick={toggleDrawer}
+                        edge="start"
+                        className={clsx(classes.menuButton, open && classes.hide)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" color="inherit" noWrap>
             Persistent drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={toggleDrawer}>
-            <ChevronRightIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                className={classes.drawer}
+                variant="persistent"
+                anchor="left"
+                open={open}
+                classes={{
+                    paper: classes.drawerPaper
+                }}
+            >
+                <div className={classes.drawerHeader}>
+                    <IconButton onClick={toggleDrawer}>
+                        <ChevronRightIcon />
+                    </IconButton>
+                </div>
+                <Divider />
+                <List>
                     {menuItems.map(({ text, icon, url }) => (
                         <Link key={text} to={url}>
                             <ListItem button>
@@ -149,15 +149,15 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
                         </Link>
                     ))}
                 </List>
-        
-      </Drawer>
-           
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        <div className={classes.drawerHeader} />
+
+            </Drawer>
+
+            <main
+                className={clsx(classes.content, {
+                    [classes.contentShift]: open
+                })}
+            >
+                <div className={classes.drawerHeader} />
                 {children}
             </main>
         </div>
