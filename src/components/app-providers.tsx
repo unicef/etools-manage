@@ -22,7 +22,7 @@ const AppProviders: React.FunctionComponent<ProviderStore> = ({ children, store 
             <UserProvider username="marko911">
                 <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
                     <Provider store={store}>
-                            {children}
+                        {children}
                     </Provider>
                 </ErrorBoundary>
             </UserProvider>
