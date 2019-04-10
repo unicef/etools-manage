@@ -16,14 +16,9 @@ const mapStateToProps = ({ page }: (AppState)): CompState => {
     });
 };
 
-const pageLoader = asyncImport<CompState>(({ page }) => {
-    console.log(page);
-    return asyncPageMap[page]();
-}, {
+const pageLoader = asyncImport<CompState>(({ page }) => asyncPageMap[page](), {
     // @ts-ignore
     onLoad({ reducer, rootSaga }, info, props, { store }) {
-        console.log('reducer', store);
-
         injectReducers(store, reducer());
         injectSagas(store, rootSaga);
     },
