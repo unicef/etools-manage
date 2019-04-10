@@ -1,4 +1,4 @@
-
+/*eslint-disable*/
 
 const fs = require('fs');
 const path = require('path');
@@ -17,7 +17,6 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
@@ -65,53 +64,6 @@ module.exports = function(webpackEnv) {
     // Get environment variables to inject into our app.
     const env = getClientEnvironment(publicUrl);
 
-    // common function to get style loaders
-    const getStyleLoaders = (cssOptions, preProcessor) => {
-        const loaders = [
-            isEnvDevelopment && require.resolve('style-loader'),
-            isEnvProduction && {
-                loader: MiniCssExtractPlugin.loader,
-                options: Object.assign(
-                    {},
-                    shouldUseRelativeAssetPaths ? { publicPath: '../../' } : undefined
-                )
-            },
-            {
-                loader: require.resolve('css-loader'),
-                options: cssOptions
-            },
-            {
-                // Options for PostCSS as we reference these options twice
-                // Adds vendor prefixing based on your specified browser support in
-                // package.json
-                loader: require.resolve('postcss-loader'),
-                options: {
-                    // Necessary for external CSS imports to work
-                    // https://github.com/facebook/create-react-app/issues/2677
-                    ident: 'postcss',
-                    plugins: () => [
-                        require('postcss-flexbugs-fixes'),
-                        require('postcss-preset-env')({
-                            autoprefixer: {
-                                flexbox: 'no-2009'
-                            },
-                            stage: 3
-                        })
-                    ],
-                    sourceMap: isEnvProduction && shouldUseSourceMap
-                }
-            }
-        ].filter(Boolean);
-        if (preProcessor) {
-            loaders.push({
-                loader: require.resolve(preProcessor),
-                options: {
-                    sourceMap: isEnvProduction && shouldUseSourceMap
-                }
-            });
-        }
-        return loaders;
-    };
 
     return {
         mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
@@ -215,22 +167,7 @@ module.exports = function(webpackEnv) {
                     cache: true,
                     sourceMap: shouldUseSourceMap
                 }),
-                // This is only used in production mode
-                new OptimizeCSSAssetsPlugin({
-                    cssProcessorOptions: {
-                        parser: safePostCssParser,
-                        map: shouldUseSourceMap
-                            ? {
-                                // `inline: false` forces the sourcemap to be output into a
-                                // separate file
-                                inline: false,
-                                // `annotation: true` appends the sourceMappingURL to the end of
-                                // the css file, helping the browser find the sourcemap
-                                annotation: true
-                            }
-                            : false
-                    }
-                })
+
             ],
             // Automatically split vendor and commons
             // https://twitter.com/wSokra/status/969633336732905474
@@ -339,6 +276,7 @@ module.exports = function(webpackEnv) {
                                 ),
 
                                 plugins: [
+                                    require.resolve('babel-plugin-universal-import'),
                                     [
                                         require.resolve('babel-plugin-named-asset-import'),
                                         {
@@ -348,7 +286,8 @@ module.exports = function(webpackEnv) {
                                                 }
                                             }
                                         }
-                                    ]
+                                    ],
+
 
                                 ],
                                 // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -532,12 +471,6 @@ module.exports = function(webpackEnv) {
             isEnvDevelopment &&
         new WatchMissingNodeModulesPlugin(paths.appNodeModules),
             isEnvProduction &&
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: 'static/css/[name].[contenthash:8].css',
-            chunkFilename: 'static/css/[name].[contenthash:8].chunk.css'
-        }),
             // Generate a manifest file which contains a mapping of all asset filenames
             // to their corresponding output file so that tools can pick it up without
             // having to parse `index.html`.
