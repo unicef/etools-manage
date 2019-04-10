@@ -8,7 +8,7 @@ import { AppState } from 'lib/reducer';
 
 interface CompState {
     page: string;
-} 
+}
 
 const mapStateToProps = ({ page }: (AppState)): CompState => {
     return ({
@@ -16,10 +16,14 @@ const mapStateToProps = ({ page }: (AppState)): CompState => {
     });
 };
 
-const pageLoader = asyncImport<CompState>(({ page }) => {console.log(page);
- return asyncPageMap[page]()},{
+const pageLoader = asyncImport<CompState>(({ page }) => {
+    console.log(page);
+    return asyncPageMap[page]();
+}, {
     // @ts-ignore
-    onLoad({ reducer, rootSaga }, info, props, {store}) {
+    onLoad({ reducer, rootSaga }, info, props, { store }) {
+        console.log('reducer', store);
+
         injectReducers(store, reducer());
         injectSagas(store, rootSaga);
     },
@@ -28,5 +32,5 @@ const pageLoader = asyncImport<CompState>(({ page }) => {console.log(page);
 );
 
 export default connect(mapStateToProps)(pageLoader);
- 
- 
+
+

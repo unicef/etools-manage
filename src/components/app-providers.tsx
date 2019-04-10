@@ -18,15 +18,15 @@ function CustomFallbackComponent({ error, message }) {
 
 const AppProviders: React.FunctionComponent<ProviderStore> = ({ children, store }) => {
     return (
-        <ThemeProvider theme={theme}>
-            <UserProvider username="marko911">
-                <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
-                    <Provider store={store}>
-                            {children}
-                    </Provider>
-                </ErrorBoundary>
-            </UserProvider>
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <UserProvider username="marko911">
+                    <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
+                        {children}
+                    </ErrorBoundary>
+                </UserProvider>
+            </ThemeProvider>
+        </Provider>
 
 
     );
