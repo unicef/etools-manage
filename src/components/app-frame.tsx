@@ -98,7 +98,6 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
     const userData: GithubUser = useContext(UserContext);
     const toggleDrawer = () => setOpen(!open);
     const classes = useStyles();
-    console.log(menuItems);
 
     return (
         <div className={classes.root}>

@@ -13,4 +13,3 @@ const renderApp = (Component, elementId = 'root'): void => {
 };
 
 renderApp(App);
- 
