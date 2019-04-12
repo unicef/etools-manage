@@ -8,10 +8,11 @@ export default (store, rootSaga, { uid } = { uid: null }) => {
 
         store.runningSagas[uid] = true;
     }
-   
+
     store.runSaga(rootSaga)
         .toPromise()
         .catch(err => {
+            // use bug reporter here in production and dispatch error action inside saga if try/catch fails
             throw new Error(err);
         });
 

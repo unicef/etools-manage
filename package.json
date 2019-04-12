@@ -1,5 +1,5 @@
 {
-  "name": "create-react-app-with-typescript-next",
+  "name": "@etools/app-module",
   "version": "4.0.0",
   "private": true,
   "dependencies": {
@@ -19,13 +19,11 @@
     "bfj": "6.1.1",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "combine-nested-reducers": "^1.0.4",
-    "css-loader": "1.0.0",
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
     "eslint": "5.12.0",
     "eslint-config-react-app": "^3.0.8",
     "eslint-loader": "2.1.1",
-    "eslint-plugin-flowtype": "2.50.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "7.12.4",
@@ -43,10 +41,6 @@
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "path-to-regexp": "^3.0.0",
     "pnp-webpack-plugin": "1.2.1",
-    "postcss-flexbugs-fixes": "4.1.0",
-    "postcss-loader": "3.0.0",
-    "postcss-preset-env": "6.5.0",
-    "postcss-safe-parser": "4.0.1",
     "query-string": "^6.4.2",
     "ramda": "^0.26.1",
     "react": "^16.8.6",
@@ -64,8 +58,6 @@
     "redux-starter-kit": "^0.4.3",
     "reselect": "^4.0.0",
     "resolve": "1.10.0",
-    "sass-loader": "7.1.0",
-    "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.2",
     "typescript": "latest",
     "@types/react-redux": "^6.0.13",
@@ -109,18 +101,13 @@
       "^.+\\.module\\.(css|sass|scss)$"
     ],
     "moduleNameMapper": {
-      "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
     },
     "moduleFileExtensions": [
-      "web.js",
       "js",
-      "web.ts",
       "ts",
-      "web.tsx",
       "tsx",
       "json",
-      "web.jsx",
       "jsx",
       "node"
     ],
@@ -128,14 +115,6 @@
       "/home/marko/prj/material-ui/examples/create-react-app-with-typescript-next/node_modules/jest-watch-typeahead/filename.js",
       "/home/marko/prj/material-ui/examples/create-react-app-with-typescript-next/node_modules/jest-watch-typeahead/testname.js"
     ]
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "devDependencies": {
     "@types/react-redux": "^6.0.13",
@@ -149,7 +128,6 @@
   "browserslist": [
     ">0.2%",
     "not dead",
-    "not ie <= 11",
-    "not op_mini all"
+    "not ie <= 11"
   ]
 }

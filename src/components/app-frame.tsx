@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -20,7 +20,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import MessageIcon from '@material-ui/icons/Message';
 import { MenuItem, GithubUser } from 'global-types';
 import { UserContext } from '../contexts/user';
-
+import { name } from '../../package.json';
 const drawerWidth = 240;
 
 const IconMapping = {
@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen
         })
+    },
+    appName: {
+        flexGrow: 1
     },
     menuButton: {
         marginRight: theme.spacing(2)
@@ -97,15 +100,15 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
     const [open, setOpen] = useState<boolean>(false);
     const userData: GithubUser = useContext(UserContext);
     const toggleDrawer = () => setOpen(!open);
-    const classes = useStyles();
+    const styles = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div className={styles.root}>
             <CssBaseline />
             <AppBar
                 position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open
+                className={clsx(styles.appBar, {
+                    [styles.appBarShift]: open
                 })}
             >
                 <Toolbar>
@@ -114,27 +117,30 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
                         aria-label="Open drawer"
                         onClick={toggleDrawer}
                         edge="start"
-                        className={clsx(classes.menuButton, open && classes.hide)}
+                        className={clsx(styles.menuButton, open && styles.hide)}
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" color="inherit" noWrap>
-            Persistent drawer
+                    <Typography className={styles.appName} variant="h6" color="inherit" noWrap>
+                        {name}
+                    </Typography>
+                    <Typography>
+                        {userData && `Welcome, ${userData.name}`}
                     </Typography>
                 </Toolbar>
             </AppBar>
             <Drawer
-                className={classes.drawer}
+                className={styles.drawer}
                 variant="persistent"
                 anchor="left"
                 open={open}
                 classes={{
-                    paper: classes.drawerPaper
+                    paper: styles.drawerPaper
                 }}
             >
-                <div className={classes.drawerHeader}>
+                <div className={styles.drawerHeader}>
                     <IconButton onClick={toggleDrawer}>
-                        <ChevronRightIcon />
+                        <ChevronLeftIcon />
                     </IconButton>
                 </div>
                 <Divider />
@@ -152,11 +158,11 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
             </Drawer>
 
             <main
-                className={clsx(classes.content, {
-                    [classes.contentShift]: open
+                className={clsx(styles.content, {
+                    [styles.contentShift]: open
                 })}
             >
-                <div className={classes.drawerHeader} />
+                <div className={styles.drawerHeader} />
                 {children}
             </main>
         </div>
@@ -164,3 +170,4 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
 };
 
 export default AppFrame;
+

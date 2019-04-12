@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import { useEffect } from 'react';
-import { useSafeSetState, useSetState } from 'utils/helpers';
+import { useSafeSetState } from 'utils/helpers';
 
 
 export function checkStatus(response, raw): void {

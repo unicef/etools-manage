@@ -1,57 +1,24 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    // "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
-    // "moduleResolution": "node",
-    "resolveJsonModule": true,
-    // "isolatedModules": true,
-    // "noEmit": true,
-    "jsx": "preserve",
-
-  //   "lib": [
-  //     "dom",
-  //     "es2015",
-  //     "es2017"
-  // ],
-  "baseUrl": "./src",
-  "rootDir": "./src",
-  "outDir": "./public",
-  // "declaration": true,
-  // "target": "es2017",
-  // "allowSyntheticDefaultImports":true,
-  // "jsx": "react",
-  // "sourceMap": true,
-  // "module":"commonjs"
-  }, 
-//   "compilerOptions": {
-//     "lib": [
-//         "dom",
-//         "es2015",
-//         "es2017"
-//     ],
-//     "baseUrl": "./src",
-//     "rootDir": "./src",
-//     "outDir": "./dist",
-//     // "declaration": true,
-//     "target": "es2017",
-//     "allowSyntheticDefaultImports":true,
-//     "jsx": "react",
-//     "sourceMap": true,
-//     "module":"commonjs"
-
-// },
-  "include": [
-    "./src"
-  ]
+    "compilerOptions": {
+        "target": "es5",
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
+        "resolveJsonModule": true,
+        "jsx": "react",
+        "baseUrl": "./src",
+        "rootDir": "./",
+        "outDir": "./public",
+    },
+    "include": [
+        "./src"
+    ]
 }

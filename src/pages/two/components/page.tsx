@@ -10,11 +10,7 @@ import { makeStyles } from '@material-ui/styles';
 const useStyles = makeStyles({
     loader: {
         flex: 1
-    },
-    title: {
-        margin: '0.8em 0'
     }
-
 });
 
 
@@ -29,7 +25,6 @@ const Loader = (): JSX.Element => {
 
 
 export default function Page({ userData, userRepos, onInitFetch }) {
-    // const classes = useStyles();
     useEffect(
         () => {
             onInitFetch();
@@ -38,7 +33,7 @@ export default function Page({ userData, userRepos, onInitFetch }) {
 
     return (
         <Box column>
-            <Typography variant="h3">{`${userData.name}'s Repos`}</Typography>
+            <Typography variant="h3">{userData && (`${userData.name}'s Repos`)}</Typography>
             {isEmpty(userData) || isEmpty(userRepos) ? <Loader /> :
                 <Box column>
                     {userRepos.map(repo => (

@@ -4,12 +4,13 @@ import Typography from '@material-ui/core/Typography';
 import { useFetch } from '../lib/fetch';
 import { GithubUser } from 'global-types';
 
-export const UserContext = React.createContext<GithubUser>({ id: null, name: '', location: '', bio: '' });
+export const UserContext = React.createContext<GithubUser>(null);
 
 export default function UserProvider({ username, children }) {
 
     // method 1 for data fetching: using a hook inside react component,
     // good for smaller apps and top level context providers where data doesn't need to go to store
+
     const { fetching, data, error } = useFetch(`https://api.github.com/users/${username}`);
 
     return error ? (
@@ -17,11 +18,9 @@ export default function UserProvider({ username, children }) {
             <Typography component="p">There was an error loading the data for user: {username}</Typography>
             <pre>{JSON.stringify(error, null, 2)}</pre>
         </Paper>
-    ) : fetching ? (
-        <Typography component="p">Loading data for {username}  </Typography>) : (
+    ) : fetching ? children :
         <UserContext.Provider value={data}>
             {children}
-        </UserContext.Provider>
-    );
+        </UserContext.Provider>;
 }
 

@@ -3,13 +3,14 @@ module.exports = {
 
     extends: [
         './config/eslintDefaults.js',
-        './config/eslint.react.js',
+        // './config/eslint.react.js',
         // // 'plugin:import/errors',
         'plugin:@typescript-eslint/recommended',
+        'react-app'
 
     ],
     plugins: ['@typescript-eslint', 'babel', 'react-hooks'],
-    
+
    parserOptions:  {
       ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features
       sourceType:  'module',  // Allows for the use of imports
