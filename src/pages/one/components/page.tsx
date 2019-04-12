@@ -2,19 +2,18 @@ import React, { useContext } from 'react';
 import { PageOneProps } from '../types';
 import { UserContext } from 'contexts/user';
 
+import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
 const Page: React.FunctionComponent<PageOneProps> = ({ prop2 }) => {
-    
+
     const userData = useContext(UserContext);
     return (
         <div>
 
             {userData && <section>
                 <Typography variant="h3">{userData.name} </Typography>
-                <Typography variant="subtitle1">
-                Bio
-                </Typography>
+                <Divider component="h1" />
                 <Typography variant="body1">
                     {userData.bio}
                 </Typography>
