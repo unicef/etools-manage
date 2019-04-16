@@ -57,7 +57,7 @@ if (process.env.HOST) {
     );
     console.log(
         `Learn more here: ${chalk.yellow('https://bit.ly/CRA-advanced-config')}`
-    );\
+    );
     console.log();
 }
 
