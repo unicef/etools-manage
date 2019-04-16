@@ -1,13 +1,16 @@
 module.exports = {
     env: {
-        node: true,
-        mocha: true,
-        es6: true
+        browser: true,
+        commonjs: true,
+        es6: true,
+        jest: true,
+        node: true
     },
     extends: 'eslint:recommended',
     parserOptions: {
         ecmaVersion: 2018
     },
+
     rules: {
         'array-bracket-spacing': ['error', 'never'],
         'eol-last': ['error', 'always'],

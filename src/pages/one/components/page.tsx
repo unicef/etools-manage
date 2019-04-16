@@ -4,13 +4,13 @@ import { UserContext } from 'contexts/user';
 
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import Box from 'components/box';
 
 const Page: React.FunctionComponent<PageOneProps> = ({ prop2 }) => {
 
     const userData = useContext(UserContext);
     return (
-        <div>
-
+        <Box column>
             {userData && <section>
                 <Typography variant="h3">{userData.name} </Typography>
                 <Divider component="h1" />
@@ -27,7 +27,7 @@ const Page: React.FunctionComponent<PageOneProps> = ({ prop2 }) => {
                 </ul>
             </section> }
 
-        </div>
+        </Box>
     );
 };
 

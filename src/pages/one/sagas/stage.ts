@@ -6,6 +6,7 @@ export default function * () {
 }
 
 export function * handleBack() {
+    // sample saga for going back to previous page via router
     const { location } = yield select();
 
     yield put({

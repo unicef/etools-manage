@@ -19,6 +19,6 @@
         "outDir": "./public",
     },
     "include": [
-        "./src"
+        "./src", "test", "jest.config.js"
     ]
 }

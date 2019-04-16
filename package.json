@@ -1,7 +1,11 @@
 {
-  "name": "@etools/app-module",
-  "version": "4.0.0",
-  "private": true,
+    "name": "@etools/app-module-skeleton",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "SKIP_PREFLIGHT_CHECK=true node scripts/start.js",
+        "build": "node scripts/build.js",
+        "test": "node scripts/test.js --config jest.config.js"
+    },
   "dependencies": {
     "@babel/core": "7.2.2",
     "@babel/polyfill": "^7.4.3",
@@ -71,59 +75,23 @@
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3"
   },
-  "scripts": {
-    "start": "SKIP_PREFLIGHT_CHECK=true node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "resolver": "jest-pnp-resolver",
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx",
-      "json",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "/home/marko/prj/material-ui/examples/create-react-app-with-typescript-next/node_modules/jest-watch-typeahead/filename.js",
-      "/home/marko/prj/material-ui/examples/create-react-app-with-typescript-next/node_modules/jest-watch-typeahead/testname.js"
-    ]
-  },
   "devDependencies": {
+    "@types/jest": "^24.0.11",
     "@types/react-redux": "^6.0.13",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/parser": "^1.6.0",
     "babel-eslint": "^10.0.1",
     "babel-plugin-universal-import": "^4.0.0",
     "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-react-hooks": "^1.5.0"
+    "eslint-plugin-jest": "^22.4.1",
+    "eslint-plugin-react-hooks": "^1.5.0",
+    "jss-snapshot-serializer": "^1.0.0",
+    "react-testing-library": "^6.1.2"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
   },
   "browserslist": [
     ">0.2%",

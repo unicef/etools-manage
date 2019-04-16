@@ -1,7 +1,6 @@
-import { menuItems } from '../actions';
+import { onSetMenuItems } from '../actions';
 import { createReducer } from 'redux-starter-kit';
 import { MenuItem } from 'global-types';
-
 
 const defaultMenuItems: MenuItem[] = [
     { text: 'Page One', icon: 'inbox', url: '/' },
@@ -11,6 +10,6 @@ const defaultMenuItems: MenuItem[] = [
 export const menuItemsReducer = createReducer(
     defaultMenuItems,
     {
-        [menuItems.type]: (state, action) => action.payload
+        [onSetMenuItems.type]: (state, action) => action.payload
     }
 );

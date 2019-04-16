@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Box mounts 1`] = `
+<div>
+  <div
+    class="makeStyles-box-13"
+  >
+    Test
+  </div>
+</div>
+`;
