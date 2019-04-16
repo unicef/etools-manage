@@ -1,11 +1,11 @@
 {
-    "name": "@etools/app-module-skeleton",
-    "version": "0.0.1",
-    "scripts": {
-        "start": "SKIP_PREFLIGHT_CHECK=true node scripts/start.js",
-        "build": "node scripts/build.js",
-        "test": "node scripts/test.js --config jest.config.js"
-    },
+  "name": "@etools/app-module-skeleton",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "SKIP_PREFLIGHT_CHECK=true node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js --config jest.config.js"
+  },
   "dependencies": {
     "@babel/core": "7.2.2",
     "@babel/polyfill": "^7.4.3",

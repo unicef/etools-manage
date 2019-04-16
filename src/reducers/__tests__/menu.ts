@@ -21,12 +21,7 @@ describe('Menu Items Reducer', () => {
 
     test('sets menu items successfully', () => {
         const mockPayload = [{ text: 'test', icon: 'inbox', url: '/test' }];
-        mockAction = {
-            type: onSetMenuItems.type,
-            payload: mockPayload
-        };
-
-        const state0 = menuItemsReducer(initialState, mockAction);
+        const state0 = menuItemsReducer(initialState, onSetMenuItems(mockPayload));
         expect(state0).toEqual(mockPayload);
     });
 });
