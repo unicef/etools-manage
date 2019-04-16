@@ -4,7 +4,6 @@ module.exports = {
     extends: [
         './config/eslintDefaults.js',
         './config/eslint.react.js',
-        // // 'plugin:import/errors',
         'plugin:@typescript-eslint/recommended',
 
     ],
@@ -18,14 +17,6 @@ module.exports = {
       },
       project: "./tsconfig.json"
     },
-    // settings: {
-    //     'import/resolver': {
-    //         webpack: {
-    //             config: `${__dirname}/config/webpack.config.js`
-    //         }
-    //     },
-
-    // },
     globals: {
         System: true,
         env: true
