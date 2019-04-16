@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a base scaffolding for any potential module migrations or whole new modules to be build with.
+This is a base scaffolding for any potential module migrations or whole new modules to be built with.
 
 ### Stack
 React w/ Typescript -  base framework
