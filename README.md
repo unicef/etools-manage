@@ -61,5 +61,5 @@ We can use next gen ES features via babel. There are also a lot of production on
 Eslint is fully set up and integrated with module resolutions of webpack / typescript. A vscode settings file is also included which make the dev experience for this particular stack very pleasant.
 
 
-
+More to be added here...
 
