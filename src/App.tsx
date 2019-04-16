@@ -4,7 +4,7 @@ import AppProviders from './components/app-providers';
 import PageLoader from './containers/page-loader';
 import AppFrame from './containers/app-frame';
 import { BaseStoreShape } from 'global-types';
-/* eslint-disable */
+
 const App = ({ store }: { store: BaseStoreShape }) => (
     <AppProviders store={store}>
         <AppFrame>
