@@ -1,14 +1,13 @@
 
 import React from 'react';
 import AppProviders from './components/app-providers';
-import PageLoader from './containers/page-loader';
-import AppFrame from './containers/app-frame';
-import { BaseStoreShape } from 'global-types';
+import AppFrame from './components/app-frame';
+import Page from 'pages/one';
 
-const App = ({ store }: { store: BaseStoreShape }) => (
-    <AppProviders store={store}>
+const App = () => (
+    <AppProviders >
         <AppFrame>
-            <PageLoader />
+            <Page/>
         </AppFrame>
     </AppProviders>
 

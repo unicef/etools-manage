@@ -6,9 +6,10 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Box from 'components/box';
 
-const Page: React.FunctionComponent<PageOneProps> = ({ prop2 }) => {
+const Page: React.FunctionComponent = () => {
 
     const userData = useContext(UserContext);
+    const prop2 = ['Item 1', 'Item 2'];
     return (
         <Box column>
             {userData && <section>

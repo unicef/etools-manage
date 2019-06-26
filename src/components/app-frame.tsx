@@ -1,6 +1,5 @@
 import React, { useState, useContext, ReactNode } from 'react';
 import clsx from 'clsx';
-import Link from 'redux-first-router-link';
 import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -91,16 +90,15 @@ const useStyles = makeStyles(theme => ({
 
 
 export interface AppFrameProps{
-    menuItems: MenuItem[];
     children: ReactNode;
 }
 
 
-const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children }) => {
+const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const [open, setOpen] = useState<boolean>(false);
     const userData: GithubUser = useContext(UserContext);
     const toggleDrawer = () => setOpen(!open);
-    const styles = useStyles();
+    const styles = useStyles({});
 
     return (
         <div className={styles.root}>
@@ -129,33 +127,6 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ menuItems, children 
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                className={styles.drawer}
-                variant="persistent"
-                anchor="left"
-                open={open}
-                classes={{
-                    paper: styles.drawerPaper
-                }}
-            >
-                <div className={styles.drawerHeader}>
-                    <IconButton onClick={toggleDrawer}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    {menuItems.map(({ text, icon, url }) => (
-                        <Link key={text} to={url}>
-                            <ListItem button>
-                                <ListItemIcon>{IconMapping[icon]}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        </Link>
-                    ))}
-                </List>
-
-            </Drawer>
 
             <main
                 className={clsx(styles.content, {

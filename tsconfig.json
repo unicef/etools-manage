@@ -14,6 +14,7 @@
         "module": "commonjs",
         "resolveJsonModule": true,
         "jsx": "react",
+
         "baseUrl": "./src",
         "rootDir": "./",
         "outDir": "./public",

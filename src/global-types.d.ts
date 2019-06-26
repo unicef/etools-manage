@@ -23,7 +23,6 @@ export interface AppStore {
 
 export interface ProviderStore {
     children: ReactNode;
-    store: BaseStoreShape;
 }
 
 

@@ -275,7 +275,6 @@ module.exports = function(webpackEnv) {
                                 ),
 
                                 plugins: [
-                                    require.resolve('babel-plugin-universal-import'),
                                     [
                                         require.resolve('babel-plugin-named-asset-import'),
                                         {

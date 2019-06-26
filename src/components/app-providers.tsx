@@ -1,5 +1,4 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import ErrorBoundary from 'react-error-boundary';
 // import CustomContextProvider from './context-provider';
 import UserProvider from '../contexts/user';
@@ -16,14 +15,12 @@ function CustomFallbackComponent({ error, message }) {
 }
 
 
-const AppProviders: React.FunctionComponent<ProviderStore> = ({ children, store }) => {
+const AppProviders: React.FunctionComponent<ProviderStore> = ({ children }) => {
     return (
         <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
             <ThemeProvider theme={theme}>
                 <UserProvider username="marko911">
-                    <Provider store={store}>
-                        {children}
-                    </Provider>
+                    {children}
                 </UserProvider>
             </ThemeProvider>
         </ErrorBoundary>
