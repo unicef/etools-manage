@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import ErrorBoundary from 'react-error-boundary';
+
 // import CustomContextProvider from './context-provider';
 import UserProvider from '../contexts/user';
 import { ProviderStore } from 'global-types';

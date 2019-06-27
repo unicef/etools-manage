@@ -52,3 +52,5 @@ export interface GithubUser {
 }
 
 export type User = GithubUser | null;
+
+export type ChildrenProps = React.ReacNode

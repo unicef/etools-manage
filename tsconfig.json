@@ -19,6 +19,6 @@
         "outDir": "./public",
     },
     "include": [
-        "./src", "test", "jest.config.js"
+        "./src", "test", "jest.config.js", "src/utils/node_modules/makeReducer.ts", "src/utils/node_modules/helpers.ts"
     ]
 }

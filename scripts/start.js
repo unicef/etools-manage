@@ -19,7 +19,7 @@ const fs = require('fs');
 const chalk = require('react-dev-utils/chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const clearConsole = require('react-dev-utils/clearConsole');
+// const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const {
     choosePort,
@@ -71,7 +71,7 @@ checkBrowsers(paths.appPath, isInteractive)
         return choosePort(HOST, DEFAULT_PORT);
     })
     .then(port => {
-        if (port == null) {
+        if (port === null) {
             // We have not found a port.
             return;
         }
@@ -80,7 +80,6 @@ checkBrowsers(paths.appPath, isInteractive)
         const appName = require(paths.appPackageJson).name;
         const useTypeScript = fs.existsSync(paths.appTsConfig);
 
-        console.log('USEING TYPESCRIPT', useTypeScript);
 
         const urls = prepareUrls(protocol, HOST, port);
         const devSocket = {

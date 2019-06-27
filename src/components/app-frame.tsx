@@ -7,9 +7,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'global-types';
 import { UserContext } from '../contexts/user';
-import { name } from '../../package.json';
-const drawerWidth = 240;
 
+
+const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -27,14 +27,7 @@ const useStyles = makeStyles(theme => ({
     hide: {
         display: 'none'
     },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0
-    },
-    drawerPaper: {
-        width: drawerWidth
-    },
-    drawerHeader: {
+    mainHeader: {
         display: 'flex',
         alignItems: 'center',
         padding: '0 8px',
@@ -47,11 +40,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-
 export interface AppFrameProps{
     children: ReactNode;
 }
-
 
 const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const userData: User = useContext(UserContext);
@@ -68,9 +59,9 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                 <Toolbar >
                     <Typography
                         className={styles.appName}
-                        color="textSecondary"
+                        color="textPrimary"
                         variant="h6" noWrap>
-                        {name}
+                        {PAGE_TITLE}
                     </Typography>
                     <Typography color="textSecondary">
                         {userData && `Welcome, ${userData.name}`}
@@ -81,7 +72,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
             <main
                 className={clsx(styles.content)}
             >
-                <div className={styles.drawerHeader} />
+                <div className={styles.mainHeader} />
                 {children}
             </main>
         </div>

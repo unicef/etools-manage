@@ -1,10 +1,8 @@
-// import { createMuiTheme } from '@material-ui/core/styles';
-
-// export const defaultTheme = createMuiTheme();
 
 
 import red from '@material-ui/core/colors/red';
 import { createMuiTheme } from '@material-ui/core/styles';
+
 
 // A custom theme for this app
 const theme = createMuiTheme({
@@ -22,7 +20,8 @@ const theme = createMuiTheme({
             default: '#fff'
         },
         text: {
-            secondary: '#5f6368'
+            primary: '#5f6368',
+            secondary: '#202124'
         }
     }
 });

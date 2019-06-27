@@ -1,5 +1,5 @@
 {
-  "name": "Sections Management",
+  "name": "etools-sections-management",
   "version": "0.0.1",
   "scripts": {
     "start": "SKIP_PREFLIGHT_CHECK=true node scripts/start.js",
@@ -53,7 +53,7 @@
     "react-dev-utils": "^8.0.0",
     "react-dom": "16.8.6",
     "react-error-boundary": "^1.2.5",
-    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.7.1",
     "redux-starter-kit": "^0.5.1",
     "reselect": "^4.0.0",

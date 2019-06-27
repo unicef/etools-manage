@@ -1,43 +1,42 @@
 import React, { useContext } from 'react';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
 import { UserContext } from 'contexts/user';
-
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import { Modals, useModalsDispatch, onToggleAddModal } from 'contexts/page-modals';
 import Box from 'components/box';
 
+import { onBack } from '../actions';
 
-const useStyles = makeStyles(theme => ({
-    title: {
-        color: '#202124'
-    }
-}));
-
+function ModalToggle() {
+    const dispatch = useModalsDispatch();
+    return <button onClick={() => dispatch(onToggleAddModal)} >Open</button>;
+}
 const Page: React.FunctionComponent = () => {
 
     const userData = useContext(UserContext);
     const prop2 = ['Item 1', 'Item 2'];
-    const styles = useStyles();
-
+    console.log(onBack);
     return (
-        <Box column>
-            {userData && <section>
-                <Typography variant="h3" className={styles.title}>{userData.name} </Typography>
-                <Divider component="h1" />
-                <Typography variant="body1">
-                    {userData.bio}
-                </Typography>
-                <Typography variant="h5">
+        <Modals>
+            <ModalToggle/>
+            <Box column>
+                {userData && <section>
+                    <Typography variant="h3" color="textSecondary">{userData.name} </Typography>
+                    <Typography variant="body1">
+                        {userData.bio}
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
                     Props from redux store
-                </Typography>
-                <ul>
-                    {prop2.map(
-                        el => <li key={el}>{el}</li>
-                    )}
-                </ul>
-            </section> }
+                    </Typography>
+                    <ul>
+                        {prop2.map(
+                            el => <li key={el}>{el}</li>
+                        )}
+                    </ul>
+                </section> }
 
-        </Box>
+            </Box>
+        </Modals>
+
     );
 };
 
