@@ -31,10 +31,10 @@ interface BoxProps {
     auto?: boolean;
     wrap?: boolean;
     onRef?: () => any;
-    className?: string;
+    className?: string | undefined;
 }
 
-export default function Box({ children, column, row, align, justify, tagName, auto, className, wrap, onRef, ...props }: BoxProps) {
+export default function Box({ children, column, row, align, justify, tagName = 'div', auto, className = '', wrap, onRef, ...props }: BoxProps) {
     const styles = useStyles();
     const classes = classnames({
         [styles.auto]: auto,
@@ -55,8 +55,4 @@ export default function Box({ children, column, row, align, justify, tagName, au
     return React.createElement(tagName, { className: classes, ref: onRef, ...props }, children);
 }
 
-Box.defaultProps = {
-    tagName: 'div',
-    className: ''
-};
 

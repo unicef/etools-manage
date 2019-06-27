@@ -5,7 +5,7 @@ import AppFrame from './components/app-frame';
 import Page from 'pages/one';
 
 const App = () => (
-    <AppProviders >
+    <AppProviders>
         <AppFrame>
             <Page/>
         </AppFrame>

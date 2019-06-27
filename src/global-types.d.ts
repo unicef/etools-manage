@@ -50,3 +50,5 @@ export interface GithubUser {
     location: string;
     bio: string;
 }
+
+export type User = GithubUser | null;
