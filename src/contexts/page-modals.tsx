@@ -35,7 +35,6 @@ const modalsReducer = makeReducer({
 
 export function PageModalsProvider({ children }: PageModalsProviderProps) {
     const [state, setModalsState] = useReducer(modalsReducer, initialState);
-    console.log('Sets CONTEXT VALUES');
     return (
         <ModalsStateContext.Provider value={state}>
             <ModalsDispatchContext.Provider value={setModalsState}>
@@ -47,7 +46,6 @@ export function PageModalsProvider({ children }: PageModalsProviderProps) {
 
 
 export function useModalsState() {
-    console.log('TCL: useModalsState -> context');
 
     const context = useContext(ModalsStateContext);
     if (context === undefined) {
@@ -58,19 +56,18 @@ export function useModalsState() {
 
 export function useModalsDispatch() {
     const context = useContext(ModalsDispatchContext);
-    console.log('TCL: useModalsDispatch -> context', context);
     if (context === undefined) {
-
         throw new Error('useCountDispatch must be used within a PageModalsProvider');
-
     }
 
     return context;
 }
 
 export function Modals({ children }) {
-    return <PageModalsProvider>
-        <PageModals />
-        {children}
-    </PageModalsProvider>;
+    return (
+        <PageModalsProvider>
+            <PageModals />
+            {children}
+        </PageModalsProvider>
+    );
 }
