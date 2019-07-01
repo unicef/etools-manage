@@ -23,35 +23,18 @@ function CustomFallbackComponent({ error, message }: FallbackProps) {
         </div>
     );
 }
-const compose = (...funcs) =>
-    funcs.reduce((a, b) => (...args) => a(b(...args)), arg => arg);
 
 const AppProviders: React.FC<ProviderStore> = ({ children }) => {
     console.log(theme);
-    console.log('withUser', withUserProvider({ children }));
-    const CombinedProviders = compose(
-        withErrorBoundary,
-        withThemeProvider,
-        withUserProvider,
-    );
-
-    const NewMan = CombinedProviders({ children });
-    console.log('TCL: CombinedProviders', CombinedProviders);
-    console.log('TCL: NewMan', NewMan);
-
-
     return (
-        <CombinedProviders>
-            {children}
-        </CombinedProviders>
-    );
+        <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
+            <ThemeProvider theme={theme}>
+                <UserProvider username="marko911">
+                    <>{children}</>
+                </UserProvider>
+            </ThemeProvider>
+        </ErrorBoundary>);
 };
 
 export default AppProviders;
-// <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
-//     <ThemeProvider theme={theme}>
-//         <UserProvider username="marko911">
-//             <>{children}</>
-//         </UserProvider>
-//     </ThemeProvider>
-// </ErrorBoundary>
+

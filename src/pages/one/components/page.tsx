@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { UserContext } from 'contexts/user';
 import Typography from '@material-ui/core/Typography';
-import { Modals, useModalsDispatch, onToggleAddModal } from 'contexts/page-modals';
+import { Modals, useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 
-import { onBack } from '../actions';
+import { onToggleAddModal } from 'actions';
 
 function ModalToggle() {
     const dispatch = useModalsDispatch();
@@ -14,7 +14,6 @@ const Page: React.FunctionComponent = () => {
 
     const userData = useContext(UserContext);
     const prop2 = ['Item 1', 'Item 2'];
-    console.log(onBack);
     return (
         <Modals>
             <ModalToggle/>
@@ -23,9 +22,6 @@ const Page: React.FunctionComponent = () => {
                     <Typography variant="h3" color="textSecondary">{userData.name} </Typography>
                     <Typography variant="body1">
                         {userData.bio}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                    Props from redux store
                     </Typography>
                     <ul>
                         {prop2.map(

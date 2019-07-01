@@ -1,8 +1,9 @@
 import React from 'react';
-import { useModalsState, useModalsDispatch, onToggleAddModal } from 'contexts/page-modals';
+import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import { ChildrenProps } from 'global-types';
 import { Modal, Typography } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { onToggleAddModal } from 'actions';
 
 const Aux = ({ children }: ChildrenProps) => children;
 
