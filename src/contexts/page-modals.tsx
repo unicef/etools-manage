@@ -2,6 +2,9 @@ import React, { useContext, useReducer } from 'react';
 import PageModals from 'components/page-modals';
 import { onToggleAddModal, onToggleSplitModal } from 'actions';
 import { modalsReducer } from 'reducers/modals';
+import { ProviderProps } from 'global-types';
+
+// TODO: Clean this file up
 interface State {
     addModalOpen: boolean;
     splitModalOpen: boolean;
@@ -11,9 +14,7 @@ interface State {
 type ModalAction = typeof onToggleAddModal | typeof onToggleSplitModal
 
 type Dispatch = (action: ModalAction) => void
-interface PageModalsProviderProps {
-    children: React.ReactNode;
-}
+
 
 const ModalsStateContext = React.createContext<State | undefined>(undefined);
 const ModalsDispatchContext = React.createContext<Dispatch | undefined>(undefined);
@@ -24,7 +25,7 @@ const initialState: State = {
 };
 
 
-export function PageModalsProvider({ children }: PageModalsProviderProps) {
+export function PageModalsProvider({ children }: ProviderProps) {
     const [state, setModalsState] = useReducer(modalsReducer, initialState);
     return (
         <ModalsStateContext.Provider value={state}>

@@ -6,9 +6,7 @@ import UserProvider from '../contexts/user';
 import { ProviderStore } from 'global-types';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from '../lib/theme';
-import withUserProvider from 'hocs/withUserProvider';
-import withErrorBoundary from 'hocs/withErrorBoundary';
-import withThemeProvider from 'hocs/withThemeProvider';
+import { AppStoreProvider } from 'contexts/app';
 
 interface FallbackProps {
     error?: Error;
@@ -30,7 +28,9 @@ const AppProviders: React.FC<ProviderStore> = ({ children }) => {
         <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
             <ThemeProvider theme={theme}>
                 <UserProvider username="marko911">
-                    <>{children}</>
+                    <AppStoreProvider >
+                        <>{children}</>
+                    </AppStoreProvider>
                 </UserProvider>
             </ThemeProvider>
         </ErrorBoundary>);

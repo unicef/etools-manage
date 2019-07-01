@@ -42,3 +42,4 @@ type Maybe<T> = T | undefined
  * Dictionary of string, value pairs
  */
 interface Dictionary<T> { [key: string]: T }
+export type PublicPart<T> = {[K in keyof T]: T[K]}

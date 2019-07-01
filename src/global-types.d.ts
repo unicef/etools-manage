@@ -29,8 +29,8 @@ export interface ProviderStore {
 export type StoreShape = Partial<AppStore>;
 export type NamespaceKey = keyof StoreShape;
 export type ReducerMap = Partial<
-    { [k in NamespaceKey]: Reducer<AppStore[k]> }
-  >;
+{ [k in NamespaceKey]: Reducer<AppStore[k]> }
+>;
 
 
 // Non-page specific
@@ -54,3 +54,6 @@ export interface GithubUser {
 export type User = GithubUser | null;
 
 export type ChildrenProps = React.ReacNode
+export interface ProviderProps {
+    children: React.ReactNode;
+}
