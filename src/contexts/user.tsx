@@ -9,7 +9,6 @@ export default function UserProvider({ username, children }: {username: string; 
     // good for smaller apps and top level context providers where data doesn't need to go to store
 
     const { data, error } = useFetch(`https://api.github.com/users/${username}`);
-    console.log('TCL: UserProvider -> error', error);
     const value = data || {
         name: 'Markucho Offlineovic',
         bio: 'I do stuff on the computer'

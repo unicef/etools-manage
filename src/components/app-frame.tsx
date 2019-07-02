@@ -52,9 +52,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const userData: User = useContext(UserContext);
     const service: SectionsService = useAppService();
     const dispatch = useAppDispatch();
-    console.log('TCL: dispatch', dispatch);
     useEffect(() => {
-        console.log('EFFECTT');
         onGetSections(service, dispatch);
     }, []);
     const styles = useStyles({});
@@ -83,6 +81,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
             <main
                 className={clsx(styles.content)}
             >
+                <h2>CHECK</h2>
                 <div className={styles.mainHeader} />
                 {children}
             </main>

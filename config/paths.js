@@ -58,6 +58,8 @@ const resolveModule = (resolveFn, filePath) => {
 
     return resolveFn(`${filePath}.js`);
 };
+console.log('servedd path ', getServedPath(resolveApp('package.json')));
+console.log('TCL: getPublicUrl', getPublicUrl(resolveApp('package.json')));
 
 // config after eject: we're in ./config/
 module.exports = {
