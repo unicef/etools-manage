@@ -17,38 +17,45 @@ export default class SectionsApiService implements SectionsService {
     }
 
     public async getSections(): Promise<SectionEntity[]> {
-        // const response = await this._http.get<SectionEntity[]>(process.env.SECTIONS_ENDPOINT);
-        // return response;
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve([
-                    { id: 0, name: 'Health Nutrition' },
-                    { id: 1, name: 'Education' }
-                ]);
-            }, 200);
-        });
+        try {
+            const response = await this._http.get<SectionEntity[]>(process.env.REACT_APP_SECTIONS_ENDPOINT);
+            return response;
+
+        } catch (err) {
+            throw new Error(err);
+        }
     }
 
     public async createSection(data: SectionEntity): Promise<SectionEntity> {
-        const response = await this._http.post<SectionEntity>(
-            process.env.SECTIONS_ENDPOINT,
-            {
-                body: data
-            }
-        );
-        return response;
+        try {
+            const response = await this._http.post<SectionEntity>(
+                process.env.SECTIONS_ENDPOINT,
+                {
+                    body: data
+                }
+            );
+            return response;
+
+        } catch (err) {
+            throw new Error(err);
+        }
     }
 
     public async closeSection(id: number): Promise<void> {
-        const response = await this._http.post<any>(
-            process.env.SECTION_CLOSE_ENDPOINT,
-            {
-                body: {
-                    id
+        try {
+            const response = await this._http.post<any>(
+                process.env.SECTION_CLOSE_ENDPOINT,
+                {
+                    body: {
+                        id
+                    }
                 }
-            }
-        );
+            );
 
-        return response;
+            return response;
+
+        } catch (err) {
+            throw new Error(err);
+        }
     }
 }

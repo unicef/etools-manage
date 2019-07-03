@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import { useEffect } from 'react';
 import { useSafeSetState } from 'utils/helpers';
 
+const BASE_URL = window.location.origin;
 
 export function checkStatus(response, raw): void {
     if (raw) {
@@ -26,22 +27,21 @@ const wrappedFetch = (url, {
     raw = false,
     // For test environment Dependency Injection
     ...opts
-} = {}) => {
-    return fetch(url, {
-        credentials: 'same-origin', // send cookies for etools auth
-        ...opts })
-        .then(response => checkStatus(response, raw))
-        .then(response => {
-            if (raw) {
-                return response;
-            }
+} = {}) => fetch(`${BASE_URL}/${url}`, {
+    credentials: 'same-origin', // send cookies for etools auth
+    ...opts })
+    .then(response => checkStatus(response, raw))
+    .then(response => {
+        if (raw) {
+            return response;
+        }
 
-            return json ? response.json() : response.text();
-        })
-        .catch(err => {
-            throw err;
-        });
-};
+        return json ? response.json() : response.text();
+    })
+    .catch(err => {
+        throw err;
+    });
+
 
 export function useFetch(url) {
     const [state, setState] = useSafeSetState({

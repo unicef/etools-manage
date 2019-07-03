@@ -17,7 +17,7 @@ export function useSafeSetState(initialState) {
         mountedRef.current = true;
         return () => (mountedRef.current = false);
     }, []);
-    //@ts-ignore
+    // @ts-ignore
 
     const safeSetState = (...args) => mountedRef.current && setState(...args);
 
@@ -36,18 +36,3 @@ export const getStateAtNamespaceKey = <T extends NamespaceKey>(namespace: T) => 
     return namespaceState;
 };
 
-// export function getStateAtNamespaceKey<T extends NamespaceKey>(
-//     namespace: T
-// ): (StoreShape) => AppStore[T] {
-
-//     return (state: StoreShape): AppStore[T] => {
-//         const namespaceState = state[namespace];
-//         if (!namespaceState) {
-//             throw new Error(
-//                 `Attempted to access state for an unregistered namespace at key ${namespace}`
-//             );
-//         }
-
-//         return namespaceState;
-//     };
-// }

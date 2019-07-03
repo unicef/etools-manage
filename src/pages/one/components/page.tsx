@@ -13,6 +13,7 @@ function ModalToggle() {
 const Page: React.FunctionComponent = () => {
 
     const userData = useContext(UserContext);
+    console.log('TCL: Page:React.FunctionComponent -> userData', userData);
     const prop2 = ['Item 1', 'Item 2'];
     return (
         <Modals>
@@ -21,7 +22,7 @@ const Page: React.FunctionComponent = () => {
                 {userData && <section>
                     <Typography variant="h3" color="textSecondary">{userData.name} </Typography>
                     <Typography variant="body1">
-                        {userData.bio}
+                        {userData.job_title}
                     </Typography>
                     <ul>
                         {prop2.map(

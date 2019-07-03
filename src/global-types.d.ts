@@ -44,14 +44,33 @@ export interface MenuItem {
     url: string;
 }
 
-export interface GithubUser {
-    id: number;
+export interface UserProfile {
+
+    countries_available: {
+        business_area_code: string;
+        id: number;
+        name: string;
+    }[];
+
+    country: {
+        id: number;
+        initial_zoom: number;
+        latitude: string;
+        local_currency: string;
+        longitude: string;
+        name: string;
+    };
+
+    email: string | null;
+    first_name: string;
+    last_name: string;
+    job_title: string | null;
     name: string;
-    location: string;
-    bio: string;
+    user: number;
+    username: string;
 }
 
-export type User = GithubUser | null;
+export type User = UserProfile | null;
 
 export type ChildrenProps = React.ReacNode
 export interface ProviderProps {
