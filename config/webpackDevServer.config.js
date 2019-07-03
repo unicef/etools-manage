@@ -11,7 +11,6 @@ const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
 
 module.exports = function(proxy, allowedHost) {
-    console.log('--------------------------TCL: allowedHost', allowedHost);
     return {
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
@@ -82,9 +81,9 @@ module.exports = function(proxy, allowedHost) {
             // See https://github.com/facebook/create-react-app/issues/387.
             disableDotRule: true
         },
-        public: 'http://localhost:8082/manage',
+        public: allowedHost,
         sockPath: '/manage/sockjs-node',
-        // sockPort: 8080,
+        sockPort: 8080,
         proxy,
         before(app, server) {
             if (fs.existsSync(paths.proxySetup)) {

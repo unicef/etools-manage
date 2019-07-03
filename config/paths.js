@@ -58,7 +58,6 @@ const resolveModule = (resolveFn, filePath) => {
 
     return resolveFn(`${filePath}.js`);
 };
-console.log('app index ', resolveModule(resolveApp, 'src/index'));
 
 // config after eject: we're in ./config/
 module.exports = {
