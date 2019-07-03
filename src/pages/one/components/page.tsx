@@ -1,36 +1,24 @@
-import React, { useContext } from 'react';
-import { UserContext } from 'contexts/user';
-import Typography from '@material-ui/core/Typography';
+import React from 'react';
 import { Modals, useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 
-import { onToggleAddModal } from 'actions';
+// import { onToggleAddModal } from 'actions';
+import SectionsTable from 'components/sections-table';
 
-function ModalToggle() {
-    const dispatch = useModalsDispatch();
-    return <button onClick={() => dispatch(onToggleAddModal)} >Open</button>;
-}
+// function ModalToggle() {
+//     const dispatch = useModalsDispatch();
+//     return <button onClick={() => dispatch(onToggleAddModal)} >Open</button>;
+// }
+
 const Page: React.FunctionComponent = () => {
 
-    const userData = useContext(UserContext);
-    console.log('TCL: Page:React.FunctionComponent -> userData', userData);
-    const prop2 = ['Item 1', 'Item 2'];
     return (
         <Modals>
-            <ModalToggle/>
+            {/* <ModalToggle/> */}
             <Box column>
-                {userData && <section>
-                    <Typography variant="h3" color="textSecondary">{userData.name} </Typography>
-                    <Typography variant="body1">
-                        {userData.job_title}
-                    </Typography>
-                    <ul>
-                        {prop2.map(
-                            el => <li key={el}>{el}</li>
-                        )}
-                    </ul>
-                </section> }
-
+                <section>
+                    <SectionsTable/>
+                </section>
             </Box>
         </Modals>
 
