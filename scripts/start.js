@@ -98,6 +98,8 @@ checkBrowsers(paths.appPath, isInteractive)
             useTypeScript,
             webpack
         });
+        console.log('TCL: urls', urls);
+
         // Load proxy config
         const proxySetting = require(paths.appPackageJson).proxy;
         const proxyConfig = prepareProxy(proxySetting, paths.appPublic);
