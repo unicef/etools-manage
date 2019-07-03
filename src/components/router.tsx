@@ -6,7 +6,7 @@ import Main from 'pages/one';
 
 export default function AppRouter() {
     return (
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
             <Route exact path="/" component={Main} />
         </Router>
     );
