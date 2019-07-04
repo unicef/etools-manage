@@ -7,10 +7,13 @@ export interface HeadRow<T> {
     label: string;
 }
 
+export type EntityRow<T> = HeadRow<T>;
+
+
 export interface EnhancedTableHeadProps<T> {
     headRows: HeadRow<T>[];
     order: Order;
-    orderBy: string;
+    orderBy: keyof T;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof T) => void;
 }
 

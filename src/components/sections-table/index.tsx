@@ -14,16 +14,17 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
+import MergeIcon from '@material-ui/icons/MergeType';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { Order, HeadRow, EnhancedTableHeadProps, TableToolbarProps } from './table';
+import { compose, head, keys } from 'ramda';
+import { Order, HeadRow, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
 import Section, { SectionEntity } from 'entities/section';
 import { useAppState } from 'contexts/app';
-import { SectionsToolbar, SectionRow } from 'components/table';
 
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -135,14 +136,33 @@ export const EnhancedTableToolbar = ({ title, children, className }: TableToolba
     );
 };
 
-const headRows: SectionRow[] = [
+
+export const SectionsToolbar = ({ numSelected }) => {
+    const classes = useToolbarStyles({});
+
+    return (
+        <EnhancedTableToolbar title="Sections">
+            <Tooltip title="Merge">
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                    // disabled={numSelected !== 2}
+                    aria-label="Merge">
+                            Merge
+                    <MergeIcon />
+                </Button>
+            </Tooltip>
+        </EnhancedTableToolbar>
+    );
+};
+
+const headRows: EntityRow<SectionEntity>[] = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
     { id: 'id', numeric: true, disablePadding: false, label: 'Id' }
 ];
-console.log('TCL: headRows', headRows);
 
 export function EnhancedTableHead<T>(props: EnhancedTableHeadProps<T>) {
-    console.log('TCL: headRows', headRows);
     const { order, orderBy, onRequestSort } = props;
     const createSortHandler = (property: keyof T) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
@@ -162,6 +182,7 @@ export function EnhancedTableHead<T>(props: EnhancedTableHeadProps<T>) {
                         <TableSortLabel
                             active={orderBy === row.id}
                             direction={order}
+                            //@ts-ignore
                             onClick={createSortHandler(row.id)}
                         >
                             {row.label}
@@ -174,10 +195,9 @@ export function EnhancedTableHead<T>(props: EnhancedTableHeadProps<T>) {
 }
 
 
-export default function SectionsTable() {
+export default function SectionTable({ rows }: {rows: SectionEntity[]}) {
     const classes = useStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
-    const { sections: rows } = useAppState();
 
     const [orderBy, setOrderBy] = React.useState<keyof SectionEntity>('name');
     const [selected, setSelected] = React.useState<string[]>([]);
@@ -300,3 +320,4 @@ export default function SectionsTable() {
         </div>
     );
 }
+

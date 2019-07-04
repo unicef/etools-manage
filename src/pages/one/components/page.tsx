@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modals, useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 
 // import { onToggleAddModal } from 'actions';
 import SectionsTable from 'components/sections-table';
+import { useAppState } from 'contexts/app';
 
 // function ModalToggle() {
 //     const dispatch = useModalsDispatch();
@@ -11,14 +12,13 @@ import SectionsTable from 'components/sections-table';
 // }
 
 const Page: React.FunctionComponent = () => {
+    const [filteredSections, setFilteredSections] = useState(useAppState().sections);
 
     return (
         <Modals>
             {/* <ModalToggle/> */}
             <Box column>
-                <section>
-                    <SectionsTable/>
-                </section>
+                <SectionsTable rows={filteredSections}/>
             </Box>
         </Modals>
 
