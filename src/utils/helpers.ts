@@ -1,5 +1,6 @@
 import { useReducer, useEffect, useRef } from 'react';
 import { AppStore, NamespaceKey, StoreShape } from 'global-types';
+import { SectionEntity } from 'entities/section';
 
 // TODO: type these
 export function useSetState(initialState) {
@@ -36,3 +37,10 @@ export const getStateAtNamespaceKey = <T extends NamespaceKey>(namespace: T) => 
     return namespaceState;
 };
 
+
+export function sectionWithNumberId(section: SectionEntity): SectionEntity {
+    return ({
+        ...section,
+        id: Number(section.id)
+    });
+}

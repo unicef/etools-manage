@@ -1,6 +1,7 @@
 
 
 import red from '@material-ui/core/colors/red';
+import amber from '@material-ui/core/colors/amber';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 
@@ -11,7 +12,7 @@ const theme = createMuiTheme({
             main: '#fff'
         },
         secondary: {
-            main: '#19857b'
+            main: amber[700]
         },
         error: {
             main: red.A400

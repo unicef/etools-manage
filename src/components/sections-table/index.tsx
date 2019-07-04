@@ -19,11 +19,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import MergeIcon from '@material-ui/icons/MergeType';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { Order, HeadRow, EnhancedTableProps } from './table';
-import { SectionEntity } from 'entities/section';
+import { Order, HeadRow, EnhancedTableHeadProps, TableToolbarProps } from './table';
+import Section, { SectionEntity } from 'entities/section';
 import { useAppState } from 'contexts/app';
+import { SectionsToolbar, SectionRow } from 'components/table';
 
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -105,47 +105,46 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
         },
         title: {
             flex: '0 0 auto'
+        },
+        button: {
+            margin: theme.spacing(1),
+            color: theme.palette.primary.main
         }
+
     }),
 );
 
-const EnhancedTableToolbar = props => {
+export const EnhancedTableToolbar = ({ title, children, className }: TableToolbarProps) => {
     const classes = useToolbarStyles({});
-    const { numSelected } = props;
 
     return (
         <Toolbar
-            className={classes.root}
+            className={clsx(classes.root, className)}
         >
             <div className={classes.title}>
                 <Typography variant="h6" id="tableTitle">
-                    Sections
+                    {title}
                 </Typography>
 
             </div>
             <div className={classes.spacer} />
             <div className={classes.actions}>
-                <Tooltip title="Merge">
-                    <Button disabled={numSelected !== 2} aria-label="Merge">
-                            Merge
-                        <MergeIcon />
-                    </Button>
-                </Tooltip>
+                {children}
             </div>
         </Toolbar>
     );
 };
-type SectionRow = HeadRow<SectionEntity>;
 
 const headRows: SectionRow[] = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
     { id: 'id', numeric: true, disablePadding: false, label: 'Id' }
 ];
+console.log('TCL: headRows', headRows);
 
-
-function EnhancedTableHead(props: EnhancedTableProps<SectionEntity>) {
+export function EnhancedTableHead<T>(props: EnhancedTableHeadProps<T>) {
+    console.log('TCL: headRows', headRows);
     const { order, orderBy, onRequestSort } = props;
-    const createSortHandler = (property: keyof SectionEntity) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof T) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
@@ -228,17 +227,18 @@ export default function SectionsTable() {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <SectionsToolbar numSelected={selected.length} />
                 <div className={classes.tableWrapper}>
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"
                         size="medium"
                     >
-                        <EnhancedTableHead
-                            order={order}
+                        <EnhancedTableHead<SectionEntity>
                             orderBy={orderBy}
+                            order={order}
                             onRequestSort={handleRequestSort}
+                            headRows={headRows}
                         />
                         <TableBody>
                             {stableSort(rows, getSorting(order, orderBy))

@@ -7,8 +7,16 @@ export interface HeadRow<T> {
     label: string;
 }
 
-export interface EnhancedTableProps<T> {
+export interface EnhancedTableHeadProps<T> {
+    headRows: HeadRow<T>[];
     order: Order;
     orderBy: string;
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof T) => void;
 }
+
+export interface TableToolbarProps {
+    title: string;
+    children?: React.ReactNode;
+    className?: string | undefined;
+}
+
