@@ -39,7 +39,8 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3)
+        marginTop: theme.spacing(14),
+        padding: `0 ${theme.spacing(10)}px`
     }
 }));
 
@@ -72,8 +73,8 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                         variant="h6" noWrap>
                         {PAGE_TITLE}
                     </Typography>
-                    <Typography color="textSecondary">
-                        {userData && `Welcome, ${userData.name}`}
+                    <Typography color="textPrimary">
+                        {userData && userData.country.name}
                     </Typography>
                 </Toolbar>
             </AppBar>

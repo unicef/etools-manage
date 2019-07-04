@@ -1,6 +1,6 @@
 
 export interface SectionEntity {
-    id? : number;
+    id: number | null ;
     name: string;
 }
 

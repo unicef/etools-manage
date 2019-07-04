@@ -1,35 +1,31 @@
-import React, { useContext } from 'react';
-import { UserContext } from 'contexts/user';
-import Typography from '@material-ui/core/Typography';
+import React, { useState, useEffect } from 'react';
 import { Modals, useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 
-import { onToggleAddModal } from 'actions';
+// import { onToggleAddModal } from 'actions';
+import SectionsTable from 'components/sections-table';
+import { useAppState } from 'contexts/app';
 
-function ModalToggle() {
-    const dispatch = useModalsDispatch();
-    return <button onClick={() => dispatch(onToggleAddModal)} >Open</button>;
-}
+// function ModalToggle() {
+//     const dispatch = useModalsDispatch();
+//     return <button onClick={() => onToggleAddModal()} >Open</button>;
+// }
+
+
 const Page: React.FunctionComponent = () => {
+    const { sections } = useAppState();
+    const [filteredSections, setFilteredSections] = useState([]);
 
-    const userData = useContext(UserContext);
-    const prop2 = ['Item 1', 'Item 2'];
+    useEffect(() => {
+        setFilteredSections(sections);
+    }, [sections]);
+
+
     return (
         <Modals>
-            <ModalToggle/>
+            {/* <ModalToggle/> */}
             <Box column>
-                {userData && <section>
-                    <Typography variant="h3" color="textSecondary">{userData.name} </Typography>
-                    <Typography variant="body1">
-                        {userData.bio}
-                    </Typography>
-                    <ul>
-                        {prop2.map(
-                            el => <li key={el}>{el}</li>
-                        )}
-                    </ul>
-                </section> }
-
+                <SectionsTable rows={filteredSections}/>
             </Box>
         </Modals>
 
