@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modals, useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 
@@ -8,11 +8,18 @@ import { useAppState } from 'contexts/app';
 
 // function ModalToggle() {
 //     const dispatch = useModalsDispatch();
-//     return <button onClick={() => dispatch(onToggleAddModal)} >Open</button>;
+//     return <button onClick={() => onToggleAddModal()} >Open</button>;
 // }
 
+
 const Page: React.FunctionComponent = () => {
-    const [filteredSections, setFilteredSections] = useState(useAppState().sections);
+    const { sections } = useAppState();
+    const [filteredSections, setFilteredSections] = useState([]);
+
+    useEffect(() => {
+        setFilteredSections(sections);
+    }, [sections]);
+
 
     return (
         <Modals>

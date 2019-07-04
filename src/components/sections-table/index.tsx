@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,18 +12,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
 import MergeIcon from '@material-ui/icons/MergeType';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { compose, head, keys } from 'ramda';
-import { Order, HeadRow, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
-import Section, { SectionEntity } from 'entities/section';
-import { useAppState } from 'contexts/app';
+import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
+import { SectionEntity } from 'entities/section';
 
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -162,9 +154,9 @@ const headRows: EntityRow<SectionEntity>[] = [
     { id: 'id', numeric: true, disablePadding: false, label: 'Id' }
 ];
 
-export function EnhancedTableHead<T>(props: EnhancedTableHeadProps<T>) {
+export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<SectionEntity>) {
     const { order, orderBy, onRequestSort } = props;
-    const createSortHandler = (property: keyof T) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof SectionEntity) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
 
@@ -182,8 +174,7 @@ export function EnhancedTableHead<T>(props: EnhancedTableHeadProps<T>) {
                         <TableSortLabel
                             active={orderBy === row.id}
                             direction={order}
-                            //@ts-ignore
-                            onClick={createSortHandler(row.id)}
+                            onClick={createSortHandler(row.id as keyof SectionEntity)}
                         >
                             {row.label}
                         </TableSortLabel>
@@ -254,7 +245,7 @@ export default function SectionTable({ rows }: {rows: SectionEntity[]}) {
                         aria-labelledby="tableTitle"
                         size="medium"
                     >
-                        <EnhancedTableHead<SectionEntity>
+                        <EnhancedTableHead
                             orderBy={orderBy}
                             order={order}
                             onRequestSort={handleRequestSort}
