@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -163,9 +163,13 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
     );
 }
 
-export interface SectionTableProps {rows: SectionEntity[]}
+export interface SectionTableProps {
+    rows: SectionEntity[];
+    mergeActive: boolean;
+    onChangeSelected: (selected: string[]) => void;
+}
 
-const SectionTable: React.FC<SectionTableProps> = ({ rows }) => {
+const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChangeSelected }) => {
     const classes = useStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
@@ -180,6 +184,12 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows }) => {
         setOrderBy(property);
     }
 
+    useEffect(() => {
+        if (!mergeActive) {
+            setSelected([]);
+            onChangeSelected([]);
+        }
+    }, [mergeActive]);
 
     function handleClick(event: React.MouseEvent<unknown>, name: string) {
         const selectedIndex = selected.indexOf(name);
@@ -199,6 +209,7 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows }) => {
         }
 
         setSelected(newSelected);
+        onChangeSelected(newSelected);
     }
 
     function handleChangePage(event: unknown, newPage: number) {
@@ -240,7 +251,6 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows }) => {
                                     <TableRow
                                         hover
                                         // @ts-ignore
-                                        onClick={event => handleClick(event, row.name)}
                                         role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
@@ -248,10 +258,12 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows }) => {
                                         selected={isItemSelected}
                                     >
                                         <TableCell padding="checkbox">
-                                            <Checkbox
+                                            {mergeActive && <Checkbox
                                                 checked={isItemSelected}
+                                                onClick={event => handleClick(event, row.name)}
+                                                disabled={!isItemSelected && selected.length > 1}
                                                 inputProps={{ 'aria-labelledby': labelId }}
-                                            />
+                                            />}
                                         </TableCell>
 
                                         <TableCell classes={{ body: classes.text }} component="th" id={labelId} scope="row" padding="none">
