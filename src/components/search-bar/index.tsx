@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
             width: 400,
             display: 'flex',
             alignItems: 'center',
+            height: theme.spacing(6),
             paddingRight: theme.spacing(1)
         },
         input: {
@@ -45,7 +46,7 @@ export default function SearchBar ({ onChange }: SearchBarProps) {
             <InputBase
                 className={classes.input}
                 placeholder="Search"
-                inputProps={{ 'aria-label': 'Search' }}
+                inputProps={{ 'data-testid': 'search' }}
                 value={searchTerm}
                 onChange={handleChange}
                 onFocus={() => setActive(true)}

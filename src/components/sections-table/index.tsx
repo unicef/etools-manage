@@ -98,11 +98,8 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
         },
         title: {
             flex: '0 0 auto'
-        },
-        button: {
-            margin: theme.spacing(1),
-            color: theme.palette.primary.main
         }
+
 
     }),
 );
@@ -128,26 +125,6 @@ export const EnhancedTableToolbar = ({ title, children, className }: TableToolba
     );
 };
 
-
-export const SectionsToolbar = ({ numSelected }) => {
-    const classes = useToolbarStyles({});
-
-    return (
-        <EnhancedTableToolbar title="Sections">
-            <Tooltip title="Merge">
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    className={classes.button}
-                    // disabled={numSelected !== 2}
-                    aria-label="Merge">
-                            Merge
-                    <MergeIcon />
-                </Button>
-            </Tooltip>
-        </EnhancedTableToolbar>
-    );
-};
 
 const headRows: EntityRow<SectionEntity>[] = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
@@ -238,7 +215,6 @@ export default function SectionTable({ rows }: {rows: SectionEntity[]}) {
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
-                <SectionsToolbar numSelected={selected.length} />
                 <div className={classes.tableWrapper}>
                     <Table
                         className={classes.table}
