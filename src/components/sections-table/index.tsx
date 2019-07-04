@@ -16,7 +16,8 @@ import MergeIcon from '@material-ui/icons/MergeType';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
-import { SectionEntity } from 'entities/section';
+import Section, { SectionEntity } from 'entities/section';
+import { Props } from 'helpers';
 
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -162,8 +163,9 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
     );
 }
 
+export interface SectionTableProps {rows: SectionEntity[]}
 
-export default function SectionTable({ rows }: {rows: SectionEntity[]}) {
+const SectionTable: React.FC<SectionTableProps> = ({ rows }) => {
     const classes = useStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
@@ -213,78 +215,77 @@ export default function SectionTable({ rows }: {rows: SectionEntity[]}) {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
-        <div className={classes.root}>
-            <Paper className={classes.paper}>
-                <div className={classes.tableWrapper}>
-                    <Table
-                        className={classes.table}
-                        aria-labelledby="tableTitle"
-                        size="medium"
-                    >
-                        <EnhancedTableHead
-                            orderBy={orderBy}
-                            order={order}
-                            onRequestSort={handleRequestSort}
-                            headRows={headRows}
-                        />
-                        <TableBody>
-                            {stableSort(rows, getSorting(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
-                                    // @ts-ignore
-                                    const isItemSelected = isSelected(row.name);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
+        <Paper className={clsx(classes.paper, classes.root)}>
+            <div className={classes.tableWrapper}>
+                <Table
+                    className={classes.table}
+                    aria-labelledby="tableTitle"
+                    size="medium"
+                >
+                    <EnhancedTableHead
+                        orderBy={orderBy}
+                        order={order}
+                        onRequestSort={handleRequestSort}
+                        headRows={headRows}
+                    />
+                    <TableBody>
+                        {stableSort(rows, getSorting(order, orderBy))
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, index) => {
+                                // @ts-ignore
+                                const isItemSelected = isSelected(row.name);
+                                const labelId = `enhanced-table-checkbox-${index}`;
 
-                                    return (
-                                        <TableRow
-                                            hover
-                                            // @ts-ignore
-                                            onClick={event => handleClick(event, row.name)}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={row.name}
-                                            selected={isItemSelected}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    checked={isItemSelected}
-                                                    inputProps={{ 'aria-labelledby': labelId }}
-                                                />
-                                            </TableCell>
+                                return (
+                                    <TableRow
+                                        hover
+                                        // @ts-ignore
+                                        onClick={event => handleClick(event, row.name)}
+                                        role="checkbox"
+                                        aria-checked={isItemSelected}
+                                        tabIndex={-1}
+                                        key={row.name}
+                                        selected={isItemSelected}
+                                    >
+                                        <TableCell padding="checkbox">
+                                            <Checkbox
+                                                checked={isItemSelected}
+                                                inputProps={{ 'aria-labelledby': labelId }}
+                                            />
+                                        </TableCell>
 
-                                            <TableCell classes={{ body: classes.text }} component="th" id={labelId} scope="row" padding="none">
-                                                {row.name}
-                                            </TableCell>
-                                            <TableCell align="right">{row.id}</TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{ height: 49 * emptyRows }}>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </div>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{
-                        'aria-label': 'Previous Page'
-                    }}
-                    nextIconButtonProps={{
-                        'aria-label': 'Next Page'
-                    }}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                />
-            </Paper>
-        </div>
+                                        <TableCell classes={{ body: classes.text }} component="th" id={labelId} scope="row" padding="none">
+                                            {row.name}
+                                        </TableCell>
+                                        <TableCell align="right">{row.id}</TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        {emptyRows > 0 && (
+                            <TableRow style={{ height: 49 * emptyRows }}>
+                                <TableCell colSpan={6} />
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                backIconButtonProps={{
+                    'aria-label': 'Previous Page'
+                }}
+                nextIconButtonProps={{
+                    'aria-label': 'Next Page'
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+        </Paper>
     );
-}
+};
 
+export default SectionTable;

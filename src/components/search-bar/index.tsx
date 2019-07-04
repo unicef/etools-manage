@@ -32,7 +32,7 @@ export interface SearchBarProps {
     onChange: (str: string) => void;
 }
 
-export default function SearchBar ({ onChange }: SearchBarProps) {
+const SearchBar: React.FC<SearchBarProps> = ({ onChange }) => {
     const classes = useStyles({});
     const [active, setActive] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -55,4 +55,6 @@ export default function SearchBar ({ onChange }: SearchBarProps) {
             <SearchIcon />
         </Paper>
     );
-}
+};
+
+export default SearchBar;
