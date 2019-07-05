@@ -1,7 +1,7 @@
 import React, { useReducer, useContext } from 'react';
 import { SectionEntity } from 'entities/section';
 import { onGetSectionsSuccess } from 'actions';
-import { ProviderProps } from 'global-types';
+import { ChildrenProps } from 'global-types';
 import { appStoreReducer } from 'reducers/app-store';
 import SectionsApiService, { SectionsService } from 'services/section';
 import { ApiClient } from 'lib/http';
@@ -21,7 +21,7 @@ const initialState: Store = {
     sections: []
 };
 
-export function AppStoreProvider({ children }: ProviderProps) {
+export function AppStoreProvider({ children }: ChildrenProps) {
     const [state, dispatch] = useReducer(appStoreReducer, initialState);
     const service = new SectionsApiService(new ApiClient());
 

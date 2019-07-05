@@ -221,7 +221,7 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
     }
 
 
-    const isSelected = (name: string) => selected.indexOf(name) !== -1;
+    const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -244,13 +244,12 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row, index) => {
                                 // @ts-ignore
-                                const isItemSelected = isSelected(row.name);
+                                const isItemSelected = isSelected(row.id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
                                     <TableRow
                                         hover
-                                        // @ts-ignore
                                         role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
@@ -260,7 +259,7 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
                                         <TableCell padding="checkbox">
                                             {mergeActive && <Checkbox
                                                 checked={isItemSelected}
-                                                onClick={event => handleClick(event, row.name)}
+                                                onClick={event => handleClick(event, row.id as string)}
                                                 disabled={!isItemSelected && selected.length > 1}
                                                 inputProps={{ 'aria-labelledby': labelId }}
                                             />}

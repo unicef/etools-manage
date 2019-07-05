@@ -1,17 +1,19 @@
 import React, { useContext, useReducer } from 'react';
 import PageModals from 'components/page-modals';
-import { onToggleAddModal, onToggleSplitModal } from 'actions';
+import { onToggleAddModal, onToggleSplitModal, onToggleMergeModal } from 'actions';
 import { modalsReducer } from 'reducers/modals';
-import { ProviderProps } from 'global-types';
+import { ChildrenProps } from 'global-types';
 
 // TODO: Clean this file up
 interface State {
     addModalOpen: boolean;
     splitModalOpen: boolean;
+    mergeModalOpen: boolean;
+    selectedForMerge: number[];
 }
 
 
-type ModalAction = typeof onToggleAddModal | typeof onToggleSplitModal
+type ModalAction = typeof onToggleAddModal | typeof onToggleSplitModal | typeof onToggleMergeModal
 
 type Dispatch = (action: ModalAction) => void
 
@@ -21,11 +23,13 @@ const ModalsDispatchContext = React.createContext<Dispatch | undefined>(undefine
 
 const initialState: State = {
     addModalOpen: false,
-    splitModalOpen: false
+    splitModalOpen: false,
+    mergeModalOpen: false,
+    selectedForMerge: []
 };
 
 
-export function PageModalsProvider({ children }: ProviderProps) {
+export function PageModalsProvider({ children }: ChildrenProps) {
     const [state, setModalsState] = useReducer(modalsReducer, initialState);
     return (
         <ModalsStateContext.Provider value={state}>

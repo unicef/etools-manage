@@ -1,5 +1,5 @@
 import { makeReducer } from 'utils';
-import { onToggleAddModal, onToggleSplitModal } from 'actions';
+import { onToggleAddModal, onToggleSplitModal, onToggleMergeModal } from 'actions';
 
 
 export const modalsReducer = makeReducer({
@@ -8,6 +8,9 @@ export const modalsReducer = makeReducer({
     },
     [onToggleSplitModal.type]: state => {
         state.splitModalOpen = !state.splitModalOpen;
+    },
+    [onToggleMergeModal.type]: state => {
+        state.mergeModalOpen = !state.mergeModalOpen;
     }
 });
 

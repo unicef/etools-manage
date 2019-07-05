@@ -172,10 +172,7 @@ module.exports = {
         'no-loop-func': 'error',
         'no-magic-numbers': 'off',
         'no-mixed-operators': [
-            'error',
-            {
-                allowSamePrecedence: true
-            }
+            'off'
         ],
         'no-mixed-requires': 'error',
         'no-multi-assign': 'error',

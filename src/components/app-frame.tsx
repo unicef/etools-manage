@@ -53,9 +53,11 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const userData: User = useContext(UserContext);
     const service: SectionsService = useAppService();
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         onGetSections(service, dispatch);
     }, []);
+
     const styles = useStyles({});
 
     return (
