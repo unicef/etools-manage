@@ -6,7 +6,7 @@ import MergeIcon from '@material-ui/icons/MergeType';
 import CancelIcon from '@material-ui/icons/Cancel';
 import amber from '@material-ui/core/colors/amber';
 import clsx from 'clsx';
-import { useModalsDispatch } from 'contexts/page-modals';
+import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
 import { onToggleMergeModal } from 'actions';
 
 const useActionStyles = makeStyles((theme: Theme) =>
@@ -42,9 +42,10 @@ export const MergeButton = ({ onClick, mergeActive }) => {
     );
 };
 
-export const ConfirmMergeButton = ({ disabled }) => {
+export const ConfirmMergeButton = () => {
     const styles = useActionStyles({});
     const dispatch = useModalsDispatch();
+    const { selectedForMerge } = useModalsState();
 
     return (
         <Button
@@ -52,7 +53,7 @@ export const ConfirmMergeButton = ({ disabled }) => {
             color="secondary"
             variant="contained"
             className={clsx(styles.button)}
-            disabled={disabled}
+            disabled={selectedForMerge.length !== 2}
             aria-label="Merge">
                 Confirm Merge
             <MergeIcon />

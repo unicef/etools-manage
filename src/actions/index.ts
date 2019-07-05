@@ -9,6 +9,7 @@ export const onToggleMergeModal = createAction('modals/toggleMerge');
 
 export const onGetSectionsSuccess = createAction('entity/getSectionsSuccess');
 export const onMergeSections = createAction('entity/mergeSections');
+export const onSelectForMerge = createAction('entity/selectForMerge');
 
 export const onGetSections = async (service: SectionsService, dispatch) => {
     let sections;
@@ -24,6 +25,6 @@ export const onGetSections = async (service: SectionsService, dispatch) => {
 
 };
 
-export const onSubmitMergeSections = async (service: SectionsService, payload, dispatch) => {
-    // ....
-};
+// export const onSubmitMergeSections = async (service: SectionsService, payload, dispatch) => {
+//     // ....
+// };

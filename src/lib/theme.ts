@@ -25,6 +25,7 @@ const theme = createMuiTheme({
             secondary: '#202124'
         }
     }
+
 });
 
 export default theme;

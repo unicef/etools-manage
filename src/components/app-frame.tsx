@@ -10,6 +10,7 @@ import { UserContext } from '../contexts/user';
 import { SectionsService } from 'services/section';
 import { useAppService, useAppDispatch } from 'contexts/app';
 import { onGetSections } from 'actions';
+import { Modals } from 'contexts/page-modals';
 
 
 const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
@@ -63,33 +64,35 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const styles = useStyles({});
 
     return (
-        <div className={styles.root}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                elevation={0}
-                className={styles.appBar}
-            >
-                <Toolbar >
-                    <Typography
-                        className={styles.appName}
-                        color="textPrimary"
-                        variant="h6" noWrap>
-                        {PAGE_TITLE}
-                    </Typography>
-                    <Typography color="textPrimary">
-                        {userData && userData.country.name}
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+        <Modals>
+            <div className={styles.root}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
+                    elevation={0}
+                    className={styles.appBar}
+                >
+                    <Toolbar >
+                        <Typography
+                            className={styles.appName}
+                            color="textPrimary"
+                            variant="h6" noWrap>
+                            {PAGE_TITLE}
+                        </Typography>
+                        <Typography color="textPrimary">
+                            {userData && userData.country.name}
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
 
-            <main
-                className={clsx(styles.content)}
-            >
-                <div className={styles.mainHeader} />
-                {children}
-            </main>
-        </div>
+                <main
+                    className={clsx(styles.content)}
+                >
+                    <div className={styles.mainHeader} />
+                    {children}
+                </main>
+            </div>
+        </Modals>
     );
 };
 

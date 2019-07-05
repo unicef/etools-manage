@@ -16,14 +16,14 @@ const useStyles = makeStyles((theme: Theme) =>
         input: {
             padding: theme.spacing(1),
             marginLeft: theme.spacing(3),
-            borderRadius: 4,
             flex: 1
         },
         iconButton: {
             padding: theme.spacing(1)
         },
         inputActive: {
-            backgroundColor: theme.palette.primary.main
+            backgroundColor: theme.palette.primary.main,
+            boxShadow: '0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.4)'
         }
     }));
 

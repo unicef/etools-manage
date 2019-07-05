@@ -1,10 +1,11 @@
 import React, { useContext, useReducer } from 'react';
 import PageModals from 'components/page-modals';
-import { onToggleAddModal, onToggleSplitModal, onToggleMergeModal } from 'actions';
+import { onToggleAddModal, onToggleSplitModal, onToggleMergeModal, onSelectForMerge } from 'actions';
 import { modalsReducer } from 'reducers/modals';
 import { ChildrenProps } from 'global-types';
+import { PayloadAction } from 'redux-starter-kit';
 
-// TODO: Clean this file up
+// TODO: Clean this file up ie seperate types into own files
 interface State {
     addModalOpen: boolean;
     splitModalOpen: boolean;
@@ -12,8 +13,10 @@ interface State {
     selectedForMerge: number[];
 }
 
-
-type ModalAction = typeof onToggleAddModal | typeof onToggleSplitModal | typeof onToggleMergeModal
+type ModalAction =
+    typeof onToggleAddModal |
+    typeof onToggleSplitModal |
+    typeof onToggleMergeModal | PayloadAction
 
 type Dispatch = (action: ModalAction) => void
 
@@ -53,7 +56,7 @@ export function useModalsState() {
 export function useModalsDispatch() {
     const context = useContext(ModalsDispatchContext);
     if (context === undefined) {
-        throw new Error('useCountDispatch must be used within a PageModalsProvider');
+        throw new Error('useModalsDispatch must be used within a PageModalsProvider');
     }
 
     return context;

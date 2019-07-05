@@ -11,10 +11,10 @@ interface Store {
 }
 
 type Action = typeof onGetSectionsSuccess;
-type Dispatch = (action: Action) => void;
+export type StoreDispatch = (action: Action) => void;
 
 const AppStoreContext = React.createContext<Store | undefined>({ sections: [] });
-const AppDispatchContext = React.createContext<Dispatch | undefined>(undefined);
+const AppDispatchContext = React.createContext<StoreDispatch | undefined>(undefined);
 const AppServiceContext = React.createContext<SectionsService>(undefined);
 
 const initialState: Store = {

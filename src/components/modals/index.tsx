@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
             width: 400,
             backgroundColor: theme.palette.background.paper,
             boxShadow: theme.shadows[5],
-            padding: theme.spacing(4),
+            padding: theme.spacing(2),
             outline: 'none'
         },
         modal: {
@@ -25,13 +25,14 @@ export interface BaseModalProps {
     open: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    className? : string;
 }
 
-const BaseModal: React.FC<BaseModalProps> = ({ open, onClose, children }) => {
+const BaseModal: React.FC<BaseModalProps> = ({ open, onClose, children, className }) => {
     const styles = useStyles({});
     return (
         <Modal open={open} onClose={onClose}>
-            <Paper className={clsx(styles.paper, styles.modal)}>
+            <Paper className={clsx(styles.paper, styles.modal, className)}>
                 {children}
             </Paper>
         </Modal>
