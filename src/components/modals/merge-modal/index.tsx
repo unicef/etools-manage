@@ -89,11 +89,8 @@ const SectionBox: React.FC<SectionBoxProps> = ({ section }) => {
     const styles = useStyles({});
     return (
         <Box column className={styles.section}>
-            <Typography className={styles.sectionTitle} variant="subtitle2">Section</Typography>
-            <div>
-                <Typography className={styles.name} variant="body2">Name</Typography>
-                <Typography className={styles.sectionName} variant="body2">{section.name}</Typography>
-            </div>
+            <Typography className={styles.name} variant="body2">Name</Typography>
+            <Typography className={styles.sectionName} variant="body2">{section.name}</Typography>
         </Box>
     );
 };
