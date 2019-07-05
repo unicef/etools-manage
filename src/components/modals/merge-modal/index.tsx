@@ -9,7 +9,7 @@ import { useAppState, useAppService } from 'contexts/app';
 import { SectionsService } from 'services/section';
 import Box from 'components/box';
 import { Aux } from 'components/aux';
-import { valueFromEvent } from 'utils';
+import { setValueFromEvent } from 'utils';
 import { SectionEntity } from 'entities/section';
 
 
@@ -130,7 +130,7 @@ const MergeModalContent: React.FC = () => {
                 disableUnderline
                 id="new-section-name"
                 value={name}
-                onChange={valueFromEvent(setName)} />
+                onChange={setValueFromEvent(setName)} />
 
         </Aux>
     );

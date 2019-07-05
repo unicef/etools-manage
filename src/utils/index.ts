@@ -5,4 +5,4 @@ export function makeReducer(reducer, initialState = null) {
     return createReducer(initialState, reducer);
 }
 
-export const valueFromEvent = setter => ({ target: { value } }) => setter(value);
+export const setValueFromEvent = setter => ({ target: { value } }) => setter(value);
