@@ -84,6 +84,7 @@ module.exports = function(proxy, allowedHost) {
         public: allowedHost,
         sockPath: '/manage/sockjs-node',
         sockPort: 8080,
+        sockHost: 'localhost',
         proxy,
         before(app, server) {
             if (fs.existsSync(paths.proxySetup)) {

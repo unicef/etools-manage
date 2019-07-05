@@ -150,9 +150,9 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                         sortDirection={orderBy === row.id ? order : false}
                     >
                         <TableSortLabel
+                            onClick={createSortHandler(row.id as keyof SectionEntity)}
                             active={orderBy === row.id}
                             direction={order}
-                            onClick={createSortHandler(row.id as keyof SectionEntity)}
                         >
                             {row.label}
                         </TableSortLabel>
@@ -192,6 +192,9 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
     }, [mergeActive]);
 
     function handleClick(event: React.MouseEvent<unknown>, name: string) {
+        if (!mergeActive) {
+            return;
+        }
         const selectedIndex = selected.indexOf(name);
         let newSelected: string[] = [];
 
@@ -255,11 +258,11 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
                                         tabIndex={-1}
                                         key={row.name}
                                         selected={isItemSelected}
+                                        onClick={event => handleClick(event, row.id as string)}
                                     >
                                         <TableCell padding="checkbox">
                                             {mergeActive && <Checkbox
                                                 checked={isItemSelected}
-                                                onClick={event => handleClick(event, row.id as string)}
                                                 disabled={!isItemSelected && selected.length > 1}
                                                 inputProps={{ 'aria-labelledby': labelId }}
                                             />}

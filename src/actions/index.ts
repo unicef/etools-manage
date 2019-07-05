@@ -21,7 +21,6 @@ export const onGetSections = async (service: SectionsService, dispatch) => {
     sections = sections.map(sectionWithNumberId);
 
     dispatch(onGetSectionsSuccess(sections));
-    console.log('TCL: onGetSections -> onGetSectionsSuccess(sections)', onGetSectionsSuccess(sections));
 
 };
 

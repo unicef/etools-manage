@@ -16,7 +16,8 @@ const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
 const useStyles = makeStyles(theme => ({
     root: {
-        display: 'flex'
+        display: 'flex',
+        justifyContent: 'center'
     },
     appBar: {
         borderBottom: `solid 1px ${theme.palette.divider}`
@@ -39,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
+        maxWidth: 1200,
         marginTop: theme.spacing(14),
         padding: `0 ${theme.spacing(10)}px`
     }

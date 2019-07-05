@@ -41,7 +41,6 @@ const MergeModal: React.FC = () => {
         mergeModalOpen,
         selectedSectionsFromCollection
     } = useMergeState();
-    console.log('TCL: MergeModal:React.FC -> selectedSectionsFromCollection', selectedSectionsFromCollection);
 
     const handleClose = () => dispatch(onToggleMergeModal);
     const handleSubmit = () => onSubmitMergeSections(service, selectedSectionsFromCollection, dispatch);

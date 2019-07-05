@@ -21,7 +21,6 @@ describe('App store reducer', () => {
     test('sets sections successfully', () => {
         const mockPayload = [{ name: 'Section 1', id: 0 }];
         const state0 = appStoreReducer(initialState, onGetSectionsSuccess(mockPayload));
-        console.log('TCL: state0', state0.sections === mockPayload);
         expect(state0.sections).toEqual(mockPayload);
     });
 
