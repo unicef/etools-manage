@@ -24,6 +24,16 @@ const theme = createMuiTheme({
             primary: '#5f6368',
             secondary: '#202124'
         }
+    },
+    overrides: {
+        MuiInputBase: {
+            root: {
+                lineHeight: '20px'
+            },
+            input: {
+                padding: 8
+            }
+        }
     }
 
 });

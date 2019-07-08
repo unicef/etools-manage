@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, Theme, createStyles, Typography, InputLabel, Input } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormControl, FormHelperText } from '@material-ui/core';
 import { filter } from 'ramda';
 import MergeIcon from '@material-ui/icons/MergeType';
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
             width: 550
         },
         reviewBox: {
-            margin: `${theme.spacing(1)}px 0 ${theme.spacing(1)}px ${theme.spacing(1)}px`
+            marginBottom: theme.spacing(3)
         },
         header: {
             color: theme.palette.text.hint,
@@ -35,9 +35,23 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         input: {
             backgroundColor: '#f1f3f4',
-            padding: theme.spacing(1),
-            marginLeft: theme.spacing(3),
-            borderRadius: 4
+            borderRadius: 4,
+            boxShadow: '0 0 0 2px transparent inset, 0 0 0 1px #e0e0e0 inset'
+        },
+
+        inputFocused: {
+            '&.Mui-focused': {
+                color: 'green'
+            }
+        },
+        formRoot: {
+            // padding: theme.spacing(1),
+            '& label.Mui-focused': {
+                color: '#202124'
+            }
+        },
+        label: {
+            marginLeft: theme.spacing(1)
         },
         section: {
             background: 'rgba(236,239,241,.38)',
@@ -61,8 +75,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.hint
         },
         sectionName: {
-            color: theme.palette.primary.contrastText,
-            fontSize: 20
+            color: theme.palette.primary.contrastText
         }
     }),
 );
@@ -70,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const useMergeState = () => {
     const { sections } = useAppState();
-    const { mergeModalOpen, selectedForMerge } = useModalsState(); // TODO: put selected items in store
+    const { mergeModalOpen, selectedForMerge } = useModalsState();
     const matchingSection = ({ id }) => id === selectedForMerge[0] || id === selectedForMerge[1];
     const selectedSectionsFromCollection = filter(matchingSection, sections);
     const dispatch = useModalsDispatch();
@@ -89,7 +102,6 @@ const SectionBox: React.FC<SectionBoxProps> = ({ section }) => {
     const styles = useStyles({});
     return (
         <Box column className={styles.section}>
-            <Typography className={styles.name} variant="body2">Name</Typography>
             <Typography className={styles.sectionName} variant="body2">{section.name}</Typography>
         </Box>
     );
@@ -98,7 +110,7 @@ const SectionBox: React.FC<SectionBoxProps> = ({ section }) => {
 // Content components created for lazy loading modal content
 const MergeModalContent: React.FC = () => {
     const service: SectionsService = useAppService();
-
+    const [errorOnName, setHasError] = useState<boolean>(false);
     const styles = useStyles({});
     const [name, setName] = useState<string>('');
 
@@ -124,13 +136,25 @@ const MergeModalContent: React.FC = () => {
                 <SectionBox section={second} />
             </Box>
 
-            <InputLabel htmlFor="new-section-name">Name</InputLabel>
-            <Input
-                className={styles.input}
-                disableUnderline
-                id="new-section-name"
-                value={name}
-                onChange={setValueFromEvent(setName)} />
+
+            <FormControl classes={{
+                root: styles.formRoot
+            }} error={errorOnName}>
+                <InputLabel
+                    className={styles.label}
+                    shrink htmlFor="new-section-name">Name</InputLabel>
+                <Input
+                    className={styles.input}
+                    classes={{
+                        focused: styles.inputFocused
+                    }}
+                    disableUnderline
+                    id="new-section-name"
+                    value={name}
+                    onChange={setValueFromEvent(setName)} />
+                <FormHelperText id="component-error-text">{errorOnName}</FormHelperText>
+            </FormControl>
+
 
         </Aux>
     );

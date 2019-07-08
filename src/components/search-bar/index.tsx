@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme: Theme) =>
             paddingRight: theme.spacing(1)
         },
         input: {
-            padding: theme.spacing(1),
             marginLeft: theme.spacing(3),
             flex: 1
         },
@@ -40,6 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange }) => {
     const handleChange = ({ target: { value } }) => {
         setSearchTerm(value);
         onChange(value);
+
     };
     return (
         <Paper className={clsx(classes.root, active && classes.inputActive)} elevation={active ? 1 : 0 }>
