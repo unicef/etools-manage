@@ -1,6 +1,5 @@
 import React, { useContext, useReducer } from 'react';
-import PageModals from 'components/page-modals';
-import { onToggleAddModal, onToggleSplitModal, onToggleMergeModal, onSelectForMerge } from 'actions';
+import { onToggleAddModal, onToggleSplitModal, onToggleMergeModal } from 'actions';
 import { modalsReducer } from 'reducers/modals';
 import { ChildrenProps } from 'global-types';
 import { PayloadAction } from 'redux-starter-kit';
@@ -65,7 +64,6 @@ export function useModalsDispatch() {
 export function Modals({ children }) {
     return (
         <PageModalsProvider>
-            <PageModals />
             {children}
         </PageModalsProvider>
     );

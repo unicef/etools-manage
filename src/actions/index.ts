@@ -22,9 +22,9 @@ export const onGetSections = async (service: SectionsService, dispatch) => {
     sections = sections.map(sectionWithNumberId);
 
     dispatch(onGetSectionsSuccess(sections));
-
 };
 
-// export const onSubmitMergeSections = async (service: SectionsService, payload, dispatch) => {
-//     // ....
-// };
+export const onSubmitMergeSections = async (service: SectionsService, payload, dispatch) => {
+    console.log('TCL: onSubmitMergeSections -> payload', payload);
+    // ....
+};

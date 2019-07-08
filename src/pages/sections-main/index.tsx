@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { compose, includes, filter, prop, toLower } from 'ramda';
-import { Modals, useModalsDispatch, useModalsState } from 'contexts/page-modals';
+import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 
-// import { onToggleAddModal } from 'actions';
 
 import SectionsTable from 'components/sections-table';
 import { useAppState } from 'contexts/app';
 import SearchBar from 'components/search-bar';
-import { MergeButton, ConfirmMergeButton } from 'components/controls';
 import { onSelectForMerge } from 'actions';
+import ControlsBar from 'components/controls-bar';
+import PageModals from 'components/page-modals';
 
 
-const Page: React.FunctionComponent = () => {
+const SectionsMainPage: React.FunctionComponent = () => {
 
     const { sections } = useAppState();
 
@@ -26,10 +26,6 @@ const Page: React.FunctionComponent = () => {
     };
 
 
-    const handleToggleMerge = () => {
-        setMergeActive(!mergeActive);
-    };
-
     useEffect(() => {
         setFilteredSections(sections);
     }, [sections]);
@@ -40,17 +36,14 @@ const Page: React.FunctionComponent = () => {
         <Box column>
             <Box justify="between">
                 <SearchBar onChange={handleSearch} />
-                <Box>
-                    { mergeActive &&
-                            <ConfirmMergeButton />
-                    }
-                    <MergeButton onClick={handleToggleMerge} mergeActive={mergeActive} />
-                </Box>
+                <ControlsBar mergeActive={mergeActive} setMergeActive={setMergeActive} />
             </Box>
             <SectionsTable rows={filteredSections} mergeActive={mergeActive} onChangeSelected={onChangeSelected}/>
+            <PageModals />
+
         </Box>
 
     );
 };
 
-export default Page;
+export default SectionsMainPage;
