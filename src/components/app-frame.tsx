@@ -10,13 +10,15 @@ import { UserContext } from '../contexts/user';
 import { SectionsService } from 'services/section';
 import { useAppService, useAppDispatch } from 'contexts/app';
 import { onGetSections } from 'actions';
+import { Modals } from 'contexts/page-modals';
 
 
 const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
 const useStyles = makeStyles(theme => ({
     root: {
-        display: 'flex'
+        display: 'flex',
+        justifyContent: 'center'
     },
     appBar: {
         borderBottom: `solid 1px ${theme.palette.divider}`
@@ -39,6 +41,7 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
+        maxWidth: 1200,
         marginTop: theme.spacing(14),
         padding: `0 ${theme.spacing(10)}px`
     }
@@ -53,39 +56,43 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const userData: User = useContext(UserContext);
     const service: SectionsService = useAppService();
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         onGetSections(service, dispatch);
     }, []);
+
     const styles = useStyles({});
 
     return (
-        <div className={styles.root}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                elevation={0}
-                className={styles.appBar}
-            >
-                <Toolbar >
-                    <Typography
-                        className={styles.appName}
-                        color="textPrimary"
-                        variant="h6" noWrap>
-                        {PAGE_TITLE}
-                    </Typography>
-                    <Typography color="textPrimary">
-                        {userData && userData.country.name}
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+        <Modals>
+            <div className={styles.root}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
+                    elevation={0}
+                    className={styles.appBar}
+                >
+                    <Toolbar >
+                        <Typography
+                            className={styles.appName}
+                            color="textPrimary"
+                            variant="h6" noWrap>
+                            {PAGE_TITLE}
+                        </Typography>
+                        <Typography color="textPrimary">
+                            {userData && userData.country.name}
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
 
-            <main
-                className={clsx(styles.content)}
-            >
-                <div className={styles.mainHeader} />
-                {children}
-            </main>
-        </div>
+                <main
+                    className={clsx(styles.content)}
+                >
+                    <div className={styles.mainHeader} />
+                    {children}
+                </main>
+            </div>
+        </Modals>
     );
 };
 

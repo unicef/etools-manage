@@ -72,7 +72,6 @@ export interface UserProfile {
 
 export type User = UserProfile | null;
 
-export type ChildrenProps = React.ReacNode
-export interface ProviderProps {
+export interface ChildrenProps {
     children: React.ReactNode;
 }
