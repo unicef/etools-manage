@@ -5,13 +5,14 @@ import AddIcon from '@material-ui/icons/Add';
 import Box from 'components/box';
 
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
-import BaseModal, { ModalContentProps, useAddSection } from '..';
+import BaseModal, { ModalContentProps } from '..';
 import { onToggleAddModal, onSubmitAddSection } from 'actions';
 import { Aux } from 'components/aux';
 import { useFormStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
 import { SectionsService } from 'services/section';
 import { useAppService } from 'contexts/app';
+import { useAddSection } from 'entities/section-entity';
 
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {

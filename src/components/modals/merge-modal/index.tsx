@@ -1,24 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormControl, FormHelperText, Button } from '@material-ui/core';
 import MergeIcon from '@material-ui/icons/MergeType';
 import {
-    filter,
-    prop,
-    compose,
-    find,
-    equals,
-    toLower,
-    trim
+    filter
+
 } from 'ramda';
 import { withRouter } from 'react-router-dom';
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import { onToggleMergeModal } from 'actions';
-import BaseModal, { ModalContentProps, useAddSection } from '..';
+import BaseModal, { ModalContentProps } from '..';
 import { useAppState } from 'contexts/app';
 import Box from 'components/box';
 import { Aux } from 'components/aux';
 import { setValueFromEvent } from 'utils';
-import { SectionEntity } from 'entities/section-entity';
+import { SectionEntity, useAddSection } from 'entities/section-entity';
 import { useFormStyles } from '../styles';
 
 

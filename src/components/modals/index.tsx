@@ -1,16 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, makeStyles, Theme, createStyles, Paper, FormControl } from '@material-ui/core';
+import React from 'react';
+import { Modal, makeStyles, Theme, createStyles, Paper } from '@material-ui/core';
 import clsx from 'clsx';
-import {
-    prop,
-    compose,
-    find,
-    equals,
-    toLower,
-    trim
-} from 'ramda';
-import { useAppState } from 'contexts/app';
-import Section from 'entities/section-entity';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -55,32 +45,3 @@ const BaseModal: React.FC<BaseModalProps> = ({ open, onClose, children, classNam
 
 export default BaseModal;
 
-export const useAddSection = () => {
-    const [errorOnName, setNameError] = useState<string>('');
-    const { sections } = useAppState();
-    const [name, setName] = useState<string>('');
-
-
-    const sectionValidator = (name: string): Promise<boolean> => {
-        const checkUniqueName = find(compose(equals(trim(name)), toLower, prop('name')));
-        const nameExists = checkUniqueName(sections) !== undefined;
-        return new Promise(resolve => resolve(!nameExists));
-    };
-
-    const handleValidateSection = async () => {
-        const sectionInstance = new Section(name);
-        const isValid = await sectionInstance.isValidName(sectionValidator);
-        if (!isValid) {
-            setNameError('Section name already exists');
-        }
-    };
-
-    return {
-        errorOnName,
-        handleValidateSection,
-        name,
-        setName,
-        setNameError
-    };
-
-};
