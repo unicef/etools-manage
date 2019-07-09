@@ -14,7 +14,7 @@ import Box from 'components/box';
 import { Aux } from 'components/aux';
 import { setValueFromEvent } from 'utils';
 import { SectionEntity, useAddSection } from 'entities/section-entity';
-import { useFormStyles } from '../styles';
+import { useModalStyles } from '../styles';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -87,7 +87,7 @@ const SectionBox: React.FC<SectionBoxProps> = ({ section }) => {
 // Content components created for lazy loading modal content
 const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useStyles({});
-    const formStyles = useFormStyles({});
+    const formStyles = useModalStyles({});
 
     const {
         selectedSectionsFromCollection,

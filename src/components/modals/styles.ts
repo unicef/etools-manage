@@ -1,19 +1,21 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 
 
-export const useFormStyles = makeStyles((theme: Theme) =>
+export const useModalStyles = makeStyles((theme: Theme) =>
     createStyles({
         header: {
             color: theme.palette.text.hint,
             marginBottom: theme.spacing(2)
         },
         icon: {
-            fontSize: 20
+            fontSize: 24
         },
         subtitle: {
             fontWeight: 500,
-            fontSize: 13,
-            lineHeight: '20px'
+            fontSize: 14,
+            height: 16,
+            lineHeight: '20px',
+            paddingLeft: theme.spacing(1)
         },
         inputHeight: {
             height: 'auto'

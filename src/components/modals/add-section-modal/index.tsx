@@ -8,7 +8,7 @@ import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import BaseModal, { ModalContentProps } from '..';
 import { onToggleAddModal, onSubmitAddSection } from 'actions';
 import { Aux } from 'components/aux';
-import { useFormStyles } from '../styles';
+import { useModalStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
 import { SectionsService } from 'services/section';
 import { useAppService } from 'contexts/app';
@@ -16,7 +16,7 @@ import { useAddSection } from 'entities/section-entity';
 
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
-    const styles = useFormStyles({});
+    const styles = useModalStyles({});
     const service: SectionsService = useAppService();
     const dispatch = useModalsDispatch(); // TODO: do we need this here ?
     const {
@@ -32,10 +32,10 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
         <Aux>
             <Box className={styles.header} align="center">
                 <AddIcon color="inherit" className={styles.icon}/>
-                <Typography
+                <Box><Typography
                     className={styles.subtitle}
                     color="inherit"
-                    variant="subtitle1">Add new section</Typography>
+                    variant="subtitle1">Add new sections</Typography></Box>
             </Box>
 
             <FormControl

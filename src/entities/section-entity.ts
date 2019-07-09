@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-
+import { useState } from 'react';
 import {
     prop,
     compose,
@@ -8,8 +7,8 @@ import {
     toLower,
     trim
 } from 'ramda';
-
 import { useAppState } from 'contexts/app';
+
 export interface SectionEntity {
     id: number | null ;
     name: string;
