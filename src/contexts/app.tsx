@@ -1,5 +1,5 @@
 import React, { useReducer, useContext } from 'react';
-import { SectionEntity } from 'entities/section';
+import { SectionEntity } from 'entities/section-entity';
 import { onGetSectionsSuccess } from 'actions';
 import { ChildrenProps } from 'global-types';
 import { appStoreReducer } from 'reducers/app-store';

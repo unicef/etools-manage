@@ -1,4 +1,4 @@
-import { SectionEntity } from 'entities/section';
+import { SectionEntity } from 'entities/section-entity';
 import { HttpClient } from 'lib/http';
 
 export interface SectionsService {

@@ -16,7 +16,7 @@ import MergeIcon from '@material-ui/icons/MergeType';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
-import Section, { SectionEntity } from 'entities/section';
+import Section, { SectionEntity } from 'entities/section-entity';
 import { Props } from 'helpers';
 
 

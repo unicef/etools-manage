@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useRef } from 'react';
 import { AppStore, NamespaceKey, StoreShape } from 'global-types';
-import { SectionEntity } from 'entities/section';
+import { SectionEntity } from 'entities/section-entity';
 
 // TODO: type these
 export function useSetState(initialState) {

@@ -5,7 +5,6 @@ import {
     filter,
     prop,
     compose,
-    map,
     find,
     equals,
     toLower,
@@ -13,14 +12,14 @@ import {
 } from 'ramda';
 import { withRouter } from 'react-router-dom';
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
-import { onToggleMergeModal, onSubmitMergeSections } from 'actions';
-import BaseModal from '..';
-import { useAppState, useAppService } from 'contexts/app';
-import { SectionsService } from 'services/section';
+import { onToggleMergeModal } from 'actions';
+import BaseModal, { ModalContentProps, useAddSection } from '..';
+import { useAppState } from 'contexts/app';
 import Box from 'components/box';
 import { Aux } from 'components/aux';
 import { setValueFromEvent } from 'utils';
-import { SectionEntity } from 'entities/section';
+import { SectionEntity } from 'entities/section-entity';
+import { useFormStyles } from '../styles';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,45 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
             background: 'rgba(236,239,241,.38)',
             marginBottom: theme.spacing(2)
         },
-        header: {
-            color: theme.palette.text.hint,
-            marginBottom: theme.spacing(2)
-        },
-        icon: {
-            fontSize: 20
-        },
-        subtitle: {
-            fontWeight: 500,
-            fontSize: 14,
-            lineHeight: '20px'
-        },
-        inputHeight: {
-            height: 'auto'
-        },
-        input: {
-            fontSize: '0.875rem',
-            backgroundColor: '#f1f3f4',
-            color: theme.palette.text.secondary,
-            borderRadius: 4,
-            height: 'auto',
-            boxShadow: '0 0 0 2px transparent inset, 0 0 0 1px #e0e0e0 inset'
 
-        },
-        inputFocused: {
-            backgroundColor: theme.palette.primary.main,
-            boxShadow: '0 0 0 2px transparent inset, 0 0 0 1px #e0e0e0 inset'
-
-        },
-
-        formRoot: {
-            '& label.Mui-focused': {
-                color: '#202124'
-            }
-        },
-        formLabel: {
-            color: theme.palette.text.primary,
-            marginBottom: theme.spacing(1)
-        },
         section: {
             padding: theme.spacing(1),
 
@@ -92,11 +53,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         sectionName: {
             color: theme.palette.primary.contrastText
-        },
-        confirmBtn: {
-            marginLeft: theme.spacing(1),
-            color: theme.palette.primary.main
         }
+
     }),
 );
 
@@ -130,50 +88,46 @@ const SectionBox: React.FC<SectionBoxProps> = ({ section }) => {
     );
 };
 
-interface MergeModalProps {
-    onClose(): void;
-}
+
 // Content components created for lazy loading modal content
-const MergeModalContent: React.FC<MergeModalProps> = ({ onClose }) => {
-    const service: SectionsService = useAppService();
-    const [errorOnName, setNameError] = useState<string>('');
+const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useStyles({});
-    const [name, setName] = useState<string>('');
+    const formStyles = useFormStyles({});
 
     const {
         selectedSectionsFromCollection,
-        sections,
-        selectedForMerge,
-        dispatch
+        selectedForMerge
     } = useMergeState();
 
-    const handleCheckUnique = () => {
-        const checkUniqueName = find(compose(equals(trim(name)), toLower, prop('name')));
-        const nameExists = checkUniqueName(sections) !== undefined;
-        if (nameExists) {
-            setNameError('Section name already exists');
-        }
-    };
+    const {
+        errorOnName,
+        setNameError,
+        handleValidateSection,
+        name,
+        setName
+    } = useAddSection();
 
     const [first, second] = selectedSectionsFromCollection;
-    // const handleSubmit = () => onSubmitMergeSections(service, map(prop('id'), selectedSectionsFromCollection), dispatch);
+
+    const mergeConfirmUrl = `/merge/sections=${selectedForMerge.join(',')}&newName=${name}`;
 
     const SubmitButton = withRouter(({ history }) => (
         <Button
-            onClick={() => history.push(`/merge/sections=${selectedForMerge.join(',')}&newName=${name}`)}
-            className={styles.confirmBtn}
+            onClick={() => history.push(mergeConfirmUrl)}
+            className={formStyles.confirmBtn}
             color="secondary"
             variant="contained"
             disabled={!name.length || Boolean(errorOnName.length)}
         >Continue</Button>
     ));
+
     return (
         <Aux>
 
-            <Box className={styles.header}>
-                <MergeIcon color="inherit" className={styles.icon}/>
+            <Box className={formStyles.header} align="center">
+                <MergeIcon color="inherit" className={formStyles.icon}/>
                 <Typography
-                    className={styles.subtitle}
+                    className={formStyles.subtitle}
                     color="inherit"
                     variant="subtitle1">Merge Sections</Typography>
             </Box>
@@ -186,25 +140,25 @@ const MergeModalContent: React.FC<MergeModalProps> = ({ onClose }) => {
 
             <FormControl
                 classes={{
-                    root: styles.formRoot
+                    root: formStyles.formRoot
                 }}
                 error={Boolean(errorOnName.length)}>
 
                 <InputLabel
-                    className={styles.formLabel}
+                    className={formStyles.formLabel}
                     shrink htmlFor="new-section-name">New section</InputLabel>
                 <Input
-                    className={styles.input}
+                    className={formStyles.input}
                     classes={{
-                        input: styles.inputHeight,
-                        focused: styles.inputFocused
+                        input: formStyles.inputHeight,
+                        focused: formStyles.inputFocused
                     }}
                     disableUnderline
                     id="new-section-name"
                     placeholder="Enter new section name"
                     value={name}
                     onChange={setValueFromEvent(setName)}
-                    onBlur={handleCheckUnique}
+                    onBlur={handleValidateSection}
                     onFocus={() => setNameError('')}
                 />
                 <FormHelperText id="component-error-text">{errorOnName}</FormHelperText>

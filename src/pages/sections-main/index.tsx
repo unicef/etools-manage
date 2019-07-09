@@ -39,8 +39,8 @@ const SectionsMainPage: React.FunctionComponent = () => {
                 <ControlsBar mergeActive={mergeActive} setMergeActive={setMergeActive} />
             </Box>
             <SectionsTable rows={filteredSections} mergeActive={mergeActive} onChangeSelected={onChangeSelected}/>
-            <PageModals />
 
+            <PageModals />
         </Box>
 
     );

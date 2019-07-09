@@ -6,7 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import amber from '@material-ui/core/colors/amber';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
-import { onToggleMergeModal } from 'actions';
+import { onToggleMergeModal, onToggleAddModal } from 'actions';
 
 const useActionStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -62,9 +62,13 @@ export const ConfirmMergeButton = () => {
 
 export const AddSectionButton = () => {
     const styles = useActionStyles({});
-
+    const dispatch = useModalsDispatch();
+    const onClick = () => {
+        dispatch(onToggleAddModal);
+    };
     return (
         <Button
+            onClick={onClick }
             color="secondary"
             className={styles.button}
             variant="contained">

@@ -28,3 +28,7 @@ export const onSubmitMergeSections = async (service: SectionsService, payload, d
     console.log('TCL: onSubmitMergeSections -> payload', payload);
     // ....
 };
+
+export const onSubmitAddSection = async(service: SectionsService, payload, dispatch) => {
+
+};
