@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     prop,
     compose,
@@ -16,18 +16,25 @@ export interface SectionEntity {
 
 export default class Section implements SectionEntity {
     public id: number;
-    public name: string;
+    private _name: string;
     private _validName: boolean | undefined;
 
-    public constructor(name: string) {
-        this.name = name;
+    public constructor(name: string = '') {
+        this._name = name;
     }
 
+    public set name(name) {
+        this._name = name;
+    }
+
+    public get name() {
+        return this._name;
+    }
 
     public async isValidName(sectionsCollection: SectionEntity[], validator?: (name: string) => Promise<boolean>): Promise<boolean> {
 
-        this._validName = validator ? await validator(this.name) :
-            await this.sectionValidator(this.name, sectionsCollection);
+        this._validName = validator ? await validator(this._name) :
+            await this.sectionValidator(this._name, sectionsCollection);
 
         return this._validName;
     }
@@ -38,6 +45,12 @@ export default class Section implements SectionEntity {
         return new Promise(resolve => resolve(!nameExists));
     }
 
+    public get payload() {
+        return {
+            name: this._name
+        };
+    }
+
 }
 
 export const useAddSection = () => {
@@ -45,20 +58,27 @@ export const useAddSection = () => {
     const { sections } = useAppState();
     const [name, setName] = useState<string>('');
 
+    const sectionInstance: Section = new Section();
+
+    useEffect(() => {
+        sectionInstance.name = name;
+    }, [name]);
+
     const handleValidateSection = async () => {
-        const sectionInstance = new Section(name);
         const isValid = await sectionInstance.isValidName(sections);
         if (!isValid) {
             setNameError('Section name already exists');
         }
     };
 
+
     return {
         errorOnName,
         handleValidateSection,
         name,
         setName,
-        setNameError
+        setNameError,
+        sectionInstance
     };
 
 };

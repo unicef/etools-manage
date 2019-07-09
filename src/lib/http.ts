@@ -17,12 +17,15 @@ export class ApiClient implements HttpClient {
     public async post<T>(url: string, config: any): Promise<T> {
         const response = await wrappedFetch(url, {
             ...config,
-            method: 'POST'
+            method: 'POST',
+            headers: new Headers({ 'content-type': 'application/json' })
         });
+
         return response;
     }
 
     public async patch<T>(url: string, config: any): Promise<T> {
+
         const response = await wrappedFetch(url, {
             ...config,
             method: 'PATCH'

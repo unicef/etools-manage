@@ -5,7 +5,6 @@ import {
     onToggleMergeModal,
     onSelectForMerge } from 'actions';
 
-
 export const modalsReducer = makeReducer({
     [onToggleAddModal.type]: state => {
         state.addModalOpen = !state.addModalOpen;

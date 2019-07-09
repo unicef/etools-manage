@@ -29,9 +29,9 @@ export default class SectionsApiService implements SectionsService {
     public async createSection(data: SectionEntity): Promise<SectionEntity> {
         try {
             const response = await this._http.post<SectionEntity>(
-                process.env.SECTIONS_ENDPOINT,
+                process.env.REACT_APP_SECTIONS_ENDPOINT,
                 {
-                    body: data
+                    body: JSON.stringify(data)
                 }
             );
             return response;
@@ -46,9 +46,7 @@ export default class SectionsApiService implements SectionsService {
             const response = await this._http.post<any>(
                 process.env.SECTION_CLOSE_ENDPOINT,
                 {
-                    body: {
-                        id
-                    }
+                    body: JSON.stringify({ id })
                 }
             );
 

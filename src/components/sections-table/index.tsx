@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -12,12 +12,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import MergeIcon from '@material-ui/icons/MergeType';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
 import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
-import Section, { SectionEntity } from 'entities/section-entity';
-import { Props } from 'helpers';
+import { SectionEntity } from 'entities/section-entity';
+import { useLoadingState } from 'contexts/loading';
+import { CircularProgress } from '@material-ui/core';
 
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -223,7 +221,6 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
         setRowsPerPage(Number(event.target.value));
     }
 
-
     const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -243,38 +240,39 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
                         headRows={headRows}
                     />
                     <TableBody>
-                        {stableSort(rows, getSorting(order, orderBy))
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row, index) => {
-                                // @ts-ignore
-                                const isItemSelected = isSelected(row.id);
-                                const labelId = `enhanced-table-checkbox-${index}`;
+                        {
+                            stableSort(rows, getSorting(order, orderBy))
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, index) => {
+                                    // @ts-ignore
+                                    const isItemSelected = isSelected(row.id);
+                                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                                return (
-                                    <TableRow
-                                        hover
-                                        role="checkbox"
-                                        aria-checked={isItemSelected}
-                                        tabIndex={-1}
-                                        key={row.name}
-                                        selected={isItemSelected}
-                                        onClick={event => handleClick(event, row.id as string)}
-                                    >
-                                        <TableCell padding="checkbox">
-                                            {mergeActive && <Checkbox
-                                                checked={isItemSelected}
-                                                disabled={!isItemSelected && selected.length > 1}
-                                                inputProps={{ 'aria-labelledby': labelId }}
-                                            />}
-                                        </TableCell>
+                                    return (
+                                        <TableRow
+                                            hover
+                                            role="checkbox"
+                                            aria-checked={isItemSelected}
+                                            tabIndex={-1}
+                                            key={row.name}
+                                            selected={isItemSelected}
+                                            onClick={event => handleClick(event, row.id as string)}
+                                        >
+                                            <TableCell padding="checkbox">
+                                                {mergeActive && <Checkbox
+                                                    checked={isItemSelected}
+                                                    disabled={!isItemSelected && selected.length > 1}
+                                                    inputProps={{ 'aria-labelledby': labelId }}
+                                                />}
+                                            </TableCell>
 
-                                        <TableCell classes={{ body: classes.text }} component="th" id={labelId} scope="row" padding="none">
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell align="right">{row.id}</TableCell>
-                                    </TableRow>
-                                );
-                            })}
+                                            <TableCell classes={{ body: classes.text }} component="th" id={labelId} scope="row" padding="none">
+                                                {row.name}
+                                            </TableCell>
+                                            <TableCell align="right">{row.id}</TableCell>
+                                        </TableRow>
+                                    );
+                                })}
                         {emptyRows > 0 && (
                             <TableRow style={{ height: 49 * emptyRows }}>
                                 <TableCell colSpan={6} />

@@ -1,4 +1,5 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
+import blue from '@material-ui/core/colors/blue';
 
 
 export const useModalStyles = makeStyles((theme: Theme) =>
@@ -16,6 +17,14 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             height: 16,
             lineHeight: '20px',
             paddingLeft: theme.spacing(1)
+        },
+        subHeading: {
+            fontSize: 12,
+            color: theme.palette.text.hint
+
+        },
+        entity: {
+            color: blue[900]
         },
         inputHeight: {
             height: 'auto'
@@ -44,8 +53,17 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(1)
         },
         confirmBtn: {
+            width: 86,
             marginLeft: theme.spacing(1),
             color: theme.palette.primary.main
+        },
+        summaryContainer: {
+            backgroundColor: '#eee',
+            padding: theme.spacing(2)
+        },
+        closeBtn: {
+            marginTop: theme.spacing(3),
+            alignSelf: 'flex-end'
         }
     }));
 
