@@ -35,7 +35,7 @@ interface BoxProps {
 }
 
 export default function Box({ children, column, row, align, justify, tagName = 'div', auto, className = '', wrap, onRef, ...props }: BoxProps) {
-    const styles = useStyles();
+    const styles = useStyles({});
     const classes = classnames({
         [styles.auto]: auto,
         [styles.column]: column,

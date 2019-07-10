@@ -28,6 +28,10 @@ export interface BaseModalProps {
     className? : string;
 }
 
+export interface ModalContentProps {
+    onClose(): void;
+}
+
 const BaseModal: React.FC<BaseModalProps> = ({ open, onClose, children, className }) => {
     const styles = useStyles({});
     return (
@@ -40,3 +44,4 @@ const BaseModal: React.FC<BaseModalProps> = ({ open, onClose, children, classNam
 };
 
 export default BaseModal;
+

@@ -1,12 +1,11 @@
 import React from 'react';
-import ErrorBoundary from 'react-error-boundary';
-
-// import CustomContextProvider from './context-provider';
-import UserProvider from '../contexts/user';
-import { ProviderStore } from 'global-types';
 import { ThemeProvider } from '@material-ui/styles';
-import theme from '../lib/theme';
+import ErrorBoundary from 'react-error-boundary';
+import { ProviderStore } from 'global-types';
+import UserProvider from '../contexts/user';
 import { AppStoreProvider } from 'contexts/app';
+import { LoadingProvider } from 'contexts/loading';
+import theme from '../lib/theme';
 
 interface FallbackProps {
     error?: Error;
@@ -27,11 +26,13 @@ const AppProviders: React.FC<ProviderStore> = ({ children }) => {
     return (
         <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
             <ThemeProvider theme={theme}>
-                <UserProvider >
-                    <AppStoreProvider >
+                <LoadingProvider>
+                    <UserProvider >
+                        <AppStoreProvider >
                         <>{children}</>
-                    </AppStoreProvider>
-                </UserProvider>
+                        </AppStoreProvider>
+                    </UserProvider>
+                </LoadingProvider>
             </ThemeProvider>
         </ErrorBoundary>);
 };

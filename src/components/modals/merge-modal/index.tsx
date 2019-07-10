@@ -1,67 +1,39 @@
-import React, { useState } from 'react';
-import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormControl, FormHelperText } from '@material-ui/core';
-import { filter } from 'ramda';
+import React from 'react';
+import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormControl, FormHelperText, Button } from '@material-ui/core';
 import MergeIcon from '@material-ui/icons/MergeType';
+import {
+    filter
+
+} from 'ramda';
+import { withRouter } from 'react-router-dom';
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import { onToggleMergeModal } from 'actions';
-import BaseModal from '..';
-import { useAppState, useAppService } from 'contexts/app';
-import { SectionsService } from 'services/section';
+import BaseModal, { ModalContentProps } from '..';
+import { useAppState } from 'contexts/app';
 import Box from 'components/box';
 import { Aux } from 'components/aux';
 import { setValueFromEvent } from 'utils';
-import { SectionEntity } from 'entities/section';
+import { SectionEntity, useAddSection } from 'entities/section-entity';
+import { useModalStyles } from '../styles';
 
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: 550
+            width: 440
         },
         reviewBox: {
-            marginBottom: theme.spacing(3)
-        },
-        header: {
-            color: theme.palette.text.hint,
-            marginBottom: theme.spacing(3)
-        },
-        icon: {
-            fontSize: 20
-        },
-        subtitle: {
-            fontWeight: 500,
-            fontSize: 14,
-            lineHeight: '20px'
-        },
-        input: {
-            backgroundColor: '#f1f3f4',
-            borderRadius: 4,
-            boxShadow: '0 0 0 2px transparent inset, 0 0 0 1px #e0e0e0 inset'
+            background: 'rgba(236,239,241,.38)',
+            marginBottom: theme.spacing(2)
         },
 
-        inputFocused: {
-            '&.Mui-focused': {
-                color: 'green'
-            }
-        },
-        formRoot: {
-            // padding: theme.spacing(1),
-            '& label.Mui-focused': {
-                color: '#202124'
-            }
-        },
-        label: {
-            marginLeft: theme.spacing(1)
-        },
         section: {
-            background: 'rgba(236,239,241,.38)',
             padding: theme.spacing(1),
-            borderRadius: 2,
+
             lineHeight: 'inherit',
-            // minHeight: 90,
             flex: 1,
             '&:nth-child(1)': {
-                marginRight: theme.spacing(2)
+                paddingBottom: 0
             }
         },
         sectionTitle: {
@@ -77,11 +49,12 @@ const useStyles = makeStyles((theme: Theme) =>
         sectionName: {
             color: theme.palette.primary.contrastText
         }
+
     }),
 );
 
 
-const useMergeState = () => {
+export const useMergeState = () => {
     const { sections } = useAppState();
     const { mergeModalOpen, selectedForMerge } = useModalsState();
     const matchingSection = ({ id }) => id === selectedForMerge[0] || id === selectedForMerge[1];
@@ -90,9 +63,12 @@ const useMergeState = () => {
     return {
         dispatch,
         mergeModalOpen,
+        sections,
+        selectedForMerge,
         selectedSectionsFromCollection
     };
 };
+
 
 interface SectionBoxProps {
     section: SectionEntity;
@@ -102,58 +78,91 @@ const SectionBox: React.FC<SectionBoxProps> = ({ section }) => {
     const styles = useStyles({});
     return (
         <Box column className={styles.section}>
-            <Typography className={styles.sectionName} variant="body2">{section.name}</Typography>
+            <Typography className={styles.sectionName} variant="h6">{section.name}</Typography>
         </Box>
     );
 };
 
+
 // Content components created for lazy loading modal content
-const MergeModalContent: React.FC = () => {
-    const service: SectionsService = useAppService();
-    const [errorOnName, setHasError] = useState<boolean>(false);
+const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useStyles({});
-    const [name, setName] = useState<string>('');
+    const formStyles = useModalStyles({});
 
     const {
-        selectedSectionsFromCollection
+        selectedSectionsFromCollection,
+        selectedForMerge
     } = useMergeState();
 
+    const {
+        errorOnName,
+        setNameError,
+        handleValidateSection,
+        name,
+        setName
+    } = useAddSection();
+
     const [first, second] = selectedSectionsFromCollection;
-    // const handleSubmit = () => onSubmitMergeSections(service, selectedSectionsFromCollection, dispatch);
+
+    const mergeConfirmUrl = `/merge/sections=${selectedForMerge.join(',')}&newName=${name}`;
+
+    const SubmitButton = withRouter(({ history }) => (
+        <Button
+            onClick={() => history.push(mergeConfirmUrl)}
+            className={formStyles.confirmBtn}
+            color="secondary"
+            variant="contained"
+            disabled={!name.length || Boolean(errorOnName.length)}
+        >Continue</Button>
+    ));
+
     return (
         <Aux>
 
-            <Box className={styles.header}>
-                <MergeIcon color="inherit" className={styles.icon}/>
+            <Box className={formStyles.header} align="center">
+                <MergeIcon color="inherit" className={formStyles.icon}/>
                 <Typography
-                    className={styles.subtitle}
+                    className={formStyles.subtitle}
                     color="inherit"
                     variant="subtitle1">Merge Sections</Typography>
             </Box>
 
-            <Box className={styles.reviewBox}>
+            <Box column className={styles.reviewBox}>
                 <SectionBox section={first} />
                 <SectionBox section={second} />
             </Box>
 
 
-            <FormControl classes={{
-                root: styles.formRoot
-            }} error={errorOnName}>
+            <FormControl
+                classes={{
+                    root: formStyles.formRoot
+                }}
+                error={Boolean(errorOnName.length)}>
+
                 <InputLabel
-                    className={styles.label}
-                    shrink htmlFor="new-section-name">Name</InputLabel>
+                    className={formStyles.formLabel}
+                    shrink htmlFor="new-section-name">New section</InputLabel>
                 <Input
-                    className={styles.input}
+                    className={formStyles.input}
                     classes={{
-                        focused: styles.inputFocused
+                        input: formStyles.inputHeight,
+                        focused: formStyles.inputFocused
                     }}
                     disableUnderline
                     id="new-section-name"
+                    placeholder="Enter new section name"
                     value={name}
-                    onChange={setValueFromEvent(setName)} />
+                    onChange={setValueFromEvent(setName)}
+                    onBlur={handleValidateSection}
+                    onFocus={() => setNameError('')}
+                />
                 <FormHelperText id="component-error-text">{errorOnName}</FormHelperText>
             </FormControl>
+
+            <Box align="center" justify="end">
+                <Button onClick={onClose}>Cancel</Button>
+                <SubmitButton />
+            </Box>
 
 
         </Aux>
@@ -166,7 +175,7 @@ const MergeModal: React.FC = () => {
     const styles = useStyles({});
     return (
         <BaseModal open={mergeModalOpen} onClose={handleClose} className={styles.root}>
-            <MergeModalContent />
+            <MergeModalContent onClose={handleClose} />
         </BaseModal>
     );
 };

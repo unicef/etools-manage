@@ -5,7 +5,7 @@ import { Store, Reducer } from 'redux';
 import { LocationState } from 'redux-first-router';
 import { ROUTE_MAPPING } from 'lib/create-router';
 import { PAGE_ONE_NAMESPACE, PAGE_TWO_NAMESPACE } from 'global-constants';
-import { PageOneNamespaceShape } from 'pages/one/types';
+import { PageOneNamespaceShape } from 'pages/sections-main/types';
 import { PageTwoNamespaceShape } from 'pages/two/types';
 
 
@@ -75,3 +75,4 @@ export type User = UserProfile | null;
 export interface ChildrenProps {
     children: React.ReactNode;
 }
+

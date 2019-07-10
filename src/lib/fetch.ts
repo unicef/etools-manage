@@ -42,8 +42,14 @@ const wrappedFetch = (url, {
         throw err;
     });
 
+export interface FetchState {
+    loaded: boolean;
+    fetching: boolean;
+    data: any;
+    error: Error;
+}
 
-export function useFetch(url) {
+export function useFetch(url, opts?): FetchState {
     const [state, setState] = useSafeSetState({
         loaded: false,
         fetching: false,
@@ -56,7 +62,7 @@ export function useFetch(url) {
             setState({ fetching: true });
 
             try {
-                const res = await wrappedFetch(url);
+                const res = await wrappedFetch(url, opts);
                 setState({
                     data: res,
                     fetching: false,
