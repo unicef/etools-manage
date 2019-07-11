@@ -6,6 +6,7 @@ import {
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import { onToggleMergeModal } from 'actions';
 import { useAppState } from 'contexts/app';
+import LoadingFallback from 'components/loading-fallback';
 
 const MergeModalContent = lazy(() => import('./merge-modal-content'));
 
@@ -29,10 +30,10 @@ export const useMergeState = () => {
 const MergeModal: React.FC = () => {
     const { mergeModalOpen, dispatch } = useMergeState();
     const handleClose = () => dispatch(onToggleMergeModal);
-    return mergeModalOpen ?
-        (<Suspense fallback={ <div>loading</div> }>
+    return mergeModalOpen &&
+        <Suspense fallback={ <LoadingFallback/> }>
             <MergeModalContent open={mergeModalOpen} onClose={handleClose} />
-        </Suspense>) : null;
+        </Suspense>;
 };
 
 export default MergeModal;
