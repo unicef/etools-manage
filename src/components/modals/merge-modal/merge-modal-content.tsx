@@ -1,9 +1,6 @@
 import React from 'react';
 import MergeIcon from '@material-ui/icons/MergeType';
 import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormControl, FormHelperText, Button } from '@material-ui/core';
-import {
-    filter
-} from 'ramda';
 import { withRouter } from 'react-router-dom';
 import BaseModal, { ModalContentProps } from '..';
 import { Aux } from 'components/aux';
@@ -101,8 +98,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     ));
 
     return (
-        <Aux>
-
+        <>
             <Box className={formStyles.header} align="center">
                 <MergeIcon color="inherit" className={formStyles.icon}/>
                 <Typography
@@ -115,7 +111,6 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                 <SectionBox section={first} />
                 <SectionBox section={second} />
             </Box>
-
 
             <FormControl
                 classes={{
@@ -148,14 +143,11 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                 <SubmitButton />
             </Box>
 
-
-        </Aux>
+        </>
     );
 };
 
 const MergeModal = ({ open, onClose }) => {
-    console.log('MergeModal ');
-
     const styles = useStyles({});
     return (
         <BaseModal open={open} onClose={onClose} className={styles.root}>

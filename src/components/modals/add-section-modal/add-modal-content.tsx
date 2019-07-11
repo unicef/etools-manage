@@ -15,12 +15,12 @@ import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { useAddSection, SectionEntity } from 'entities/section-entity';
 import { useLoadingState } from 'contexts/loading';
 
-
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles({});
     const { sectionsService: service } = useAppService();
     const { loading } = useLoadingState();
     const dispatch = useAppDispatch();
+
     const {
         errorOnName,
         setNameError,
@@ -29,6 +29,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
         setName,
         sectionInstance
     } = useAddSection();
+
     const { createdSection } = useAppState();
 
     const handleSubmit = () => onSubmitAddSection(service, sectionInstance.payload, dispatch);

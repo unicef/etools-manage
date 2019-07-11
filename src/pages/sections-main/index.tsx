@@ -19,11 +19,10 @@ const SectionsMainPage: React.FunctionComponent = () => {
 
     const dispatch = useModalsDispatch();
 
-    const handleSearch = useMemo(
-        () => (str: string) => {
-            const matching = filter(compose(includes(str), toLower, prop('name')));
-            setFilteredSections(matching(sections));
-        }, []);
+    const handleSearch = useCallback((str: string) => {
+        const matching = filter(compose(includes(str), toLower, prop('name')));
+        setFilteredSections(matching(sections));
+    }, []);
 
     useEffect(() => {
         setFilteredSections(sections);
