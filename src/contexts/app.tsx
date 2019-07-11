@@ -3,14 +3,17 @@ import { SectionEntity } from 'entities/section-entity';
 import { onGetSectionsSuccess, onRequestStarted, onToggleLoading, onCreateSectionSuccess, onResetCreatedSection } from 'actions';
 import { ChildrenProps } from 'global-types';
 import { appStoreReducer } from 'reducers/app-store';
-import SectionsApiService, { SectionsService } from 'services/section';
-import { ApiClient } from 'lib/http';
 import { useLoadingDispatch } from './loading';
+import { ApiClient } from 'lib/http';
+import BackendApiService from 'services/backend';
+import SectionsApiService from 'services/section';
+import { AppServices } from 'services';
 
 interface Store {
     sections: SectionEntity[];
     createdSection: SectionEntity;
 }
+
 
 type Action = typeof onGetSectionsSuccess
 | typeof onRequestStarted
@@ -21,19 +24,24 @@ export type StoreDispatch = (action: Action) => void;
 
 const AppStoreContext = React.createContext<Store | undefined>(undefined);
 const AppDispatchContext = React.createContext<StoreDispatch | undefined>(undefined);
-const AppServiceContext = React.createContext<SectionsService>(undefined);
+const AppServiceContext = React.createContext<AppServices>(undefined);
+
 
 const initialState: Store = {
     sections: [],
     createdSection: null
-
 };
 
 
 export function AppStoreProvider({ children }: ChildrenProps) {
     const [state, dispatch] = useReducer(appStoreReducer, initialState);
     const dispatchLoading = useLoadingDispatch();
-    const service = new SectionsApiService(new ApiClient());
+
+    const appServices: AppServices = {
+        sectionsService: new SectionsApiService(new ApiClient()),
+        backendService: new BackendApiService(new ApiClient())
+    };
+
 
     const loaderMiddleware = dispatch => action => {
         if (action.type === onRequestStarted.type) {
@@ -49,7 +57,7 @@ export function AppStoreProvider({ children }: ChildrenProps) {
     return (
         <AppStoreContext.Provider value={state}>
             <AppDispatchContext.Provider value={appDispatch}>
-                <AppServiceContext.Provider value={service}>
+                <AppServiceContext.Provider value={appServices}>
                     {children}
                 </AppServiceContext.Provider>
             </AppDispatchContext.Provider>

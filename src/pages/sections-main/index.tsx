@@ -3,14 +3,12 @@ import { compose, includes, filter, prop, toLower } from 'ramda';
 import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 
-
 import SectionsTable from 'components/sections-table';
 import { useAppState } from 'contexts/app';
 import SearchBar from 'components/search-bar';
 import { onSelectForMerge } from 'actions';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
-import { useLoadingState } from 'contexts/loading';
 
 
 const SectionsMainPage: React.FunctionComponent = () => {
@@ -42,7 +40,6 @@ const SectionsMainPage: React.FunctionComponent = () => {
 
             <PageModals />
         </Box>
-
     );
 };
 

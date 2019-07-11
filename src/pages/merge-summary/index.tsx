@@ -8,8 +8,10 @@ import { RouteProps } from 'components/router';
 const MergeSummaryPage: React.FunctionComponent<RouteProps> = ({ match }) => {
 
     const { sections, newName } = match.params;
+    console.log('TCL: sections, newName', { sections, newName });
 
     useEffect(() => {
+        onFetchMergeSummary();
         // use params to call api for summary data
     }, []);
 

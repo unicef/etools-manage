@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Typography, InputLabel, Input, FormControl, FormHelperText, Button, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -11,7 +11,6 @@ import { Aux } from 'components/aux';
 
 import { useModalStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
-import { SectionsService } from 'services/section';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { useAddSection, SectionEntity } from 'entities/section-entity';
 import { useLoadingState } from 'contexts/loading';
@@ -19,7 +18,7 @@ import { useLoadingState } from 'contexts/loading';
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles({});
-    const service: SectionsService = useAppService();
+    const { sectionsService: service } = useAppService();
     const { loading } = useLoadingState();
     const dispatch = useAppDispatch();
     const {

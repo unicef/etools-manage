@@ -1,24 +1,17 @@
-import { SectionEntity } from 'entities/section-entity';
-import { HttpClient } from 'lib/http';
+import BaseService from 'services';
 
 export interface SectionsService {
-    getSections(): Promise<SectionEntity[]>;
-    createSection(data: SectionEntity): Promise<SectionEntity>;
-    closeSection(id: number): Promise<any>; // TODO: check response on close and create type
+    getSections(): Promise<Response>;
+    createSection(data: Response): Promise<Response>;
+    closeSection(id: number): Promise<Response>; // TODO: check response on close and create type
 }
 
 
-export default class SectionsApiService implements SectionsService {
+export default class SectionsApiService extends BaseService implements SectionsService {
 
-    private _http: HttpClient;
-
-    public constructor(client: HttpClient) {
-        this._http = client;
-    }
-
-    public async getSections(): Promise<SectionEntity[]> {
+    public async getSections(): Promise<Response> {
         try {
-            const response = await this._http.get<SectionEntity[]>(process.env.REACT_APP_SECTIONS_ENDPOINT);
+            const response = await this._http.get<Response>(process.env.REACT_APP_SECTIONS_ENDPOINT);
             return response;
 
         } catch (err) {
@@ -26,9 +19,9 @@ export default class SectionsApiService implements SectionsService {
         }
     }
 
-    public async createSection(data: SectionEntity): Promise<SectionEntity> {
+    public async createSection(data: Response): Promise<Response> {
         try {
-            const response = await this._http.post<SectionEntity>(
+            const response = await this._http.post<Response>(
                 process.env.REACT_APP_SECTIONS_ENDPOINT,
                 {
                     body: JSON.stringify(data)
@@ -41,9 +34,9 @@ export default class SectionsApiService implements SectionsService {
         }
     }
 
-    public async closeSection(id: number): Promise<void> {
+    public async closeSection(id: number): Promise<Response> {
         try {
-            const response = await this._http.post<any>(
+            const response = await this._http.post<Response>(
                 process.env.SECTION_CLOSE_ENDPOINT,
                 {
                     body: JSON.stringify({ id })
