@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { compose, includes, filter, prop, toLower } from 'ramda';
 import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
@@ -16,19 +16,27 @@ const SectionsMainPage: React.FunctionComponent = () => {
     const { sections } = useAppState();
     const [filteredSections, setFilteredSections] = useState([]);
     const [mergeActive, setMergeActive] = useState<boolean>(false);
+
     const dispatch = useModalsDispatch();
 
-    const handleSearch = (str: string) => {
-        const matching = filter(compose(includes(str), toLower, prop('name')));
-        setFilteredSections(matching(sections));
-    };
-
+    const handleSearch = useMemo(
+        () => (str: string) => {
+            const matching = filter(compose(includes(str), toLower, prop('name')));
+            setFilteredSections(matching(sections));
+        }, []);
 
     useEffect(() => {
         setFilteredSections(sections);
     }, [sections]);
 
-    const onChangeSelected = (selected: string[]) => dispatch(onSelectForMerge(selected));
+
+    const onChangeSelected = useCallback((selected: string[]) => dispatch(onSelectForMerge(selected)), []);
+
+    const tableProps = {
+        rows: filteredSections,
+        mergeActive,
+        onChangeSelected
+    };
 
     return (
         <Box column>
@@ -36,7 +44,8 @@ const SectionsMainPage: React.FunctionComponent = () => {
                 <SearchBar onChange={handleSearch} />
                 <ControlsBar mergeActive={mergeActive} setMergeActive={setMergeActive} />
             </Box>
-            <SectionsTable rows={filteredSections} mergeActive={mergeActive} onChangeSelected={onChangeSelected}/>
+
+            <SectionsTable {...tableProps}/>
 
             <PageModals />
         </Box>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -167,7 +167,7 @@ export interface SectionTableProps {
     onChangeSelected: (selected: string[]) => void;
 }
 
-const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChangeSelected }) => {
+const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive, onChangeSelected }) => {
     const classes = useStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
@@ -298,6 +298,6 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
             />
         </Paper>
     );
-};
+});
 
 export default SectionTable;

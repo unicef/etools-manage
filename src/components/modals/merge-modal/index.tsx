@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import {
     filter
-
 } from 'ramda';
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import { onToggleMergeModal } from 'actions';
