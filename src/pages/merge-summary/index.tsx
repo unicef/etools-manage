@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, CircularProgress } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 import Box from 'components/box';
 import { RouteProps } from 'components/router';
@@ -12,10 +12,7 @@ const MergeSummaryPage: React.FunctionComponent<RouteProps> = ({ match }) => {
     const dispatch = useAppDispatch();
     const { loading } = useAppState();
     console.log('TCL: loading', loading);
-    const { error } = useAppState();
-    if (error) {
-        throw error;
-    }
+
     const { sections, newName } = match.params;
 
     useEffect(() => {

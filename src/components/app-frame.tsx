@@ -58,6 +58,11 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const { sectionsService: service }: AppServices = useAppService();
     const dispatch = useAppDispatch();
     const { loading } = useAppState();
+    const { error } = useAppState();
+
+    if (error) {
+        throw error;
+    }
 
     useEffect(() => {
         onGetSections(service, dispatch);

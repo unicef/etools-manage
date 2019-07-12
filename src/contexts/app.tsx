@@ -10,8 +10,8 @@ import { AppServices } from 'services';
 
 interface Store {
     sections: SectionEntity[];
-    createdSection: SectionEntity;
-    error: string;
+    createdSection: SectionEntity | null;
+    error: string | null;
     loading: boolean;
 }
 
@@ -24,11 +24,6 @@ type Action = typeof onGetSectionsSuccess
 
 export type StoreDispatch = (action: Action) => void;
 
-const AppStoreContext = React.createContext<Store | undefined>(undefined);
-const AppDispatchContext = React.createContext<StoreDispatch | undefined>(undefined);
-const AppServiceContext = React.createContext<AppServices>(undefined);
-
-
 const initialState: Store = {
     sections: [],
     createdSection: null,
@@ -36,6 +31,10 @@ const initialState: Store = {
     loading: false
 };
 
+
+const AppStoreContext = React.createContext<Store | undefined>(initialState);
+const AppDispatchContext = React.createContext<StoreDispatch | undefined>(undefined);
+const AppServiceContext = React.createContext<AppServices | undefined>(undefined);
 
 export function AppStoreProvider({ children }: ChildrenProps) {
     const [state, dispatch] = useReducer(appStoreReducer, initialState);

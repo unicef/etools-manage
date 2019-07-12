@@ -18,7 +18,7 @@ const useStyles = makeStyles(() =>
             textTransform: 'uppercase',
             fontWeight: 500,
             fontSize: 18,
-            marginTop: 10,
+            marginTop: 10
         }
 
     }));
