@@ -8,9 +8,15 @@ export interface InterventionEntity {
 }
 
 export default class Intervention implements InterventionEntity {
-    public id;
-    public number;
-    public title;
-    public sections;
-    // TODO: is it needed yet ?
+    public id: number;
+    public number: string;
+    public title: string;;
+    public sections: number[];
+
+    public constructor({ id, number, title, sections }: InterventionEntity) {
+        this.id = id;
+        this.number = number;
+        this.title = title;
+        this.sections = sections;
+    }
 }

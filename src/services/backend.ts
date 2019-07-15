@@ -21,6 +21,8 @@ export interface BackendResponse<T> {
 export interface AllEntities {
 
 }
+
+
 export default class BackendApiService extends BaseService implements BackendService {
 
     public async getIndicators(query: string): Promise<Response> {

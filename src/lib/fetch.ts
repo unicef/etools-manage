@@ -4,7 +4,8 @@ import { useSafeSetState } from 'utils/helpers';
 
 const BASE_URL = window.location.origin;
 
-export function checkStatus(response, raw): void {
+
+export function checkStatus(response: Response, raw: boolean): Response {
     if (raw) {
         return response;
     }
@@ -18,11 +19,11 @@ export function checkStatus(response, raw): void {
         code: response.status
     }));
 
-    response.error = error;
     throw error;
 }
 
-const wrappedFetch = (url, {
+type FetchOpts = RequestInit & {json: boolean; raw: boolean}
+const wrappedFetch = (url: string, {
     json = true,
     raw = false,
     // For test environment Dependency Injection
@@ -30,8 +31,8 @@ const wrappedFetch = (url, {
 } = {}) => fetch(`${BASE_URL}/${url}`, {
     credentials: 'same-origin', // send cookies for etools auth
     ...opts })
-    .then(response => checkStatus(response, raw))
-    .then(response => {
+    .then((response: Response) => checkStatus(response, raw))
+    .then((response): Response | Promise<any> => {
         if (raw) {
             return response;
         }
@@ -46,11 +47,11 @@ export interface FetchState {
     loaded: boolean;
     fetching: boolean;
     data: any;
-    error: Error;
+    error: Error | null;
 }
 
-export function useFetch(url, opts?): FetchState {
-    const [state, setState] = useSafeSetState({
+export function useFetch(url: string, opts?: FetchOpts): FetchState {
+    const [state, setState] = useSafeSetState<FetchState>({
         loaded: false,
         fetching: false,
         data: null,

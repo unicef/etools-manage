@@ -2,18 +2,33 @@ import React, { useEffect } from 'react';
 import { Typography } from '@material-ui/core';
 
 import Box from 'components/box';
-import { RouteProps } from 'components/router';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary } from 'actions';
+import { RouteComponentProps } from 'react-router';
+
+export interface MergeProps {
+    sections: string;
+    newName: string;
+}
 
 
-const MergeSummaryPage: React.FunctionComponent<RouteProps> = ({ match }) => {
+export function isSectionsParamValid(str: string): boolean {
+    if (!str.length) {
+        return false;
+    }
+
+    const sections = str.split(',');
+    const sectionsStringValid = sections.reduce((acc, next): boolean => isNaN(Number(next)) && acc, true);
+    return sectionsStringValid;
+}
+
+const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) => {
     const { backendService: service } = useAppService();
     const dispatch = useAppDispatch();
     const { loading } = useAppState();
-    console.log('TCL: loading', loading);
 
     const { sections, newName } = match.params;
+
 
     useEffect(() => {
         onFetchMergeSummary(service, sections, dispatch);

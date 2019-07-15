@@ -8,7 +8,7 @@ import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
 
-interface Store {
+export interface Store {
     sections: SectionEntity[];
     createdSection: SectionEntity | null;
     error: string | null;
@@ -16,15 +16,16 @@ interface Store {
 }
 
 
-type Action = typeof onGetSectionsSuccess
-| typeof onSetLoading
-| typeof onCreateSectionSuccess
-| typeof onResetCreatedSection
-| typeof onThrowError
+type Action = ReturnType<
+    typeof onGetSectionsSuccess |
+    typeof onSetLoading |
+    typeof onCreateSectionSuccess |
+    typeof onThrowError > | typeof onResetCreatedSection
+
 
 export type StoreDispatch = (action: Action) => void;
 
-const initialState: Store = {
+export const initialState: Store = {
     sections: [],
     createdSection: null,
     error: null,

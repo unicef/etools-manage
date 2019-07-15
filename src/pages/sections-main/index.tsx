@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { compose, includes, filter, prop, toLower } from 'ramda';
 import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
@@ -9,20 +9,21 @@ import SearchBar from 'components/search-bar';
 import { onSelectForMerge } from 'actions';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
+import { SectionEntity } from 'entities/section-entity';
 
 
 const SectionsMainPage: React.FunctionComponent = () => {
 
     const { sections } = useAppState();
-    const [filteredSections, setFilteredSections] = useState([]);
+    const [filteredSections, setFilteredSections] = useState([] as SectionEntity[]);
     const [mergeActive, setMergeActive] = useState<boolean>(false);
 
     const dispatch = useModalsDispatch();
 
     const handleSearch = useCallback((str: string) => {
-        const matching = filter(compose(includes(str), toLower, prop('name')));
+        const matching = filter(compose(includes(str.toLowerCase()), toLower, prop('name')));
         setFilteredSections(matching(sections));
-    }, []);
+    }, [sections]);
 
     useEffect(() => {
         setFilteredSections(sections);

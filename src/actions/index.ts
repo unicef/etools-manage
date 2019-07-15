@@ -3,6 +3,9 @@ import { createAction } from 'redux-starter-kit';
 import { SectionsService } from 'services/section';
 import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService } from 'services/backend';
+import { StoreDispatch } from 'contexts/app';
+import { SectionPayload } from 'entities/section-entity';
+import { isSectionsParamValid } from 'pages/merge-summary';
 
 export const onToggleAddModal = createAction('modals/toggleAdd');
 export const onToggleSplitModal = createAction('modals/toggleSplit');
@@ -16,7 +19,8 @@ export const onSelectForMerge = createAction('entity/selectForMerge');
 export const onSetLoading = createAction('loading');
 export const onThrowError = createAction('error');
 
-export const onGetSections = async (service: SectionsService, dispatch) => {
+
+export const onGetSections = async (service: SectionsService, dispatch: StoreDispatch) => {
     let sections;
     try {
         dispatch(onSetLoading(true));
@@ -31,12 +35,12 @@ export const onGetSections = async (service: SectionsService, dispatch) => {
     dispatch(onGetSectionsSuccess(sections));
 };
 
-export const onSubmitMergeSections = async (service: SectionsService, payload, dispatch) => {
-    console.log('TCL: onSubmitMergeSections -> payload', payload);
-    // ....
-};
+// export const onSubmitMergeSections = async (service: SectionsService, payload, dispatch) => {
+//     console.log('TCL: onSubmitMergeSections -> payload', payload);
+//     // ....
+// };
 
-export const onSubmitAddSection = async(service: SectionsService, payload, dispatch) => {
+export const onSubmitCreateSection = async(service: SectionsService, payload: SectionPayload, dispatch: StoreDispatch) => {
     dispatch(onSetLoading(true));
     let newSection;
     try {
@@ -45,9 +49,16 @@ export const onSubmitAddSection = async(service: SectionsService, payload, dispa
         throw new Error(error);
     }
     dispatch(onCreateSectionSuccess(newSection));
+    dispatch(onSetLoading(true));
 };
 
-export const onFetchMergeSummary = async(service: BackendService, payload, dispatch) => {
+export const onFetchMergeSummary = async(service: BackendService, payload: string, dispatch: StoreDispatch) => {
+
+    if (!isSectionsParamValid(payload)) {
+        dispatch(onThrowError('Invalid sections provided for merge'));
+        return;
+    }
+
     dispatch(onSetLoading(true));
     let summary;
     try {

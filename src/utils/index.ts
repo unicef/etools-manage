@@ -1,8 +1,3 @@
-import { createReducer } from 'redux-starter-kit';
+import { StateSetter } from 'global-types';
 
-// caller is always useReducer which provides default value
-export function makeReducer(reducer, initialState = null) {
-    return createReducer(initialState, reducer);
-}
-
-export const setValueFromEvent = setter => ({ target: { value } }) => setter(value);
+export const setValueFromEvent: (setter: StateSetter) => (event: React.ChangeEvent<HTMLInputElement>) => void = setter => ({ target: { value } }) => setter(value);

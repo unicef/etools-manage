@@ -3,18 +3,18 @@ import { AppStore, NamespaceKey, StoreShape } from 'global-types';
 import { SectionEntity } from 'entities/section-entity';
 
 // TODO: type these
-export function useSetState(initialState) {
+export function useSetState<T>(initialState: T) {
     return useReducer(
         (state, newState) => ({ ...state, ...newState }),
         initialState,
     );
 }
 
-export function useSafeSetState(initialState) {
+export function useSafeSetState<T>(initialState: T) {
     const [state, setState] = useSetState(initialState);
 
     const mountedRef = useRef(false);
-    useEffect(() => {
+    useEffect((): () => void => {
         mountedRef.current = true;
         return () => (mountedRef.current = false);
     }, []);

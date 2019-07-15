@@ -7,6 +7,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import amber from '@material-ui/core/colors/amber';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
 import { onToggleMergeModal, onToggleAddModal } from 'actions';
+import { ClickHandler } from 'global-types';
 
 const useActionStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -22,7 +23,11 @@ const useActionStyles = makeStyles((theme: Theme) =>
         }
     }));
 
-export const MergeButton = ({ onClick, mergeActive }) => {
+export interface MergeButtonProps {
+    onClick: ClickHandler;
+    mergeActive: boolean;
+}
+export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
     const styles = useActionStyles({});
     const btnText = mergeActive ? 'Cancel Merge' : 'Merge';
     return (

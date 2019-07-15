@@ -1,8 +1,9 @@
-import { makeReducer } from 'utils';
 import { onGetSectionsSuccess, onCreateSectionSuccess, onResetCreatedSection, onThrowError, onSetLoading } from 'actions';
+import { createReducer } from 'redux-starter-kit';
+import { initialState } from 'contexts/app';
 
 
-export const appStoreReducer = makeReducer({
+export const appStoreReducer = createReducer(initialState, {
     [onGetSectionsSuccess.type]: (state, action) => {
         state.sections = action.payload;
     },

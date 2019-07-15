@@ -6,21 +6,19 @@ import Box from 'components/box';
 
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import BaseModal, { ModalContentProps } from '..';
-import { onToggleAddModal, onSubmitAddSection, onResetCreatedSection } from 'actions';
-import { Aux } from 'components/aux';
+import { onToggleAddModal, onSubmitCreateSection, onResetCreatedSection } from 'actions';
 
 import { useModalStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { useAddSection, SectionEntity } from 'entities/section-entity';
-import { useLoadingState } from 'contexts/loading';
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles({});
     const { sectionsService: service } = useAppService();
-    const { loading } = useLoadingState();
+    const { loading } = useAppState();
     const dispatch = useAppDispatch();
-
+    console.log('RENDER AGAIN');
     const {
         errorOnName,
         setNameError,
@@ -32,7 +30,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     const { createdSection } = useAppState();
 
-    const handleSubmit = () => onSubmitAddSection(service, sectionInstance.payload, dispatch);
+    const handleSubmit = () => onSubmitCreateSection(service, sectionInstance.payload, dispatch);
 
     const SubmitButton = () => {
         const btnContent = loading && <CircularProgress size={24} /> || 'Submit';
@@ -46,7 +44,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     };
 
     return (
-        <Aux>
+        <>
             <Box className={styles.header} align="center">
                 <AddIcon color="inherit" className={styles.icon}/>
                 <Box><Typography
@@ -58,7 +56,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                 createdSection ?
                     <SuccessModalContent section={createdSection} onClose={onClose} />
 
-                    : <Aux>
+                    : <>
                         <FormControl
                             classes={{
                                 root: styles.formRoot
@@ -88,9 +86,9 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                             <Button onClick={onClose}>Cancel</Button>
                             <SubmitButton />
                         </Box>
-                    </Aux>
+                    </>
             }
-        </Aux>
+        </>
     );
 };
 

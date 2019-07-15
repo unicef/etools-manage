@@ -14,8 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
 import { SectionEntity } from 'entities/section-entity';
-import { useLoadingState } from 'contexts/loading';
-import { CircularProgress } from '@material-ui/core';
 
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -256,7 +254,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                             tabIndex={-1}
                                             key={row.name}
                                             selected={isItemSelected}
-                                            onClick={event => handleClick(event, row.id as string)}
+                                            onClick={event => handleClick(event, String(row.id))}
                                         >
                                             <TableCell padding="checkbox">
                                                 {mergeActive && <Checkbox

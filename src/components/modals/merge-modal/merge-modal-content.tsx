@@ -1,14 +1,15 @@
 import React from 'react';
 import MergeIcon from '@material-ui/icons/MergeType';
+import { History } from 'history';
 import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormControl, FormHelperText, Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import BaseModal, { ModalContentProps } from '..';
-import { Aux } from 'components/aux';
 import { setValueFromEvent } from 'utils';
 import { SectionEntity, useAddSection } from 'entities/section-entity';
 import { useModalStyles } from '../styles';
 import Box from 'components/box';
 import { useMergeState } from '.';
+import { onToggleMergeModal } from 'actions';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -82,7 +83,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const [first, second] = selectedSectionsFromCollection;
 
     const mergeConfirmUrl = `/merge/sections=${selectedForMerge.join(',')}&newName=${name}`;
-    const handleSubmit = history => () => {
+    const handleSubmit = (history: History) => () => {
         onClose();
         history.push(mergeConfirmUrl);
     };
@@ -147,11 +148,15 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     );
 };
 
-const MergeModal = ({ open, onClose }) => {
+
+const MergeModal = () => {
+    const { mergeModalOpen, dispatch } = useMergeState();
+    const handleClose = () => dispatch(onToggleMergeModal);
+
     const styles = useStyles({});
     return (
-        <BaseModal open={open} onClose={onClose} className={styles.root}>
-            <MergeModalContent onClose={onClose} />
+        <BaseModal open={mergeModalOpen} onClose={handleClose} className={styles.root}>
+            <MergeModalContent onClose={handleClose} />
         </BaseModal>
     );
 };
