@@ -243,7 +243,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     // @ts-ignore
-                                    const isItemSelected = isSelected(row.id);
+                                    const isItemSelected = isSelected(String(row.id));
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
