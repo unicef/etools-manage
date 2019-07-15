@@ -18,6 +18,7 @@ export interface BackendResponse<T> {
     results: T[];
 }
 
+// TODO: add summary interface and use in action creator
 export interface AllEntities {
 
 }
