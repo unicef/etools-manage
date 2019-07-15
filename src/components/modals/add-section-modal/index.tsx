@@ -32,7 +32,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const { createdSection } = useAppState();
 
     const handleSubmit = () => onSubmitAddSection(service, sectionInstance.payload, dispatch);
-
+    const submitDisabled = !name.length || Boolean(errorOnName.length) || loading;
     const SubmitButton = () => {
         const btnContent = loading && <CircularProgress size={24} /> || 'Submit';
         return (<Button
@@ -40,7 +40,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
             color="secondary"
             variant="contained"
             onClick={handleSubmit}
-            disabled={!name.length || Boolean(errorOnName.length) || loading}
+            disabled={submitDisabled}
         >{btnContent}</Button>);
     };
 
