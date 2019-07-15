@@ -1,9 +1,8 @@
 import React, { useReducer, useContext } from 'react';
 import { SectionEntity } from 'entities/section-entity';
-import { onGetSectionsSuccess, onRequestStarted, onToggleLoading, onCreateSectionSuccess, onResetCreatedSection } from 'actions';
+import { onGetSectionsSuccess, onSetLoading, onCreateSectionSuccess, onResetCreatedSection, onThrowError } from 'actions';
 import { ChildrenProps } from 'global-types';
 import { appStoreReducer } from 'reducers/app-store';
-import { useLoadingDispatch } from './loading';
 import { ApiClient } from 'lib/http';
 import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
@@ -11,52 +10,43 @@ import { AppServices } from 'services';
 
 interface Store {
     sections: SectionEntity[];
-    createdSection: SectionEntity;
+    createdSection: SectionEntity | null;
+    error: string | null;
+    loading: boolean;
 }
 
 
 type Action = typeof onGetSectionsSuccess
-| typeof onRequestStarted
+| typeof onSetLoading
 | typeof onCreateSectionSuccess
 | typeof onResetCreatedSection
+| typeof onThrowError
 
 export type StoreDispatch = (action: Action) => void;
 
-const AppStoreContext = React.createContext<Store | undefined>(undefined);
-const AppDispatchContext = React.createContext<StoreDispatch | undefined>(undefined);
-const AppServiceContext = React.createContext<AppServices>(undefined);
-
-
 const initialState: Store = {
     sections: [],
-    createdSection: null
+    createdSection: null,
+    error: null,
+    loading: false
 };
 
 
+const AppStoreContext = React.createContext<Store | undefined>(initialState);
+const AppDispatchContext = React.createContext<StoreDispatch | undefined>(undefined);
+const AppServiceContext = React.createContext<AppServices | undefined>(undefined);
+
 export function AppStoreProvider({ children }: ChildrenProps) {
     const [state, dispatch] = useReducer(appStoreReducer, initialState);
-    const dispatchLoading = useLoadingDispatch();
 
     const appServices: AppServices = {
         sectionsService: new SectionsApiService(new ApiClient()),
         backendService: new BackendApiService(new ApiClient())
     };
 
-
-    const loaderMiddleware = dispatch => action => {
-        if (action.type === onRequestStarted.type) {
-            dispatchLoading(onToggleLoading(true));
-        } else {
-            dispatchLoading(onToggleLoading(false));
-        }
-        dispatch(action);
-    };
-
-    const appDispatch = loaderMiddleware(dispatch);
-
     return (
         <AppStoreContext.Provider value={state}>
-            <AppDispatchContext.Provider value={appDispatch}>
+            <AppDispatchContext.Provider value={dispatch}>
                 <AppServiceContext.Provider value={appServices}>
                     {children}
                 </AppServiceContext.Provider>

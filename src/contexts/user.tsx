@@ -5,7 +5,6 @@ import { User } from 'global-types';
 export const UserContext = React.createContext<User>(null);
 
 export default function UserProvider({ children }: {children: React.ReactElement }) {
-
     const { data } = useFetch(process.env.REACT_APP_USER_PROFILE_ENDPOINT);
 
     return (

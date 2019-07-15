@@ -1,5 +1,5 @@
 import React, { useContext, useReducer } from 'react';
-import { onToggleLoading } from 'actions';
+import { onSetLoading } from 'actions';
 import { PayloadAction } from 'redux-starter-kit';
 import { loadingReducer } from 'reducers/loading';
 import { ChildrenProps } from 'global-types';
@@ -9,7 +9,7 @@ interface State {
     loading: boolean;
 }
 
-export type LoadingAction = typeof onToggleLoading | PayloadAction
+export type LoadingAction = typeof onSetLoading | PayloadAction
 
 type Dispatch = (action: LoadingAction) => void
 
