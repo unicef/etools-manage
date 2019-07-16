@@ -53,6 +53,7 @@ export const onSubmitCreateSection = async(service: SectionsService, payload: Se
 };
 
 export const onFetchMergeSummary = async(service: BackendService, payload: string, dispatch: StoreDispatch) => {
+    console.log('TCL: onFetchMergeSummary -> service', service);
 
     if (!isSectionsParamValid(payload)) {
         dispatch(onThrowError('Invalid sections provided for merge'));
@@ -62,7 +63,7 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
     dispatch(onSetLoading(true));
     let summary;
     try {
-        summary = await service.getAllEntities(payload);
+        summary = await service.getAllAffectedEntities(payload);
         dispatch(onSetLoading(false));
         // dispatch(onMergeSummarySuccess(summary));
 

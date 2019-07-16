@@ -23,6 +23,7 @@ export function checkStatus(response: Response, raw: boolean): Response {
 }
 
 type FetchOpts = RequestInit & {json: boolean; raw: boolean}
+
 const wrappedFetch = (url: string, {
     json = true,
     raw = false,
