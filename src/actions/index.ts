@@ -2,7 +2,7 @@ import { createAction } from 'redux-starter-kit';
 
 import { SectionsService } from 'services/section';
 import { sectionWithNumberId } from 'utils/helpers';
-import { BackendService } from 'services/backend';
+import { BackendService, ZippedEntityResults } from 'services/backend';
 import { StoreDispatch } from 'contexts/app';
 import { SectionPayload } from 'entities/section-entity';
 import { isSectionsParamValid } from 'pages/merge-summary';
@@ -53,7 +53,6 @@ export const onSubmitCreateSection = async(service: SectionsService, payload: Se
 };
 
 export const onFetchMergeSummary = async(service: BackendService, payload: string, dispatch: StoreDispatch) => {
-    console.log('TCL: onFetchMergeSummary -> service', service);
 
     if (!isSectionsParamValid(payload)) {
         dispatch(onThrowError('Invalid sections provided for merge'));
@@ -61,9 +60,12 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
     }
 
     dispatch(onSetLoading(true));
-    let summary;
+
+    let summary: ZippedEntityResults;
+
     try {
         summary = await service.getAllAffectedEntities(payload);
+        console.log('TCL: onFetchMergeSummary -> summary', summary);
         dispatch(onSetLoading(false));
         // dispatch(onMergeSummarySuccess(summary));
 

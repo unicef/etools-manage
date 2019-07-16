@@ -5,6 +5,7 @@ import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary } from 'actions';
 import { RouteComponentProps } from 'react-router';
+import Entity from 'entities';
 
 export interface MergeProps {
     sections: string;
@@ -27,7 +28,7 @@ export function isSectionsParamValid(str: string): boolean {
 const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) => {
     const { backendService: service } = useAppService();
     const dispatch = useAppDispatch();
-    const { loading } = useAppState();
+    // const { loading } = useAppState();
 
     const { sections, newName } = match.params;
 
@@ -47,5 +48,14 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
     );
 };
 
+// function EntityListWrapper<T>(entity: Entity<T>, list: []T){
+// <TableHeader>
+//     <TableRow>
+//         {Entity.displayProperties.map(
+//             property=> (<th>{property}</th>)
+//         )}
+//     </TableRow>
+// </TableHeader>
+// }
 
 export default MergeSummaryPage;

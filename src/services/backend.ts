@@ -6,12 +6,11 @@ import { IndicatorEntity } from 'entities/indicator-entity';
 import { TravelEntity } from 'entities/travel-entity';
 
 export interface BackendService {
-    // getInterventions(query: string): Promise<InterventionEntity[]>; TODO: probably not needed since applied indicator returns what we need ?
     getIndicators(query: string): Promise<IndicatorEntity[]>;
     getTravels(query: string): Promise<TravelEntity[]>;
     getTPMActivities(query: string): Promise<TPMActivityEntity[]>;
     getActionPoints(query: string): Promise<ActionPointEntity[]>;
-    getAllAffectedEntities(query: string): Promise<Response[]>;
+    getAllAffectedEntities(query: string): Promise<ZippedEntityResults>;
 }
 
 export interface BackendResponse<T> {
@@ -19,32 +18,37 @@ export interface BackendResponse<T> {
     next: string;
     results: T[];
 }
+
 export type EntityUnion = IndicatorEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
 
 export interface AllAffectedEntities {
     [key: string]: (query: string) => Promise<EntityUnion>;
 }
+export interface ZippedEntityResults {
+    indicators: IndicatorEntity[];
+    tpmActivities: TPMActivityEntity[];
+    actionPoints: ActionPointEntity[];
+    // travels: TravelEntity[]
+}
 
-
+// TODO: Add type guards on all api responses
 export default class BackendApiService extends BaseService implements BackendService {
 
-    private entityApiMap(): AllAffectedEntities {
-        return {
-            indicators: this.getIndicators.bind(this),
-            tpmActivities: this.getTPMActivities.bind(this),
-            actionPoints: this.getActionPoints.bind(this),
-            travels: this.getTravels.bind(this)
-        };
+    private entityApiMap: AllAffectedEntities= {
+        indicators: this.getIndicators.bind(this),
+        tpmActivities: this.getTPMActivities.bind(this),
+        actionPoints: this.getActionPoints.bind(this)
+        // travels: this.getTravels.bind(this)
     }
 
     public async getIndicators(query: string): Promise<IndicatorEntity[]> {
         try {
-            console.log('indicators this', this);
             const url = `${process.env.REACT_APP_INTERVENTIONS_APPLIED_INDICATORS_ENDPOINT}${query}`;
             const response = await this._http.get<IndicatorEntity[]>(url);
             return response;
         } catch (err) {
-            throw new Error(err);
+            const json = JSON.parse(err.message);
+            throw new Error(`An error occurred retreiving travels for the requested sections: ${query}. Response code: ${json.code}`);
         }
     }
 
@@ -81,15 +85,14 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public async getAllAffectedEntities(query: string): Promise<any> {
-        const entityFetcher = this.entityApiMap();
-        const zip = zipObj(Object.keys(entityFetcher));
+    public async getAllAffectedEntities(query: string): Promise<ZippedEntityResults> {
+        const zip = zipObj(Object.keys(this.entityApiMap));
         const allEntities = await Promise.all(
-            Object.keys(entityFetcher).map(
-                entity => entityFetcher[entity](query)
+            Object.keys(this.entityApiMap).map(
+                entity => this.entityApiMap[entity](query)
             )
         );
-        return zip(allEntities);
+        return zip(allEntities) as ZippedEntityResults;
 
     }
 

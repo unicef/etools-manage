@@ -8,6 +8,8 @@ import {
     trim
 } from 'ramda';
 import { useAppState } from 'contexts/app';
+import Entity from 'entities';
+import { PropertyNames } from 'helpers';
 
 export interface SectionEntity {
     id: number ;
@@ -48,25 +50,13 @@ export class NewSection implements SectionPayload {
         return this._validName;
     }
 }
+export default class Section extends Entity<SectionEntity> {
 
-// export default class Section implements SectionEntity {
-//     public id: number;
-//     private _name: string;
+    public get displayProperties(): PropertyNames<SectionEntity>[] {
+        return ['name', 'id'];
+    }
 
-//     public constructor(name: string = '') {
-//         this._name = name;
-//     }
-
-//     public set name(name) {
-//         this._name = name;
-//     }
-
-//     public get name() {
-//         return this._name;
-//     }
-
-
-// }
+}
 
 export const useAddSection = () => {
     const [errorOnName, setNameError] = useState<string>('');
