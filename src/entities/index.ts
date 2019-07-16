@@ -1,7 +1,8 @@
-import { IndicatorEntity } from './indicator-entity';
+import Indicator, { IndicatorEntity } from './indicator-entity';
 import { TPMActivityEntity } from './tpmactivity-entity';
 import { ActionPointEntity } from './actionpoint-entity';
 import { PropertyNames } from 'helpers';
+import { SectionEntity } from './section-entity';
 
 abstract class Entity<T> {
     public abstract get displayProperties(): (keyof T)[]
@@ -16,4 +17,9 @@ export interface ZippedEntityResults {
     // travels: TravelEntity[]
 }
 
-export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]: Entity<any>}
+export const EntityPropMapping: EntityMap = {
+    indicators: Indicator
+
+};
+
+export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]: Entity<SectionEntity| IndicatorEntity>}

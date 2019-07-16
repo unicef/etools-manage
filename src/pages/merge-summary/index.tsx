@@ -35,7 +35,7 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
     // const {summary} = useSummary()
     // useEffect(() => {
     //     if (summary) {
-    //         entityConfig = ...
+    //
     //     }
     // }, [summary]);
 
