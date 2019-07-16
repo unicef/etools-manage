@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import {
-    filter
+    filter,
+    includes
 } from 'ramda';
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import { useAppState } from 'contexts/app';
@@ -11,9 +12,11 @@ const MergeModalContent = lazy(() => import('./merge-modal-content'));
 export const useMergeState = () => {
     const { sections } = useAppState();
     const { mergeModalOpen, selectedForMerge } = useModalsState();
-    const matchingSection = ({ id }: {id: number}) => id === selectedForMerge[0] || id === selectedForMerge[1];
-    const selectedSectionsFromCollection = filter(matchingSection, sections);
     const dispatch = useModalsDispatch();
+
+    const matchingSection = ({ id }: {id: number}) => includes(String(id), selectedForMerge);
+    const selectedSectionsFromCollection = filter(matchingSection, sections);
+
     return {
         dispatch,
         mergeModalOpen,
