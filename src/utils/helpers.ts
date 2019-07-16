@@ -1,4 +1,5 @@
 import { useReducer, useEffect, useRef } from 'react';
+import { isEmpty } from 'ramda';
 import { AppStore, NamespaceKey, StoreShape } from 'global-types';
 import { SectionEntity } from 'entities/section-entity';
 
@@ -43,4 +44,8 @@ export function sectionWithNumberId(section: SectionEntity): SectionEntity {
         ...section,
         id: Number(section.id)
     });
+}
+
+export function notEmpty(xs: any[]) {
+    return !isEmpty(xs);
 }

@@ -5,7 +5,7 @@ import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary } from 'actions';
 import { RouteComponentProps } from 'react-router';
-import Entity from 'entities';
+import Entity, { EntityMap } from 'entities';
 
 export interface MergeProps {
     sections: string;
@@ -31,7 +31,13 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
     // const { loading } = useAppState();
 
     const { sections, newName } = match.params;
-
+    let entityConfig: EntityMap;
+    // const {summary} = useSummary()
+    // useEffect(() => {
+    //     if (summary) {
+    //         entityConfig = ...
+    //     }
+    // }, [summary]);
 
     useEffect(() => {
         onFetchMergeSummary(service, sections, dispatch);

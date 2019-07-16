@@ -1,16 +1,18 @@
-import { zipObj } from 'ramda';
+import { zipObj, filter } from 'ramda';
 import BaseService from 'services';
 import { ActionPointEntity } from 'entities/actionpoint-entity';
 import { TPMActivityEntity } from 'entities/tpmactivity-entity';
 import { IndicatorEntity } from 'entities/indicator-entity';
 import { TravelEntity } from 'entities/travel-entity';
+import { notEmpty } from 'utils/helpers';
+import { ZippedEntityResults } from 'entities';
 
 export interface BackendService {
     getIndicators(query: string): Promise<IndicatorEntity[]>;
     getTravels(query: string): Promise<TravelEntity[]>;
     getTPMActivities(query: string): Promise<TPMActivityEntity[]>;
     getActionPoints(query: string): Promise<ActionPointEntity[]>;
-    getAllAffectedEntities(query: string): Promise<ZippedEntityResults>;
+    getAllAffectedEntities(query: string): Promise<NonEmptyEntityResults>;
 }
 
 export interface BackendResponse<T> {
@@ -24,12 +26,8 @@ export type EntityUnion = IndicatorEntity[] | TPMActivityEntity[] | ActionPointE
 export interface AllAffectedEntities {
     [key: string]: (query: string) => Promise<EntityUnion>;
 }
-export interface ZippedEntityResults {
-    indicators: IndicatorEntity[];
-    tpmActivities: TPMActivityEntity[];
-    actionPoints: ActionPointEntity[];
-    // travels: TravelEntity[]
-}
+
+export type NonEmptyEntityResults = Partial<ZippedEntityResults>
 
 // TODO: Add type guards on all api responses
 export default class BackendApiService extends BaseService implements BackendService {
@@ -85,16 +83,14 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public async getAllAffectedEntities(query: string): Promise<ZippedEntityResults> {
+    public async getAllAffectedEntities(query: string): Promise<NonEmptyEntityResults> {
         const zip = zipObj(Object.keys(this.entityApiMap));
         const allEntities = await Promise.all(
             Object.keys(this.entityApiMap).map(
                 entity => this.entityApiMap[entity](query)
             )
         );
-        return zip(allEntities) as ZippedEntityResults;
-
+        return filter(notEmpty, zip(allEntities));
     }
-
 
 }

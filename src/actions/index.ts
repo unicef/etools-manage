@@ -2,7 +2,7 @@ import { createAction } from 'redux-starter-kit';
 
 import { SectionsService } from 'services/section';
 import { sectionWithNumberId } from 'utils/helpers';
-import { BackendService, ZippedEntityResults } from 'services/backend';
+import { BackendService, NonEmptyEntityResults } from 'services/backend';
 import { StoreDispatch } from 'contexts/app';
 import { SectionPayload } from 'entities/section-entity';
 import { isSectionsParamValid } from 'pages/merge-summary';
@@ -61,7 +61,7 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
 
     dispatch(onSetLoading(true));
 
-    let summary: ZippedEntityResults;
+    let summary: NonEmptyEntityResults;
 
     try {
         summary = await service.getAllAffectedEntities(payload);
