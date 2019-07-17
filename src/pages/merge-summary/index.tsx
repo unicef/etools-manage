@@ -12,6 +12,7 @@ export interface MergeProps {
     newName: string;
 }
 
+
 export function isSectionsParamValid(str: string): boolean {
     if (!str.length) {
         return false;

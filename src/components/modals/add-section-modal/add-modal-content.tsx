@@ -126,6 +126,7 @@ export default function AddSectionModal() {
     const { addModalOpen } = useModalsState();
     const dispatch = useModalsDispatch();
     const appDispatch = useAppDispatch();
+
     const handleClose = () => {
         dispatch(onToggleAddModal);
         appDispatch(onResetCreatedSection);

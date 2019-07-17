@@ -10,15 +10,8 @@ import {
 import { useAppState } from 'contexts/app';
 import Entity from 'entities';
 import { PropertyNames } from 'helpers';
+import { SectionPayload, SectionEntity } from './types';
 
-export interface SectionEntity {
-    id: number ;
-    name: string;
-}
-
-export interface SectionPayload {
-    new_section_name: string;
-}
 
 export class NewSection implements SectionPayload {
     public new_section_name: string;
@@ -55,6 +48,10 @@ export default class Section extends Entity<SectionEntity> {
 
     public get displayProperties(): PropertyNames<SectionEntity>[] {
         return ['name', 'id'];
+    }
+
+    public get title() {
+        return 'Sections';
     }
 
 }

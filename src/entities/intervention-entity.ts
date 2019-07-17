@@ -1,11 +1,5 @@
+import { InterventionEntity } from './types';
 
-
-export interface InterventionEntity {
-    id: number;
-    number: string;
-    title: string;
-    sections: number[];
-}
 
 export default class Intervention implements InterventionEntity {
     public id: number;
