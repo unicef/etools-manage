@@ -1,6 +1,6 @@
 
 import { AppState } from './lib/reducer';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { Store, Reducer } from 'redux';
 import { LocationState } from 'redux-first-router';
 import { ROUTE_MAPPING } from 'lib/create-router';
@@ -76,3 +76,9 @@ export interface ChildrenProps {
     children: React.ReactNode;
 }
 
+export interface SuccessResponse {
+    success: string;
+}
+
+export type StateSetter = ReturnType<useState>
+export type ClickHandler = () => void

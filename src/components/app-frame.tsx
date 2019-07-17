@@ -1,6 +1,6 @@
-import React, { useState, useContext, ReactNode, useEffect } from 'react';
+import React, { useContext, ReactNode, useEffect } from 'react';
 import clsx from 'clsx';
-import { Theme, makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,11 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import { User } from 'global-types';
 import { UserContext } from '../contexts/user';
 import { SectionsService } from 'services/section';
-import { useAppService, useAppDispatch } from 'contexts/app';
+import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onGetSections } from 'actions';
 import { Modals } from 'contexts/page-modals';
-import { useLoadingDispatch } from 'contexts/loading';
-
+import { AppServices } from 'services';
+import Loader from './loader';
 
 const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
@@ -55,9 +55,15 @@ export interface AppFrameProps{
 const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 
     const userData: User = useContext(UserContext);
-    const service: SectionsService = useAppService();
+    const { sectionsService: service }: AppServices = useAppService();
     const dispatch = useAppDispatch();
+    const { loading } = useAppState();
+    const { error } = useAppState();
 
+    if (error) {
+        throw error;
+    }
+    // TODO: move this to sections list page
     useEffect(() => {
         onGetSections(service, dispatch);
     }, []);
@@ -66,6 +72,8 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 
     return (
         <Modals>
+            {loading && <Loader />}
+
             <div className={styles.root}>
                 <CssBaseline />
                 <AppBar

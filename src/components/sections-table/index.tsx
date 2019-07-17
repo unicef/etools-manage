@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,8 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
 import { SectionEntity } from 'entities/section-entity';
-import { useLoadingState } from 'contexts/loading';
-import { CircularProgress } from '@material-ui/core';
 
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -167,7 +165,7 @@ export interface SectionTableProps {
     onChangeSelected: (selected: string[]) => void;
 }
 
-const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChangeSelected }) => {
+const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive, onChangeSelected }) => {
     const classes = useStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
@@ -245,7 +243,7 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     // @ts-ignore
-                                    const isItemSelected = isSelected(row.id);
+                                    const isItemSelected = isSelected(String(row.id));
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
@@ -256,7 +254,7 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
                                             tabIndex={-1}
                                             key={row.name}
                                             selected={isItemSelected}
-                                            onClick={event => handleClick(event, row.id as string)}
+                                            onClick={event => handleClick(event, String(row.id))}
                                         >
                                             <TableCell padding="checkbox">
                                                 {mergeActive && <Checkbox
@@ -298,6 +296,6 @@ const SectionTable: React.FC<SectionTableProps> = ({ rows, mergeActive, onChange
             />
         </Paper>
     );
-};
+});
 
 export default SectionTable;

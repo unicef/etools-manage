@@ -31,12 +31,12 @@ export interface SearchBarProps {
     onChange: (str: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onChange }) => {
+const SearchBar: React.FC<SearchBarProps> = React.memo(({ onChange }) => {
     const classes = useStyles({});
     const [active, setActive] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const handleChange = ({ target: { value } }) => {
+    const handleChange = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(value);
         onChange(value);
 
@@ -55,6 +55,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange }) => {
             <SearchIcon />
         </Paper>
     );
-};
+});
 
 export default SearchBar;

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { compose, includes, filter, prop, toLower } from 'ramda';
 import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
-
 
 import SectionsTable from 'components/sections-table';
 import { useAppState } from 'contexts/app';
@@ -10,27 +9,34 @@ import SearchBar from 'components/search-bar';
 import { onSelectForMerge } from 'actions';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
-import { useLoadingState } from 'contexts/loading';
+import { SectionEntity } from 'entities/section-entity';
 
 
 const SectionsMainPage: React.FunctionComponent = () => {
 
     const { sections } = useAppState();
-    const [filteredSections, setFilteredSections] = useState([]);
+    const [filteredSections, setFilteredSections] = useState([] as SectionEntity[]);
     const [mergeActive, setMergeActive] = useState<boolean>(false);
+
     const dispatch = useModalsDispatch();
 
-    const handleSearch = (str: string) => {
-        const matching = filter(compose(includes(str), toLower, prop('name')));
+    const handleSearch = useCallback((str: string) => {
+        const matching = filter(compose(includes(str.toLowerCase()), toLower, prop('name')));
         setFilteredSections(matching(sections));
-    };
-
+    }, [sections]);
 
     useEffect(() => {
         setFilteredSections(sections);
     }, [sections]);
 
-    const onChangeSelected = (selected: string[]) => dispatch(onSelectForMerge(selected));
+
+    const onChangeSelected = useCallback((selected: string[]) => dispatch(onSelectForMerge(selected)), []);
+
+    const tableProps = {
+        rows: filteredSections,
+        mergeActive,
+        onChangeSelected
+    };
 
     return (
         <Box column>
@@ -38,11 +44,11 @@ const SectionsMainPage: React.FunctionComponent = () => {
                 <SearchBar onChange={handleSearch} />
                 <ControlsBar mergeActive={mergeActive} setMergeActive={setMergeActive} />
             </Box>
-            <SectionsTable rows={filteredSections} mergeActive={mergeActive} onChangeSelected={onChangeSelected}/>
+
+            <SectionsTable {...tableProps}/>
 
             <PageModals />
         </Box>
-
     );
 };
 

@@ -1,11 +1,15 @@
 import React from 'react';
 import { AddSectionButton, ConfirmMergeButton, MergeButton } from './buttons';
-import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
+import { StateSetter } from 'global-types';
 
 
-export default function ControlsBar({ mergeActive, setMergeActive }) {
-    // const dispatch = useModalsDispatch();
+export interface ControlsBarProps {
+    mergeActive: boolean;
+    setMergeActive: StateSetter;
+}
+
+export default function ControlsBar({ mergeActive, setMergeActive }: ControlsBarProps) {
 
     const handleToggleMerge = () => {
         setMergeActive(!mergeActive);

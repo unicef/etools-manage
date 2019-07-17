@@ -23,7 +23,7 @@ type Dispatch = (action: ModalAction) => void
 const ModalsStateContext = React.createContext<State | undefined>(undefined);
 const ModalsDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 
-const initialState: State = {
+export const initialStateModals: State = {
     addModalOpen: false,
     splitModalOpen: false,
     mergeModalOpen: false,
@@ -32,7 +32,7 @@ const initialState: State = {
 
 
 export function PageModalsProvider({ children }: ChildrenProps) {
-    const [state, setModalsState] = useReducer(modalsReducer, initialState);
+    const [state, setModalsState] = useReducer(modalsReducer, initialStateModals);
     return (
         <ModalsStateContext.Provider value={state}>
             <ModalsDispatchContext.Provider value={setModalsState}>
@@ -61,10 +61,10 @@ export function useModalsDispatch() {
     return context;
 }
 
-export function Modals({ children }) {
-    return (
-        <PageModalsProvider>
-            {children}
-        </PageModalsProvider>
-    );
-}
+
+export const Modals: React.FC<ChildrenProps> = ({ children }) => (
+    <PageModalsProvider>
+        {children}
+    </PageModalsProvider>
+);
+

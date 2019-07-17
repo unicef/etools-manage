@@ -1,24 +1,21 @@
-import { SectionEntity } from 'entities/section-entity';
-import { HttpClient } from 'lib/http';
+import BaseService from 'services';
+import { SectionEntity, SectionPayload } from 'entities/section-entity';
+import { SuccessResponse } from 'global-types';
 
 export interface SectionsService {
     getSections(): Promise<SectionEntity[]>;
-    createSection(data: SectionEntity): Promise<SectionEntity>;
-    closeSection(id: number): Promise<any>; // TODO: check response on close and create type
+    createSection(data: SectionPayload): Promise<SuccessResponse>;
+    // closeSection(id: number): Promise<Response>; // TODO: check response on close and create type
 }
 
+const getSectionsUrl = process.env.REACT_APP_SECTIONS_ENDPOINT as string;
+const createSectionUrl = process.env.REACT_APP_SECTIONS_CREATE_ENDPOINT as string;
 
-export default class SectionsApiService implements SectionsService {
-
-    private _http: HttpClient;
-
-    public constructor(client: HttpClient) {
-        this._http = client;
-    }
+export default class SectionsApiService extends BaseService implements SectionsService {
 
     public async getSections(): Promise<SectionEntity[]> {
         try {
-            const response = await this._http.get<SectionEntity[]>(process.env.REACT_APP_SECTIONS_ENDPOINT);
+            const response = await this._http.get<SectionEntity[]>(getSectionsUrl);
             return response;
 
         } catch (err) {
@@ -26,10 +23,10 @@ export default class SectionsApiService implements SectionsService {
         }
     }
 
-    public async createSection(data: SectionEntity): Promise<SectionEntity> {
+    public async createSection(data: SectionPayload): Promise<SuccessResponse> {
         try {
-            const response = await this._http.post<SectionEntity>(
-                process.env.REACT_APP_SECTIONS_ENDPOINT,
+            const response = await this._http.post<SuccessResponse>(
+                createSectionUrl,
                 {
                     body: JSON.stringify(data)
                 }
@@ -41,19 +38,19 @@ export default class SectionsApiService implements SectionsService {
         }
     }
 
-    public async closeSection(id: number): Promise<void> {
-        try {
-            const response = await this._http.post<any>(
-                process.env.SECTION_CLOSE_ENDPOINT,
-                {
-                    body: JSON.stringify({ id })
-                }
-            );
+    // public async closeSection(id: number): Promise<Response> {
+    //     try {
+    //         const response = await this._http.post<Response>(
+    //             process.env.SECTION_CLOSE_ENDPOINT,
+    //             {
+    //                 body: JSON.stringify({ id })
+    //             }
+    //         );
 
-            return response;
+    //         return response;
 
-        } catch (err) {
-            throw new Error(err);
-        }
-    }
+    //     } catch (err) {
+    //         throw new Error(err);
+    //     }
+    // }
 }

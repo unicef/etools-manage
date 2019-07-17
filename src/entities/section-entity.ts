@@ -8,35 +8,32 @@ import {
     trim
 } from 'ramda';
 import { useAppState } from 'contexts/app';
+import Entity from 'entities';
+import { PropertyNames } from 'helpers';
 
 export interface SectionEntity {
-    id: number | null ;
+    id: number ;
     name: string;
 }
 
-export default class Section implements SectionEntity {
-    public id: number;
-    private _name: string;
+export interface SectionPayload {
+    new_section_name: string;
+}
+
+export class NewSection implements SectionPayload {
+    public new_section_name: string;
     private _validName: boolean | undefined;
 
     public constructor(name: string = '') {
-        this._name = name;
+        /* eslint-disable-next-line */
+        this.new_section_name = name;
     }
 
-    public set name(name) {
-        this._name = name;
-    }
-
-    public get name() {
-        return this._name;
-    }
-
-    public async isValidName(sectionsCollection: SectionEntity[], validator?: (name: string) => Promise<boolean>): Promise<boolean> {
-
-        this._validName = validator ? await validator(this._name) :
-            await this.sectionValidator(this._name, sectionsCollection);
-
-        return this._validName;
+    public get payload(): SectionPayload {
+        return {
+            /* eslint-disable-next-line */
+            new_section_name: this.new_section_name
+        };
     }
 
     private sectionValidator (name: string, sections: SectionEntity[]): Promise<boolean> {
@@ -45,10 +42,19 @@ export default class Section implements SectionEntity {
         return new Promise(resolve => resolve(!nameExists));
     }
 
-    public get payload() {
-        return {
-            name: this._name
-        };
+    public async isValidName(sectionsCollection: SectionEntity[], validator?: (name: string) => Promise<boolean>): Promise<boolean> {
+
+        this._validName = validator ? await validator(this.new_section_name) :
+            await this.sectionValidator(this.new_section_name, sectionsCollection);
+
+        return this._validName;
+    }
+}
+
+export default class Section extends Entity<SectionEntity> {
+
+    public get displayProperties(): PropertyNames<SectionEntity>[] {
+        return ['name', 'id'];
     }
 
 }
@@ -57,11 +63,11 @@ export const useAddSection = () => {
     const [errorOnName, setNameError] = useState<string>('');
     const { sections } = useAppState();
     const [name, setName] = useState<string>('');
-
-    const sectionInstance: Section = new Section();
+    const [sectionInstance] = useState<NewSection>(new NewSection());
 
     useEffect(() => {
-        sectionInstance.name = name;
+        /* eslint-disable-next-line */
+        sectionInstance.new_section_name = name;
     }, [name]);
 
     const handleValidateSection = async () => {

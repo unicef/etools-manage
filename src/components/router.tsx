@@ -1,10 +1,10 @@
 
 import React from 'react';
+import { Location } from 'history';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Main from 'pages/sections-main';
 import MergeSummaryPage from 'pages/merge-summary';
 
-export type RouteProps = ReturnType<typeof Route>
 
 export default function AppRouter() {
     return (
@@ -19,7 +19,7 @@ export default function AppRouter() {
 }
 
 
-function NoMatch({ location }) {
+function NoMatch({ location }: {location: Location}) {
     return (
         <div>
             <h3>
