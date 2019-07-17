@@ -1,4 +1,6 @@
 import { InterventionEntity } from './types';
+import EntityConfig from 'entities';
+import { PropertyNames } from 'helpers';
 
 
 export default class Intervention implements InterventionEntity {
@@ -12,5 +14,16 @@ export default class Intervention implements InterventionEntity {
         this.number = number;
         this.title = title;
         this.sections = sections;
+    }
+}
+
+export class InterventionConfig extends EntityConfig<InterventionEntity> {
+
+    public get displayProperties(): PropertyNames<InterventionEntity>[] {
+        return ['number', 'title'];
+    }
+
+    public get title() {
+        return 'PD/SSFAs';
     }
 }

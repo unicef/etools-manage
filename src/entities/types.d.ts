@@ -1,9 +1,10 @@
 
 
 export interface ZippedEntityResults {
-    indicators: IndicatorEntity[];
+    indicators: InterventionEntity[];
     tpmActivities: TPMActivityEntity[];
     actionPoints: ActionPointEntity[];
+    interventions: InterventionEntity[];
     // travels: TravelEntity[]
 }
 
@@ -15,7 +16,6 @@ export interface ActionPointEntity {
 }
 
 export interface IndicatorEntity {
-    id: number;
     title: string;
     section: number;
 }
@@ -45,5 +45,5 @@ export interface SectionPayload {
 }
 
 
-export type AllConfigs = EntityConfig<IndicatorEntity> | EntityConfig<TPMActivityEntity> | EntityConfig<ActionPointEntity>
+export type AllConfigs = EntityConfig<InterventionEntity> | EntityConfig<TPMActivityEntity> | EntityConfig<ActionPointEntity>
 export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]?: AllConfigs}

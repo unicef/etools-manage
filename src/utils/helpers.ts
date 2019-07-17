@@ -1,7 +1,7 @@
 import { useReducer, useEffect, useRef } from 'react';
 import { isEmpty } from 'ramda';
 import { AppStore, NamespaceKey, StoreShape } from 'global-types';
-import { SectionEntity } from 'entities/section-entity';
+import { SectionEntity } from 'entities/types';
 
 // TODO: type these
 export function useSetState<T>(initialState: T) {

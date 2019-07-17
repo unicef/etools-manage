@@ -4,8 +4,8 @@ import { SectionsService } from 'services/section';
 import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService, NonEmptyEntityResults } from 'services/backend';
 import { StoreDispatch } from 'contexts/app';
-import { SectionPayload } from 'entities/section-entity';
 import { isSectionsParamValid } from 'pages/merge-summary';
+import { SectionPayload } from 'entities/types';
 
 export const onToggleAddModal = createAction('modals/toggleAdd');
 export const onToggleSplitModal = createAction('modals/toggleSplit');
@@ -65,8 +65,9 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
 
     try {
         summary = await service.getAllAffectedEntities(payload);
-        console.log('TCL: onFetchMergeSummary -> summary', summary);
+        // console.log('TCL: onFetchMergeSummary -> summary', summary);
         dispatch(onSetLoading(false));
+        return summary;
         // dispatch(onMergeSummarySuccess(summary));
 
     } catch (err) {

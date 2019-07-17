@@ -1,5 +1,4 @@
 import React, { useReducer, useContext } from 'react';
-import { SectionEntity } from 'entities/section-entity';
 import { onGetSectionsSuccess, onSetLoading, onCreateSectionSuccess, onResetCreatedSection, onThrowError } from 'actions';
 import { ChildrenProps } from 'global-types';
 import { appStoreReducer } from 'reducers/app-store';
@@ -7,6 +6,7 @@ import { ApiClient } from 'lib/http';
 import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
+import { SectionEntity } from 'entities/types';
 
 export interface Store {
     sections: SectionEntity[];

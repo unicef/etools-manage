@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
-import { Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Typography, TableHead, TableRow, TableCell, Table, TableBody } from '@material-ui/core';
 
 import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary } from 'actions';
 import { RouteComponentProps } from 'react-router';
-import Entity, { EntityMap } from 'entities';
+import EntityConfig from 'entities';
+import { NonEmptyEntityResults } from 'services/backend';
+import { keys } from 'ramda';
+import EntityPropMapping from 'entities/config-map';
 
 export interface MergeProps {
     sections: string;
@@ -32,37 +35,82 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
     // const { loading } = useAppState();
 
     const { sections, newName } = match.params;
-    let entityConfig: EntityMap;
-    // const {summary} = useSummary()
-    // useEffect(() => {
-    //     if (summary) {
-    //
-    //     }
-    // }, [summary]);
+    const [summary, setSummary] = useState();
 
     useEffect(() => {
-        onFetchMergeSummary(service, sections, dispatch);
+        const fetchSummary = async () => {
+            const summary = await onFetchMergeSummary(service, sections, dispatch);
+            setSummary(summary);
+        };
+        fetchSummary();
         // use params to call api for summary data
     }, []);
-
+    console.log('TCL: summary', summary);
     return (
         <Box column>
             <Typography variant="h4">
                 Confirm Merge
             </Typography>
-            {/* Implement ui here */}
+            {summary && keys(summary).map(
+                entity => {
+                    return (
+                        <EntityListWrapper
+                            key={entity as string}
+                            entity={EntityPropMapping[entity]}
+                            list={summary[entity]} />
+                    );
+                }
+            )}
         </Box>
     );
 };
 
-// function EntityListWrapper<T>(entity: Entity<T>, list: []T){
-// <TableHeader>
-//     <TableRow>
-//         {Entity.displayProperties.map(
-//             property=> (<th>{property}</th>)
-//         )}
-//     </TableRow>
-// </TableHeader>
-// }
+// TODO:memo this
+
+export interface EntityListProps<T> {
+    entity: EntityConfig<T>;
+    list: T[];
+}
+
+function EntityListWrapper<T>({ entity, list }: EntityListProps<T>) {
+    return (
+        <>
+        <Typography variant="h3">{entity.title}</Typography>
+        <Table>
+            <TableHead>
+                <TableRow>
+                    {entity.displayProperties.map((prop, idx) => (
+                        <TableCell
+                            key={idx}
+                            align="left"
+                            padding="default"
+                        >
+                            {prop}
+                        </TableCell>
+                    ))}
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {list.map(
+                    (item, idx) => (
+                        <TableRow key={idx}>
+                            {entity.displayProperties.map(
+                                (displayProp, i) => (
+                                    <TableCell
+                                        key={displayProp as string}
+                                        align="left"
+                                    >
+                                        {item[displayProp]}
+                                    </TableCell>
+                                )
+                            )}
+                        </TableRow>
+                    )
+                )}
+            </TableBody>
+        </Table>
+</>
+    );
+}
 
 export default MergeSummaryPage;

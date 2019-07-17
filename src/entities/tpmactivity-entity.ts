@@ -6,7 +6,7 @@ import { TPMActivityEntity } from './types';
 export default class TPMActivityConfig extends EntityConfig<TPMActivityEntity> {
 
     public get displayProperties(): PropertyNames<TPMActivityEntity>[] {
-        return ['reference_number', 'id'];
+        return ['reference_number', 'status'];
     }
 
     public get title() {

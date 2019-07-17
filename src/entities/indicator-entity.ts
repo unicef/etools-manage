@@ -5,10 +5,11 @@ import { IndicatorEntity } from './types';
 
 export default class IndicatorConfig extends EntityConfig<IndicatorEntity> {
     public get displayProperties(): PropertyNames<IndicatorEntity>[] {
-        return ['title', 'id'];
+        return ['title'];
     }
     public get title() {
         return 'Applied Indicators';
     }
 }
+
 
