@@ -1,14 +1,13 @@
-import Indicator, { IndicatorEntity } from './indicator-entity';
-import { TPMActivityEntity } from './tpmactivity-entity';
-import { ActionPointEntity } from './actionpoint-entity';
+import IndicatorConfig, { IndicatorEntity } from './indicator-entity';
+import TPMActivityConfig, { TPMActivityEntity } from './tpmactivity-entity';
+import ActionPointConfig, { ActionPointEntity } from './actionpoint-entity';
 import { PropertyNames } from 'helpers';
-import { SectionEntity } from './section-entity';
 
-abstract class Entity<T> {
+abstract class EntityConfig<T> {
     public abstract get displayProperties(): (keyof T)[]
 }
 
-export default Entity;
+export default EntityConfig;
 
 export interface ZippedEntityResults {
     indicators: IndicatorEntity[];
@@ -17,9 +16,15 @@ export interface ZippedEntityResults {
     // travels: TravelEntity[]
 }
 
-export const EntityPropMapping: EntityMap = {
-    indicators: Indicator
+// tells us which config instance to use for each entity type,
+// EntityMap ensures only the listed types in AllConfigs can be used in the map
 
+export const EntityPropMapping: EntityMap = {
+    indicators: new IndicatorConfig(),
+    tpmActivities: new TPMActivityConfig(),
+    actionPoints: new ActionPointConfig()
 };
 
-export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]: Entity<SectionEntity| IndicatorEntity>}
+
+export type AllConfigs = EntityConfig<IndicatorEntity> | EntityConfig<TPMActivityEntity> | EntityConfig<ActionPointEntity>
+export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]?: AllConfigs}

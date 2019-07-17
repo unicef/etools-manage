@@ -50,6 +50,7 @@ export class NewSection implements SectionPayload {
         return this._validName;
     }
 }
+
 export default class Section extends Entity<SectionEntity> {
 
     public get displayProperties(): PropertyNames<SectionEntity>[] {

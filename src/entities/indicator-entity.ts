@@ -1,4 +1,4 @@
-import Entity from 'entities';
+import EntityConfig from 'entities';
 import { PropertyNames } from 'helpers';
 
 export interface IndicatorEntity {
@@ -8,8 +8,9 @@ export interface IndicatorEntity {
 }
 
 
-export default class Indicator extends Entity<IndicatorEntity> {
+export default class IndicatorConfig extends EntityConfig<IndicatorEntity> {
     public get displayProperties(): PropertyNames<IndicatorEntity>[] {
         return ['title', 'id'];
     }
 }
+

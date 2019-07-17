@@ -1,4 +1,4 @@
-import Entity from 'entities';
+import EntityConfig from 'entities';
 import { PropertyNames } from 'helpers';
 
 export interface TPMActivityEntity {
@@ -8,7 +8,7 @@ export interface TPMActivityEntity {
 }
 
 
-export default class TPMActivity extends Entity<TPMActivityEntity> {
+export default class TPMActivityConfig extends EntityConfig<TPMActivityEntity> {
 
     public get displayProperties(): PropertyNames<TPMActivityEntity>[] {
         return ['reference_number', 'id'];
