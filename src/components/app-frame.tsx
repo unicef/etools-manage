@@ -97,7 +97,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                 <main
                     className={clsx(styles.content)}
                 >
-                    <div className={styles.mainHeader} />
+                    {/* <div className={styles.mainHeader} /> */}
                     {children}
                 </main>
             </div>

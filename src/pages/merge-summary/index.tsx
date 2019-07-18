@@ -3,9 +3,8 @@ import { Typography, TableHead, TableRow, TableCell, Table, TableBody, Theme, Pa
 
 import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
-import { onFetchMergeSummary, onSetLoading } from 'actions';
+import { onFetchMergeSummary } from 'actions';
 import { RouteComponentProps } from 'react-router';
-import EntityConfig from 'entities';
 import { keys, prop, map, filter, find, propEq, compose } from 'ramda';
 import EntityPropMapping from 'entities/config-map';
 import { makeStyles, createStyles } from '@material-ui/styles';
@@ -13,11 +12,7 @@ import { usePagination } from 'components/table';
 import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
-
-export interface MergeProps {
-    sections: string;
-    newName: string;
-}
+import { EntityTableHeadProps, EntityTableProps, MergeProps } from './types';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,46 +36,30 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }));
 
-export function isSectionsParamValid(str: string): boolean {
-    if (!str.length) {
-        return false;
-    }
-    const sections = str.split(',');
-    const sectionsStringValid = sections.reduce(
-        (acc, next): boolean => {
-            const sectionIdIsNumber = !isNaN(Number(next));
-            return sectionIdIsNumber && acc;
-        }, true);
-    return sectionsStringValid;
-}
-
 const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) => {
     const { backendService: service } = useAppService();
     const dispatch = useAppDispatch();
 
     const { sections: selected, newName } = match.params;
+
     const [summary, setSummary] = useState();
-    const searchParams = location.search;
 
     useEffect(() => {
         const fetchSummary = async () => {
             const summary = await onFetchMergeSummary(service, selected, dispatch);
-            console.log('returns');
             setSummary(summary);
         };
         fetchSummary();
         // use params to call api for summary data
     }, []);
-    console.log('TCL: searchParams', searchParams);
 
     const selectedSections = selected.split(',').map(Number);
 
 
-    console.log('TCL: summary', summary);
     return (
         <Box column>
             <Typography variant="h4">
-                Confirm Merge
+                    Confirm Merge
             </Typography>
             {summary && keys(summary).map(
                 (entity: string) => {
@@ -99,14 +78,8 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
 };
 
 
-const isArrayOfObjects = (xs: any[]) => typeof xs[0] === 'object';
-
 export default MergeSummaryPage;
 
-interface EntityTableHeadProps<T> {
-    entity: EntityConfig<T>;
-
-}
 function EntityTableHead<T>({ entity }: EntityTableHeadProps<T>) {
 
     return <TableHead>
@@ -128,16 +101,7 @@ function EntityTableHead<T>({ entity }: EntityTableHeadProps<T>) {
 }
 
 
-export interface EntityTableProps<T> {
-    entity: EntityConfig<T>;
-    list: T[];
-    selectedSections: number[];
-    newSectionName: string;
-}
-
-
 function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName }: EntityTableProps<T>) {
-    console.log('TCL: list', list);
     const styles = useStyles();
     const {
         page,
@@ -148,9 +112,9 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
 
     const { sections } = useAppState();
 
-
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
 
+    //TODO: abstract away at a different layer
     const getCorrespondingSection = useCallback(
         item => {
             const { sectionsProp } = entity;
@@ -164,8 +128,8 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
                 return sectionsOfEntity.name;
             }
             const sectionChangingName = compose(prop('name'), find(propEq('id', sectionsOfEntity)))(sections);
-            return sectionChangingName;
 
+            return sectionChangingName;
         },
         [sections],
     );
@@ -176,9 +140,9 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
             <Table
                 aria-labelledby="tableTitle"
                 size="medium">
+
                 <EntityTableHead entity={entity} />
                 <TableBody>
-
                     {
                         list
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -238,4 +202,23 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
              /> }
         </Paper>
     );
+}
+
+
+export function isSectionsParamValid(str: string): boolean {
+    if (!str.length) {
+        return false;
+    }
+    const sections = str.split(',');
+    const sectionsStringValid = sections.reduce(
+        (acc, next): boolean => {
+            const sectionIdIsNumber = !isNaN(Number(next));
+            return sectionIdIsNumber && acc;
+        }, true);
+    return sectionsStringValid;
+}
+
+
+function isArrayOfObjects(xs: any[]) {
+    return typeof xs[0] === 'object';
 }
