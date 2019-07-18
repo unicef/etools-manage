@@ -2,10 +2,10 @@ import { zipObj, filter, prop, flatten } from 'ramda';
 import BaseService from 'services';
 import { TravelEntity } from 'entities/travel-entity';
 import { notEmpty } from 'utils/helpers';
-import { InterventionEntity, ActionPointEntity, TPMActivityEntity, ZippedEntityResults } from 'entities/types';
+import { InterventionEntity, ActionPointEntity, TPMActivityEntity, ZippedEntityResults, IndicatorEntity } from 'entities/types';
 
 export interface BackendService {
-    getIndicators(query: string): Promise<InterventionEntity[]>;
+    getIndicators(interventions: InterventionEntity[]): IndicatorEntity[];
     getTravels(query: string): Promise<TravelEntity[]>;
     getTPMActivities(query: string): Promise<TPMActivityEntity[]>;
     getActionPoints(query: string): Promise<ActionPointEntity[]>;
@@ -47,7 +47,7 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public getIndicators(interventions: InterventionEntity[]) {
+    public getIndicators(interventions: InterventionEntity[]): IndicatorEntity[] {
         return flatten(interventions.map(prop('indicators')).filter(notEmpty));
     }
 

@@ -10,6 +10,9 @@ export default class IndicatorConfig extends EntityConfig<IndicatorEntity> {
     public get title() {
         return 'Applied Indicators';
     }
+    public get sectionsProp() {
+        return 'section';
+    }
 }
 
 

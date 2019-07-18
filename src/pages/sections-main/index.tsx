@@ -9,7 +9,7 @@ import SearchBar from 'components/search-bar';
 import { onSelectForMerge } from 'actions';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
-import { SectionEntity } from 'entities/section-entity';
+import { SectionEntity } from 'entities/types';
 
 
 const SectionsMainPage: React.FunctionComponent = () => {

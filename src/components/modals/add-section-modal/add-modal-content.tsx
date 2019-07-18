@@ -11,7 +11,8 @@ import { onToggleAddModal, onSubmitCreateSection, onResetCreatedSection } from '
 import { useModalStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
-import { useAddSection, SectionEntity } from 'entities/section-entity';
+import { useAddSection } from 'entities/section-entity';
+import { SectionEntity } from 'entities/types';
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles({});

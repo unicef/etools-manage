@@ -26,4 +26,7 @@ export class InterventionConfig extends EntityConfig<InterventionEntity> {
     public get title() {
         return 'PD/SSFAs';
     }
+    public get sectionsProp() {
+        return 'sections';
+    }
 }

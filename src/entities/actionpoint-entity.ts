@@ -10,5 +10,8 @@ export default class ActionPointConfig extends EntityConfig<ActionPointEntity> {
     public get title() {
         return 'Action Points';
     }
+    public get sectionsProp() {
+        return 'section';
+    }
 }
 

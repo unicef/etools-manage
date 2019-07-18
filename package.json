@@ -60,6 +60,7 @@
     "react-hot-loader": "^4.12.3",
     "react-router-dom": "^5.0.1",
     "react-transition-group": "^2.7.1",
+    "react-window": "^1.8.5",
     "redux-starter-kit": "^0.5.1",
     "reselect": "^4.0.0",
     "resolve": "1.10.0",
