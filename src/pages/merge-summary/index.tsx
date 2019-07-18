@@ -13,8 +13,8 @@ import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
 import { EntityTableHeadProps, EntityTableProps, MergeProps } from './types';
-import { ConfirmButton } from 'components/controls-bar/buttons';
 import { MergeSectionsPayload } from 'entities/types';
+import { ConfirmButton } from 'components/buttons';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -78,9 +78,9 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
                 <Typography variant="h6">
             Confirm summary of changes
                 </Typography>
-                <Box>
-                    <Link to="/"><Button >Cancel</Button></Link>
-                    <ConfirmButton onClick={onConfirm}>Confirm</ConfirmButton>
+                <Box align="center">
+                    <Link to="/"><Button variant="contained">Cancel</Button></Link>
+                    <ConfirmButton onClick={onConfirm} text="Confirm" />
                 </Box>
             </Box>
             {summary && keys(summary).map(

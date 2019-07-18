@@ -11,7 +11,7 @@ export interface SectionsService {
 
 const getSectionsUrl = process.env.REACT_APP_SECTIONS_ENDPOINT as string;
 const createSectionUrl = process.env.REACT_APP_SECTIONS_CREATE_ENDPOINT as string;
-const mergeSectionUrl = process.env.REAREACT_APP_SECTIONS_MERGE_ENDPOINTCT_APP as string;
+const mergeSectionUrl = process.env.REACT_APP_SECTIONS_MERGE_ENDPOINT as string;
 
 export default class SectionsApiService extends BaseService implements SectionsService {
 
@@ -45,6 +45,8 @@ export default class SectionsApiService extends BaseService implements SectionsS
 
     public async mergeSections(payload: MergeSectionsPayload): Promise<MergeSectionsSuccess> {
         try {
+
+            console.log('mergeurl', mergeSectionUrl);
             const response = await this._http.post<MergeSectionsSuccess>(
                 mergeSectionUrl,
                 this.bodyFromPayload(payload)
