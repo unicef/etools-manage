@@ -1,2 +1,2 @@
 
-export const MAX_CELL_WRAP_LENGTH= 45
+export const MAX_CELL_WRAP_LENGTH = 45;

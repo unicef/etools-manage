@@ -1,18 +1,25 @@
 import BaseService from 'services';
 import { SuccessResponse } from 'global-types';
-import { SectionEntity, SectionPayload } from 'entities/types';
+import { SectionEntity, CreateSectionPayload, MergeSectionsPayload, SectionServicePayload, MergeSectionsSuccess } from 'entities/types';
 
 export interface SectionsService {
     getSections(): Promise<SectionEntity[]>;
-    createSection(data: SectionPayload): Promise<SuccessResponse>;
+    createSection(data: CreateSectionPayload): Promise<SuccessResponse>;
+    mergeSections(payload: MergeSectionsPayload): Promise<MergeSectionsSuccess>;
     // closeSection(id: number): Promise<Response>; // TODO: check response on close and create type
 }
 
 const getSectionsUrl = process.env.REACT_APP_SECTIONS_ENDPOINT as string;
 const createSectionUrl = process.env.REACT_APP_SECTIONS_CREATE_ENDPOINT as string;
+const mergeSectionUrl = process.env.REAREACT_APP_SECTIONS_MERGE_ENDPOINTCT_APP as string;
 
 export default class SectionsApiService extends BaseService implements SectionsService {
 
+    private bodyFromPayload(payload: SectionServicePayload) {
+        return {
+            body: JSON.stringify(payload)
+        };
+    }
     public async getSections(): Promise<SectionEntity[]> {
         try {
             const response = await this._http.get<SectionEntity[]>(getSectionsUrl);
@@ -23,18 +30,28 @@ export default class SectionsApiService extends BaseService implements SectionsS
         }
     }
 
-    public async createSection(data: SectionPayload): Promise<SuccessResponse> {
+    public async createSection(payload: CreateSectionPayload): Promise<SuccessResponse> {
         try {
             const response = await this._http.post<SuccessResponse>(
                 createSectionUrl,
-                {
-                    body: JSON.stringify(data)
-                }
+                this.bodyFromPayload(payload)
             );
             return response;
 
         } catch (err) {
             throw new Error(err);
+        }
+    }
+
+    public async mergeSections(payload: MergeSectionsPayload): Promise<MergeSectionsSuccess> {
+        try {
+            const response = await this._http.post<MergeSectionsSuccess>(
+                mergeSectionUrl,
+                this.bodyFromPayload(payload)
+            );
+            return response;
+        } catch (err) {
+            throw new Error('Error merging sections');
         }
     }
 

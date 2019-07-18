@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Typography, TableHead, TableRow, TableCell, Table, TableBody, Theme, Paper, TablePagination } from '@material-ui/core';
-
+import { Typography, TableHead, TableRow, TableCell, Table, TableBody, Theme, Paper, TablePagination, Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
-import { onFetchMergeSummary } from 'actions';
+import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
 import { RouteComponentProps } from 'react-router';
 import { keys, prop, map, filter, find, propEq, compose } from 'ramda';
 import EntityPropMapping from 'entities/config-map';
@@ -13,6 +13,8 @@ import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
 import { EntityTableHeadProps, EntityTableProps, MergeProps } from './types';
+import { ConfirmButton } from 'components/controls-bar/buttons';
+import { MergeSectionsPayload } from 'entities/types';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,7 +39,10 @@ const useStyles = makeStyles((theme: Theme) =>
     }));
 
 const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) => {
-    const { backendService: service } = useAppService();
+    const {
+        backendService: service,
+        sectionsService
+    } = useAppService();
     const dispatch = useAppDispatch();
 
     const { sections: selected, newName } = match.params;
@@ -55,12 +60,29 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
 
     const selectedSections = selected.split(',').map(Number);
 
+    const onConfirm = () => {
+
+        const payload: MergeSectionsPayload = {
+            /* eslint-disable-next-line */
+            new_section_name: newName,
+            /* eslint-disable-next-line */
+            sections_to_merge: selectedSections
+        };
+
+        onSubmitMergeSections(sectionsService, payload, dispatch);
+    };
 
     return (
         <Box column>
-            <Typography variant="h4">
-                    Confirm Merge
-            </Typography>
+            <Box justify="between">
+                <Typography variant="h6">
+            Confirm summary of changes
+                </Typography>
+                <Box>
+                    <Link to="/"><Button >Cancel</Button></Link>
+                    <ConfirmButton onClick={onConfirm}>Confirm</ConfirmButton>
+                </Box>
+            </Box>
             {summary && keys(summary).map(
                 (entity: string) => {
                     return (
@@ -114,7 +136,7 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
 
-    //TODO: abstract away at a different layer
+    // TODO: abstract away at a different layer
     const getCorrespondingSection = useCallback(
         item => {
             const { sectionsProp } = entity;
@@ -158,6 +180,7 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
                                                     // classes={{ body: styles.cellStyle }}
                                                     className={
                                                         clsx(styles.cellStyle,
+                                                            // @ts-ignore
                                                             item[propName].length > MAX_CELL_WRAP_LENGTH ?
                                                                 styles.wrapLong : styles.noWrap)}
                                                     key={label}

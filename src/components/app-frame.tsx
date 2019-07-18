@@ -7,12 +7,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'global-types';
 import { UserContext } from '../contexts/user';
-import { SectionsService } from 'services/section';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onGetSections } from 'actions';
 import { Modals } from 'contexts/page-modals';
 import { AppServices } from 'services';
 import Loader from './loader';
+import { checker } from 'reducers/modals';
 
 const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
@@ -53,7 +53,7 @@ export interface AppFrameProps{
 }
 
 const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
-
+    checker();
     const userData: User = useContext(UserContext);
     const { sectionsService: service }: AppServices = useAppService();
     const dispatch = useAppDispatch();
@@ -97,7 +97,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                 <main
                     className={clsx(styles.content)}
                 >
-                    {/* <div className={styles.mainHeader} /> */}
+                    <div className={styles.mainHeader} />
                     {children}
                 </main>
             </div>

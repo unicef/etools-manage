@@ -5,7 +5,7 @@ import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService, NonEmptyEntityResults } from 'services/backend';
 import { StoreDispatch } from 'contexts/app';
 import { isSectionsParamValid } from 'pages/merge-summary';
-import { SectionPayload } from 'entities/types';
+import { CreateSectionPayload, MergeSectionsPayload } from 'entities/types';
 
 export const onToggleAddModal = createAction('modals/toggleAdd');
 export const onToggleSplitModal = createAction('modals/toggleSplit');
@@ -35,12 +35,20 @@ export const onGetSections = async (service: SectionsService, dispatch: StoreDis
     dispatch(onGetSectionsSuccess(sections));
 };
 
-// export const onSubmitMergeSections = async (service: SectionsService, payload, dispatch) => {
-//     console.log('TCL: onSubmitMergeSections -> payload', payload);
-//     // ....
-// };
+export const onSubmitMergeSections = async (service: SectionsService, payload: MergeSectionsPayload, dispatch: StoreDispatch) => {
+    dispatch(onSetLoading(true));
 
-export const onSubmitCreateSection = async(service: SectionsService, payload: SectionPayload, dispatch: StoreDispatch) => {
+    try {
+        await service.mergeSections(payload);
+        dispatch(onSetLoading(false));
+
+    } catch (err) {
+        throw new Error(err);
+    }
+
+};
+
+export const onSubmitCreateSection = async(service: SectionsService, payload: CreateSectionPayload, dispatch: StoreDispatch) => {
     dispatch(onSetLoading(true));
     let newSection;
     try {

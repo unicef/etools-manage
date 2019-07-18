@@ -9,10 +9,10 @@ import {
 } from 'ramda';
 import { useAppState } from 'contexts/app';
 import Entity from 'entities';
-import { SectionPayload, SectionEntity, EntityDisplay } from './types';
+import { CreateSectionPayload, SectionEntity, EntityDisplay } from './types';
 
 
-export class NewSection implements SectionPayload {
+export class NewSection implements CreateSectionPayload {
     public new_section_name: string;
     private _validName: boolean | undefined;
 
@@ -21,7 +21,7 @@ export class NewSection implements SectionPayload {
         this.new_section_name = name;
     }
 
-    public get payload(): SectionPayload {
+    public get payload(): CreateSectionPayload {
         return {
             /* eslint-disable-next-line */
             new_section_name: this.new_section_name

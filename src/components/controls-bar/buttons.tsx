@@ -9,7 +9,7 @@ import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
 import { onToggleMergeModal, onToggleAddModal } from 'actions';
 import { ClickHandler } from 'global-types';
 
-const useActionStyles = makeStyles((theme: Theme) =>
+export const useButtonStyles = makeStyles((theme: Theme) =>
     createStyles({
         button: {
             margin: theme.spacing(1),
@@ -28,7 +28,7 @@ export interface MergeButtonProps {
     mergeActive: boolean;
 }
 export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
-    const styles = useActionStyles({});
+    const styles = useButtonStyles({});
     const btnText = mergeActive ? 'Cancel Merge' : 'Merge';
     return (
         <Button
@@ -47,7 +47,7 @@ export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
 };
 
 export const ConfirmMergeButton = () => {
-    const styles = useActionStyles({});
+    const styles = useButtonStyles({});
     const dispatch = useModalsDispatch();
     const { selectedForMerge } = useModalsState();
 
@@ -66,7 +66,7 @@ export const ConfirmMergeButton = () => {
 };
 
 export const AddSectionButton = () => {
-    const styles = useActionStyles({});
+    const styles = useButtonStyles({});
     const dispatch = useModalsDispatch();
     const onClick = () => {
         dispatch(onToggleAddModal);
@@ -83,4 +83,19 @@ export const AddSectionButton = () => {
     );
 };
 
+export interface ConfirmBtnProps {
+    onClick: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
+    children: React.ReactNode;
+}
 
+export const ConfirmButton: React.FC<ConfirmBtnProps> = ({ onClick, children }) => {
+    const styles = useButtonStyles();
+
+    return (
+        <Button onClick={onClick}
+            color="secondary"
+            className={styles.button}
+        >
+            {children}
+        </Button>);
+};

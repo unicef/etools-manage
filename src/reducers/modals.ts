@@ -6,6 +6,8 @@ import {
 import { initialStateModals } from 'contexts/page-modals';
 import { createReducer } from 'redux-starter-kit';
 
+export const checker = () => console.log('WHAT THE FUCK ');
+
 export const modalsReducer = createReducer(initialStateModals, {
     [onToggleAddModal.type]: state => {
         state.addModalOpen = !state.addModalOpen;

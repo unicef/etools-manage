@@ -41,9 +41,22 @@ export interface SectionEntity {
     name: string;
 }
 
-export interface SectionPayload {
+export interface CreateSectionPayload {
     new_section_name: string;
 }
+
+export interface MergeSectionsPayload {
+    new_section_name: string;
+    sections_to_merge: number[];
+}
+
+export interface MergeSectionsSuccess {
+    pk: number;
+    name: string;
+}
+
+export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
+
 
 export interface EntityDisplay<T> {
     label: string;
