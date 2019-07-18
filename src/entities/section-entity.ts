@@ -9,8 +9,7 @@ import {
 } from 'ramda';
 import { useAppState } from 'contexts/app';
 import Entity from 'entities';
-import { PropertyNames } from 'helpers';
-import { SectionPayload, SectionEntity } from './types';
+import { SectionPayload, SectionEntity, EntityDisplay } from './types';
 
 
 export class NewSection implements SectionPayload {
@@ -46,12 +45,19 @@ export class NewSection implements SectionPayload {
 
 export default class Section extends Entity<SectionEntity> {
 
-    public get displayProperties(): PropertyNames<SectionEntity>[] {
-        return ['name', 'id'];
+    public get displayProperties(): EntityDisplay<SectionEntity>[] {
+        return [
+            { label: 'Name', propName: 'name' },
+            { label: 'Id', propName: 'id' }
+        ];
     }
 
     public get title() {
         return 'Sections';
+    }
+
+    public get sectionsProp() {
+        return 'id';
     }
 
 }

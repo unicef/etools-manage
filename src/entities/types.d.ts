@@ -45,6 +45,11 @@ export interface SectionPayload {
     new_section_name: string;
 }
 
+export interface EntityDisplay<T> {
+    label: string;
+    propName: keyof T;
+}
+
 
 export type AllConfigs = EntityConfig<InterventionEntity> | EntityConfig<TPMActivityEntity> | EntityConfig<ActionPointEntity>
 export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]?: AllConfigs}

@@ -5,11 +5,12 @@ import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormCon
 import { withRouter } from 'react-router-dom';
 import BaseModal, { ModalContentProps } from '..';
 import { setValueFromEvent } from 'utils';
-import { SectionEntity, useAddSection } from 'entities/section-entity';
+import { useAddSection } from 'entities/section-entity';
 import { useModalStyles } from '../styles';
 import Box from 'components/box';
 import { useMergeState } from '.';
 import { onToggleMergeModal } from 'actions';
+import { SectionEntity } from 'entities/types';
 
 
 const useStyles = makeStyles((theme: Theme) =>

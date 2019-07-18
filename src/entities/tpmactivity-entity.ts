@@ -1,12 +1,13 @@
 import EntityConfig from 'entities';
-import { PropertyNames } from 'helpers';
-import { TPMActivityEntity } from './types';
+import { TPMActivityEntity, EntityDisplay } from './types';
 
 
 export default class TPMActivityConfig extends EntityConfig<TPMActivityEntity> {
 
-    public get displayProperties(): PropertyNames<TPMActivityEntity>[] {
-        return ['reference_number'];
+    public get displayProperties(): EntityDisplay<TPMActivityEntity>[] {
+        return [
+            { label: 'Reference Number', propName: 'reference_number' }
+        ];
     }
 
     public get title() {

@@ -1,6 +1,6 @@
 import BaseService from 'services';
-import { SectionEntity, SectionPayload } from 'entities/section-entity';
 import { SuccessResponse } from 'global-types';
+import { SectionEntity, SectionPayload } from 'entities/types';
 
 export interface SectionsService {
     getSections(): Promise<SectionEntity[]>;

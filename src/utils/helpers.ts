@@ -46,6 +46,6 @@ export function sectionWithNumberId(section: SectionEntity): SectionEntity {
     });
 }
 
-export function notEmpty(xs: any[]) {
+export function notEmpty(xs: unknown) {
     return !isEmpty(xs);
 }
