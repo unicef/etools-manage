@@ -50,7 +50,7 @@ export interface MergeSectionsPayload {
     sections_to_merge: number[];
 }
 
-export interface MergeSectionsSuccess {
+export interface NewSectionFromMerged {
     pk: number;
     name: string;
 }

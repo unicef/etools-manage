@@ -1,11 +1,11 @@
 import BaseService from 'services';
 import { SuccessResponse } from 'global-types';
-import { SectionEntity, CreateSectionPayload, MergeSectionsPayload, SectionServicePayload, MergeSectionsSuccess } from 'entities/types';
+import { SectionEntity, CreateSectionPayload, MergeSectionsPayload, SectionServicePayload, NewSectionFromMerged } from 'entities/types';
 
 export interface SectionsService {
     getSections(): Promise<SectionEntity[]>;
     createSection(data: CreateSectionPayload): Promise<SuccessResponse>;
-    mergeSections(payload: MergeSectionsPayload): Promise<MergeSectionsSuccess>;
+    mergeSections(payload: MergeSectionsPayload): Promise<NewSectionFromMerged>;
     // closeSection(id: number): Promise<Response>; // TODO: check response on close and create type
 }
 
@@ -43,11 +43,11 @@ export default class SectionsApiService extends BaseService implements SectionsS
         }
     }
 
-    public async mergeSections(payload: MergeSectionsPayload): Promise<MergeSectionsSuccess> {
+    public async mergeSections(payload: MergeSectionsPayload): Promise<NewSectionFromMerged> {
         try {
 
             console.log('mergeurl', mergeSectionUrl);
-            const response = await this._http.post<MergeSectionsSuccess>(
+            const response = await this._http.post<NewSectionFromMerged>(
                 mergeSectionUrl,
                 this.bodyFromPayload(payload)
             );

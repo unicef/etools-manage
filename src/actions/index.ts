@@ -15,6 +15,7 @@ export const onGetSectionsSuccess = createAction('entity/getSectionsSuccess');
 export const onCreateSectionSuccess = createAction('entity/createSectionSuccess');
 export const onResetCreatedSection = createAction('entity/resetCreateSuccess');
 export const onMergeSections = createAction('entity/mergeSections');
+export const onSetMergedSection = createAction('mergedSection');
 export const onSelectForMerge = createAction('entity/selectForMerge');
 export const onSetLoading = createAction('loading');
 export const onThrowError = createAction('error');
@@ -39,8 +40,8 @@ export const onSubmitMergeSections = async (service: SectionsService, payload: M
     dispatch(onSetLoading(true));
 
     try {
-        await service.mergeSections(payload);
-        dispatch(onSetLoading(false));
+        const newSectionFromMerged = await service.mergeSections(payload);
+        dispatch(onSetMergedSection(newSectionFromMerged));
 
     } catch (err) {
         throw new Error(err);
@@ -57,7 +58,6 @@ export const onSubmitCreateSection = async(service: SectionsService, payload: Cr
         throw new Error(error);
     }
     dispatch(onCreateSectionSuccess(newSection));
-    dispatch(onSetLoading(true));
 };
 
 export const onFetchMergeSummary = async(service: BackendService, payload: string, dispatch: StoreDispatch) => {
@@ -75,7 +75,6 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
         summary = await service.getAllAffectedEntities(payload);
         dispatch(onSetLoading(false));
         return summary;
-        // dispatch(onMergeSummarySuccess(summary));
 
     } catch (err) {
         dispatch(onThrowError(err));
