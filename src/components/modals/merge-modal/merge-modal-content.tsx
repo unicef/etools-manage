@@ -43,7 +43,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     const [first, second] = selectedSectionsFromCollection;
 
-    const mergeConfirmUrl = `/merge/sections=${selectedForMerge.join(',')}&newName=${name}`;
+    const mergeConfirmUrl = `/merge/?sections=${selectedForMerge.join(',')}&newName=${name}`;
     const handleSubmit = (history: History) => () => {
         onClose();
         history.push(mergeConfirmUrl);
