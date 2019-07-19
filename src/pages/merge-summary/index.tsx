@@ -5,7 +5,7 @@ import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
 import { RouteComponentProps } from 'react-router';
-import { keys, prop, map, filter, find, propEq, compose } from 'ramda';
+import { keys, prop, map, filter, find, propEq, compose, isEmpty } from 'ramda';
 import EntityPropMapping from 'entities/config-map';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { usePagination } from 'components/table';
@@ -15,7 +15,7 @@ import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
 import { EntityTableHeadProps, EntityTableProps, MergeProps } from './types';
 import { MergeSectionsPayload } from 'entities/types';
 import { ConfirmButton } from 'components/buttons';
-import { SectionBox, ReviewBox } from 'components/section-box';
+import { SectionBox } from 'components/section-box';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }));
 
+// TODO: lazy load on route
 const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) => {
     const {
         backendService: service,
@@ -84,34 +85,39 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
 
     };
 
+    const ConfirmBox = () => (
+        <Box justify="between" align="center">
+            <Typography variant="h6">
+                {isEmpty(summary) ? 'Merge does not affect other entities. Confirm to complete merge.' : 'Confirm summary of changes'}
+            </Typography>
+            <Box align="center">
+                <Link to="/"><Button variant="contained">Cancel</Button></Link>
+                <ConfirmButton onClick={onConfirm} text="Confirm" />
+            </Box>
+        </Box>);
+
+    const SuccessBox = () => (
+        <Box justify="between">
+            <Box column>
+                <Typography variant="h6" gutterBottom>
+                     Merge successful.
+                </Typography>
+                <Box className={styles.results} column >
+                    <Typography variant="subtitle1" className={styles.subtitle}>Created section name:</Typography> {mergedSection && <SectionBox name={mergedSection.name} />}
+                </Box>
+            </Box>
+            <Link to="/"><Button variant="contained">Back to Home</Button></Link>
+        </Box>
+    );
+
+
     return (
         <Box column>
-
-            {
-                mergedSection ?
-                    <Box justify="between">
-                        <Box column>
-                            <Typography variant="h6" gutterBottom>
-                        Merge successful.
-                            </Typography>
-                            <Box className={styles.results} column >
-                                <Typography variant="subtitle1" className={styles.subtitle}>Created section name:</Typography> <SectionBox name={mergedSection.name} />
-                            </Box>
-                        </Box>
-                        <Link to="/"><Button variant="contained">Back to Home</Button></Link>
-                    </Box> :
-
-                    <Box justify="between">
-                        <Typography variant="h6">
-                            Confirm summary of changes
-                        </Typography>
-                        <Box align="center">
-                            <Link to="/"><Button variant="contained">Cancel</Button></Link>
-                            <ConfirmButton onClick={onConfirm} text="Confirm" />
-                        </Box>
-                    </Box>
+            { mergedSection ?
+                <SuccessBox /> :
+                <ConfirmBox />
             }
-            {summary && keys(summary).map(
+            {summary && !mergedSection && keys(summary).map(
                 (entity: string) => {
                     return (
                         <EntityChangesTable
