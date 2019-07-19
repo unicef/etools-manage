@@ -1,34 +1,20 @@
 import React from 'react';
-import { Button, Theme } from '@material-ui/core';
-import { makeStyles, createStyles } from '@material-ui/styles';
+import { Button } from '@material-ui/core';
 import MergeIcon from '@material-ui/icons/MergeType';
 import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
-import amber from '@material-ui/core/colors/amber';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
 import { onToggleMergeModal, onToggleAddModal } from 'actions';
 import { ClickHandler } from 'global-types';
+import { useButtonStyles } from 'components/buttons';
 
-const useActionStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        button: {
-            margin: theme.spacing(1),
-            color: theme.palette.primary.main
-        },
-        btnConfirm: {
-            backgroundColor: amber[500]
-        },
-        icon: {
-            marginLeft: theme.spacing(1)
-        }
-    }));
 
 export interface MergeButtonProps {
     onClick: ClickHandler;
     mergeActive: boolean;
 }
 export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
-    const styles = useActionStyles({});
+    const styles = useButtonStyles({});
     const btnText = mergeActive ? 'Cancel Merge' : 'Merge';
     return (
         <Button
@@ -47,7 +33,7 @@ export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
 };
 
 export const ConfirmMergeButton = () => {
-    const styles = useActionStyles({});
+    const styles = useButtonStyles({});
     const dispatch = useModalsDispatch();
     const { selectedForMerge } = useModalsState();
 
@@ -66,7 +52,7 @@ export const ConfirmMergeButton = () => {
 };
 
 export const AddSectionButton = () => {
-    const styles = useActionStyles({});
+    const styles = useButtonStyles({});
     const dispatch = useModalsDispatch();
     const onClick = () => {
         dispatch(onToggleAddModal);
@@ -82,5 +68,4 @@ export const AddSectionButton = () => {
         </Button>
     );
 };
-
 

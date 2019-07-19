@@ -5,61 +5,22 @@ import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormCon
 import { withRouter } from 'react-router-dom';
 import BaseModal, { ModalContentProps } from '..';
 import { setValueFromEvent } from 'utils';
-import { SectionEntity, useAddSection } from 'entities/section-entity';
+import { useAddSection } from 'entities/section-entity';
 import { useModalStyles } from '../styles';
 import Box from 'components/box';
 import { useMergeState } from '.';
 import { onToggleMergeModal } from 'actions';
+import { SectionBox, ReviewBox } from 'components/section-box';
 
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             width: 440
-        },
-        reviewBox: {
-            background: 'rgba(236,239,241,.38)',
-            marginBottom: theme.spacing(2)
-        },
-
-        section: {
-            padding: theme.spacing(1),
-
-            lineHeight: 'inherit',
-            flex: 1,
-            '&:nth-child(1)': {
-                paddingBottom: 0
-            }
-        },
-        sectionTitle: {
-            fontSize: 13,
-            lineHeight: 'inherit',
-            color: theme.palette.action.active,
-            paddingBottom: theme.spacing(1)
-        },
-        name: {
-            fontSize: 12,
-            color: theme.palette.text.hint
-        },
-        sectionName: {
-            color: theme.palette.primary.contrastText
         }
 
     }),
 );
-
-interface SectionBoxProps {
-    section: SectionEntity;
-}
-
-const SectionBox: React.FC<SectionBoxProps> = ({ section }) => {
-    const styles = useStyles({});
-    return (
-        <Box column className={styles.section}>
-            <Typography className={styles.sectionName} variant="h6">{section.name}</Typography>
-        </Box>
-    );
-};
 
 
 const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
@@ -82,7 +43,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     const [first, second] = selectedSectionsFromCollection;
 
-    const mergeConfirmUrl = `/merge/sections=${selectedForMerge.join(',')}&newName=${name}`;
+    const mergeConfirmUrl = `/merge/?sections=${selectedForMerge.join(',')}&newName=${name}`;
     const handleSubmit = (history: History) => () => {
         onClose();
         history.push(mergeConfirmUrl);
@@ -108,10 +69,10 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                     variant="subtitle1">Merge Sections</Typography>
             </Box>
 
-            <Box column className={styles.reviewBox}>
-                <SectionBox section={first} />
-                <SectionBox section={second} />
-            </Box>
+            <ReviewBox>
+                <SectionBox name={first.name} />
+                <SectionBox name={second.name} />
+            </ReviewBox>
 
             <FormControl
                 classes={{

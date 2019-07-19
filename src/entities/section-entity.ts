@@ -9,18 +9,10 @@ import {
 } from 'ramda';
 import { useAppState } from 'contexts/app';
 import Entity from 'entities';
-import { PropertyNames } from 'helpers';
+import { CreateSectionPayload, SectionEntity, EntityDisplay } from './types';
 
-export interface SectionEntity {
-    id: number ;
-    name: string;
-}
 
-export interface SectionPayload {
-    new_section_name: string;
-}
-
-export class NewSection implements SectionPayload {
+export class NewSection implements CreateSectionPayload {
     public new_section_name: string;
     private _validName: boolean | undefined;
 
@@ -29,7 +21,7 @@ export class NewSection implements SectionPayload {
         this.new_section_name = name;
     }
 
-    public get payload(): SectionPayload {
+    public get payload(): CreateSectionPayload {
         return {
             /* eslint-disable-next-line */
             new_section_name: this.new_section_name
@@ -53,8 +45,19 @@ export class NewSection implements SectionPayload {
 
 export default class Section extends Entity<SectionEntity> {
 
-    public get displayProperties(): PropertyNames<SectionEntity>[] {
-        return ['name', 'id'];
+    public get displayProperties(): EntityDisplay<SectionEntity>[] {
+        return [
+            { label: 'Name', propName: 'name' },
+            { label: 'Id', propName: 'id' }
+        ];
+    }
+
+    public get title() {
+        return 'Sections';
+    }
+
+    public get sectionsProp() {
+        return 'id';
     }
 
 }

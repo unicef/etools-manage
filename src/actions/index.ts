@@ -4,8 +4,8 @@ import { SectionsService } from 'services/section';
 import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService, NonEmptyEntityResults } from 'services/backend';
 import { StoreDispatch } from 'contexts/app';
-import { SectionPayload } from 'entities/section-entity';
 import { isSectionsParamValid } from 'pages/merge-summary';
+import { CreateSectionPayload, MergeSectionsPayload } from 'entities/types';
 
 export const onToggleAddModal = createAction('modals/toggleAdd');
 export const onToggleSplitModal = createAction('modals/toggleSplit');
@@ -15,6 +15,7 @@ export const onGetSectionsSuccess = createAction('entity/getSectionsSuccess');
 export const onCreateSectionSuccess = createAction('entity/createSectionSuccess');
 export const onResetCreatedSection = createAction('entity/resetCreateSuccess');
 export const onMergeSections = createAction('entity/mergeSections');
+export const onSetMergedSection = createAction('mergedSection');
 export const onSelectForMerge = createAction('entity/selectForMerge');
 export const onSetLoading = createAction('loading');
 export const onThrowError = createAction('error');
@@ -35,12 +36,20 @@ export const onGetSections = async (service: SectionsService, dispatch: StoreDis
     dispatch(onGetSectionsSuccess(sections));
 };
 
-// export const onSubmitMergeSections = async (service: SectionsService, payload, dispatch) => {
-//     console.log('TCL: onSubmitMergeSections -> payload', payload);
-//     // ....
-// };
+export const onSubmitMergeSections = async (service: SectionsService, payload: MergeSectionsPayload, dispatch: StoreDispatch) => {
+    dispatch(onSetLoading(true));
 
-export const onSubmitCreateSection = async(service: SectionsService, payload: SectionPayload, dispatch: StoreDispatch) => {
+    try {
+        const newSectionFromMerged = await service.mergeSections(payload);
+        dispatch(onSetMergedSection(newSectionFromMerged));
+
+    } catch (err) {
+        throw new Error(err);
+    }
+
+};
+
+export const onSubmitCreateSection = async(service: SectionsService, payload: CreateSectionPayload, dispatch: StoreDispatch) => {
     dispatch(onSetLoading(true));
     let newSection;
     try {
@@ -49,7 +58,6 @@ export const onSubmitCreateSection = async(service: SectionsService, payload: Se
         throw new Error(error);
     }
     dispatch(onCreateSectionSuccess(newSection));
-    dispatch(onSetLoading(true));
 };
 
 export const onFetchMergeSummary = async(service: BackendService, payload: string, dispatch: StoreDispatch) => {
@@ -65,9 +73,8 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
 
     try {
         summary = await service.getAllAffectedEntities(payload);
-        console.log('TCL: onFetchMergeSummary -> summary', summary);
         dispatch(onSetLoading(false));
-        // dispatch(onMergeSummarySuccess(summary));
+        return summary;
 
     } catch (err) {
         dispatch(onThrowError(err));

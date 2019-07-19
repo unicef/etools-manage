@@ -1,14 +1,11 @@
-import { zipObj, filter } from 'ramda';
+import { zipObj, filter, prop, flatten } from 'ramda';
 import BaseService from 'services';
-import { ActionPointEntity } from 'entities/actionpoint-entity';
-import { TPMActivityEntity } from 'entities/tpmactivity-entity';
-import { IndicatorEntity } from 'entities/indicator-entity';
 import { TravelEntity } from 'entities/travel-entity';
 import { notEmpty } from 'utils/helpers';
-import { ZippedEntityResults } from 'entities';
+import { InterventionEntity, ActionPointEntity, TPMActivityEntity, ZippedEntityResults, IndicatorEntity } from 'entities/types';
 
 export interface BackendService {
-    getIndicators(query: string): Promise<IndicatorEntity[]>;
+    getIndicators(interventions: InterventionEntity[]): IndicatorEntity[];
     getTravels(query: string): Promise<TravelEntity[]>;
     getTPMActivities(query: string): Promise<TPMActivityEntity[]>;
     getActionPoints(query: string): Promise<ActionPointEntity[]>;
@@ -21,7 +18,7 @@ export interface BackendResponse<T> {
     results: T[];
 }
 
-export type EntityUnion = IndicatorEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
+export type EntityUnion = InterventionEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
 
 export interface AllAffectedEntities {
     [key: string]: (query: string) => Promise<EntityUnion>;
@@ -33,21 +30,25 @@ export type NonEmptyEntityResults = Partial<ZippedEntityResults>
 export default class BackendApiService extends BaseService implements BackendService {
 
     private entityApiMap: AllAffectedEntities= {
-        indicators: this.getIndicators.bind(this),
         tpmActivities: this.getTPMActivities.bind(this),
-        actionPoints: this.getActionPoints.bind(this)
+        actionPoints: this.getActionPoints.bind(this),
+        interventions: this.getInterventions.bind(this)
         // travels: this.getTravels.bind(this)
     }
 
-    public async getIndicators(query: string): Promise<IndicatorEntity[]> {
+    public async getInterventions(query: string): Promise<InterventionEntity[]> {
         try {
             const url = `${process.env.REACT_APP_INTERVENTIONS_APPLIED_INDICATORS_ENDPOINT}${query}`;
-            const response = await this._http.get<IndicatorEntity[]>(url);
+            const response = await this._http.get<InterventionEntity[]>(url);
             return response;
         } catch (err) {
             const json = JSON.parse(err.message);
             throw new Error(`An error occurred retreiving travels for the requested sections: ${query}. Response code: ${json.code}`);
         }
+    }
+
+    public getIndicators(interventions: InterventionEntity[]): IndicatorEntity[] {
+        return flatten(interventions.map(prop('indicators')).filter(notEmpty));
     }
 
     public async getTravels(query: string): Promise<TravelEntity[]> {
@@ -90,7 +91,10 @@ export default class BackendApiService extends BaseService implements BackendSer
                 entity => this.entityApiMap[entity](query)
             )
         );
-        return filter(notEmpty, zip(allEntities));
+        const zipped = zip(allEntities);
+        zipped.indicators = this.getIndicators(zipped.interventions);
+        console.log('TCL: BackendApiService -> zipped', zipped);
+        return filter(notEmpty, zipped);
     }
 
 }

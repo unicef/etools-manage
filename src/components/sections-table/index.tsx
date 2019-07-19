@@ -13,7 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
-import { SectionEntity } from 'entities/section-entity';
+import { SectionEntity } from 'entities/types';
+import { usePagination } from 'components/table';
 
 
 function desc<T>(a: T, b: T, orderBy: keyof T) {
@@ -171,8 +172,13 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
 
     const [orderBy, setOrderBy] = React.useState<keyof SectionEntity>('name');
     const [selected, setSelected] = React.useState<string[]>([]);
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const {
+        page,
+        rowsPerPage,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        rowsPerPageOptions
+    } = usePagination();
 
     function handleRequestSort(event: React.MouseEvent<unknown>, property: keyof SectionEntity) {
         const isDesc = orderBy === property && order === 'desc';
@@ -209,14 +215,6 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
 
         setSelected(newSelected);
         onChangeSelected(newSelected);
-    }
-
-    function handleChangePage(event: unknown, newPage: number) {
-        setPage(newPage);
-    }
-
-    function handleChangeRowsPerPage(event: React.ChangeEvent<HTMLInputElement>) {
-        setRowsPerPage(Number(event.target.value));
     }
 
     const isSelected = (id: string) => selected.indexOf(id) !== -1;
@@ -280,7 +278,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                 </Table>
             </div>
             <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={rowsPerPageOptions}
                 component="div"
                 count={rows.length}
                 rowsPerPage={rowsPerPage}

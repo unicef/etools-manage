@@ -1,4 +1,4 @@
-import { onGetSectionsSuccess, onCreateSectionSuccess, onResetCreatedSection, onThrowError, onSetLoading } from 'actions';
+import { onGetSectionsSuccess, onCreateSectionSuccess, onResetCreatedSection, onThrowError, onSetLoading, onSetMergedSection } from 'actions';
 import { createReducer } from 'redux-starter-kit';
 import { initialState } from 'contexts/app';
 
@@ -9,6 +9,7 @@ export const appStoreReducer = createReducer(initialState, {
     },
     [onCreateSectionSuccess.type]: (state, action) => {
         state.createdSection = action.payload;
+        state.loading = false;
     },
     [onResetCreatedSection.type]: state => {
         state.createdSection = null;
@@ -18,5 +19,9 @@ export const appStoreReducer = createReducer(initialState, {
     },
     [onSetLoading.type]: (state, action) => {
         state.loading = action.payload;
+    },
+    [onSetMergedSection.type]: (state, action) => {
+        state.mergedSection = action.payload;
+        state.loading = false;
     }
 });

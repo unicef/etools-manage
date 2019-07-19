@@ -7,7 +7,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { User } from 'global-types';
 import { UserContext } from '../contexts/user';
-import { SectionsService } from 'services/section';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onGetSections } from 'actions';
 import { Modals } from 'contexts/page-modals';
@@ -53,7 +52,6 @@ export interface AppFrameProps{
 }
 
 const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
-
     const userData: User = useContext(UserContext);
     const { sectionsService: service }: AppServices = useAppService();
     const dispatch = useAppDispatch();

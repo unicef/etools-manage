@@ -1,17 +1,20 @@
 import EntityConfig from 'entities';
-import { PropertyNames } from 'helpers';
-
-export interface TPMActivityEntity {
-    id: number;
-    reference_number: string;
-    status: string;
-}
+import { TPMActivityEntity, EntityDisplay } from './types';
 
 
 export default class TPMActivityConfig extends EntityConfig<TPMActivityEntity> {
 
-    public get displayProperties(): PropertyNames<TPMActivityEntity>[] {
-        return ['reference_number', 'id'];
+    public get displayProperties(): EntityDisplay<TPMActivityEntity>[] {
+        return [
+            { label: 'Reference Number', propName: 'reference_number' }
+        ];
+    }
+
+    public get title() {
+        return 'TPM Activities';
+    }
+    public get sectionsProp() {
+        return 'sections';
     }
 
 }

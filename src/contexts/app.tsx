@@ -1,16 +1,17 @@
 import React, { useReducer, useContext } from 'react';
-import { SectionEntity } from 'entities/section-entity';
-import { onGetSectionsSuccess, onSetLoading, onCreateSectionSuccess, onResetCreatedSection, onThrowError } from 'actions';
+import { onGetSectionsSuccess, onSetLoading, onCreateSectionSuccess, onResetCreatedSection, onThrowError, onSetMergedSection } from 'actions';
 import { ChildrenProps } from 'global-types';
 import { appStoreReducer } from 'reducers/app-store';
 import { ApiClient } from 'lib/http';
 import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
+import { SectionEntity, NewSectionFromMerged } from 'entities/types';
 
 export interface Store {
     sections: SectionEntity[];
     createdSection: SectionEntity | null;
+    mergedSection: NewSectionFromMerged | null;
     error: string | null;
     loading: boolean;
 }
@@ -20,6 +21,7 @@ type Action = ReturnType<
     typeof onGetSectionsSuccess |
     typeof onSetLoading |
     typeof onCreateSectionSuccess |
+    typeof onSetMergedSection |
     typeof onThrowError > | typeof onResetCreatedSection
 
 
@@ -28,6 +30,7 @@ export type StoreDispatch = (action: Action) => void;
 export const initialState: Store = {
     sections: [],
     createdSection: null,
+    mergedSection: null,
     error: null,
     loading: false
 };

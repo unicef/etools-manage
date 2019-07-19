@@ -1,16 +1,20 @@
 import EntityConfig from 'entities';
-import { PropertyNames } from 'helpers';
-
-export interface IndicatorEntity {
-    id: number;
-    title: string;
-    section: number;
-}
+import { IndicatorEntity, EntityDisplay } from './types';
 
 
 export default class IndicatorConfig extends EntityConfig<IndicatorEntity> {
-    public get displayProperties(): PropertyNames<IndicatorEntity>[] {
-        return ['title', 'id'];
+    public get displayProperties(): EntityDisplay<IndicatorEntity>[] {
+        return [{
+            label: 'Title',
+            propName: 'title'
+        }];
+    }
+    public get title() {
+        return 'Applied Indicators';
+    }
+    public get sectionsProp() {
+        return 'section';
     }
 }
+
 

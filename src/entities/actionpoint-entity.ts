@@ -1,17 +1,19 @@
-import { PropertyNames } from 'helpers';
 import EntityConfig from 'entities';
-
-export interface ActionPointEntity {
-    id: number;
-    reference_number: string;
-    description: string;
-    status: string;
-}
+import { ActionPointEntity, EntityDisplay } from './types';
 
 
 export default class ActionPointConfig extends EntityConfig<ActionPointEntity> {
-    public get displayProperties(): PropertyNames<ActionPointEntity>[] {
-        return ['reference_number', 'description'];
+    public get displayProperties(): EntityDisplay<ActionPointEntity>[] {
+        return [
+            { label: 'Reference Number', propName: 'reference_number' },
+            { label: 'Description', propName: 'description' }
+        ];
+    }
+    public get title() {
+        return 'Action Points';
+    }
+    public get sectionsProp() {
+        return 'section';
     }
 }
 
