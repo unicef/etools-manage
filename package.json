@@ -50,7 +50,7 @@
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "path-to-regexp": "^3.0.0",
     "pnp-webpack-plugin": "1.2.1",
-    "query-string": "^6.4.2",
+    "query-string": "^6.8.1",
     "ramda": "^0.26.1",
     "react": "^16.8.6",
     "react-app-polyfill": "^0.2.2",

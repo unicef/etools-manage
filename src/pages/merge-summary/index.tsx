@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Typography, TableHead, TableRow, TableCell, Table, TableBody, Theme, Paper, TablePagination, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import queryString, { ParsedQuery } from 'query-string';
 import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
@@ -48,35 +49,44 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }));
 
+interface QueryParam {
+    sections: string;
+    newName: string;
+}
 // TODO: lazy load on route
-const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) => {
+const MergeSummaryPage: React.FC = () => {
+    const {
+        sections: selected,
+        newName
+    } = queryString.parse(location.search);
+
     const {
         backendService: service,
         sectionsService
     } = useAppService();
+
     const dispatch = useAppDispatch();
     const { mergedSection } = useAppState();
+    const [summary, setSummary] = useState();
+
     const styles = useStyles();
 
-    const { sections: selected, newName } = match.params;
-
-    const [summary, setSummary] = useState();
     useEffect(() => {
         const fetchSummary = async () => {
-            const summary = await onFetchMergeSummary(service, selected, dispatch);
+            const summary = await onFetchMergeSummary(service, selected as string, dispatch);
             setSummary(summary);
         };
         fetchSummary();
-        // use params to call api for summary data
     }, []);
 
-    const selectedSections = selected.split(',').map(Number);
+    const showSummaryList = summary && !mergedSection;
+    const selectedSections = (selected as string).split(',').map(Number);
 
     const onConfirm = async () => {
 
         const payload: MergeSectionsPayload = {
             /* eslint-disable-next-line */
-            new_section_name: newName,
+            new_section_name: newName as string,
             /* eslint-disable-next-line */
             sections_to_merge: selectedSections
         };
@@ -84,7 +94,7 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
         onSubmitMergeSections(sectionsService, payload, dispatch);
 
     };
-
+    // TODO: Aesthetic
     const ConfirmBox = () => (
         <Box justify="between" align="center">
             <Typography variant="h6">
@@ -117,7 +127,7 @@ const MergeSummaryPage: React.FC<RouteComponentProps<MergeProps>> = ({ match }) 
                 <SuccessBox /> :
                 <ConfirmBox />
             }
-            {summary && !mergedSection && keys(summary).map(
+            {showSummaryList && keys(summary).map(
                 (entity: string) => {
                     return (
                         <EntityChangesTable

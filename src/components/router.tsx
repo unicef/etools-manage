@@ -11,7 +11,7 @@ export default function AppRouter() {
         <Router basename={process.env.PUBLIC_URL}>
             <Switch>
                 <Route exact path="/" component={Main} />
-                <Route path="/merge/sections=:sections&newName=:newName" component={MergeSummaryPage} />
+                <Route path="/merge/" component={MergeSummaryPage} />
                 <Route component={NoMatch} />
             </Switch>
         </Router>
@@ -28,3 +28,4 @@ function NoMatch({ location }: {location: Location}) {
         </div>
     );
 }
+// (sections=?):sections?(&newName=?):newName?

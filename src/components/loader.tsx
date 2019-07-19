@@ -12,7 +12,8 @@ const useStyles = makeStyles(() =>
             height: '100vh',
             position: 'fixed',
             backgroundColor: 'rgba(255,255,255,0.7)',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            zIndex: 100
         },
         text: {
             textTransform: 'uppercase',
