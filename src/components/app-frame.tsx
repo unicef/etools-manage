@@ -85,9 +85,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                             className={styles.appName}
                             color="textPrimary"
                             variant="h6" noWrap>
-                            <Link color="inherit" href={`${process.env.PUBLIC_URL}/`}>
-                                {PAGE_TITLE}
-                            </Link>
+                            <Link color="inherit" href="/manage/">{PAGE_TITLE}</Link>
                         </Typography>
                         <Typography color="textPrimary">
                             {userData && userData.country.name}

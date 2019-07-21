@@ -12,42 +12,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow, SectionHeadRow } from '../table/table';
 import { SectionEntity } from 'entities/types';
 import { usePagination } from 'components/table';
-
-
-function desc<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-
-function stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-    stabilizedThis.sort((a, b) => {
-        const order = cmp(a[0], b[0]);
-        if (order !== 0) {
-            return order;
-        }
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map(el => el[0]);
-}
-
-
-function getSorting<K extends keyof any>(
-    order: Order,
-    orderBy: K,
-): (a: { [key in K]: number | string }, b: { [key in K]: number | string }) => number {
-    return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
-
+import { stableSort, getSorting } from 'components/table/table-utils';
+import { IconButton } from '@material-ui/core';
+import Box from 'components/box';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -67,6 +38,21 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         text: {
             color: theme.palette.text.secondary
+        },
+        actionCell: {
+            display: 'flex',
+            alignItems: 'center'
+        },
+        tablePad: {
+            padding: `${theme.spacing(1)}px`,
+            paddingRight: `${theme.spacing(2)}`,
+            height: theme.spacing(6)
+        },
+        icon: {
+            margin: `0 ${theme.spacing(1)}px`
+        },
+        idCol: {
+            width: 32
         }
     }),
 );
@@ -134,6 +120,7 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
     const createSortHandler = (property: keyof SectionEntity) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
+    const styles = useStyles({});
 
     return (
         <TableHead>
@@ -147,7 +134,7 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                         sortDirection={orderBy === row.id ? order : false}
                     >
                         <TableSortLabel
-                            onClick={createSortHandler(row.id as keyof SectionEntity)}
+                            onClick={createSortHandler(row.id as keyof SectionHeadRow)}
                             active={orderBy === row.id}
                             direction={order}
                         >
@@ -155,6 +142,13 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell align="right">
+                    <TableSortLabel
+                        disabled
+                    >
+                            Actions
+                    </TableSortLabel>
+                </TableCell>
             </TableRow>
         </TableHead>
     );
@@ -265,7 +259,12 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                             <TableCell classes={{ body: classes.text }} component="th" id={labelId} scope="row" padding="none">
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="right">{row.id}</TableCell>
+                                            <TableCell align="right" className={clsx(classes.actionCell, classes.tablePad)}>
+                                                <Typography className={classes.idCol} variant="body2">{row.id}</Typography>
+                                            </TableCell>
+                                            <TableCell className={classes.tablePad} align="right">
+                                                <RowActions row={row} />
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -297,3 +296,18 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
 });
 
 export default SectionTable;
+
+interface RowActionsProps {
+    row?: SectionEntity;
+}
+
+function RowActions({ row }: RowActionsProps) {
+    const styles = useStyles();
+    return (
+        <Box>
+            <IconButton className={styles.icon} size="small" aria-label="Delete">
+                <DeleteIcon/>
+            </IconButton>
+        </Box>
+    );
+}

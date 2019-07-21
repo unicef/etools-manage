@@ -8,6 +8,11 @@ export interface HeadRow<T> {
 }
 
 export type EntityRow<T> = HeadRow<T>;
+export type SectionHeadRow = {
+    id: number;
+    name: string;
+    actions: string;
+}
 
 
 export interface EnhancedTableHeadProps<T> {
