@@ -8,6 +8,8 @@ export interface ZippedEntityResults {
     // travels: TravelEntity[]
 }
 
+export type ZippedByModuleResults = Omit<ZippedEntityResults, 'indicators'>
+
 export interface ActionPointEntity {
     id: number;
     reference_number: string;
@@ -25,6 +27,7 @@ export interface InterventionEntity {
     number: string;
     title: string;
     sections: number[];
+    indicators?: IndicatorEntity[];
 }
 
 
