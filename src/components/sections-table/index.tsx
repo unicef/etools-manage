@@ -1,4 +1,4 @@
-import React, { useEffect, memo, useState } from 'react';
+import React, { useEffect, memo } from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -12,17 +12,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import MoreVerticalIcon from '@material-ui/icons/MoreVert';
-import DeleteIcon from '@material-ui/icons/DeleteForever';
-import SplitIcon from '@material-ui/icons/CallSplit';
+
 import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow, SectionHeadRow } from '../table/table';
 import { SectionEntity } from 'entities/types';
 import { usePagination } from 'components/table';
 import { stableSort, getSorting } from 'components/table/table-utils';
-import { IconButton, Menu, MenuItem, Grow, Fade } from '@material-ui/core';
-import Box from 'components/box';
 import { useTableStyles } from 'components/table/styles';
-
+import MoreActionsMenu from '../vertical-menu';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -110,7 +106,7 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                     </TableCell>
                 ))}
                 <TableCell align="right" classes={{ root: styles.actionCell }} >
-                    <MoreActions/>
+                    <MoreActionsMenu/>
                 </TableCell>
             </TableRow>
         </TableHead>
@@ -226,7 +222,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                                 <Typography variant="body2">{row.id}</Typography>
                                             </TableCell>
                                             <TableCell align="right" classes={{ root: styles.actionCell }} >
-                                                <MoreActions />
+                                                <MoreActionsMenu />
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -260,68 +256,3 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
 
 export default SectionTable;
 
-
-const useMenuStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            transformOrigin: 'left top 0px',
-            boxShadow: '0 1px 2px 0 rgba(60,64,67,.3),0 2px 6px 2px rgba(60,64,67,.15)'
-        },
-        icon: {
-            height: 20,
-            width: 24,
-            marginRight: theme.spacing(1)
-        },
-        listItem: {
-            minHeight: 32,
-            padding: `6px ${theme.spacing(2)}px`
-        }
-    }));
-interface RowActionsProps {
-    row?: SectionEntity;
-    hidden?: boolean;
-    className?: string | undefined;
-}
-
-function MoreActions({ row, className = '' }: RowActionsProps) {
-    const styles = useTableStyles();
-    const menuStyles = useMenuStyles();
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-    function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
-        setAnchorEl(event.currentTarget);
-    }
-
-    function handleClose() {
-        setAnchorEl(null);
-    }
-
-    return (
-        <Box >
-            <IconButton
-                onClick={handleClick}
-                className={clsx(className, styles.icon)}
-                size="small"
-                aria-label="More Actions">
-                <MoreVerticalIcon/>
-            </IconButton>
-
-            <Menu
-                transitionDuration={10}
-                classes={{ paper: menuStyles.root }}
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}>
-
-                <MenuItem classes={{ root: menuStyles.listItem }}>
-                    <DeleteIcon className={menuStyles.icon} color="secondary" />
-                    <Typography>Close section</Typography>
-                </MenuItem>
-                <MenuItem classes={{ root: menuStyles.listItem }}>
-                    <SplitIcon className={menuStyles.icon} color="secondary" />
-                    <Typography>Split section</Typography>
-                </MenuItem>
-            </Menu>
-        </Box>
-    );
-}
