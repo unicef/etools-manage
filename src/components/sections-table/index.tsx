@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, memo, useState } from 'react';
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -12,50 +12,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVerticalIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/DeleteForever';
+import SplitIcon from '@material-ui/icons/CallSplit';
 import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow, SectionHeadRow } from '../table/table';
 import { SectionEntity } from 'entities/types';
 import { usePagination } from 'components/table';
 import { stableSort, getSorting } from 'components/table/table-utils';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Grow, Fade } from '@material-ui/core';
 import Box from 'components/box';
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-            marginTop: theme.spacing(3)
-        },
-        paper: {
-            width: '100%',
-            marginBottom: theme.spacing(2)
-        },
-        table: {
-            minWidth: 750
-        },
-        tableWrapper: {
-            overflowX: 'auto'
-        },
-        text: {
-            color: theme.palette.text.secondary
-        },
-        actionCell: {
-            display: 'flex',
-            alignItems: 'center'
-        },
-        tablePad: {
-            padding: `${theme.spacing(1)}px`,
-            paddingRight: `${theme.spacing(2)}`,
-            height: theme.spacing(6)
-        },
-        icon: {
-            margin: `0 ${theme.spacing(1)}px`
-        },
-        idCol: {
-            width: 32
-        }
-    }),
-);
+import { useTableStyles } from 'components/table/styles';
 
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
@@ -89,20 +55,20 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
 );
 
 export const EnhancedTableToolbar = ({ title, children, className }: TableToolbarProps) => {
-    const classes = useToolbarStyles({});
+    const styles = useToolbarStyles({});
 
     return (
         <Toolbar
-            className={clsx(classes.root, className)}
+            className={clsx(styles.root, className)}
         >
-            <div className={classes.title}>
+            <div className={styles.title}>
                 <Typography variant="h6" id="tableTitle">
                     {title}
                 </Typography>
 
             </div>
-            <div className={classes.spacer} />
-            <div className={classes.actions}>
+            <div className={styles.spacer} />
+            <div className={styles.actions}>
                 {children}
             </div>
         </Toolbar>
@@ -120,7 +86,7 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
     const createSortHandler = (property: keyof SectionEntity) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
-    const styles = useStyles({});
+    const styles = useTableStyles({});
 
     return (
         <TableHead>
@@ -129,6 +95,7 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                 {headRows.map(row => (
                     <TableCell
                         key={row.id}
+                        className={styles.tuck}
                         align={row.numeric ? 'right' : 'left'}
                         padding={row.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === row.id ? order : false}
@@ -142,12 +109,8 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                         </TableSortLabel>
                     </TableCell>
                 ))}
-                <TableCell align="right">
-                    <TableSortLabel
-                        disabled
-                    >
-                            Actions
-                    </TableSortLabel>
+                <TableCell align="right" classes={{ root: styles.actionCell }} >
+                    <MoreActions/>
                 </TableCell>
             </TableRow>
         </TableHead>
@@ -161,7 +124,7 @@ export interface SectionTableProps {
 }
 
 const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive, onChangeSelected }) => {
-    const classes = useStyles({});
+    const styles = useTableStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
     const [orderBy, setOrderBy] = React.useState<keyof SectionEntity>('name');
@@ -216,12 +179,12 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
-        <Paper className={clsx(classes.paper, classes.root)}>
-            <div className={classes.tableWrapper}>
+        <Paper className={clsx(styles.paper, styles.root)}>
+            <div className={styles.tableWrapper}>
                 <Table
-                    className={classes.table}
+                    className={styles.table}
                     aria-labelledby="tableTitle"
-                    size="medium"
+                    size="small"
                 >
                     <EnhancedTableHead
                         orderBy={orderBy}
@@ -256,14 +219,14 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                                 />}
                                             </TableCell>
 
-                                            <TableCell classes={{ body: classes.text }} component="th" id={labelId} scope="row" padding="none">
+                                            <TableCell classes={{ root: styles.text }} component="th" id={labelId} scope="row" padding="none">
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="right" className={clsx(classes.actionCell, classes.tablePad)}>
-                                                <Typography className={classes.idCol} variant="body2">{row.id}</Typography>
+                                            <TableCell className={styles.tuck} align="right">
+                                                <Typography variant="body2">{row.id}</Typography>
                                             </TableCell>
-                                            <TableCell className={classes.tablePad} align="right">
-                                                <RowActions row={row} />
+                                            <TableCell align="right" classes={{ root: styles.actionCell }} >
+                                                <MoreActions />
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -297,17 +260,68 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
 
 export default SectionTable;
 
+
+const useMenuStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            transformOrigin: 'left top 0px',
+            boxShadow: '0 1px 2px 0 rgba(60,64,67,.3),0 2px 6px 2px rgba(60,64,67,.15)'
+        },
+        icon: {
+            height: 20,
+            width: 24,
+            marginRight: theme.spacing(1)
+        },
+        listItem: {
+            minHeight: 32,
+            padding: `6px ${theme.spacing(2)}px`
+        }
+    }));
 interface RowActionsProps {
     row?: SectionEntity;
+    hidden?: boolean;
+    className?: string | undefined;
 }
 
-function RowActions({ row }: RowActionsProps) {
-    const styles = useStyles();
+function MoreActions({ row, className = '' }: RowActionsProps) {
+    const styles = useTableStyles();
+    const menuStyles = useMenuStyles();
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleClose() {
+        setAnchorEl(null);
+    }
+
     return (
-        <Box>
-            <IconButton className={styles.icon} size="small" aria-label="Delete">
-                <DeleteIcon/>
+        <Box >
+            <IconButton
+                onClick={handleClick}
+                className={clsx(className, styles.icon)}
+                size="small"
+                aria-label="More Actions">
+                <MoreVerticalIcon/>
             </IconButton>
+
+            <Menu
+                transitionDuration={10}
+                classes={{ paper: menuStyles.root }}
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}>
+
+                <MenuItem classes={{ root: menuStyles.listItem }}>
+                    <DeleteIcon className={menuStyles.icon} color="secondary" />
+                    <Typography>Close section</Typography>
+                </MenuItem>
+                <MenuItem classes={{ root: menuStyles.listItem }}>
+                    <SplitIcon className={menuStyles.icon} color="secondary" />
+                    <Typography>Split section</Typography>
+                </MenuItem>
+            </Menu>
         </Box>
     );
 }
