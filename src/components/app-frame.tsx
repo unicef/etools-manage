@@ -12,6 +12,7 @@ import { onGetSections } from 'actions';
 import { Modals } from 'contexts/page-modals';
 import { AppServices } from 'services';
 import Loader from './loader';
+import { Link } from '@material-ui/core';
 
 const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
@@ -84,7 +85,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                             className={styles.appName}
                             color="textPrimary"
                             variant="h6" noWrap>
-                            {PAGE_TITLE}
+                            <Link color="inherit" href="./">{PAGE_TITLE}</Link>
                         </Typography>
                         <Typography color="textPrimary">
                             {userData && userData.country.name}

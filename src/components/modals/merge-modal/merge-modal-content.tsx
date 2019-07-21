@@ -18,14 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             width: 440
         }
-
     }),
 );
 
 
 const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
-    const styles = useStyles({});
     const formStyles = useModalStyles({});
 
     const {
