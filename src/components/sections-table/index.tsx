@@ -12,65 +12,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow } from './table';
+
+import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow, SectionHeadRow } from '../table/table';
 import { SectionEntity } from 'entities/types';
 import { usePagination } from 'components/table';
-
-
-function desc<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-
-function stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
-    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-    stabilizedThis.sort((a, b) => {
-        const order = cmp(a[0], b[0]);
-        if (order !== 0) {
-            return order;
-        }
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map(el => el[0]);
-}
-
-
-function getSorting<K extends keyof any>(
-    order: Order,
-    orderBy: K,
-): (a: { [key in K]: number | string }, b: { [key in K]: number | string }) => number {
-    return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
-
-
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-            marginTop: theme.spacing(3)
-        },
-        paper: {
-            width: '100%',
-            marginBottom: theme.spacing(2)
-        },
-        table: {
-            minWidth: 750
-        },
-        tableWrapper: {
-            overflowX: 'auto'
-        },
-        text: {
-            color: theme.palette.text.secondary
-        }
-    }),
-);
-
+import { stableSort, getSorting } from 'components/table/table-utils';
+import { useTableStyles } from 'components/table/styles';
+import MoreActionsMenu from './vertical-menu';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -103,20 +51,20 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
 );
 
 export const EnhancedTableToolbar = ({ title, children, className }: TableToolbarProps) => {
-    const classes = useToolbarStyles({});
+    const styles = useToolbarStyles({});
 
     return (
         <Toolbar
-            className={clsx(classes.root, className)}
+            className={clsx(styles.root, className)}
         >
-            <div className={classes.title}>
+            <div className={styles.title}>
                 <Typography variant="h6" id="tableTitle">
                     {title}
                 </Typography>
 
             </div>
-            <div className={classes.spacer} />
-            <div className={classes.actions}>
+            <div className={styles.spacer} />
+            <div className={styles.actions}>
                 {children}
             </div>
         </Toolbar>
@@ -134,6 +82,7 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
     const createSortHandler = (property: keyof SectionEntity) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
+    const styles = useTableStyles({});
 
     return (
         <TableHead>
@@ -142,12 +91,13 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                 {headRows.map(row => (
                     <TableCell
                         key={row.id}
+                        className={styles.tuck}
                         align={row.numeric ? 'right' : 'left'}
                         padding={row.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === row.id ? order : false}
                     >
                         <TableSortLabel
-                            onClick={createSortHandler(row.id as keyof SectionEntity)}
+                            onClick={createSortHandler(row.id as keyof SectionHeadRow)}
                             active={orderBy === row.id}
                             direction={order}
                         >
@@ -155,6 +105,9 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell align="right" classes={{ root: styles.actionCell }} >
+                    <MoreActionsMenu/>
+                </TableCell>
             </TableRow>
         </TableHead>
     );
@@ -167,7 +120,7 @@ export interface SectionTableProps {
 }
 
 const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive, onChangeSelected }) => {
-    const classes = useStyles({});
+    const styles = useTableStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
     const [orderBy, setOrderBy] = React.useState<keyof SectionEntity>('name');
@@ -222,12 +175,12 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
-        <Paper className={clsx(classes.paper, classes.root)}>
-            <div className={classes.tableWrapper}>
+        <Paper className={clsx(styles.paper, styles.root)}>
+            <div className={styles.tableWrapper}>
                 <Table
-                    className={classes.table}
+                    className={styles.table}
                     aria-labelledby="tableTitle"
-                    size="medium"
+                    size="small"
                 >
                     <EnhancedTableHead
                         orderBy={orderBy}
@@ -262,10 +215,15 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                                 />}
                                             </TableCell>
 
-                                            <TableCell classes={{ body: classes.text }} component="th" id={labelId} scope="row" padding="none">
+                                            <TableCell classes={{ root: styles.text }} component="th" id={labelId} scope="row" padding="none">
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="right">{row.id}</TableCell>
+                                            <TableCell className={styles.tuck} align="right">
+                                                <Typography variant="body2">{row.id}</Typography>
+                                            </TableCell>
+                                            <TableCell align="right" classes={{ root: styles.actionCell }} >
+                                                <MoreActionsMenu />
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -297,3 +255,4 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
 });
 
 export default SectionTable;
+
