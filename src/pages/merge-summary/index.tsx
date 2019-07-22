@@ -133,7 +133,7 @@ const MergeSummaryPage: React.FC = () => {
                         <EntityChangesTable
                             selectedSections={selectedSections}
                             key={entity as string}
-                            newSectionName={newName}
+                            newSectionName={newName as string}
                             entity={EntityPropMapping[entity]}
                             list={summary[entity]} />
                     );

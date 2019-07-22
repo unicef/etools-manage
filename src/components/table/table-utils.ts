@@ -1,4 +1,4 @@
-import { Order } from "./table";
+import { Order } from './table';
 
 export function stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);

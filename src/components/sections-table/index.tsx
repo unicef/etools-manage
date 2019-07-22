@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import { Order, EnhancedTableHeadProps, TableToolbarProps, EntityRow, SectionHeadRow } from '../table/table';
+import { Order, EnhancedTableHeadProps, TableToolbarProps, HeadRow } from '../table/table';
 import { SectionEntity } from 'entities/types';
 import { usePagination } from 'components/table';
 import { stableSort, getSorting } from 'components/table/table-utils';
@@ -72,7 +72,7 @@ export const EnhancedTableToolbar = ({ title, children, className }: TableToolba
 };
 
 
-const headRows: EntityRow<SectionEntity>[] = [
+const headRows: HeadRow<SectionEntity>[] = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
     { id: 'id', numeric: true, disablePadding: false, label: 'Id' }
 ];
@@ -97,7 +97,8 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                         sortDirection={orderBy === row.id ? order : false}
                     >
                         <TableSortLabel
-                            onClick={createSortHandler(row.id as keyof SectionHeadRow)}
+                            // @ts-ignore
+                            onClick={createSortHandler(row.id)}
                             active={orderBy === row.id}
                             direction={order}
                         >

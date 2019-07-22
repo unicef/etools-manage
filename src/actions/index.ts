@@ -72,7 +72,7 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
     let summary: NonEmptyEntityResults;
 
     try {
-        summary = await service.getAllAffectedEntities(payload);
+        summary = await service.getEntitiesForMerge(payload);
         dispatch(onSetLoading(false));
         return summary;
 

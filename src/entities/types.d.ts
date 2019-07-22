@@ -1,11 +1,11 @@
 
 
 export interface ZippedEntityResults {
-    indicators: InterventionEntity[];
+    indicators: IndicatorEntity[];
     tpmActivities: TPMActivityEntity[];
     actionPoints: ActionPointEntity[];
     interventions: InterventionEntity[];
-    // travels: TravelEntity[]
+    travels: TravelEntity[];
 }
 
 export type ZippedByModuleResults = Omit<ZippedEntityResults, 'indicators'>
