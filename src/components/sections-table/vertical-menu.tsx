@@ -1,11 +1,11 @@
 import React from 'react';
-import Box from './box';
+import Box from '../box';
 import { IconButton, Menu, MenuItem, Typography, Theme } from '@material-ui/core';
 import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/DeleteForever';
 import SplitIcon from '@material-ui/icons/CallSplit';
 import clsx from 'clsx';
-import { useTableStyles } from './table/styles';
+import { useTableStyles } from '../table/styles';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { SectionEntity } from 'entities/types';
 

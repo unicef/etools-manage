@@ -18,7 +18,7 @@ import { SectionEntity } from 'entities/types';
 import { usePagination } from 'components/table';
 import { stableSort, getSorting } from 'components/table/table-utils';
 import { useTableStyles } from 'components/table/styles';
-import MoreActionsMenu from '../vertical-menu';
+import MoreActionsMenu from './vertical-menu';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
