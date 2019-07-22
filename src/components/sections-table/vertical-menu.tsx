@@ -33,6 +33,7 @@ interface RowActionsProps {
     className?: string | undefined;
 }
 
+// TODO: add onClick to menu items
 export default function MoreActions({ row, className = '' }: RowActionsProps) {
     const styles = useTableStyles();
     const menuStyles = useMenuStyles();
