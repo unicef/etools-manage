@@ -1,8 +1,9 @@
-import EntityConfig from 'entities';
+import { EntityConfig } from 'entities';
 import { TPMActivityEntity, EntityDisplay } from './types';
+import { TPMBuilder } from './tpm-builder';
 
 
-export default class TPMActivityConfig extends EntityConfig<TPMActivityEntity> {
+export default class TPMActivityConfig implements EntityConfig<TPMActivityEntity> {
 
     public get displayProperties(): EntityDisplay<TPMActivityEntity>[] {
         return [
@@ -15,6 +16,10 @@ export default class TPMActivityConfig extends EntityConfig<TPMActivityEntity> {
     }
     public get sectionsProp() {
         return 'sections';
+    }
+
+    public get builder() {
+        return new TPMBuilder();
     }
 
 }

@@ -1,4 +1,4 @@
-import EntityConfig from 'entities';
+import { EntityConfig } from 'entities';
 
 export interface MergeProps {
     sections: string;

@@ -8,7 +8,7 @@ import TravelsConfig from './travel-entity';
 // tells us which config instance to use for each entity type,
 // EntityMap ensures only the listed types in AllConfigs can be used in the map
 
-const EntityPropMapping: EntityMap = {
+const EntityConfigMapping: Partial<EntityMap> = {
     interventions: new InterventionConfig(),
     indicators: new IndicatorConfig(),
     tpmActivities: new TPMActivityConfig(),
@@ -17,4 +17,4 @@ const EntityPropMapping: EntityMap = {
 };
 
 
-export default EntityPropMapping;
+export default EntityConfigMapping;

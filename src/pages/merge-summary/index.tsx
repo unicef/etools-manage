@@ -6,7 +6,7 @@ import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
 import { keys, prop, map, filter, find, propEq, compose, isEmpty } from 'ramda';
-import EntityPropMapping from 'entities/config-map';
+import EntityConfigMapping from 'entities/config-map';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { usePagination } from 'components/table';
 import { EnhancedTableToolbar } from 'components/sections-table';
@@ -133,7 +133,7 @@ const MergeSummaryPage: React.FC = () => {
                             selectedSections={selectedSections}
                             key={entity as string}
                             newSectionName={newName as string}
-                            config={EntityPropMapping[entity]}
+                            config={EntityConfigMapping[entity]}
                             list={summary[entity]} />
                     );
                 }

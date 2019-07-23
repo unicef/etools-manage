@@ -1,7 +1,7 @@
 import { zipObj, filter, prop, flatten } from 'ramda';
 import BaseService from 'services';
 import { notEmpty } from 'utils/helpers';
-import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, ZippedEntityResults, IndicatorEntity, ZippedByModuleResults } from 'entities/types';
+import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, IndicatorEntity, NonEmptyEntityResults } from 'entities/types';
 
 export interface BackendService {
     getIndicators(interventions: InterventionEntity[]): IndicatorEntity[];
@@ -9,8 +9,8 @@ export interface BackendService {
     getTPMActivities(query: string): Promise<TPMActivityEntity[]>;
     getActionPoints(query: string): Promise<ActionPointEntity[]>;
     getEntitiesForMerge(query: string): Promise<NonEmptyEntityResults>;
-    getZippedEntities(query: string): Promise<ZippedByModuleResults>;
-    getEntitiesForClose(query: string): Promise<NonEmptyModuleResults>;
+    getZippedEntities(query: string): Promise<NonEmptyEntityResults>;
+    getEntitiesForClose(query: string): Promise<NonEmptyEntityResults>;
 }
 
 export interface BackendResponse<T> {
@@ -25,8 +25,6 @@ export interface AllAffectedEntities {
     [key: string]: (query: string) => Promise<EntityUnion>;
 }
 
-export type NonEmptyEntityResults = Partial<ZippedEntityResults>
-export type NonEmptyModuleResults = Partial<ZippedByModuleResults>
 // TODO: Add type guards on all api responses
 export default class BackendApiService extends BaseService implements BackendService {
 
@@ -87,19 +85,23 @@ export default class BackendApiService extends BaseService implements BackendSer
 
     public async getEntitiesForMerge(query: string): Promise<NonEmptyEntityResults> {
         const zipped = await this.getZippedEntities(query);
-        const withIndicators: ZippedEntityResults = {
-            ...zipped,
-            indicators: this.getIndicators(zipped.interventions)
-        };
+        let withIndicators;
+        if ('interventions' in zipped) {
+            withIndicators = {
+                ...zipped,
+                indicators: this.getIndicators(zipped.interventions as InterventionEntity[])
+            };
+        }
+        // const withIndicators: ZippedEntityResults =
         return filter(notEmpty, withIndicators);
     }
 
-    public async getEntitiesForClose(query: string): Promise<NonEmptyModuleResults> {
+    public async getEntitiesForClose(query: string): Promise<NonEmptyEntityResults> {
         const zipped = await this.getZippedEntities(query);
         return filter(notEmpty, zipped);
     }
 
-    public async getZippedEntities(query: string): Promise<ZippedByModuleResults> {
+    public async getZippedEntities(query: string): Promise<NonEmptyEntityResults> {
         const zip = zipObj(Object.keys(this.entityApiMap));
         const allEntities = await Promise.all(
             Object.keys(this.entityApiMap).map(

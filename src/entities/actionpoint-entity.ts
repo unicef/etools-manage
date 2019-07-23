@@ -1,8 +1,9 @@
-import EntityConfig from 'entities';
+import { EntityConfig } from 'entities';
 import { ActionPointEntity, EntityDisplay } from './types';
+import { ActionPointsBuilder } from './action-points-builder';
 
 
-export default class ActionPointConfig extends EntityConfig<ActionPointEntity> {
+export default class ActionPointConfig implements EntityConfig<ActionPointEntity> {
     public get displayProperties(): EntityDisplay<ActionPointEntity>[] {
         return [
             { label: 'Reference Number', propName: 'reference_number' },
@@ -14,6 +15,10 @@ export default class ActionPointConfig extends EntityConfig<ActionPointEntity> {
     }
     public get sectionsProp() {
         return 'section';
+    }
+
+    public get builder() {
+        return new ActionPointsBuilder();
     }
 }
 

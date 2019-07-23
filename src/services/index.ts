@@ -1,6 +1,7 @@
 import { HttpClient } from 'lib/http';
 import { SectionsService } from './section';
 import { BackendService } from './backend';
+import StorageService from './storage';
 
 
 abstract class BaseService {
@@ -14,6 +15,7 @@ abstract class BaseService {
 export interface AppServices {
     sectionsService: SectionsService;
     backendService: BackendService;
+    storageService: StorageService;
 }
 
 export default BaseService;

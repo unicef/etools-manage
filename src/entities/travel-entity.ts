@@ -1,8 +1,9 @@
-import EntityConfig from 'entities';
+import { EntityConfig } from 'entities';
 import { TravelEntity, EntityDisplay } from './types';
+import { TravelsBuilder } from './travels-builder';
 
 
-export default class TravelsConfig extends EntityConfig<TravelEntity> {
+export default class TravelsConfig implements EntityConfig<TravelEntity> {
     public get displayProperties(): EntityDisplay<TravelEntity>[] {
         return [
             {
@@ -20,6 +21,10 @@ export default class TravelsConfig extends EntityConfig<TravelEntity> {
     }
     public get sectionsProp() {
         return 'section';
+    }
+
+    public get builder() {
+        return new TravelsBuilder();
     }
 }
 

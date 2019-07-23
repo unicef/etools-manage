@@ -8,7 +8,8 @@ export interface ZippedEntityResults {
     travels: TravelEntity[];
 }
 
-export type ZippedByModuleResults = Omit<ZippedEntityResults, 'indicators'>
+export type NonEmptyEntityResults = Partial<ZippedEntityResults>
+
 
 export interface ActionPointEntity {
     id: number;
