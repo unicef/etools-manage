@@ -1,8 +1,7 @@
 import { zipObj, filter, prop, flatten } from 'ramda';
 import BaseService from 'services';
-import { TravelEntity } from 'entities/travel-entity';
 import { notEmpty } from 'utils/helpers';
-import { InterventionEntity, ActionPointEntity, TPMActivityEntity, ZippedEntityResults, IndicatorEntity, ZippedByModuleResults } from 'entities/types';
+import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, ZippedEntityResults, IndicatorEntity, ZippedByModuleResults } from 'entities/types';
 
 export interface BackendService {
     getIndicators(interventions: InterventionEntity[]): IndicatorEntity[];
@@ -10,6 +9,8 @@ export interface BackendService {
     getTPMActivities(query: string): Promise<TPMActivityEntity[]>;
     getActionPoints(query: string): Promise<ActionPointEntity[]>;
     getEntitiesForMerge(query: string): Promise<NonEmptyEntityResults>;
+    getZippedEntities(query: string): Promise<ZippedByModuleResults>;
+    getEntitiesForClose(query: string): Promise<NonEmptyModuleResults>;
 }
 
 export interface BackendResponse<T> {
@@ -25,7 +26,7 @@ export interface AllAffectedEntities {
 }
 
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>
-
+export type NonEmptyModuleResults = Partial<ZippedByModuleResults>
 // TODO: Add type guards on all api responses
 export default class BackendApiService extends BaseService implements BackendService {
 
@@ -93,6 +94,11 @@ export default class BackendApiService extends BaseService implements BackendSer
         return filter(notEmpty, withIndicators);
     }
 
+    public async getEntitiesForClose(query: string): Promise<NonEmptyModuleResults> {
+        const zipped = await this.getZippedEntities(query);
+        return filter(notEmpty, zipped);
+    }
+
     public async getZippedEntities(query: string): Promise<ZippedByModuleResults> {
         const zip = zipObj(Object.keys(this.entityApiMap));
         const allEntities = await Promise.all(
@@ -102,5 +108,6 @@ export default class BackendApiService extends BaseService implements BackendSer
         );
         return zip(allEntities);
     }
+
 
 }

@@ -5,7 +5,6 @@ import queryString, { ParsedQuery } from 'query-string';
 import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
-import { RouteComponentProps } from 'react-router';
 import { keys, prop, map, filter, find, propEq, compose, isEmpty } from 'ramda';
 import EntityPropMapping from 'entities/config-map';
 import { makeStyles, createStyles } from '@material-ui/styles';
@@ -134,7 +133,7 @@ const MergeSummaryPage: React.FC = () => {
                             selectedSections={selectedSections}
                             key={entity as string}
                             newSectionName={newName as string}
-                            entity={EntityPropMapping[entity]}
+                            config={EntityPropMapping[entity]}
                             list={summary[entity]} />
                     );
                 }
@@ -167,7 +166,7 @@ function EntityTableHead<T>({ entity }: EntityTableHeadProps<T>) {
 }
 
 
-function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName }: EntityTableProps<T>) {
+function EntityChangesTable<T>({ config, list, selectedSections, newSectionName }: EntityTableProps<T>) {
     const styles = useStyles();
     const {
         page,
@@ -183,7 +182,7 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
     // TODO: abstract away at a different layer
     const getCorrespondingSection = useCallback(
         item => {
-            const { sectionsProp } = entity;
+            const { sectionsProp } = config;
             const sectionsOfEntity = item[sectionsProp];
             if (Array.isArray(sectionsOfEntity) && isArrayOfObjects(sectionsOfEntity)) {
                 return map(prop('name'), sectionsOfEntity.filter(({ id }) => selectedSections.includes(id)));
@@ -202,12 +201,12 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
 
     return (
         <Paper className={styles.tableRoot}>
-            <EnhancedTableToolbar title={entity.title} />
+            <EnhancedTableToolbar title={config.title} />
             <Table
                 aria-labelledby="tableTitle"
                 size="medium">
 
-                <EntityTableHead entity={entity} />
+                <EntityTableHead entity={config} />
                 <TableBody>
                     {
                         list
@@ -217,7 +216,7 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
                                 return (
                                     <TableRow
                                         key={`entityRow${idx}`}>
-                                        {entity.displayProperties.map(
+                                        {config.displayProperties.map(
                                             ({ label, propName }) => (
                                                 <TableCell
                                                     size="small"

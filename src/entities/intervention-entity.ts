@@ -1,5 +1,7 @@
-import { InterventionEntity, EntityDisplay } from './types';
+import { pick } from 'ramda';
+import { InterventionEntity, EntityDisplay, InterventionPayloadFields } from './types';
 import EntityConfig from 'entities';
+import { PmpBuilder } from './pmp-builder';
 
 
 export default class Intervention implements InterventionEntity {
@@ -31,4 +33,16 @@ export class InterventionConfig extends EntityConfig<InterventionEntity> {
     public get sectionsProp() {
         return 'sections';
     }
+
+
+    public get moduleName() {
+        return 'PMP';
+    }
+
+    public get builder() {
+        return PmpBuilder;
+    }
+
 }
+
+

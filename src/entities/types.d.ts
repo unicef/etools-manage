@@ -15,7 +15,10 @@ export interface ActionPointEntity {
     reference_number: string;
     description: string;
     status: string;
+    section: SectionEntity[];
 }
+
+export type ActionPointsPayloadFields = Pick<ActionPointEntity, 'id', 'section'>
 
 export interface IndicatorEntity {
     title: string;
@@ -30,6 +33,8 @@ export interface InterventionEntity {
     indicators?: IndicatorEntity[];
 }
 
+export type InterventionPayloadFields = Pick<InterventionEntity, 'id', 'sections', 'indicators'>
+
 
 export interface TPMActivityEntity {
     id: number;
@@ -37,8 +42,7 @@ export interface TPMActivityEntity {
     status: string;
     sections: SectionEntity[];
 }
-
-
+export type TPMActivityPayloadFields = Pick<TPMActivityEntity, 'id', 'sections'>
 export interface SectionEntity {
     id: number ;
     name: string;
@@ -52,6 +56,15 @@ export interface MergeSectionsPayload {
     new_section_name: string;
     sections_to_merge: number[];
 }
+export interface TravelEntity {
+    id: number;
+    section: number;
+    reference_number: string;
+    purpose: string;
+}
+
+export type TravelPayloadFields = Pick<TravelEntity, 'id', 'section'>
+
 
 export interface NewSectionFromMerged {
     pk: number;
@@ -66,6 +79,18 @@ export interface EntityDisplay<T> {
     propName: keyof T;
 }
 
+export interface ModuleEntities {
+    pmp: InterventionPayloadFields[];
+    travels: TravelPayloadFields[];
+    actionPoints: ActionPointsPayloadFields[];
+    tpmActivities: TPMActivityPayloadFields[];
+}
+export type FilteredModuleEntities = Partial<ModuleEntities>
+
+// export interface <T> {
+//     title: string;
+//     items: T[];
+// }
 
 export type AllConfigs = EntityConfig<InterventionEntity> | EntityConfig<TPMActivityEntity> | EntityConfig<ActionPointEntity>
 export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]?: AllConfigs}

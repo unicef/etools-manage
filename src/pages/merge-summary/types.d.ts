@@ -10,7 +10,7 @@ interface EntityTableHeadProps<T> {
 }
 
 export interface EntityTableProps<T> {
-    entity: EntityConfig<T>;
+    config: EntityConfig<T>;
     list: T[];
     selectedSections: number[];
     newSectionName: string;

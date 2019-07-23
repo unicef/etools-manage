@@ -12,6 +12,7 @@ export interface Store {
     sections: SectionEntity[];
     createdSection: SectionEntity | null;
     mergedSection: NewSectionFromMerged | null;
+
     error: string | null;
     loading: boolean;
 }
