@@ -47,7 +47,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
                 { currentEntitiesData && notEmpty(builders) ? keys(currentEntitiesData).map(
                     (entityName: keyof ZippedEntityResults) => {
                         const { Component } = builders[entityName];
-                        console.log('TCL: Component', Component);
 
                         return (
                             <Component
