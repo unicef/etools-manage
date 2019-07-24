@@ -1,12 +1,11 @@
 import React from 'react';
-import { EntityDisplay, NonEmptyEntityResults } from './types';
+import { EntityDisplay, NonEmptyEntityResults, KeyToEntityMap } from './types';
 import EntityConfigMapping from './config-map';
 import { keys, zipObj } from 'ramda';
 
 export interface EditProps<T> {
-    list: T[];
+    list: T[] | undefined;
     onChange: ((event: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
-
 }
 
 export interface Builder<T> {
@@ -20,16 +19,24 @@ export interface EntityConfig<T> {
     builder: Builder<T>;
 }
 
+export type Builders = {
+    [K in keyof KeyToEntityMap]: any
+};
+export interface DisplayDirector {
+    entityBuilders: Builders;
+    initialize(entitiesData: NonEmptyEntityResults): void;
+}
 
-export class ModuleEntitiesManager {
+
+export class ModuleEntitiesManager implements DisplayDirector {
 
     // public get closeRequestPayload(){
     //     //
     // }
 
-    private entitiesData: NonEmptyEntityResults;
+    private entitiesData: NonEmptyEntityResults | [] = [];
 
-    public constructor(entitiesData: NonEmptyEntityResults) {
+    public initialize(entitiesData: NonEmptyEntityResults) {
         this.entitiesData = entitiesData;
     }
 
@@ -38,8 +45,14 @@ export class ModuleEntitiesManager {
         const zip = zipObj(entitiesNames);
 
         const builders = entitiesNames.map(
-            (key: string) => EntityConfigMapping[key].builder
+            (key: string) => {
+                const builder = EntityConfigMapping[key].builder;
+
+                console.log();
+                return EntityConfigMapping[key].builder;
+            }
         );
+        console.log('TCL: ModuleEntitiesManager -> getentityBuilders -> builders', builders);
 
         return zip(builders);
 

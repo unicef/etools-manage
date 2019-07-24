@@ -8,6 +8,15 @@ export interface ZippedEntityResults {
     travels: TravelEntity[];
 }
 
+export interface KeyToEntityMap {
+    interventions: InterventionEntity;
+    tpmActivities: TPMActivityEntity;
+    actionPoints: ActionPointEntity;
+    travels: TravelEntity;
+    indicators: IndicatorEntity;
+}
+
+
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>
 
 
@@ -19,7 +28,7 @@ export interface ActionPointEntity {
     section: SectionEntity[];
 }
 
-export type ActionPointsPayloadFields = Pick<ActionPointEntity, 'id', 'section'>
+// export type ActionPointsPayloadFields = Pick<ActionPointEntity, 'id', 'section'>
 
 export interface IndicatorEntity {
     title: string;
@@ -34,7 +43,7 @@ export interface InterventionEntity {
     indicators?: IndicatorEntity[];
 }
 
-export type InterventionPayloadFields = Pick<InterventionEntity, 'id', 'sections', 'indicators'>
+// export type InterventionPayloadFields = Pick<InterventionEntity, 'id', 'sections', 'indicators'>
 
 
 export interface TPMActivityEntity {
@@ -43,7 +52,7 @@ export interface TPMActivityEntity {
     status: string;
     sections: SectionEntity[];
 }
-export type TPMActivityPayloadFields = Pick<TPMActivityEntity, 'id', 'sections'>
+// export type TPMActivityPayloadFields = Pick<TPMActivityEntity, 'id', 'sections'>
 export interface SectionEntity {
     id: number ;
     name: string;
@@ -64,7 +73,7 @@ export interface TravelEntity {
     purpose: string;
 }
 
-export type TravelPayloadFields = Pick<TravelEntity, 'id', 'section'>
+// export type TravelPayloadFields = Pick<TravelEntity, 'id', 'section'>
 
 
 export interface NewSectionFromMerged {
@@ -80,18 +89,7 @@ export interface EntityDisplay<T> {
     propName: keyof T;
 }
 
-export interface ModuleEntities {
-    pmp: InterventionPayloadFields[];
-    travels: TravelPayloadFields[];
-    actionPoints: ActionPointsPayloadFields[];
-    tpmActivities: TPMActivityPayloadFields[];
-}
-export type FilteredModuleEntities = Partial<ModuleEntities>
-
-// export interface <T> {
-//     title: string;
-//     items: T[];
-// }
+export type EntityCollectionUnion = IndicatorEntity[] | InterventionEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
 
 export type AllConfigs = EntityConfig<InterventionEntity> | EntityConfig<TPMActivityEntity> | EntityConfig<ActionPointEntity>
 export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]?: AllConfigs}

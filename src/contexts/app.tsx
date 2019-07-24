@@ -19,7 +19,7 @@ export interface Store {
     currentEntitiesData: NonEmptyEntityResults | null;
 }
 
-
+// TODO: move unions to respective folders
 type Action = ReturnType<
     typeof onGetSectionsSuccess |
     typeof onSetLoading |

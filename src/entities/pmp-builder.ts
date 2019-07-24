@@ -4,6 +4,7 @@ import InterventionsEdit from 'components/entity-edit/interventions';
 
 export class PmpBuilder implements Builder<InterventionEntity> {
 
+    public name = 'interventions'
 
     public get Component() {
         return InterventionsEdit;
@@ -12,6 +13,5 @@ export class PmpBuilder implements Builder<InterventionEntity> {
     public numItemsResolved(interventions: InterventionEntity[]): string {
         return '11/14'; // TODO: implement
     }
-
 
 }

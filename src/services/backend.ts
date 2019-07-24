@@ -1,7 +1,7 @@
 import { zipObj, filter, prop, flatten } from 'ramda';
 import BaseService from 'services';
 import { notEmpty } from 'utils/helpers';
-import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, IndicatorEntity, NonEmptyEntityResults } from 'entities/types';
+import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, IndicatorEntity, NonEmptyEntityResults, EntityCollectionUnion } from 'entities/types';
 
 export interface BackendService {
     getIndicators(interventions: InterventionEntity[]): IndicatorEntity[];
@@ -19,10 +19,13 @@ export interface BackendResponse<T> {
     results: T[];
 }
 
-export type EntityUnion = InterventionEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
+export interface TravelsResponse {
+    data: TravelEntity[];
+}
+
 
 export interface AllAffectedEntities {
-    [key: string]: (query: string) => Promise<EntityUnion>;
+    [key: string]: (query: string) => Promise<EntityCollectionUnion>;
 }
 
 // TODO: Add type guards on all api responses
@@ -53,8 +56,8 @@ export default class BackendApiService extends BaseService implements BackendSer
     public async getTravels(query: string): Promise<TravelEntity[]> {
         try {
             const url = `${process.env.REACT_APP_TAVELS_ENDPOINT}${query}`;
-            const response = await this._http.get<BackendResponse<TravelEntity>>(url);
-            return response.results;
+            const response = await this._http.get<TravelsResponse>(url);
+            return response.data;
         } catch (err) {
             const json = JSON.parse(err.message);
             throw new Error(`An error occurred retreiving travels for the requested sections: ${query}. Response code: ${json.code}`);
