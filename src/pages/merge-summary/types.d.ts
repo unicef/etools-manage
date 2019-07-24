@@ -6,7 +6,7 @@ export interface MergeProps {
 }
 
 interface EntityTableHeadProps<T> {
-    entity: EntityConfig<T>;
+    entityConfig: EntityConfig<T>;
 }
 
 export interface EntityTableProps<T> {

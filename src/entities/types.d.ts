@@ -1,6 +1,4 @@
 import { EntityConfig } from 'entities';
-import Intervention from './intervention-entity';
-import { Wrapper } from 'helpers';
 
 
 export interface ZippedEntityResults {
@@ -31,7 +29,6 @@ export interface ActionPointEntity {
     section: SectionEntity[];
 }
 
-// export type ActionPointsPayloadFields = Pick<ActionPointEntity, 'id', 'section'>
 
 export interface IndicatorEntity {
     title: string;
@@ -46,8 +43,6 @@ export interface InterventionEntity {
     indicators?: IndicatorEntity[];
 }
 
-// export type InterventionPayloadFields = Pick<InterventionEntity, 'id', 'sections', 'indicators'>
-
 
 export interface TPMActivityEntity {
     id: number;
@@ -55,7 +50,6 @@ export interface TPMActivityEntity {
     status: string;
     sections: SectionEntity[];
 }
-// export type TPMActivityPayloadFields = Pick<TPMActivityEntity, 'id', 'sections'>
 export interface SectionEntity {
     id: number ;
     name: string;
@@ -76,8 +70,6 @@ export interface TravelEntity {
     purpose: string;
 }
 
-// export type TravelPayloadFields = Pick<TravelEntity, 'id', 'section'>
-
 
 export interface NewSectionFromMerged {
     pk: number;
@@ -86,16 +78,14 @@ export interface NewSectionFromMerged {
 
 export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
 
-
 export interface EntityDisplay<T> {
     label: string;
     propName: keyof T;
 }
 
 export type EntityCollectionUnion = IndicatorEntity[] | InterventionEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
-export type AllEntities = IndicatorEntity | Intervention | TPMActivityEntity | ActionPointEntity | TravelEntity
+export type AllEntities = InterventionEntity | TPMActivityEntity | ActionPointEntity | TravelEntity | IndicatorEntity
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 
-export type EntityMap = {[K in keyof ZippedEntityResults]?: WrapWithConfig<AllEntities> | Partial<EntityConfig<IndicatorEntity>>}
-
+export type EntityMap = {[K in keyof ZippedEntityResults]: EntityConfig<any>}

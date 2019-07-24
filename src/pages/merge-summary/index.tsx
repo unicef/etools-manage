@@ -13,7 +13,7 @@ import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
 import { EntityTableHeadProps, EntityTableProps, MergeProps } from './types';
-import { MergeSectionsPayload } from 'entities/types';
+import { MergeSectionsPayload, ZippedEntityResults } from 'entities/types';
 import { ConfirmButton } from 'components/buttons';
 import { SectionBox } from 'components/section-box';
 
@@ -127,7 +127,7 @@ const MergeSummaryPage: React.FC = () => {
                 <ConfirmBox />
             }
             {showSummaryList && keys(summary).map(
-                (entity: string) => {
+                (entity: keyof ZippedEntityResults) => {
                     return (
                         <EntityChangesTable
                             selectedSections={selectedSections}
@@ -145,11 +145,11 @@ const MergeSummaryPage: React.FC = () => {
 
 export default MergeSummaryPage;
 
-function EntityTableHead<T>({ entity }: EntityTableHeadProps<T>) {
+function EntityTableHead<T>({ entityConfig }: EntityTableHeadProps<T>) {
 
     return <TableHead>
         <TableRow>
-            {entity.displayProperties.map(({ label }, idx) => (
+            {entityConfig.displayProperties.map(({ label }, idx) => (
                 <TableCell
                     key={idx}
                     align="left"
@@ -206,7 +206,7 @@ function EntityChangesTable<T>({ config, list, selectedSections, newSectionName 
                 aria-labelledby="tableTitle"
                 size="medium">
 
-                <EntityTableHead entity={config} />
+                <EntityTableHead entityConfig={config} />
                 <TableBody>
                     {
                         list

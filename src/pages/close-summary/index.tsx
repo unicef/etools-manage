@@ -27,9 +27,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
     const director: DisplayDirector = new ModuleEntitiesManager();
     const [builders, setBuilder] = useState<Builders>(director.entityBuilders);
 
-
-    // let builders = director.entityBuilders;
-
     useEffect(() => {
         onFetchModulesEntities({ backendService, storageService }, id, dispatch);
     }, []);
@@ -41,15 +38,13 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
             console.log('TCL: builders', builders);
         }
     }, [currentEntitiesData]);
-    // const [state, dispatch] = useReducer(bigPayloadReducer, stateFromDirector);
-    // const entitiesManager = new Director();
-    const dataLoaded = notEmpty(builders);
-    console.log('TCL: dataLoaded', dataLoaded);
+
+
     return (
         <div>
             HI, I found you {id && id},
             <Box column>
-                { currentEntitiesData && dataLoaded ? keys(currentEntitiesData).map(
+                { currentEntitiesData && notEmpty(builders) ? keys(currentEntitiesData).map(
                     (entityName: keyof ZippedEntityResults) => {
                         const { Component } = builders[entityName];
                         console.log('TCL: Component', Component);

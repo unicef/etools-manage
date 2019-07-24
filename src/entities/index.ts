@@ -16,7 +16,7 @@ export interface EntityConfig<T> {
     displayProperties: EntityDisplay<T>[];
     title: string;
     sectionsProp: string;
-    builder: Builder<T>;
+    builder?: Builder<T>;
 }
 
 export type Builders = {
