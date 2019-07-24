@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Typography, TableHead, TableRow, TableCell, Table, TableBody, Theme, Paper, TablePagination, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { RouterProps, RouteProps, RouteChildrenProps, Route, RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
 import { onFetchModulesEntities } from './actions';
 import { ModuleEntitiesManager, DisplayDirector, Builders } from 'entities';
 import Box from 'components/box';
-import { keys, isEmpty } from 'ramda';
+import { keys } from 'ramda';
 import { ZippedEntityResults } from 'entities/types';
 import { notEmpty } from 'utils/helpers';
 
