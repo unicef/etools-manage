@@ -1,4 +1,4 @@
-import EntityConfig from 'entities';
+import { EntityConfig } from 'entities';
 
 export interface MergeProps {
     sections: string;
@@ -6,11 +6,11 @@ export interface MergeProps {
 }
 
 interface EntityTableHeadProps<T> {
-    entity: EntityConfig<T>;
+    entityConfig: EntityConfig<T>;
 }
 
 export interface EntityTableProps<T> {
-    entity: EntityConfig<T>;
+    config: EntityConfig<T>;
     list: T[];
     selectedSections: number[];
     newSectionName: string;

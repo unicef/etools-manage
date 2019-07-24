@@ -6,7 +6,9 @@ import { ApiClient } from 'lib/http';
 import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
-import { SectionEntity, NewSectionFromMerged } from 'entities/types';
+import { SectionEntity, NewSectionFromMerged, NonEmptyEntityResults } from 'entities/types';
+import StorageService from 'services/storage';
+import { onModuleEntitiesDataSuccess } from 'pages/close-summary/actions';
 
 export interface Store {
     sections: SectionEntity[];
@@ -14,14 +16,16 @@ export interface Store {
     mergedSection: NewSectionFromMerged | null;
     error: string | null;
     loading: boolean;
+    currentEntitiesData: NonEmptyEntityResults | null;
 }
 
-
+// TODO: move unions to respective folders
 type Action = ReturnType<
     typeof onGetSectionsSuccess |
     typeof onSetLoading |
     typeof onCreateSectionSuccess |
     typeof onSetMergedSection |
+    typeof onModuleEntitiesDataSuccess |
     typeof onThrowError > | typeof onResetCreatedSection
 
 
@@ -32,7 +36,8 @@ export const initialState: Store = {
     createdSection: null,
     mergedSection: null,
     error: null,
-    loading: false
+    loading: false,
+    currentEntitiesData: null
 };
 
 
@@ -45,7 +50,8 @@ export function AppStoreProvider({ children }: ChildrenProps) {
 
     const appServices: AppServices = {
         sectionsService: new SectionsApiService(new ApiClient()),
-        backendService: new BackendApiService(new ApiClient())
+        backendService: new BackendApiService(new ApiClient()),
+        storageService: new StorageService(localStorage)
     };
 
     return (

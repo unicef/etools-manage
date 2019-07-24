@@ -5,16 +5,15 @@ import queryString, { ParsedQuery } from 'query-string';
 import Box from 'components/box';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
-import { RouteComponentProps } from 'react-router';
 import { keys, prop, map, filter, find, propEq, compose, isEmpty } from 'ramda';
-import EntityPropMapping from 'entities/config-map';
+import EntityConfigMapping from 'entities/config-map';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { usePagination } from 'components/table';
 import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
 import { EntityTableHeadProps, EntityTableProps, MergeProps } from './types';
-import { MergeSectionsPayload } from 'entities/types';
+import { MergeSectionsPayload, ZippedEntityResults } from 'entities/types';
 import { ConfirmButton } from 'components/buttons';
 import { SectionBox } from 'components/section-box';
 
@@ -128,13 +127,13 @@ const MergeSummaryPage: React.FC = () => {
                 <ConfirmBox />
             }
             {showSummaryList && keys(summary).map(
-                (entity: string) => {
+                (entity: keyof ZippedEntityResults) => {
                     return (
                         <EntityChangesTable
                             selectedSections={selectedSections}
                             key={entity as string}
-                            newSectionName={newName}
-                            entity={EntityPropMapping[entity]}
+                            newSectionName={newName as string}
+                            config={EntityConfigMapping[entity]}
                             list={summary[entity]} />
                     );
                 }
@@ -146,11 +145,11 @@ const MergeSummaryPage: React.FC = () => {
 
 export default MergeSummaryPage;
 
-function EntityTableHead<T>({ entity }: EntityTableHeadProps<T>) {
+function EntityTableHead<T>({ entityConfig }: EntityTableHeadProps<T>) {
 
     return <TableHead>
         <TableRow>
-            {entity.displayProperties.map(({ label }, idx) => (
+            {entityConfig.displayProperties.map(({ label }, idx) => (
                 <TableCell
                     key={idx}
                     align="left"
@@ -167,7 +166,7 @@ function EntityTableHead<T>({ entity }: EntityTableHeadProps<T>) {
 }
 
 
-function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName }: EntityTableProps<T>) {
+function EntityChangesTable<T>({ config, list, selectedSections, newSectionName }: EntityTableProps<T>) {
     const styles = useStyles();
     const {
         page,
@@ -183,7 +182,7 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
     // TODO: abstract away at a different layer
     const getCorrespondingSection = useCallback(
         item => {
-            const { sectionsProp } = entity;
+            const { sectionsProp } = config;
             const sectionsOfEntity = item[sectionsProp];
             if (Array.isArray(sectionsOfEntity) && isArrayOfObjects(sectionsOfEntity)) {
                 return map(prop('name'), sectionsOfEntity.filter(({ id }) => selectedSections.includes(id)));
@@ -202,12 +201,12 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
 
     return (
         <Paper className={styles.tableRoot}>
-            <EnhancedTableToolbar title={entity.title} />
+            <EnhancedTableToolbar title={config.title} />
             <Table
                 aria-labelledby="tableTitle"
                 size="medium">
 
-                <EntityTableHead entity={entity} />
+                <EntityTableHead entityConfig={config} />
                 <TableBody>
                     {
                         list
@@ -217,7 +216,7 @@ function EntityChangesTable<T>({ entity, list, selectedSections, newSectionName 
                                 return (
                                     <TableRow
                                         key={`entityRow${idx}`}>
-                                        {entity.displayProperties.map(
+                                        {config.displayProperties.map(
                                             ({ label, propName }) => (
                                                 <TableCell
                                                     size="small"

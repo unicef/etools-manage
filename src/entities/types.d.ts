@@ -1,21 +1,34 @@
+import { EntityConfig } from 'entities';
 
 
 export interface ZippedEntityResults {
-    indicators: InterventionEntity[];
+    indicators: IndicatorEntity[];
     tpmActivities: TPMActivityEntity[];
     actionPoints: ActionPointEntity[];
     interventions: InterventionEntity[];
-    // travels: TravelEntity[]
+    travels: TravelEntity[];
 }
 
-export type ZippedByModuleResults = Omit<ZippedEntityResults, 'indicators'>
+export interface KeyToEntityMap {
+    interventions: InterventionEntity;
+    tpmActivities: TPMActivityEntity;
+    actionPoints: ActionPointEntity;
+    travels: TravelEntity;
+    indicators: IndicatorEntity;
+}
+
+
+export type NonEmptyEntityResults = Partial<ZippedEntityResults>
+
 
 export interface ActionPointEntity {
     id: number;
     reference_number: string;
     description: string;
     status: string;
+    section: SectionEntity[];
 }
+
 
 export interface IndicatorEntity {
     title: string;
@@ -37,8 +50,6 @@ export interface TPMActivityEntity {
     status: string;
     sections: SectionEntity[];
 }
-
-
 export interface SectionEntity {
     id: number ;
     name: string;
@@ -52,6 +63,13 @@ export interface MergeSectionsPayload {
     new_section_name: string;
     sections_to_merge: number[];
 }
+export interface TravelEntity {
+    id: number;
+    section: number;
+    reference_number: string;
+    purpose: string;
+}
+
 
 export interface NewSectionFromMerged {
     pk: number;
@@ -60,12 +78,14 @@ export interface NewSectionFromMerged {
 
 export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
 
-
 export interface EntityDisplay<T> {
     label: string;
     propName: keyof T;
 }
 
+export type EntityCollectionUnion = IndicatorEntity[] | InterventionEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
+export type AllEntities = InterventionEntity | TPMActivityEntity | ActionPointEntity | TravelEntity | IndicatorEntity
 
-export type AllConfigs = EntityConfig<InterventionEntity> | EntityConfig<TPMActivityEntity> | EntityConfig<ActionPointEntity>
-export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]?: AllConfigs}
+export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
+
+export type EntityMap = {[K in keyof ZippedEntityResults]: EntityConfig<any>}

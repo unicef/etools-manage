@@ -19,7 +19,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const { sectionsService: service } = useAppService();
     const { loading } = useAppState();
     const dispatch = useAppDispatch();
-    console.log('RENDER AGAIN');
+
     const {
         errorOnName,
         setNameError,

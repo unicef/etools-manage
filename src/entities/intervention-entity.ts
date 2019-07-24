@@ -1,5 +1,6 @@
 import { InterventionEntity, EntityDisplay } from './types';
-import EntityConfig from 'entities';
+import { EntityConfig } from 'entities';
+import { PmpBuilder } from './pmp-builder';
 
 
 export default class Intervention implements InterventionEntity {
@@ -16,7 +17,7 @@ export default class Intervention implements InterventionEntity {
     }
 }
 
-export class InterventionConfig extends EntityConfig<InterventionEntity> {
+export class InterventionConfig implements EntityConfig<InterventionEntity> {
 
     public get displayProperties(): EntityDisplay<InterventionEntity>[] {
         return [
@@ -31,4 +32,16 @@ export class InterventionConfig extends EntityConfig<InterventionEntity> {
     public get sectionsProp() {
         return 'sections';
     }
+
+
+    public get moduleName() {
+        return 'PMP';
+    }
+
+    public get builder() {
+        return new PmpBuilder();
+    }
+
 }
+
+

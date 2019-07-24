@@ -2,10 +2,10 @@ import { createAction } from 'redux-starter-kit';
 
 import { SectionsService } from 'services/section';
 import { sectionWithNumberId } from 'utils/helpers';
-import { BackendService, NonEmptyEntityResults } from 'services/backend';
+import { BackendService } from 'services/backend';
 import { StoreDispatch } from 'contexts/app';
 import { isSectionsParamValid } from 'pages/merge-summary';
-import { CreateSectionPayload, MergeSectionsPayload } from 'entities/types';
+import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
 
 export const onToggleAddModal = createAction('modals/toggleAdd');
 export const onToggleSplitModal = createAction('modals/toggleSplit');
@@ -31,8 +31,8 @@ export const onGetSections = async (service: SectionsService, dispatch: StoreDis
     }
 
     sections = sections.map(sectionWithNumberId);
-    dispatch(onSetLoading(false));
 
+    dispatch(onSetLoading(false));
     dispatch(onGetSectionsSuccess(sections));
 };
 
@@ -54,6 +54,7 @@ export const onSubmitCreateSection = async(service: SectionsService, payload: Cr
     let newSection;
     try {
         newSection = await service.createSection(payload);
+
     } catch (error) {
         throw new Error(error);
     }
@@ -72,7 +73,8 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
     let summary: NonEmptyEntityResults;
 
     try {
-        summary = await service.getAllAffectedEntities(payload);
+        summary = await service.getEntitiesForMerge(payload);
+        console.log('TCL: onFetchMergeSummary -> summary', summary);
         dispatch(onSetLoading(false));
         return summary;
 

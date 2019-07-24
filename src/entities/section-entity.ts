@@ -8,7 +8,7 @@ import {
     trim
 } from 'ramda';
 import { useAppState } from 'contexts/app';
-import Entity from 'entities';
+import { EntityConfig } from 'entities';
 import { CreateSectionPayload, SectionEntity, EntityDisplay } from './types';
 
 
@@ -43,7 +43,7 @@ export class NewSection implements CreateSectionPayload {
     }
 }
 
-export default class Section extends Entity<SectionEntity> {
+export default class Section implements Partial<EntityConfig<SectionEntity>> {
 
     public get displayProperties(): EntityDisplay<SectionEntity>[] {
         return [

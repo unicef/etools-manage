@@ -1,19 +1,13 @@
+import { PropertyNames } from 'helpers';
+
 export type Order = 'asc' | 'desc';
 
 export interface HeadRow<T> {
     disablePadding: boolean;
     numeric: boolean;
-    id: keyof T;
+    id: PropertyNames<T>;
     label: string;
 }
-
-export type EntityRow<T> = HeadRow<T>;
-export type SectionHeadRow = {
-    id: number;
-    name: string;
-    actions: string;
-}
-
 
 export interface EnhancedTableHeadProps<T> {
     headRows: HeadRow<T>[];

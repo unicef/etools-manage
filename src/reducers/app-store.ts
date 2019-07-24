@@ -1,6 +1,7 @@
 import { onGetSectionsSuccess, onCreateSectionSuccess, onResetCreatedSection, onThrowError, onSetLoading, onSetMergedSection } from 'actions';
 import { createReducer } from 'redux-starter-kit';
 import { initialState } from 'contexts/app';
+import { onModuleEntitiesDataSuccess } from 'pages/close-summary/actions';
 
 
 export const appStoreReducer = createReducer(initialState, {
@@ -22,6 +23,10 @@ export const appStoreReducer = createReducer(initialState, {
     },
     [onSetMergedSection.type]: (state, action) => {
         state.mergedSection = action.payload;
+        state.loading = false;
+    },
+    [onModuleEntitiesDataSuccess.type]: (state, action) => {
+        state.currentEntitiesData = action.payload;
         state.loading = false;
     }
 });
