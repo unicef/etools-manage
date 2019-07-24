@@ -1,5 +1,5 @@
 import React from 'react';
-import { EntityDisplay, NonEmptyEntityResults, KeyToEntityMap } from './types';
+import { EntityDisplay, NonEmptyEntityResults, KeyToEntityMap, ZippedEntityResults } from './types';
 import EntityConfigMapping from './config-map';
 import { keys, zipObj } from 'ramda';
 
@@ -45,14 +45,7 @@ export class ModuleEntitiesManager implements DisplayDirector {
         const zip = zipObj(entitiesNames);
 
         const builders = entitiesNames.map(
-            (key: string) => {
-                const builder = EntityConfigMapping[key].builder;
-
-                console.log();
-                return EntityConfigMapping[key].builder;
-            }
-        );
-        console.log('TCL: ModuleEntitiesManager -> getentityBuilders -> builders', builders);
+            (key: keyof ZippedEntityResults) => EntityConfigMapping[key].builder);
 
         return zip(builders);
 

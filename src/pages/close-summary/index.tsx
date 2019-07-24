@@ -24,9 +24,11 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
         storageService
     } = useAppService();
 
-
     const director: DisplayDirector = new ModuleEntitiesManager();
-    let builders = director.entityBuilders;
+    const [builders, setBuilder] = useState<Builders>(director.entityBuilders);
+
+
+    // let builders = director.entityBuilders;
 
     useEffect(() => {
         onFetchModulesEntities({ backendService, storageService }, id, dispatch);
@@ -35,7 +37,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
     useEffect(() => {
         if (currentEntitiesData) {
             director.initialize(currentEntitiesData);
-            builders = director.entityBuilders;
+            setBuilder(director.entityBuilders);
             console.log('TCL: builders', builders);
         }
     }, [currentEntitiesData]);

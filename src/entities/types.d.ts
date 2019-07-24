@@ -1,3 +1,6 @@
+import { EntityConfig } from 'entities';
+import Intervention from './intervention-entity';
+import { Wrapper } from 'helpers';
 
 
 export interface ZippedEntityResults {
@@ -90,6 +93,9 @@ export interface EntityDisplay<T> {
 }
 
 export type EntityCollectionUnion = IndicatorEntity[] | InterventionEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
+export type AllEntities = IndicatorEntity | Intervention | TPMActivityEntity | ActionPointEntity | TravelEntity
 
-export type AllConfigs = EntityConfig<InterventionEntity> | EntityConfig<TPMActivityEntity> | EntityConfig<ActionPointEntity>
-export type EntityMap = {[K in PropertyNames<ZippedEntityResults>]?: AllConfigs}
+export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
+
+export type EntityMap = {[K in keyof ZippedEntityResults]?: WrapWithConfig<AllEntities> | Partial<EntityConfig<IndicatorEntity>>}
+
