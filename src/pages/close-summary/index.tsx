@@ -17,7 +17,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
     // const { state } = props.location;
 
     const {
-        currentEntitiesData,
+        currentInProgressEntitiesData,
         // entityEditPage,
         sections
     } = useAppState();
@@ -37,19 +37,20 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
     }, []);
 
     useEffect(() => {
-        if (currentEntitiesData) {
-            director.initialize(currentEntitiesData);
+        if (currentInProgressEntitiesData) {
+            director.initialize(currentInProgressEntitiesData);
             setBuilders(director.entityBuilders);
         }
-    }, [currentEntitiesData]);
+    }, [currentInProgressEntitiesData]);
 
     useEffect(() => {
-        if (notEmpty(builders) && currentEntitiesData) {
+        if (notEmpty(builders) && currentInProgressEntitiesData) {
+            console.log('TCL: currentInProgressEntitiesData', currentInProgressEntitiesData);
             setModulesData(
-                keys(currentEntitiesData).map(
+                keys(currentInProgressEntitiesData).map(
                     (entityName: keyof ZippedEntityResults): SummaryItemProps => ({
                         name: EntityConfigMapping[entityName].moduleName,
-                        itemsResolved: builders[entityName].numItemsResolved(currentEntitiesData[entityName], Number(id)),
+                        itemsResolved: builders[entityName].numItemsResolved(currentInProgressEntitiesData[entityName], Number(id)),
                         onEdit: handleEdit(entityName)
                     })
                 )
@@ -68,7 +69,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
                     modulesData ? <CloseSectionsSummary modulesData={modulesData} closingSection={closeSection}/> : null
                 }
 
-                {/* { currentEntitiesData && notEmpty(builders) ? keys(currentEntitiesData).map(
+                {/* { currentInProgressEntitiesData && notEmpty(builders) ? keys(currentInProgressEntitiesData).map(
                     (entityName: keyof ZippedEntityResults) => {
                         const { Component } = builders[entityName];
 
@@ -76,7 +77,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
                             <Component
                                 key={entityName}
                                 onChange={() => console.log('onChange', entityName)}
-                                list={currentEntitiesData[entityName]} />
+                                list={currentInProgressEntitiesData[entityName]} />
                         );
                     }
                 ) : null} */}

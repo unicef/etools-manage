@@ -11,7 +11,24 @@ export class PmpBuilder implements Builder<InterventionEntity> {
     }
 
     public numItemsResolved(interventions: InterventionEntity[]): string {
-        return '11/14'; // TODO: implement
+        let total = 0;
+        const numResolved = interventions.reduce((resolved, intervention) => {
+            total++;
+            if (intervention.sections.length > 0) {
+                resolved++;
+            }
+            intervention.indicators.forEach(
+                indicator => {
+                    total++;
+                    if (indicator.section) {
+                        resolved++;
+                    }
+                }
+            );
+
+            return resolved;
+        }, 0);
+        return `${numResolved} / ${total}`;
     }
 
 }

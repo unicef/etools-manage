@@ -19,7 +19,7 @@ export interface KeyToEntityMap {
 }
 
 
-export type NonEmptyEntityResults = ZippedEntityResults
+export type NonEmptyEntityResults = Partial<ZippedEntityResults>
 
 
 export interface ActionPointEntity {

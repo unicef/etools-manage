@@ -16,7 +16,7 @@ export interface Store {
     mergedSection: NewSectionFromMerged | null;
     error: string | null;
     loading: boolean;
-    currentEntitiesData: NonEmptyEntityResults | null;
+    currentInProgressEntitiesData: NonEmptyEntityResults | null;
 }
 
 // TODO: move unions to respective folders
@@ -37,7 +37,7 @@ export const initialState: Store = {
     mergedSection: null,
     error: null,
     loading: false,
-    currentEntitiesData: null
+    currentInProgressEntitiesData: null
 };
 
 

@@ -34,13 +34,38 @@ export interface DisplayDirector {
 }
 
 type ValueOf<T> = T[keyof T];
+export type G = ValueOf<ZippedEntityResults>
 
-export const entityHandlers = {
-    interventions: interventionRemoveSection,
-    travels: travelsRemoveSection,
-    tpmActivities: tpmRemoveSection,
-    actionPoints: actionPointsRemoveSection,
-    indicators: (list: IndicatorEntity[], id: number) => list
+type Filter<T, U> = T extends U ? T : never;  // Remove types from T that are not assignable to U
+
+type Handlers<T> = {
+    [K in keyof T]: (list: T[K], id: number) => T[K]
+}
+
+
+// export const entityHandlers = {
+//     interventions: interventionRemoveSection,
+//     travels: travelsRemoveSection,
+//     tpmActivities: tpmRemoveSection,
+//     actionPoints: actionPointsRemoveSection,
+//     indicators: (list: IndicatorEntity[], id: number) => list
+// };
+
+export const getHandler: <T>(data: T, key: keyof ZippedEntityResults) => Function = (data, key) => {
+    switch (key) {
+        case 'indicators':
+            return interventionRemoveSection;
+        case 'actionPoints':
+            return actionPointsRemoveSection;
+        case 'interventions':
+            return interventionRemoveSection;
+        case 'travels':
+            return travelsRemoveSection;
+        case 'tpmActivities':
+            return tpmRemoveSection;
+        default:
+            throw Error('Bad Key provided');
+    }
 };
 
 
