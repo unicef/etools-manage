@@ -3,23 +3,6 @@ import { EntityConfig } from 'entities';
 import { PmpBuilder } from './pmp-builder';
 import { without } from 'ramda';
 
-
-// export default class Intervention implements InterventionEntity {
-//     public id: number;
-//     public number: string;
-//     public title: string;;
-//     public sections: number[];
-//     indicators: IndicatorEntity[]
-
-//     public constructor({ id, number, title, sections }: InterventionEntity) {
-//         this.id = id;
-//         this.number = number;
-//         this.title = title;
-//         this.sections = sections;
-//     }
-// }
-
-
 export class InterventionConfig implements EntityConfig<InterventionEntity> {
 
     public get displayProperties(): EntityDisplay<InterventionEntity>[] {
@@ -44,7 +27,6 @@ export class InterventionConfig implements EntityConfig<InterventionEntity> {
         return new PmpBuilder();
     }
 
-
 }
 
 
@@ -58,7 +40,7 @@ export const interventionRemoveSection = (list: InterventionEntity[], id: number
         );
         const res: InterventionEntity = ({
             ...item,
-            indicators: removedSectionIndicators as IndicatorEntity[],
+            indicators: removedSectionIndicators,
             sections: without([id], item.sections) as number[]
         });
 

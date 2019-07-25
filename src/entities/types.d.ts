@@ -33,7 +33,7 @@ export interface ActionPointEntity {
 
 export interface IndicatorEntity {
     title: string;
-    section: number;
+    section?: number;
 }
 
 export interface InterventionEntity {

@@ -6,7 +6,6 @@ import { interventionRemoveSection } from './intervention-entity';
 import { travelsRemoveSection } from './travel-entity';
 import { tpmRemoveSection } from './tpmactivity-entity';
 import { actionPointsRemoveSection } from './actionpoint-entity';
-import { getProperty } from 'helpers';
 
 export interface EditProps<T> {
     list: T[] | undefined;
@@ -34,23 +33,7 @@ export interface DisplayDirector {
     initialize(entitiesData: NonEmptyEntityResults): void;
 }
 
-export type Handlers<T> ={
-    [K in keyof T]: (list: T[K][], id: number) => T[K][]
-}
-
-export enum HandlerType {
-    interventions,
-    travels,
-    tpmActivities,
-    actionPoints,
-    indicators
-}
-
-export type HandlerFunc<T> = (list: T[], id: number) => T[]
-
-
 type ValueOf<T> = T[keyof T];
-
 
 export const entityHandlers = {
     interventions: interventionRemoveSection,
@@ -60,12 +43,6 @@ export const entityHandlers = {
     indicators: (list: IndicatorEntity[], id: number) => list
 };
 
-export function Jerry<K extends keyof ZippedEntityResults>(key: K): Result<K> {
-    const res = getProperty(entityHandlers, key);
-    return res;
-}
-
-export type Result<K extends keyof ZippedEntityResults> = Pick<ZippedEntityResults, K>
 
 export class ModuleEntitiesManager implements DisplayDirector {
 

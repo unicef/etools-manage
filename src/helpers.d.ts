@@ -45,9 +45,6 @@ interface Dictionary<T> { [key: string]: T }
 export type PublicPart<T> = {[K in keyof T]: T[K]}
 export type PropertyNames<T> = { [K in keyof T]: K }[keyof T];
 
-export function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
-    return o[name];
-}
 
 export enum MaybeType {
     JUST,
