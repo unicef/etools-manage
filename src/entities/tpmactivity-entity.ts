@@ -1,6 +1,7 @@
 import { EntityConfig } from 'entities';
 import { TPMActivityEntity, EntityDisplay } from './types';
 import { TPMBuilder } from './tpm-builder';
+import { map, propEq, reject } from 'ramda';
 
 
 export default class TPMActivityConfig implements EntityConfig<TPMActivityEntity> {
@@ -22,4 +23,18 @@ export default class TPMActivityConfig implements EntityConfig<TPMActivityEntity
         return new TPMBuilder();
     }
 
+    public get moduleName() {
+        return 'Third Party Monitoring';
+    }
+
 }
+
+export const tpmRemoveSection = (list: TPMActivityEntity[], id: number) => map(
+    (tpmActivity: TPMActivityEntity) => {
+        const withoutSection = reject(propEq('id', id), tpmActivity.sections);
+        return ({
+            ...tpmActivity,
+            sections: withoutSection
+        });
+    }, list
+);

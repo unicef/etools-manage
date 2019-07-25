@@ -1,6 +1,7 @@
 import { TravelEntity } from './types';
 import { Builder } from 'entities';
 import TravelsEdit from 'components/entity-edit/travels';
+import { length, filter, prop } from 'ramda';
 
 export class TravelsBuilder implements Builder<TravelEntity> {
 
@@ -10,7 +11,8 @@ export class TravelsBuilder implements Builder<TravelEntity> {
     }
 
     public numItemsResolved(travels: TravelEntity[]): string {
-        return '11/14'; // TODO: implement
+        const numResolved = length(filter(prop('id'), travels));
+        return `${numResolved} / ${travels.length}`;
     }
 
 }

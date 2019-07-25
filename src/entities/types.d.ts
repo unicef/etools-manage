@@ -7,6 +7,7 @@ export interface ZippedEntityResults {
     actionPoints: ActionPointEntity[];
     interventions: InterventionEntity[];
     travels: TravelEntity[];
+
 }
 
 export interface KeyToEntityMap {
@@ -18,7 +19,7 @@ export interface KeyToEntityMap {
 }
 
 
-export type NonEmptyEntityResults = Partial<ZippedEntityResults>
+export type NonEmptyEntityResults = ZippedEntityResults
 
 
 export interface ActionPointEntity {
@@ -40,7 +41,7 @@ export interface InterventionEntity {
     number: string;
     title: string;
     sections: number[];
-    indicators?: IndicatorEntity[];
+    indicators: IndicatorEntity[];
 }
 
 
@@ -88,4 +89,4 @@ export type AllEntities = InterventionEntity | TPMActivityEntity | ActionPointEn
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 
-export type EntityMap = {[K in keyof ZippedEntityResults]: EntityConfig<any>}
+export type EntityMap = {[K in keyof ZippedEntityResults]: WrapWithConfig<AllEntities>}

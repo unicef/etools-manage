@@ -1,6 +1,7 @@
 import { EntityConfig } from 'entities';
 import { ActionPointEntity, EntityDisplay } from './types';
 import { ActionPointsBuilder } from './action-points-builder';
+import { map, reject, propEq } from 'ramda';
 
 
 export default class ActionPointConfig implements EntityConfig<ActionPointEntity> {
@@ -20,5 +21,19 @@ export default class ActionPointConfig implements EntityConfig<ActionPointEntity
     public get builder() {
         return new ActionPointsBuilder();
     }
+
+    public get moduleName() {
+        return 'Action Points';
+    }
 }
 
+
+export const actionPointsRemoveSection = (list: ActionPointEntity[], id: number) => map(
+    (actionPoint: ActionPointEntity) => {
+        const withoutSection = reject(propEq('id', id), actionPoint.section);
+        return ({
+            ...actionPoint,
+            section: withoutSection
+        });
+    }, list
+);

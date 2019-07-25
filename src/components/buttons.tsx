@@ -6,7 +6,7 @@ import { amber } from '@material-ui/core/colors';
 export const useButtonStyles = makeStyles((theme: Theme) =>
     createStyles({
         button: {
-            margin: theme.spacing(1),
+            marginLeft: theme.spacing(1),
             color: theme.palette.primary.main
         },
         btnConfirm: {
@@ -20,18 +20,19 @@ export const useButtonStyles = makeStyles((theme: Theme) =>
 
 export interface ConfirmBtnProps {
     onClick: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
-    text: React.ReactNode;
+    children: React.ReactNode;
+    color?: 'inherit' | 'primary' | 'secondary' | 'default';
 }
 
-export const ConfirmButton: React.FC<ConfirmBtnProps> = ({ onClick, text }) => {
+export const ConfirmButton: React.FC<ConfirmBtnProps> = ({ onClick, color = 'secondary', children }) => {
     const styles = useButtonStyles();
 
     return (
         <Button onClick={onClick}
-            color="secondary"
+            color={color}
             variant="contained"
             className={styles.button}
         >
-            {text}
+            {children}
         </Button>);
 };

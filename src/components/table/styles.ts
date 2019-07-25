@@ -10,7 +10,6 @@ export const useTableStyles = makeStyles((theme: Theme) =>
         paper: {
             width: '100%',
             marginBottom: theme.spacing(2)
-            // boxShadow: '0 1px 2px 0 rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15)'
         },
         table: {
             minWidth: 750

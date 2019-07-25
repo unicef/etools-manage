@@ -101,7 +101,7 @@ const MergeSummaryPage: React.FC = () => {
             </Typography>
             <Box align="center">
                 <Link to="/"><Button variant="contained">Cancel</Button></Link>
-                <ConfirmButton onClick={onConfirm} text="Confirm" />
+                <ConfirmButton onClick={onConfirm} >Confirm</ConfirmButton>
             </Box>
         </Box>);
 
@@ -133,7 +133,8 @@ const MergeSummaryPage: React.FC = () => {
                             selectedSections={selectedSections}
                             key={entity as string}
                             newSectionName={newName as string}
-                            config={EntityConfigMapping[entity]}
+                            // @ts-ignore
+                            config={EntityConfigMapping[entity]} //TODO: fix this typing
                             list={summary[entity]} />
                     );
                 }

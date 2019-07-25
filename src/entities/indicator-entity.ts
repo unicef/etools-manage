@@ -16,6 +16,9 @@ export default class IndicatorConfig implements Partial<EntityConfig<IndicatorEn
         return 'section';
     }
 
+    public get moduleName() {
+        return 'PMP';
+    }
 
 }
 
