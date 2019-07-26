@@ -1,5 +1,8 @@
 import { EntityConfig } from 'entities';
 
+export interface EntitiesDataResponse<T, U>{
+    [field: string]: T | U;
+}
 
 export interface ZippedEntityResults {
     indicators: IndicatorEntity[];
@@ -7,7 +10,6 @@ export interface ZippedEntityResults {
     actionPoints: ActionPointEntity[];
     interventions: InterventionEntity[];
     travels: TravelEntity[];
-
 }
 
 export interface KeyToEntityMap {
@@ -19,7 +21,7 @@ export interface KeyToEntityMap {
 }
 
 
-export type NonEmptyEntityResults = Partial<ZippedEntityResults>
+export type NonEmptyEntityResults = ZippedEntityResults
 
 
 export interface ActionPointEntity {

@@ -12,16 +12,15 @@ import { SummaryItemProps, CloseSectionsSummary } from './summary-container';
 
 export interface CloseParams {id: string}
 
-const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, ...props }) => {
-    const { id } = match.params;
-    // const { state } = props.location;
-
+export const useClosePage = (id: string) => {
     const {
         currentInProgressEntitiesData,
-        // entityEditPage,
+        moduleEditingName,
         sections
     } = useAppState();
+
     const dispatch = useAppDispatch();
+
     const {
         backendService,
         storageService
@@ -29,8 +28,12 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
 
     const director: DisplayDirector = new ModuleEntitiesManager();
     const [builders, setBuilders] = useState<Builders>(director.entityBuilders);
-
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
+
+    const handleEdit = (entityName: keyof ZippedEntityResults) => () => {
+
+        onEditModuleSections(entityName, dispatch);
+    };
 
     useEffect(() => {
         onFetchModulesEntities({ backendService, storageService }, id, dispatch);
@@ -45,7 +48,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
 
     useEffect(() => {
         if (notEmpty(builders) && currentInProgressEntitiesData) {
-            console.log('TCL: currentInProgressEntitiesData', currentInProgressEntitiesData);
             setModulesData(
                 keys(currentInProgressEntitiesData).map(
                     (entityName: keyof ZippedEntityResults): SummaryItemProps => ({
@@ -55,35 +57,62 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
                     })
                 )
             );
-
         }
     }, [builders]);
 
-    const handleEdit = (entityName: keyof ZippedEntityResults) => () => onEditModuleSections(entityName, dispatch);
-    const closeSection = prop('name', find(propEq('id', Number(id)), sections));
-    return (
-        <div>
-            HI, I found you {id && id},
-            <Box column>
-                {
-                    modulesData ? <CloseSectionsSummary modulesData={modulesData} closingSection={closeSection}/> : null
-                }
+    const getEditComponent = (name: keyof ZippedEntityResults | null) => {
+        if (name) {
+            return builders[name].Component;
+        }
 
-                {/* { currentInProgressEntitiesData && notEmpty(builders) ? keys(currentInProgressEntitiesData).map(
-                    (entityName: keyof ZippedEntityResults) => {
-                        const { Component } = builders[entityName];
+        return null;
+    };
 
-                        return (
-                            <Component
-                                key={entityName}
-                                onChange={() => console.log('onChange', entityName)}
-                                list={currentInProgressEntitiesData[entityName]} />
-                        );
-                    }
-                ) : null} */}
-            </Box>
-        </div>
-    );
+    return {
+        currentInProgressEntitiesData,
+        modulesData,
+        sections,
+        moduleEditingName,
+        getEditComponent
+
+    };
+
+};
+
+
+const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, ...props }) => {
+    const { id } = match.params;
+
+    const {
+        modulesData,
+        moduleEditingName,
+        sections,
+        getEditComponent,
+        currentInProgressEntitiesData
+    } = useClosePage(id);
+
+
+    const closeSectionName = prop('name', find(propEq('id', Number(id)), sections));
+    const EditComponent = getEditComponent(moduleEditingName);
+
+    return modulesData && currentInProgressEntitiesData ? (
+        <Box column>
+            {
+                moduleEditingName ?
+                    <EditComponent
+                        list={currentInProgressEntitiesData[moduleEditingName]}
+                    />
+                    :
+                    <CloseSectionsSummary
+                        modulesData={modulesData}
+                        closingSection={closeSectionName}
+                    />
+            }
+        </Box>
+    ) : null;
+
 };
 
 export default CloseSummaryPage;
+
+

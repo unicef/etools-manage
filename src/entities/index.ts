@@ -25,6 +25,7 @@ export interface EntityConfig<T> {
     moduleName: string;
 }
 
+// TODO: map the types manually here
 export type Builders = {
     [K in keyof KeyToEntityMap]: any
 };
@@ -33,8 +34,8 @@ export interface DisplayDirector {
     initialize(entitiesData: NonEmptyEntityResults): void;
 }
 
-type ValueOf<T> = T[keyof T];
-export type G = ValueOf<ZippedEntityResults>
+export type ValueOf<T> = T[keyof T];
+export type EntityUnion = ValueOf<ZippedEntityResults>
 
 type Filter<T, U> = T extends U ? T : never;  // Remove types from T that are not assignable to U
 
@@ -42,31 +43,35 @@ type Handlers<T> = {
     [K in keyof T]: (list: T[K], id: number) => T[K]
 }
 
+export type SomeMapping<T> = {
+    [P in keyof T]: (list: T[P], id: number) => T[P]
+}
 
-// export const entityHandlers = {
-//     interventions: interventionRemoveSection,
-//     travels: travelsRemoveSection,
-//     tpmActivities: tpmRemoveSection,
-//     actionPoints: actionPointsRemoveSection,
-//     indicators: (list: IndicatorEntity[], id: number) => list
+
+export const getEntityHandlers: () => SomeMapping<ZippedEntityResults> = () => ({
+    interventions: interventionRemoveSection,
+    travels: travelsRemoveSection,
+    tpmActivities: tpmRemoveSection,
+    actionPoints: actionPointsRemoveSection,
+    indicators: (list: IndicatorEntity[], id: number) => list // temp
+});
+
+// export const getHandler: <T>(data: T, key: keyof ZippedEntityResults) => Function = (data, key) => {
+//     switch (key) {
+//         case 'indicators':
+//             return interventionRemoveSection;
+//         case 'actionPoints':
+//             return actionPointsRemoveSection;
+//         case 'interventions':
+//             return interventionRemoveSection;
+//         case 'travels':
+//             return travelsRemoveSection;
+//         case 'tpmActivities':
+//             return tpmRemoveSection;
+//         default:
+//             throw Error('Bad Key provided');
+//     }
 // };
-
-export const getHandler: <T>(data: T, key: keyof ZippedEntityResults) => Function = (data, key) => {
-    switch (key) {
-        case 'indicators':
-            return interventionRemoveSection;
-        case 'actionPoints':
-            return actionPointsRemoveSection;
-        case 'interventions':
-            return interventionRemoveSection;
-        case 'travels':
-            return travelsRemoveSection;
-        case 'tpmActivities':
-            return tpmRemoveSection;
-        default:
-            throw Error('Bad Key provided');
-    }
-};
 
 
 export class ModuleEntitiesManager implements DisplayDirector {

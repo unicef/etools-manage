@@ -1,7 +1,7 @@
 import { InterventionEntity, EntityDisplay } from './types';
 import { EntityConfig } from 'entities';
 import { PmpBuilder } from './pmp-builder';
-import { without } from 'ramda';
+import { without, map } from 'ramda';
 
 export class InterventionConfig implements EntityConfig<InterventionEntity> {
 
@@ -30,7 +30,7 @@ export class InterventionConfig implements EntityConfig<InterventionEntity> {
 }
 
 
-export const interventionRemoveSection = (list: InterventionEntity[], id: number) => list.map(
+export const interventionRemoveSection = (list: InterventionEntity[], id: number) => map(
     (item: InterventionEntity) => {
         const removedSectionIndicators = item.indicators.map(
             indicator => ({
@@ -45,5 +45,6 @@ export const interventionRemoveSection = (list: InterventionEntity[], id: number
         });
 
         return res;
-    }
+    },
+    list
 );

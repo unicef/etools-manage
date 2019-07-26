@@ -6,27 +6,28 @@ import StorageService from 'services/storage';
 import { ZippedEntityResults } from 'entities/types';
 import { onSetLoading } from 'actions';
 import { zipObj, keys } from 'ramda';
-import { getHandler } from 'entities';
-import { getProperty } from 'utils/helpers';
+import { getEntityHandlers } from 'entities';
 
 export const onModuleEntitiesDataSuccess = createAction('moduleEntitiesDataSuccess');
+export const onSetModuleEditingName = createAction('moduleEditingName');
 
 export const onFetchModulesEntities = async (services: {backendService: BackendService; storageService: StorageService}, payload: string, dispatch: StoreDispatch) => {
     const { backendService, storageService } = services;
 
     const entitiesData = storageService.getStoredEntitiesData(payload);
+    const entityHandlers = getEntityHandlers();
 
     if (!entitiesData) {
         dispatch(onSetLoading(true));
-        const entitiesSectionsData = await backendService.getEntitiesForClose(payload);
+        const entitiesSectionsData: Partial<ZippedEntityResults> = await backendService.getEntitiesForClose(payload);
         const processedEntitiesData = zipObj(
             keys(entitiesSectionsData),
 
             keys(entitiesSectionsData).map(
                 (key: keyof ZippedEntityResults) => {
-                    const data = getProperty(entitiesSectionsData, key);
-                    const handler = getHandler(data, key);
-                    return handler(data, Number(payload)); // TODO: figure out how to strict type the handler
+                    const data = entitiesSectionsData[key];
+                    const handler: Function = entityHandlers[key];
+                    return handler(data, Number(payload)); //
                 }
             ));
 
@@ -39,7 +40,8 @@ export const onFetchModulesEntities = async (services: {backendService: BackendS
 };
 
 export const onEditModuleSections = (payload: string, dispatch: StoreDispatch) => {
+    console.log('TCL: onEditModuleSections -> payload', payload);
     //
+    dispatch(onSetModuleEditingName(payload));
 };
-
 

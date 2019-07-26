@@ -3,6 +3,7 @@ import Box from 'components/box';
 import { createStyles, Theme, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { ConfirmButton } from 'components/buttons';
+import { useAppState } from 'contexts/app';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,21 +40,23 @@ export interface SummaryItemProps {
 
 export const CloseSectionsSummary: React.FC<CloseSummaryProps> = ({ modulesData, closingSection }) => {
     const styles = useStyles();
-    return <Paper className={styles.paper}>
-        <Box className={styles.heading} align="center">
-            <Typography className={styles.subtitle} color="primary" variant="subtitle1">Closing section </Typography>
-            <Typography color="primary">
-                <code>{closingSection}</code>
-            </Typography>
-        </Box>
-        {
-            modulesData.map(
-                module => (
-                    <ModuleSummaryItem key={module.name} {...module} />
+    return (
+        <Paper className={styles.paper}>
+            <Box className={styles.heading} align="center">
+                <Typography className={styles.subtitle} color="primary" variant="subtitle1">Closing section </Typography>
+                <Typography color="primary">
+                    <code>{closingSection}</code>
+                </Typography>
+            </Box>
+            {
+                modulesData.map(
+                    module => (
+                        <ModuleSummaryItem key={module.name} {...module} />
+                    )
                 )
-            )
-        }
-    </Paper>;
+            }
+        </Paper>
+    );
 };
 
 

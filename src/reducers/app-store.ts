@@ -1,7 +1,7 @@
 import { onGetSectionsSuccess, onCreateSectionSuccess, onResetCreatedSection, onThrowError, onSetLoading, onSetMergedSection } from 'actions';
 import { createReducer } from 'redux-starter-kit';
 import { initialState } from 'contexts/app';
-import { onModuleEntitiesDataSuccess } from 'pages/close-summary/actions';
+import { onModuleEntitiesDataSuccess, onSetModuleEditingName } from 'pages/close-summary/actions';
 
 
 export const appStoreReducer = createReducer(initialState, {
@@ -28,5 +28,8 @@ export const appStoreReducer = createReducer(initialState, {
     [onModuleEntitiesDataSuccess.type]: (state, action) => {
         state.currentInProgressEntitiesData = action.payload;
         state.loading = false;
+    },
+    [onSetModuleEditingName.type]: (state, action) => {
+        state.moduleEditingName = action.payload;
     }
 });

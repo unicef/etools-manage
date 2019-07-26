@@ -4,7 +4,7 @@ import Box from 'components/box';
 import { EditProps } from 'entities';
 
 type TravelsEditProps = EditProps<TravelEntity>
-const TravelsEdit: React.FC<TravelsEditProps> = props => {
+const TravelsEdit: React.FC = props => {
     console.log('TCL: props', props);
 
     return <Box>
