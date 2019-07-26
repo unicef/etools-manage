@@ -35,6 +35,12 @@ const theme = createMuiTheme({
             }
         },
         MuiPaper: {
+            root: {
+                '& a': {
+                    textDecoration: 'none',
+                    color: 'inherit'
+                }
+            },
             rounded: {
                 borderRadius: 8
             },

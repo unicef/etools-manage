@@ -91,6 +91,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
         currentInProgressEntitiesData
     } = useClosePage(id);
 
+    console.log('TCL: currentInProgressEntitiesData', currentInProgressEntitiesData);
 
     const closeSectionName = prop('name', find(propEq('id', Number(id)), sections));
     const EditComponent = getEditComponent(moduleEditingName);

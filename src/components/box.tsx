@@ -31,6 +31,7 @@ interface BoxProps {
     auto?: boolean;
     wrap?: boolean;
     onRef?: () => any;
+    onClick?: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
     className?: string | undefined;
 }
 
