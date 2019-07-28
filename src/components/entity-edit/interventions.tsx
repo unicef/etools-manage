@@ -8,6 +8,9 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import clsx from 'clsx';
+import { useAppState } from 'contexts/app';
+import { OptionType, SectionsSelectMulti } from 'components/dropdown';
+import { keys, map, reject, head, compose, propEq } from 'ramda';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -16,11 +19,13 @@ const useStyles = makeStyles((theme: Theme) =>
             borderRadius: 8,
             marginBottom: theme.spacing(1)
         },
+        containerPad: {
+            padding: `${theme.spacing(1.5)}px ${theme.spacing(3)}px`
+        },
         collapsableHeading: {
             border: `1px solid ${theme.palette.divider}`,
             borderRadius: theme.spacing(1),
             backgroundColor: theme.palette.grey[100],
-            padding: `${theme.spacing(1.5)}px ${theme.spacing(3)}px`,
             '&:hover': {
                 backgroundColor: theme.palette.grey[200]
             },
@@ -47,7 +52,12 @@ const useStyles = makeStyles((theme: Theme) =>
         spacer: {
             width: 0,
             paddingRight: 40
+        },
+        dropdown: {
+            marginLeft: theme.spacing(2),
+            width: 335
         }
+
     })
 );
 
@@ -61,9 +71,25 @@ export const IndicatorEditItem: React.FC = () => {
 };
 
 export const InterventionEditItem: React.FC<InterventionEntity> = ({ number, title, sections, indicators }) => {
-    console.log('TCL: indicators', indicators);
     const styles = useStyles();
+    const {
+        sections: allSections,
+        closeSectionPayload
+    } = useAppState();
+
     const [open, setOpen] = useState<boolean>(false);
+    const [sectionsAsOptions, setSectionsAsOptions] = useState<OptionType[]>();
+
+    useEffect(() => {
+        if (allSections) {
+            const id = compose(head, map(Number), keys)(closeSectionPayload);
+            const sectionsWithoutClosingItem = reject(propEq('id', id), allSections);
+
+            const asOptions = map(({ name }: {name: string}) => ({ label: name, value: name }), sectionsWithoutClosingItem);
+            setSectionsAsOptions(asOptions);
+        }
+    }, [allSections]);
+
     const [numResolved, setNumResolved] = useState<string>('');
 
     // TODO: put this in builder and pass function to component
@@ -85,7 +111,7 @@ export const InterventionEditItem: React.FC<InterventionEntity> = ({ number, tit
     }, [sections, indicators]);
 
     const handleCollapse = () => setOpen(!open);
-    const headingStyle = clsx(styles.collapsableHeading, open && styles.halfBorder);
+    const headingStyle = clsx(styles.collapsableHeading, styles.containerPad, open && styles.halfBorder);
     return (
         <Box column className={styles.item}>
             <Box
@@ -105,8 +131,16 @@ export const InterventionEditItem: React.FC<InterventionEntity> = ({ number, tit
                     {open ? <ExpandLess /> : <ExpandMore />}
                 </Box>
             </Box>
-            <Collapse timeout={0} in={open}>
-                <div className={styles.collapseContent}>
+            <Collapse timeout={0} in={open} className={styles.collapseContent}>
+                <Box className={styles.containerPad} align="center">
+                    <Typography >Section(s) for PDSSFA: <i>{number}</i></Typography>
+                    <Box className={styles.dropdown}>
+                        <SectionsSelectMulti options={sectionsAsOptions}/>
+                    </Box>
+                </Box>
+
+
+                <div >
                     <IndicatorEditItem />
                 </div>
             </Collapse>

@@ -4,17 +4,18 @@ import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
 import { onFetchModulesEntities, onEditModuleSections } from './actions';
 import { ModuleEntitiesManager, DisplayDirector, Builders } from 'entities';
 import Box from 'components/box';
-import { keys, propEq, find, prop } from 'ramda';
+import { keys, propEq, find, prop, head, values } from 'ramda';
 import { ZippedEntityResults } from 'entities/types';
 import { notEmpty } from 'utils/helpers';
 import EntityConfigMapping from 'entities/config-map';
 import { SummaryItemProps, CloseSectionsSummary } from './summary-container';
+import { firstValue } from 'utils';
 
 export interface CloseParams {id: string}
 
 export const useClosePage = (id: string) => {
     const {
-        currentInProgressEntitiesData,
+        closeSectionPayload,
         moduleEditingName,
         sections
     } = useAppState();
@@ -26,10 +27,10 @@ export const useClosePage = (id: string) => {
         storageService
     } = useAppService();
 
-    const director: DisplayDirector = new ModuleEntitiesManager();
+    const [director] = useState<DisplayDirector>(new ModuleEntitiesManager());
     const [builders, setBuilders] = useState<Builders>(director.entityBuilders);
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
-
+    const [closeSectionData, setCloseSectionData] = useState<ZippedEntityResults | undefined>();
     const handleEdit = (entityName: keyof ZippedEntityResults) => () => {
 
         onEditModuleSections(entityName, dispatch);
@@ -40,19 +41,21 @@ export const useClosePage = (id: string) => {
     }, []);
 
     useEffect(() => {
-        if (currentInProgressEntitiesData) {
-            director.initialize(currentInProgressEntitiesData);
+        if (closeSectionPayload) {
+            setCloseSectionData(firstValue(closeSectionPayload));
+            director.entitiesData = firstValue(closeSectionPayload);
             setBuilders(director.entityBuilders);
         }
-    }, [currentInProgressEntitiesData]);
+    }, [closeSectionPayload]);
 
     useEffect(() => {
-        if (notEmpty(builders) && currentInProgressEntitiesData) {
+        if (notEmpty(builders) && closeSectionData) {
+            console.log('TCL: useClosePage -> closeSectionPayload', closeSectionData);
             setModulesData(
-                keys(currentInProgressEntitiesData).map(
+                keys(closeSectionData).map(
                     (entityName: keyof ZippedEntityResults): SummaryItemProps => ({
                         name: EntityConfigMapping[entityName].moduleName,
-                        itemsResolved: builders[entityName].numItemsResolved(currentInProgressEntitiesData[entityName], Number(id)),
+                        itemsResolved: builders[entityName].numItemsResolved(closeSectionData[entityName], Number(id)),
                         onEdit: handleEdit(entityName)
                     })
                 )
@@ -67,20 +70,18 @@ export const useClosePage = (id: string) => {
 
         return null;
     };
-
     return {
-        currentInProgressEntitiesData,
+        closeSectionData,
         modulesData,
         sections,
         moduleEditingName,
         getEditComponent
-
     };
 
 };
 
 
-const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, ...props }) => {
+const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match }) => {
     const { id } = match.params;
 
     const {
@@ -88,20 +89,18 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, .
         moduleEditingName,
         sections,
         getEditComponent,
-        currentInProgressEntitiesData
+        closeSectionData
     } = useClosePage(id);
-
-    console.log('TCL: currentInProgressEntitiesData', currentInProgressEntitiesData);
 
     const closeSectionName = prop('name', find(propEq('id', Number(id)), sections));
     const EditComponent = getEditComponent(moduleEditingName);
 
-    return modulesData && currentInProgressEntitiesData ? (
+    return modulesData && closeSectionData ? (
         <Box column>
             {
                 moduleEditingName ?
                     <EditComponent
-                        list={currentInProgressEntitiesData[moduleEditingName]}
+                        list={closeSectionData[moduleEditingName]}
                     />
                     :
                     <CloseSectionsSummary

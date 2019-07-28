@@ -26,7 +26,7 @@ export const appStoreReducer = createReducer(initialState, {
         state.loading = false;
     },
     [onModuleEntitiesDataSuccess.type]: (state, action) => {
-        state.currentInProgressEntitiesData = action.payload;
+        state.closeSectionPayload = action.payload;
         state.loading = false;
     },
     [onSetModuleEditingName.type]: (state, action) => {

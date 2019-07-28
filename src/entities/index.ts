@@ -31,6 +31,7 @@ export type Builders = {
 };
 export interface DisplayDirector {
     entityBuilders: Builders;
+    entitiesData: NonEmptyEntityResults | [];
     initialize(entitiesData: NonEmptyEntityResults): void;
 }
 
@@ -76,7 +77,7 @@ export const getEntityHandlers: () => SomeMapping<ZippedEntityResults> = () => (
 
 export class ModuleEntitiesManager implements DisplayDirector {
 
-    private entitiesData: NonEmptyEntityResults | [] = [];
+    public entitiesData: NonEmptyEntityResults | [] = [];
 
     public initialize(entitiesData: NonEmptyEntityResults) {
         this.entitiesData = entitiesData;

@@ -21,8 +21,10 @@ export interface KeyToEntityMap {
 }
 
 
-export type NonEmptyEntityResults = ZippedEntityResults
-
+export type NonEmptyEntityResults = Partial<ZippedEntityResults>
+export interface CloseSectionPayload {
+    [id: string]: ZippedEntityResults;
+}
 
 export interface ActionPointEntity {
     id: number;

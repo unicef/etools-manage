@@ -31,7 +31,9 @@ export const onFetchModulesEntities = async (services: {backendService: BackendS
                 }
             ));
 
-        dispatch(onModuleEntitiesDataSuccess(processedEntitiesData));
+        dispatch(onModuleEntitiesDataSuccess({
+            [payload]: processedEntitiesData
+        }));
 
     } else {
         dispatch(onModuleEntitiesDataSuccess(entitiesData));

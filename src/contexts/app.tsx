@@ -6,9 +6,10 @@ import { ApiClient } from 'lib/http';
 import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
-import { SectionEntity, NewSectionFromMerged, NonEmptyEntityResults, ZippedEntityResults } from 'entities/types';
+import { SectionEntity, NewSectionFromMerged, ZippedEntityResults, CloseSectionPayload } from 'entities/types';
 import StorageService from 'services/storage';
 import { onModuleEntitiesDataSuccess, onSetModuleEditingName } from 'pages/close-summary/actions';
+
 
 export interface Store {
     sections: SectionEntity[];
@@ -16,7 +17,7 @@ export interface Store {
     mergedSection: NewSectionFromMerged | null;
     error: string | null;
     loading: boolean;
-    currentInProgressEntitiesData: NonEmptyEntityResults | null;
+    closeSectionPayload: CloseSectionPayload | null;
     moduleEditingName: keyof ZippedEntityResults | null;
 }
 
@@ -39,7 +40,7 @@ export const initialState: Store = {
     mergedSection: null,
     error: null,
     loading: false,
-    currentInProgressEntitiesData: null,
+    closeSectionPayload: null,
     moduleEditingName: null
 };
 
