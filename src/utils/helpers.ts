@@ -1,9 +1,7 @@
 import { useReducer, useEffect, useRef } from 'react';
 import { isEmpty } from 'ramda';
-import { AppStore, NamespaceKey, StoreShape } from 'global-types';
 import { SectionEntity } from 'entities/types';
 
-// TODO: type these
 export function useSetState<T>(initialState: T) {
     return useReducer(
         (state, newState) => ({ ...state, ...newState }),
@@ -25,19 +23,6 @@ export function useSafeSetState<T>(initialState: T) {
 
     return [state, safeSetState];
 }
-
-
-export const getStateAtNamespaceKey = <T extends NamespaceKey>(namespace: T) => (state: StoreShape): Partial<AppStore>[T] => {
-    const namespaceState = state[namespace];
-    if (!namespaceState) {
-        throw new Error(
-            `Attempted to access state for an unregistered namespace at key ${namespace}`
-        );
-    }
-
-    return namespaceState;
-};
-
 
 export function sectionWithNumberId(section: SectionEntity): SectionEntity {
     return ({

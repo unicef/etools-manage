@@ -7,16 +7,16 @@ import { StoreDispatch } from 'contexts/app';
 import { isSectionsParamValid } from 'pages/merge-summary';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
 
-export const onToggleAddModal = createAction('modals/toggleAdd');
-export const onToggleSplitModal = createAction('modals/toggleSplit');
-export const onToggleMergeModal = createAction('modals/toggleMerge');
+// export const onToggleAddModal = createAction('modals/toggleAdd');
+// export const onToggleSplitModal = createAction('modals/toggleSplit');
+// export const onToggleMergeModal = createAction('modals/toggleMerge');
+// export const onSelectForMerge = createAction('entity/selectForMerge');
 
 export const onGetSectionsSuccess = createAction('entity/getSectionsSuccess');
 export const onCreateSectionSuccess = createAction('entity/createSectionSuccess');
 export const onResetCreatedSection = createAction('entity/resetCreateSuccess');
 export const onMergeSections = createAction('entity/mergeSections');
 export const onSetMergedSection = createAction('mergedSection');
-export const onSelectForMerge = createAction('entity/selectForMerge');
 export const onSetLoading = createAction('loading');
 export const onThrowError = createAction('error');
 

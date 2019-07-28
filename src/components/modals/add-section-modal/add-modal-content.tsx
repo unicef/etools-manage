@@ -6,13 +6,14 @@ import Box from 'components/box';
 
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import BaseModal, { ModalContentProps } from '..';
-import { onToggleAddModal, onSubmitCreateSection, onResetCreatedSection } from 'actions';
+import { onSubmitCreateSection, onResetCreatedSection } from 'actions';
 
 import { useModalStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
 import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
 import { useAddSection } from 'entities/section-entity';
 import { SectionEntity } from 'entities/types';
+import { onToggleAddModal } from 'slices/modals';
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles({});
