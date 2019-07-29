@@ -37,7 +37,7 @@ export const useClosePage = (id: string) => {
 
     useEffect(() => {
         onFetchModulesEntities({ backendService, storageService }, id, dispatch);
-    }, [id]);
+    }, []);
 
     useEffect(() => {
         if (closeSectionPayload) {
@@ -61,7 +61,7 @@ export const useClosePage = (id: string) => {
         }
     }, [builders]);
 
-    const getEditComponent = () => (name: keyof ZippedEntityResults | null) => {
+    const getEditComponent = (name: keyof ZippedEntityResults | null) => {
         if (name) {
             return builders[name].Component;
         }
@@ -91,7 +91,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
         closeSectionData
     } = useClosePage(id);
 
-    console.log('TCL: moduleEditingName', moduleEditingName);
     const closeSectionName = prop('name', find(propEq('id', Number(id)), sections));
     const EditComponent = getEditComponent(moduleEditingName);
 

@@ -3,7 +3,6 @@ import Box from 'components/box';
 import { createStyles, Theme, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { ConfirmButton } from 'components/buttons';
-import { useAppState } from 'contexts/app';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
