@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch } from 'contexts/app';
-import { onSetModuleEditingName } from './actions';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Box from 'components/box';
 import { IconButton, makeStyles, createStyles, Theme, Paper, Typography } from '@material-ui/core';
+import { onSetModuleEditingName } from 'slices/root-store';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,6 +40,10 @@ const EditWrapper: React.FC<WrapperProps> = ({ children, title }) => {
     const dispatch = useAppDispatch();
     const styles = useStyles();
     const onClick = () => dispatch(onSetModuleEditingName(null));
+
+    // reset the module editing name on unmount
+    useEffect(() => () => dispatch(onSetModuleEditingName(null)), []);
+
     return (
         <div >
             <IconButton

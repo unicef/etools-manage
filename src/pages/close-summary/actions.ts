@@ -1,17 +1,14 @@
 
-import { createAction } from 'redux-starter-kit';
 import { BackendService } from 'services/backend';
-import { StoreDispatch } from 'contexts/app';
 import StorageService from 'services/storage';
 import { ZippedEntityResults } from 'entities/types';
-import { onSetLoading } from 'actions';
 import { zipObj, keys } from 'ramda';
 import { getEntityHandlers } from 'entities';
+import { Dispatch } from 'global-types';
+import { onSetLoading, onModuleEntitiesDataSuccess, onSetModuleEditingName } from 'slices/root-store';
 
-export const onModuleEntitiesDataSuccess = createAction('moduleEntitiesDataSuccess');
-export const onSetModuleEditingName = createAction('moduleEditingName');
 
-export const onFetchModulesEntities = async (services: {backendService: BackendService; storageService: StorageService}, payload: string, dispatch: StoreDispatch) => {
+export const onFetchModulesEntities = async (services: {backendService: BackendService; storageService: StorageService}, payload: string, dispatch: Dispatch) => {
     const { backendService, storageService } = services;
 
     const entitiesData = storageService.getStoredEntitiesData(payload);
@@ -41,8 +38,8 @@ export const onFetchModulesEntities = async (services: {backendService: BackendS
 
 };
 
-export const onEditModuleSections = (payload: string, dispatch: StoreDispatch) => {
-    console.log('TCL: onEditModuleSections -> payload', payload);
+export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
+    console.log('TCL: onSetModuleEditingName -> payload', payload);
     //
     dispatch(onSetModuleEditingName(payload));
 };

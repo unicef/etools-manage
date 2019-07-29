@@ -40,4 +40,5 @@ export const {
     onToggleMergeModal,
     onToggleSplitModal
 } = modalsSlice.actions;
+
 export const { reducer: modalsReducer } = modalsSlice;

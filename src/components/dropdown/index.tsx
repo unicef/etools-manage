@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, CSSProperties } from 'react';
+import React, { HTMLAttributes, CSSProperties, memo } from 'react';
 import clsx from 'clsx';
 import Select from 'react-select';
 import { Omit } from '@material-ui/types';
@@ -222,7 +222,7 @@ const useSectionsSelect = () => {
     };
 };
 
-export const SectionsSelectMulti: React.FC<SectionsSelectProps> = ({ options }) => {
+export const SectionsSelectMulti: React.FC<SectionsSelectProps> = memo(({ options }) => {
     console.log('TCL: options', options);
     const {
         selectStyles,
@@ -252,5 +252,5 @@ export const SectionsSelectMulti: React.FC<SectionsSelectProps> = ({ options }) 
             />
             <div className={styles.divider} />
         </div>);
-};
+});
 

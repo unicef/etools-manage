@@ -1,56 +1,18 @@
 import React, { useReducer, useContext } from 'react';
-import { onGetSectionsSuccess, onSetLoading, onCreateSectionSuccess, onResetCreatedSection, onThrowError, onSetMergedSection } from 'actions';
-import { ChildrenProps } from 'global-types';
-import { appStoreReducer } from 'reducers/app-store';
+import { ChildrenProps, Dispatch } from 'global-types';
 import { ApiClient } from 'lib/http';
 import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
-import { SectionEntity, NewSectionFromMerged, ZippedEntityResults, CloseSectionPayload } from 'entities/types';
 import StorageService from 'services/storage';
-import { onModuleEntitiesDataSuccess, onSetModuleEditingName } from 'pages/close-summary/actions';
-
-
-export interface Store {
-    sections: SectionEntity[];
-    createdSection: SectionEntity | null;
-    mergedSection: NewSectionFromMerged | null;
-    error: string | null;
-    loading: boolean;
-    closeSectionPayload: CloseSectionPayload | null;
-    moduleEditingName: keyof ZippedEntityResults | null;
-}
-
-// TODO: move unions to respective folders
-type Action = ReturnType<
-    typeof onGetSectionsSuccess |
-    typeof onSetLoading |
-    typeof onCreateSectionSuccess |
-    typeof onSetModuleEditingName|
-    typeof onSetMergedSection |
-    typeof onModuleEntitiesDataSuccess |
-    typeof onThrowError > | typeof onResetCreatedSection
-
-
-export type StoreDispatch = (action: Action) => void;
-
-export const initialState: Store = {
-    sections: [],
-    createdSection: null,
-    mergedSection: null,
-    error: null,
-    loading: false,
-    closeSectionPayload: null,
-    moduleEditingName: null
-};
-
+import { rootReducer, initialState, Store } from 'slices/root-store';
 
 const AppStoreContext = React.createContext<Store | undefined>(initialState);
-const AppDispatchContext = React.createContext<StoreDispatch | undefined>(undefined);
+const AppDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 const AppServiceContext = React.createContext<AppServices | undefined>(undefined);
 
 export function AppStoreProvider({ children }: ChildrenProps) {
-    const [state, dispatch] = useReducer(appStoreReducer, initialState);
+    const [state, dispatch] = useReducer(rootReducer, initialState);
 
     const appServices: AppServices = {
         sectionsService: new SectionsApiService(new ApiClient()),

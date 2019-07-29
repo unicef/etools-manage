@@ -298,6 +298,7 @@ module.exports = {
             html: true
         }],
         'react/prop-types': 'off',
+        'react/display-name': 'off',
         'semi-spacing': [
             'error',
             {

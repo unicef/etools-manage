@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
 import { onFetchModulesEntities, onEditModuleSections } from './actions';
 import { ModuleEntitiesManager, DisplayDirector, Builders } from 'entities';
 import Box from 'components/box';
-import { keys, propEq, find, prop, head, values } from 'ramda';
+import { keys, propEq, find, prop } from 'ramda';
 import { ZippedEntityResults } from 'entities/types';
 import { notEmpty } from 'utils/helpers';
 import EntityConfigMapping from 'entities/config-map';
@@ -32,13 +32,12 @@ export const useClosePage = (id: string) => {
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
     const [closeSectionData, setCloseSectionData] = useState<ZippedEntityResults | undefined>();
     const handleEdit = (entityName: keyof ZippedEntityResults) => () => {
-
         onEditModuleSections(entityName, dispatch);
     };
 
     useEffect(() => {
         onFetchModulesEntities({ backendService, storageService }, id, dispatch);
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         if (closeSectionPayload) {
@@ -50,7 +49,6 @@ export const useClosePage = (id: string) => {
 
     useEffect(() => {
         if (notEmpty(builders) && closeSectionData) {
-            console.log('TCL: useClosePage -> closeSectionPayload', closeSectionData);
             setModulesData(
                 keys(closeSectionData).map(
                     (entityName: keyof ZippedEntityResults): SummaryItemProps => ({
@@ -63,13 +61,14 @@ export const useClosePage = (id: string) => {
         }
     }, [builders]);
 
-    const getEditComponent = (name: keyof ZippedEntityResults | null) => {
+    const getEditComponent = () => (name: keyof ZippedEntityResults | null) => {
         if (name) {
             return builders[name].Component;
         }
 
         return null;
     };
+
     return {
         closeSectionData,
         modulesData,
@@ -92,6 +91,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
         closeSectionData
     } = useClosePage(id);
 
+    console.log('TCL: moduleEditingName', moduleEditingName);
     const closeSectionName = prop('name', find(propEq('id', Number(id)), sections));
     const EditComponent = getEditComponent(moduleEditingName);
 
