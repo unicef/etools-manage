@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme: Theme) =>
             lineHeight: '1rem'
         },
         heading: {
-            padding: theme.spacing(2),
-            borderBottom: `1px solid ${theme.palette.divider}`
+            padding: theme.spacing(2)
+            // borderBottom: `1px solid ${theme.palette.divider}`
         }
     })
 );

@@ -10,7 +10,7 @@ import { makeStyles, createStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import { useAppState, useAppDispatch, useAppService } from 'contexts/app';
 import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
-import { keys, map, reject, head, compose, propEq, over, lensPath, always, filter, includes, prop, find, concat, view } from 'ramda';
+import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, filter, includes, prop, find, concat, view, cond, isNil } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { onUpdatePayload } from 'pages/close-summary/actions';
 
@@ -45,8 +45,10 @@ const useStyles = makeStyles((theme: Theme) =>
             cursor: 'pointer'
         },
         indicatorItem: {
-            padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
-            color: theme.palette.primary.contrastText
+            paddingBottom: theme.spacing(2)
+        },
+        indicator: {
+            padding: '6px 24px 6px 16px'
         },
         spacer: {
             width: 0,
@@ -54,7 +56,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         dropdown: {
             margin: `0 ${theme.spacing(2)}px`,
-            width: 335
+            minWidth: 335
+        },
+        indicatorDropdown: {
+            maxHeight: 32,
+            marginLeft: theme.spacing(6)
+        },
+        numResolved: {
+            whiteSpace: 'nowrap'
         }
 
     })
@@ -62,38 +71,34 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IndicatorsProps {
     indicators: IndicatorEntity[];
-    sectionOptions: SectionEntity[];
+    sectionOptions: OptionType[];
     onChange: ((idx: number) => (value: ValueType<OptionType>) => void);
 }
 
 export const IndicatorEditItem: React.FC<IndicatorsProps> = ({ indicators, sectionOptions, onChange }) => {
     const styles = useStyles();
-    const [asOptions, setAsOptions] = useState<OptionType[]>([]);
-
-    useEffect(() => {
-        setAsOptions(sectionOptions.map(
-            ({ name, id }) => ({ label: name, value: id })
-        ));
-    }, [sectionOptions]);
 
     const getValue = (section: number | undefined) => {
-        const res = find(propEq('value', section), asOptions);
+        const res = find(propEq('value', section), sectionOptions);
         return res === undefined ? null : res;
     };
-    console.log('Indicators changed ', indicators);
     return <Box className={styles.indicatorItem} align="center">
         <div className={styles.spacer} />
-        <Box column>
+        <Box column >
             { indicators.map(
                 ({ title, section }, idx) => (
                     <Box key={title}
                         align="center"
-                        justify="between">
+                        justify="between"
+                        className={styles.indicator}>
                         <Typography >{title}</Typography>
-                        <Dropdown
-                            value={getValue(section)}
-                            onChange={onChange(idx)}
-                            options={asOptions} />
+                        <Box className={clsx(styles.dropdown, styles.indicatorDropdown)}>
+                            <Dropdown
+                                value={getValue(section)}
+                                onChange={onChange(idx)}
+                                options={sectionOptions}
+                            />
+                        </Box>
                     </Box>
                 )
             )}
@@ -106,6 +111,7 @@ interface InterventionEditItemProps extends InterventionEntity {
     onChange: ((intervention: Partial<InterventionEntity>) => void);
 }
 export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ number, title, sections, indicators, id, onChange }) => {
+    console.log('TCL: sections', sections);
     const styles = useStyles();
     const currentInterventionState = { number, title, sections, indicators, id };
     const {
@@ -117,7 +123,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
 
     const [open, setOpen] = useState<boolean>(false);
     const [sectionsAsOptions, setSectionsAsOptions] = useState<OptionType[]>();
-    const [selectedSections, setSelectedSections] = useState<OptionType[]>();
+    const [selectedSections, setSelectedSections] = useState<OptionType[]>([]);
 
     useEffect(() => {
         if (allSections) {
@@ -134,7 +140,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
 
     const [numResolved, setNumResolved] = useState<string>('');
 
-    // TODO: put this in builder and pass function to component
+    // TODO: move this elsewhere
     useEffect(() => {
         let total = 1;
         let resolved = 0;
@@ -158,8 +164,13 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
         }
     }, [interventionState]);
 
+
     const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
-        const selectedSections = filter((section: SectionEntity) => includes(section.id, map(prop('value'), value)), allSections);
+        const valueOrDefault = cond([
+            [isNil, always([])],
+            [T, map(prop('value'))]
+        ]);
+        const selectedSections = filter((section: SectionEntity) => includes(section.id, valueOrDefault(value)), allSections);
         const newState = over(lensPath(['sections']), always(selectedSections), currentInterventionState);
         setInterventionState(newState);
     };
@@ -204,7 +215,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
                             options={sectionsAsOptions}/>
                     </Box>
 
-                    <Typography color="secondary">{numResolved}</Typography>
+                    <Typography color="secondary" className={styles.numResolved}>{numResolved}</Typography>
 
                     <Box
                         onClick={handleCollapse}
@@ -216,14 +227,13 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
             </Box>
             <Collapse timeout={0} in={open} className={styles.collapseContent}>
                 <Box className={styles.containerPad} align="center">
-                    <Typography >Section(s) for PDSSFA: <i>{number}</i></Typography>
-
+                    <Typography ><i>Applied indicators</i></Typography>
                 </Box>
 
                 <div >
                     <IndicatorEditItem
                         onChange={handleChangeIndicators}
-                        sectionOptions={allSections}
+                        sectionOptions={selectedSections}
                         indicators={indicators}/>
                 </div>
             </Collapse>
