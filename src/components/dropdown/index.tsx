@@ -219,10 +219,7 @@ const useDropdown = () => {
                 backgroundColor: color.alpha(0.1).css()
             };
         },
-        // multiValueLabel: (styles: CSSProperties, state: any) => ({
-        //     ...styles,
-        //     color: state.data.color
-        // }),
+
         multiValueRemove: (styles: CSSProperties) => ({
             ...styles,
             ':hover': {
@@ -245,14 +242,11 @@ const useDropdown = () => {
 
     const smallIndicatorStyles = {
         ...selectStyles,
-        dropdownIndicator: (provided: CSSProperties) => {
-            console.log('TCL: useDropdown -> provided', provided);
+        dropdownIndicator: (provided: CSSProperties) => ({
+            ...provided,
+            padding: 4
+        })
 
-            return ({
-                ...provided,
-                padding: 4
-            });
-        }
     };
 
     return {
