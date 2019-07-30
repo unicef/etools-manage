@@ -1,7 +1,7 @@
 import React from 'react';
 import { EntityDisplay, NonEmptyEntityResults, KeyToEntityMap, ZippedEntityResults, IndicatorEntity } from './types';
-import EntityConfigMapping from './config-map';
-import { keys, zipObj } from 'ramda';
+import ConfigMap from './config-map';
+import { keys, zipObj, isEmpty } from 'ramda';
 import { interventionRemoveSection } from './intervention-entity';
 import { travelsRemoveSection } from './travel-entity';
 import { tpmRemoveSection } from './tpmactivity-entity';
@@ -9,7 +9,7 @@ import { actionPointsRemoveSection } from './actionpoint-entity';
 
 export interface EditProps<T> {
     list: T[] | undefined;
-    onChange: ((event: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
+    closeSectionPayloadKey: string;
 }
 
 export interface Builder<T> {
@@ -84,11 +84,17 @@ export class ModuleEntitiesManager implements DisplayDirector {
     }
 
     public get entityBuilders() {
-        const entitiesNames = keys(this.entitiesData);
+
+        const entitiesNames = !isEmpty(this.entitiesData) && keys(this.entitiesData) || [];
         const zip = zipObj(entitiesNames);
 
         const builders = entitiesNames.map(
-            (key: keyof ZippedEntityResults) => EntityConfigMapping[key].builder);
+            (key: keyof ZippedEntityResults) => {
+                if (ConfigMap[key]) {
+                    return ConfigMap[key].builder;
+                }
+                return key;
+            });
 
         return zip(builders);
 

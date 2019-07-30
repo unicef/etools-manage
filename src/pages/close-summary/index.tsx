@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
 import { onFetchModulesEntities, onEditModuleSections } from './actions';
@@ -10,6 +10,14 @@ import { notEmpty } from 'utils/helpers';
 import EntityConfigMapping from 'entities/config-map';
 import { SummaryItemProps, CloseSectionsSummary } from './summary-container';
 import { firstValue } from 'utils';
+
+if (process.env.NODE_ENV !== 'production') {
+    const whyDidYouRender = require('@welldone-software/why-did-you-render');
+    whyDidYouRender(React, {
+        onlyLogs: true,
+        titleColor: 'teal'
+    });
+}
 
 export interface CloseParams {id: string}
 
@@ -31,6 +39,7 @@ export const useClosePage = (id: string) => {
     const [builders, setBuilders] = useState<Builders>(director.entityBuilders);
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
     const [closeSectionData, setCloseSectionData] = useState<ZippedEntityResults | undefined>();
+
     const handleEdit = (entityName: keyof ZippedEntityResults) => () => {
         onEditModuleSections(entityName, dispatch);
     };
@@ -76,13 +85,13 @@ export const useClosePage = (id: string) => {
         moduleEditingName,
         getEditComponent
     };
-
 };
+
+// useClosePage.whyDidYouRender = true;
 
 
 const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match }) => {
     const { id } = match.params;
-
     const {
         modulesData,
         moduleEditingName,
@@ -99,6 +108,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
             {
                 moduleEditingName ?
                     <EditComponent
+                        closeSectionPayloadKey={id}
                         list={closeSectionData[moduleEditingName]}
                     />
                     :
@@ -111,6 +121,9 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
     ) : null;
 
 };
+
+// @ts-ignore
+// CloseSummaryPage.whyDidYouRender = true;
 
 export default CloseSummaryPage;
 

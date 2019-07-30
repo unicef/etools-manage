@@ -1,4 +1,5 @@
-import { NonEmptyEntityResults } from 'entities/types';
+import { NonEmptyEntityResults, AnyKeyVal } from 'entities/types';
+import { firstValue, firstKey } from 'utils';
 
 export interface StorageClient {
     setItem: (key: string, value: string) => void;
@@ -14,15 +15,15 @@ abstract class BaseStorage {
 
 
 export interface Storage {
-    storeEntitiesData(key: string, value: NonEmptyEntityResults): void;
+    storeEntitiesData({ key, value }: AnyKeyVal): void;
     getStoredEntitiesData(key: string): NonEmptyEntityResults | null;
 }
 
 export default class StorageService extends BaseStorage implements Storage {
 
-    public storeEntitiesData(key: string, value: NonEmptyEntityResults) {
-        const json = JSON.stringify(value);
-        this._storage.setItem(key, json);
+    public storeEntitiesData(data: AnyKeyVal) {
+        const json = JSON.stringify(firstValue(data));
+        this._storage.setItem(firstKey(data), json);
     }
 
     public getStoredEntitiesData(key: string): NonEmptyEntityResults | null {

@@ -1,4 +1,4 @@
-import { createSlice, createAction } from 'redux-starter-kit';
+import { createSlice } from 'redux-starter-kit';
 import { SectionEntity, NewSectionFromMerged, CloseSectionPayload, ZippedEntityResults } from 'entities/types';
 
 export interface Store {
@@ -20,9 +20,6 @@ export const initialState: Store = {
     closeSectionPayload: null,
     moduleEditingName: null
 };
-
-// Temporary due to ts compiler erroring on passing null as payload
-export const onSetModuleEditingName = createAction('setModuleEdit');
 
 const storeSlice = createSlice({
     initialState,
@@ -50,14 +47,12 @@ const storeSlice = createSlice({
         onModuleEntitiesDataSuccess: (state, action) => {
             state.closeSectionPayload = action.payload;
             state.loading = false;
-        }
-        // onSetModuleEditingName: (state, action) => {
-        //     state.moduleEditingName = action.payload;
-        // }
-    },
-    extraReducers: {
-        [onSetModuleEditingName.type]: (state, action) => {
+        },
+        onSetModuleEditingName: (state, action) => {
             state.moduleEditingName = action.payload;
+        },
+        updateCloseSectionPayload: (state, action) => {
+            state.closeSectionPayload = action.payload;
         }
     }
 });
@@ -70,8 +65,10 @@ export const {
     onResetCreatedSection,
     onSetLoading,
     onSetMergedSection,
-    // onSetModuleEditingName,
+    onSetModuleEditingName,
+    updateCloseSectionPayload,
     onThrowError
+
 } = storeSlice.actions;
 
 export const { reducer: rootReducer } = storeSlice;

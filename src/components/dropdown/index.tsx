@@ -17,7 +17,7 @@ import TextField, { BaseTextFieldProps } from '@material-ui/core/TextField';
 
 export interface OptionType {
     label: string;
-    value: string;
+    value: string | number;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -51,13 +51,15 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(1, 2)
         },
         singleValue: {
-            fontSize: 16
+            fontSize: 14
         },
         placeholder: {
             position: 'absolute',
             left: 2,
             bottom: 6,
-            fontSize: 16
+            fontSize: 16,
+            color: theme.palette.text.primary
+
         },
         paper: {
             position: 'absolute',
@@ -187,22 +189,15 @@ const components = {
     ValueContainer
 };
 
-export interface SectionsSelectProps {
-    options?: OptionType[];
-}
 
-const useSectionsSelect = () => {
+const useDropdown = () => {
     const [single, setSingle] = React.useState<ValueType<OptionType>>(null);
-    const [multi, setMulti] = React.useState<ValueType<OptionType>>(null);
     const theme = useTheme();
 
     function handleChangeSingle(value: ValueType<OptionType>) {
         setSingle(value);
     }
 
-    function handleChangeMulti(value: ValueType<OptionType>) {
-        setMulti(value);
-    }
     const selectStyles = {
         input: (base: CSSProperties) => ({
             ...base,
@@ -215,20 +210,25 @@ const useSectionsSelect = () => {
 
     return {
         selectStyles,
-        multi,
-        handleChangeMulti,
         handleChangeSingle,
         single
     };
 };
 
-export const SectionsSelectMulti: React.FC<SectionsSelectProps> = memo(({ options }) => {
-    console.log('TCL: options', options);
+type ProvidedValue = string[] | number[] | string | number
+
+export interface DropdownProps {
+    options?: OptionType[];
+    divider?: boolean;
+    value?: OptionType | OptionType[];
+    onChange: ((value: ValueType<OptionType>) => void);
+}
+
+
+export const DropdownMulti: React.FC<DropdownProps> = memo(({ options, value, divider = false, onChange }) => {
     const {
-        selectStyles,
-        multi,
-        handleChangeMulti
-    } = useSectionsSelect();
+        selectStyles
+    } = useDropdown();
 
     const styles = useStyles();
     return (
@@ -246,11 +246,51 @@ export const SectionsSelectMulti: React.FC<SectionsSelectProps> = memo(({ option
                 placeholder="Select section..."
                 options={options}
                 components={components}
-                value={multi}
-                onChange={handleChangeMulti}
+                value={value}
+                onChange={onChange}
                 isMulti
             />
-            <div className={styles.divider} />
+            {divider && <div className={styles.divider} />}
         </div>);
 });
 
+export const Dropdown: React.FC<DropdownProps> = memo(({ options, onChange, divider = false }) => {
+    const {
+        selectStyles,
+        single,
+        handleChangeSingle
+    } = useDropdown();
+
+    const handleChange = (value: ValueType<OptionType>) => {
+        if (value === single) {
+            handleChangeSingle(null);
+            onChange(null);
+        } else {
+            handleChangeSingle(value);
+            onChange(value);
+        }
+
+    };
+
+    const styles = useStyles();
+    return (
+        <div className={styles.root}>
+            <Select
+                classes={styles}
+                styles={selectStyles}
+                inputId="react-select-multi"
+                TextFieldProps={{
+                    InputLabelProps: {
+                        htmlFor: 'react-select-multi',
+                        shrink: true
+                    }
+                }}
+                placeholder="Select section..."
+                options={options}
+                components={components}
+                value={single}
+                onChange={handleChange}
+            />
+            {divider && <div className={styles.divider} />}
+        </div>);
+});

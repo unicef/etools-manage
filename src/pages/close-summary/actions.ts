@@ -1,11 +1,11 @@
 
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
-import { ZippedEntityResults } from 'entities/types';
+import { ZippedEntityResults, AnyKeyVal } from 'entities/types';
 import { zipObj, keys } from 'ramda';
 import { getEntityHandlers } from 'entities';
 import { Dispatch } from 'global-types';
-import { onSetLoading, onModuleEntitiesDataSuccess, onSetModuleEditingName } from 'slices/root-store';
+import { onSetLoading, onModuleEntitiesDataSuccess, onSetModuleEditingName, updateCloseSectionPayload } from 'slices/root-store';
 
 
 export const onFetchModulesEntities = async (services: {backendService: BackendService; storageService: StorageService}, payload: string, dispatch: Dispatch) => {
@@ -27,13 +27,12 @@ export const onFetchModulesEntities = async (services: {backendService: BackendS
                     return handler(data, Number(payload)); //
                 }
             ));
-
         dispatch(onModuleEntitiesDataSuccess({
             [payload]: processedEntitiesData
         }));
 
     } else {
-        dispatch(onModuleEntitiesDataSuccess(entitiesData));
+        dispatch(onModuleEntitiesDataSuccess({ [payload]: entitiesData }));
     }
 
 };
@@ -42,5 +41,11 @@ export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
     console.log('TCL: onSetModuleEditingName -> payload', payload);
     //
     dispatch(onSetModuleEditingName(payload));
+};
+
+export const onUpdatePayload = (storageService: StorageService, payload: AnyKeyVal, dispatch: Dispatch) => {
+    storageService.storeEntitiesData(payload);
+    console.log('TCL: onUpdatePayload -> payload', payload);
+    dispatch(updateCloseSectionPayload(payload));
 };
 

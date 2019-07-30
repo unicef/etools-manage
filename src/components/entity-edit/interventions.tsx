@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { InterventionEntity } from 'entities/types';
+import { InterventionEntity, IndicatorEntity, SectionEntity, CloseSectionPayload } from 'entities/types';
 import Box from 'components/box';
 import { EditProps } from 'entities';
 import { Typography, Theme, Collapse } from '@material-ui/core';
@@ -8,9 +8,11 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import clsx from 'clsx';
-import { useAppState } from 'contexts/app';
-import { OptionType, SectionsSelectMulti } from 'components/dropdown';
-import { keys, map, reject, head, compose, propEq } from 'ramda';
+import { useAppState, useAppDispatch, useAppService } from 'contexts/app';
+import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
+import { keys, map, reject, head, compose, propEq, over, lensPath, always, filter, includes, prop, find, concat } from 'ramda';
+import { ValueType, OptionsType } from 'react-select/src/types';
+import { onUpdatePayload } from 'pages/close-summary/actions';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -28,8 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: theme.palette.grey[100],
             '&:hover': {
                 backgroundColor: theme.palette.grey[200]
-            },
-            cursor: 'pointer'
+            }
         },
         halfBorder: {
             borderRadius: `${theme.spacing(1)}px ${theme.spacing(1)}px 0 0`
@@ -39,11 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
             borderTop: 'none',
             borderRadius: `0 0 ${theme.spacing(1)}px ${theme.spacing(1)}px`
         },
-        caption: {
-            flex: 1
-        },
         expand: {
-            marginLeft: theme.spacing(4)
+            marginLeft: theme.spacing(4),
+            cursor: 'pointer'
         },
         indicatorItem: {
             padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
@@ -54,41 +53,77 @@ const useStyles = makeStyles((theme: Theme) =>
             paddingRight: 40
         },
         dropdown: {
-            marginLeft: theme.spacing(2),
+            margin: `0 ${theme.spacing(2)}px`,
             width: 335
         }
 
     })
 );
 
-export const IndicatorEditItem: React.FC = () => {
+interface IndicatorsProps {
+    indicators: IndicatorEntity[];
+    sectionOptions: SectionEntity[];
+    onChange: ((idx: number) => (value: ValueType<OptionType>) => void);
+}
+
+export const IndicatorEditItem: React.FC<IndicatorsProps> = ({ indicators, sectionOptions, onChange }) => {
+    console.log('TCL: indicators', indicators);
     const styles = useStyles();
+    const [asOptions, setAsOptions] = useState<OptionType[]>();
+
+    useEffect(() => {
+        setAsOptions(sectionOptions.map(
+            ({ name }) => ({ label: name, value: name })
+        ));
+    }, [sectionOptions]);
 
     return <Box className={styles.indicatorItem} align="center">
         <div className={styles.spacer} />
-        <Box>Indicator stuff</Box>
+        <Box column>
+            { indicators.map(
+                ({ title, section }, idx) => (
+                    <Box key={title}
+                        align="center"
+                        justify="between">
+                        <Typography >{title}</Typography>
+                        {/* <Dropdown
+                            onChange={onChange(idx)}
+                            options={asOptions} /> */}
+                    </Box>
+                )
+            )}
+        </Box>
     </Box>;
 };
 
-export const InterventionEditItem: React.FC<InterventionEntity> = ({ number, title, sections, indicators }) => {
+interface InterventionEditItemProps extends InterventionEntity {
+    onChange: ((intervention: Partial<InterventionEntity>) => void);
+}
+export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ number, title, sections, indicators, id, onChange }) => {
+    console.log('TCL: sections', sections);
     const styles = useStyles();
     const {
         sections: allSections,
         closeSectionPayload
     } = useAppState();
 
+    const [interventionState, setInterventionState] = useState<Partial<InterventionEntity>>({ sections, indicators, id, number, title });
+
     const [open, setOpen] = useState<boolean>(false);
     const [sectionsAsOptions, setSectionsAsOptions] = useState<OptionType[]>();
-
+    const [selectedSections, setSelectedSections] = useState<OptionType[]>();
     useEffect(() => {
         if (allSections) {
             const id = compose(head, map(Number), keys)(closeSectionPayload);
             const sectionsWithoutClosingItem = reject(propEq('id', id), allSections);
 
-            const asOptions = map(({ name }: {name: string}) => ({ label: name, value: name }), sectionsWithoutClosingItem);
+            const asOptions = map(({ name, id }: {name: string; id: number}) => ({ label: name, value: id }), sectionsWithoutClosingItem);
             setSectionsAsOptions(asOptions);
+            const selectedSectionIds = map(prop('id'), sections);
+            const selectedOptions = asOptions.filter((option: OptionType) => includes(option.value, selectedSectionIds));
+            setSelectedSections(selectedOptions);
         }
-    }, [allSections]);
+    }, [allSections, sections]);
 
     const [numResolved, setNumResolved] = useState<string>('');
 
@@ -110,38 +145,65 @@ export const InterventionEditItem: React.FC<InterventionEntity> = ({ number, tit
         setNumResolved(`${resolved} / ${total}`);
     }, [sections, indicators]);
 
+    useEffect(() => {
+        onChange(interventionState);
+        console.log('TCL: interventionState dispatch', interventionState);
+    }, [interventionState]);
+
+    const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
+        console.log('TCL: handleChangeInterventionSections -> value', value);
+        const selectedSections = filter((section: SectionEntity) => includes(section.id, map(prop('value'), value)), allSections);
+
+        setInterventionState(over(lensPath(['sections']), always(selectedSections)));
+    };
+
+    const handleChangeIndicators = (idx: number) => (value: ValueType<OptionType>) => {
+        const selectedSection = prop('id', find(propEq('name', prop('label', value)), allSections));
+        setInterventionState(over(lensPath(['indicators', idx, 'section']), always(selectedSection)));
+    };
+
     const handleCollapse = () => setOpen(!open);
     const headingStyle = clsx(styles.collapsableHeading, styles.containerPad, open && styles.halfBorder);
     return (
         <Box column className={styles.item}>
             <Box
-                onClick={handleCollapse}
                 className={headingStyle}
                 align="center"
                 justify="between">
 
-                <Box column className={styles.caption}>
+                <Box column>
                     <Typography variant="subtitle2">{number}</Typography>
                     <Typography>{title}</Typography>
                 </Box>
+                <Box align="center">
+                    <Box className={styles.dropdown}>
+                        <DropdownMulti
+                            value={selectedSections}
+                            onChange={handleChangeInterventionSections}
+                            options={sectionsAsOptions}/>
+                    </Box>
 
-                <Typography color="secondary">{numResolved}</Typography>
+                    <Typography color="secondary">{numResolved}</Typography>
 
-                <Box className={styles.expand} align="center">
-                    {open ? <ExpandLess /> : <ExpandMore />}
+                    <Box
+                        onClick={handleCollapse}
+                        className={styles.expand}
+                        align="center">
+                        {open ? <ExpandLess /> : <ExpandMore />}
+                    </Box>
                 </Box>
             </Box>
             <Collapse timeout={0} in={open} className={styles.collapseContent}>
                 <Box className={styles.containerPad} align="center">
                     <Typography >Section(s) for PDSSFA: <i>{number}</i></Typography>
-                    <Box className={styles.dropdown}>
-                        <SectionsSelectMulti options={sectionsAsOptions}/>
-                    </Box>
+
                 </Box>
 
-
                 <div >
-                    <IndicatorEditItem />
+                    <IndicatorEditItem
+                        onChange={handleChangeIndicators}
+                        sectionOptions={allSections}
+                        indicators={indicators}/>
                 </div>
             </Collapse>
         </Box>
@@ -151,13 +213,28 @@ export const InterventionEditItem: React.FC<InterventionEntity> = ({ number, tit
 
 
 type InterventionsEditProps = EditProps<InterventionEntity>
-const InterventionsEdit: React.FC<InterventionsEditProps> = ({ list }) => {
+const InterventionsEdit: React.FC<InterventionsEditProps> = ({ list, closeSectionPayloadKey: key }) => {
+    const {
+        closeSectionPayload
+    } = useAppState();
 
+    const dispatch = useAppDispatch();
+    const { storageService } = useAppService();
+    const createOnChange = (idx: number) => {
+        const path = lensPath([key, 'interventions', idx]);
+
+        return (intervention: Partial<InterventionEntity>) => {
+            const updateState = over(path, always(intervention));
+            const newPayload: CloseSectionPayload = updateState(closeSectionPayload);
+            onUpdatePayload(storageService, newPayload, dispatch);
+        };
+    };
     return (
         <EditWrapper title="Partnership Management Portal">
             {list && list.map(
-                (intervention: InterventionEntity) => (
+                (intervention: InterventionEntity, idx: number) => (
                     <InterventionEditItem
+                        onChange={createOnChange(idx)}
                         {...intervention}
                         key={intervention.number} />
                 )
