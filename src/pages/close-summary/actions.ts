@@ -38,14 +38,11 @@ export const onFetchModulesEntities = async (services: {backendService: BackendS
 };
 
 export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
-    console.log('TCL: onSetModuleEditingName -> payload', payload);
-    //
     dispatch(onSetModuleEditingName(payload));
 };
 
 export const onUpdatePayload = (storageService: StorageService, payload: AnyKeyVal, dispatch: Dispatch) => {
     storageService.storeEntitiesData(payload);
-    console.log('TCL: onUpdatePayload -> payload', payload);
     dispatch(updateCloseSectionPayload(payload));
 };
 

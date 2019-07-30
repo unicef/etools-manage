@@ -60,7 +60,6 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
 
     try {
         summary = await service.getEntitiesForMerge(payload);
-        console.log('TCL: onFetchMergeSummary -> summary', summary);
         dispatch(onSetLoading(false));
         return summary;
 

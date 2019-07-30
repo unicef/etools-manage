@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
 import { onFetchModulesEntities, onEditModuleSections } from './actions';
@@ -10,6 +10,8 @@ import { notEmpty } from 'utils/helpers';
 import EntityConfigMapping from 'entities/config-map';
 import { SummaryItemProps, CloseSectionsSummary } from './summary-container';
 import { firstValue } from 'utils';
+import { selectCloseSectionPayload, selectModuleEditingName, selectSections } from 'selectors';
+import { Typography } from '@material-ui/core';
 
 if (process.env.NODE_ENV !== 'production') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -20,13 +22,26 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export interface CloseParams {id: string}
+const useStateSelectors = () => {
+
+    const state = useAppState();
+
+    return {
+        closeSectionPayload: selectCloseSectionPayload(state),
+        moduleEditingName: selectModuleEditingName(state) as keyof ZippedEntityResults,
+        sections: selectSections(state)
+    };
+};
 
 export const useClosePage = (id: string) => {
+
     const {
         closeSectionPayload,
         moduleEditingName,
         sections
-    } = useAppState();
+    } = useStateSelectors();
+
+    // const closeSectionPayload = selectCloseSectionPayload(useAppState());
 
     const dispatch = useAppDispatch();
 
@@ -40,9 +55,9 @@ export const useClosePage = (id: string) => {
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
     const [closeSectionData, setCloseSectionData] = useState<ZippedEntityResults | undefined>();
 
-    const handleEdit = (entityName: keyof ZippedEntityResults) => () => {
+    const handleEdit = useCallback((entityName: keyof ZippedEntityResults) => () => {
         onEditModuleSections(entityName, dispatch);
-    };
+    }, []);
 
     useEffect(() => {
         onFetchModulesEntities({ backendService, storageService }, id, dispatch);
@@ -87,8 +102,6 @@ export const useClosePage = (id: string) => {
     };
 };
 
-// useClosePage.whyDidYouRender = true;
-
 
 const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match }) => {
     const { id } = match.params;
@@ -111,6 +124,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
                         closeSectionPayloadKey={id}
                         list={closeSectionData[moduleEditingName]}
                     />
+                    // <Typography>Check</Typography>
                     :
                     <CloseSectionsSummary
                         modulesData={modulesData}
@@ -123,7 +137,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
 };
 
 // @ts-ignore
-// CloseSummaryPage.whyDidYouRender = true;
+CloseSummaryPage.whyDidYouRender = true;
 
 export default CloseSummaryPage;
 

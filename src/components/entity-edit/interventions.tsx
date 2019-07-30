@@ -67,7 +67,6 @@ interface IndicatorsProps {
 }
 
 export const IndicatorEditItem: React.FC<IndicatorsProps> = ({ indicators, sectionOptions, onChange }) => {
-    console.log('TCL: indicators', indicators);
     const styles = useStyles();
     const [asOptions, setAsOptions] = useState<OptionType[]>([]);
 
@@ -102,18 +101,18 @@ export const IndicatorEditItem: React.FC<IndicatorsProps> = ({ indicators, secti
     </Box>;
 };
 
+
 interface InterventionEditItemProps extends InterventionEntity {
     onChange: ((intervention: Partial<InterventionEntity>) => void);
 }
 export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ number, title, sections, indicators, id, onChange }) => {
-    console.log('TCL: indicators', indicators);
     const styles = useStyles();
     const {
         sections: allSections,
         closeSectionPayload
     } = useAppState();
 
-    const [interventionState, setInterventionState] = useState<Partial<InterventionEntity>>({ sections, indicators, id, number, title });
+    const [interventionState, setInterventionState] = useState<Partial<InterventionEntity> | undefined>();
 
     const [open, setOpen] = useState<boolean>(false);
     const [sectionsAsOptions, setSectionsAsOptions] = useState<OptionType[]>();
@@ -153,7 +152,9 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
     }, [sections, indicators]);
 
     useEffect(() => {
-        onChange(interventionState);
+        if (interventionState) {
+            onChange(interventionState);
+        }
     }, [interventionState]);
 
     const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
@@ -162,7 +163,6 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
     };
 
     const handleChangeIndicators = (idx: number) => (value: ValueType<OptionType>) => {
-        console.log('TCL: handleChangeIndicators -> value', value);
         const selectedSection = prop('id', find(propEq('name', prop('label', value)), allSections));
         setInterventionState(over(lensPath(['indicators', idx, 'section']), always(selectedSection)));
     };

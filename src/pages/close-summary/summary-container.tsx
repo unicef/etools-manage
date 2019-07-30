@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Box from 'components/box';
 import { createStyles, Theme, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { ConfirmButton } from 'components/buttons';
+import { useAppDispatch, useAppState } from 'contexts/app';
+import { onSetLoading } from 'slices/root-store';
+
+if (process.env.NODE_ENV !== 'production') {
+    const whyDidYouRender = require('@welldone-software/why-did-you-render');
+    whyDidYouRender(React, {
+        onlyLogs: true,
+        titleColor: 'teal'
+    });
+}
+
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,7 +48,7 @@ export interface SummaryItemProps {
     onEdit: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
 }
 
-export const CloseSectionsSummary: React.FC<CloseSummaryProps> = ({ modulesData, closingSection }) => {
+export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ modulesData, closingSection }) => {
     const styles = useStyles();
     return (
         <Paper className={styles.paper}>
@@ -56,11 +67,14 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = ({ modulesData,
             }
         </Paper>
     );
-};
+});
+// @ts-ignore
+CloseSectionsSummary.whyDidYouRender = true;
 
 
-export const ModuleSummaryItem: React.FC<SummaryItemProps> = ({ name, itemsResolved, onEdit }) => {
+export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, itemsResolved, onEdit }) => {
     const styles = useStyles();
+    const dispatch = useAppDispatch();
 
     return <Box className={styles.itemRoot} align="center" justify="between">
 
@@ -69,5 +83,10 @@ export const ModuleSummaryItem: React.FC<SummaryItemProps> = ({ name, itemsResol
         <Typography variant="subtitle1">Resolved items: {itemsResolved}</Typography>
 
         <ConfirmButton onClick={onEdit}>Edit</ConfirmButton>
+        <ConfirmButton onClick={() => dispatch(onSetLoading(true))}>Test</ConfirmButton>
     </Box>;
-};
+});
+
+// @ts-ignore
+
+ModuleSummaryItem.whyDidYouRender = true;
