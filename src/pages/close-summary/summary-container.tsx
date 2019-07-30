@@ -68,13 +68,10 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ modules
         </Paper>
     );
 });
-// @ts-ignore
-CloseSectionsSummary.whyDidYouRender = true;
 
 
 export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, itemsResolved, onEdit }) => {
     const styles = useStyles();
-    const dispatch = useAppDispatch();
 
     return <Box className={styles.itemRoot} align="center" justify="between">
 
@@ -83,10 +80,6 @@ export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, items
         <Typography variant="subtitle1">Resolved items: {itemsResolved}</Typography>
 
         <ConfirmButton onClick={onEdit}>Edit</ConfirmButton>
-        <ConfirmButton onClick={() => dispatch(onSetLoading(true))}>Test</ConfirmButton>
     </Box>;
 });
 
-// @ts-ignore
-
-ModuleSummaryItem.whyDidYouRender = true;

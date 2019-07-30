@@ -13,8 +13,6 @@ const AppServiceContext = React.createContext<AppServices | undefined>(undefined
 
 export function AppStoreProvider({ children }: ChildrenProps) {
     const [state, dispatch] = useReducer(rootReducer, initialState);
-    console.log('TCL: AppStoreProvider -> state', state);
-
     const appServices: AppServices = {
         sectionsService: new SectionsApiService(new ApiClient()),
         backendService: new BackendApiService(new ApiClient()),

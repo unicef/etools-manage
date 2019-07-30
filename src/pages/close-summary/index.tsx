@@ -22,16 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export interface CloseParams {id: string}
-const useStateSelectors = () => {
-
-    const state = useAppState();
-
-    return {
-        closeSectionPayload: selectCloseSectionPayload(state),
-        moduleEditingName: selectModuleEditingName(state) as keyof ZippedEntityResults,
-        sections: selectSections(state)
-    };
-};
 
 export const useClosePage = (id: string) => {
 
@@ -39,7 +29,7 @@ export const useClosePage = (id: string) => {
         closeSectionPayload,
         moduleEditingName,
         sections
-    } = useStateSelectors();
+    } = useAppState();
 
     // const closeSectionPayload = selectCloseSectionPayload(useAppState());
 

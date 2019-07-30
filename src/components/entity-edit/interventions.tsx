@@ -10,7 +10,7 @@ import { makeStyles, createStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import { useAppState, useAppDispatch, useAppService } from 'contexts/app';
 import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
-import { keys, map, reject, head, compose, propEq, over, lensPath, always, filter, includes, prop, find, concat } from 'ramda';
+import { keys, map, reject, head, compose, propEq, over, lensPath, always, filter, includes, prop, find, concat, view } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { onUpdatePayload } from 'pages/close-summary/actions';
 
@@ -78,9 +78,9 @@ export const IndicatorEditItem: React.FC<IndicatorsProps> = ({ indicators, secti
 
     const getValue = (section: number | undefined) => {
         const res = find(propEq('value', section), asOptions);
-        return res;
+        return res === undefined ? null : res;
     };
-
+    console.log('Indicators changed ', indicators);
     return <Box className={styles.indicatorItem} align="center">
         <div className={styles.spacer} />
         <Box column>
@@ -107,6 +107,7 @@ interface InterventionEditItemProps extends InterventionEntity {
 }
 export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ number, title, sections, indicators, id, onChange }) => {
     const styles = useStyles();
+    const currentInterventionState = { number, title, sections, indicators, id };
     const {
         sections: allSections,
         closeSectionPayload
@@ -159,12 +160,27 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
 
     const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
         const selectedSections = filter((section: SectionEntity) => includes(section.id, map(prop('value'), value)), allSections);
-        setInterventionState(over(lensPath(['sections']), always(selectedSections)));
+        const newState = over(lensPath(['sections']), always(selectedSections), currentInterventionState);
+        setInterventionState(newState);
     };
 
     const handleChangeIndicators = (idx: number) => (value: ValueType<OptionType>) => {
-        const selectedSection = prop('id', find(propEq('name', prop('label', value)), allSections));
-        setInterventionState(over(lensPath(['indicators', idx, 'section']), always(selectedSection)));
+        const selectedSection = find(propEq('name', prop('label', value)), allSections);
+        const selectedSectionId = prop('id', selectedSection);
+
+        const sectionLens = lensPath(['indicators', idx, 'section']);
+        const currentSelected = view(sectionLens, currentInterventionState);
+
+        let newSectionId;
+
+        // removes selection when same one is clicked
+        if (currentSelected !== selectedSectionId) {
+            newSectionId = selectedSectionId;
+        }
+
+        const newState = over(sectionLens, always(newSectionId), currentInterventionState);
+        console.log('TCL: handleChangeIndicators -> newState', newSectionId);
+        setInterventionState(newState);
     };
 
     const handleCollapse = () => setOpen(!open);

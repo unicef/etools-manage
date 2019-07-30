@@ -220,7 +220,7 @@ type ProvidedValue = string[] | number[] | string | number
 export interface DropdownProps {
     options?: OptionType[];
     divider?: boolean;
-    value?: OptionType | OptionType[];
+    value?: OptionType | OptionType[] | null;
     onChange: ((value: ValueType<OptionType>) => void);
 }
 
@@ -254,8 +254,7 @@ export const DropdownMulti: React.FC<DropdownProps> = memo(({ options, value, di
         </div>);
 });
 
-export const Dropdown: React.FC<DropdownProps> = memo(({ options, value, onChange, divider = false }) => {
-    console.log('TCL: value', value);
+export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, divider = false }) => {
     const {
         selectStyles
     } = useDropdown();
@@ -281,4 +280,4 @@ export const Dropdown: React.FC<DropdownProps> = memo(({ options, value, onChang
             />
             {divider && <div className={styles.divider} />}
         </div>);
-});
+};
