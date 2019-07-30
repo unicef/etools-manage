@@ -254,23 +254,11 @@ export const DropdownMulti: React.FC<DropdownProps> = memo(({ options, value, di
         </div>);
 });
 
-export const Dropdown: React.FC<DropdownProps> = memo(({ options, onChange, divider = false }) => {
+export const Dropdown: React.FC<DropdownProps> = memo(({ options, value, onChange, divider = false }) => {
+    console.log('TCL: value', value);
     const {
-        selectStyles,
-        single,
-        handleChangeSingle
+        selectStyles
     } = useDropdown();
-
-    const handleChange = (value: ValueType<OptionType>) => {
-        if (value === single) {
-            handleChangeSingle(null);
-            onChange(null);
-        } else {
-            handleChangeSingle(value);
-            onChange(value);
-        }
-
-    };
 
     const styles = useStyles();
     return (
@@ -288,8 +276,8 @@ export const Dropdown: React.FC<DropdownProps> = memo(({ options, onChange, divi
                 placeholder="Select section..."
                 options={options}
                 components={components}
-                value={single}
-                onChange={handleChange}
+                value={value}
+                onChange={onChange}
             />
             {divider && <div className={styles.divider} />}
         </div>);

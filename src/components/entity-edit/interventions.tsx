@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { InterventionEntity, IndicatorEntity, SectionEntity, CloseSectionPayload } from 'entities/types';
 import Box from 'components/box';
 import { EditProps } from 'entities';
@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { useAppState, useAppDispatch, useAppService } from 'contexts/app';
 import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
 import { keys, map, reject, head, compose, propEq, over, lensPath, always, filter, includes, prop, find, concat } from 'ramda';
-import { ValueType, OptionsType } from 'react-select/src/types';
+import { ValueType } from 'react-select/src/types';
 import { onUpdatePayload } from 'pages/close-summary/actions';
 
 
@@ -69,13 +69,18 @@ interface IndicatorsProps {
 export const IndicatorEditItem: React.FC<IndicatorsProps> = ({ indicators, sectionOptions, onChange }) => {
     console.log('TCL: indicators', indicators);
     const styles = useStyles();
-    const [asOptions, setAsOptions] = useState<OptionType[]>();
+    const [asOptions, setAsOptions] = useState<OptionType[]>([]);
 
     useEffect(() => {
         setAsOptions(sectionOptions.map(
-            ({ name }) => ({ label: name, value: name })
+            ({ name, id }) => ({ label: name, value: id })
         ));
     }, [sectionOptions]);
+
+    const getValue = (section: number | undefined) => {
+        const res = find(propEq('value', section), asOptions);
+        return res;
+    };
 
     return <Box className={styles.indicatorItem} align="center">
         <div className={styles.spacer} />
@@ -86,9 +91,10 @@ export const IndicatorEditItem: React.FC<IndicatorsProps> = ({ indicators, secti
                         align="center"
                         justify="between">
                         <Typography >{title}</Typography>
-                        {/* <Dropdown
+                        <Dropdown
+                            value={getValue(section)}
                             onChange={onChange(idx)}
-                            options={asOptions} /> */}
+                            options={asOptions} />
                     </Box>
                 )
             )}
@@ -100,7 +106,7 @@ interface InterventionEditItemProps extends InterventionEntity {
     onChange: ((intervention: Partial<InterventionEntity>) => void);
 }
 export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ number, title, sections, indicators, id, onChange }) => {
-    console.log('TCL: sections', sections);
+    console.log('TCL: indicators', indicators);
     const styles = useStyles();
     const {
         sections: allSections,
@@ -112,6 +118,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
     const [open, setOpen] = useState<boolean>(false);
     const [sectionsAsOptions, setSectionsAsOptions] = useState<OptionType[]>();
     const [selectedSections, setSelectedSections] = useState<OptionType[]>();
+
     useEffect(() => {
         if (allSections) {
             const id = compose(head, map(Number), keys)(closeSectionPayload);
@@ -147,17 +154,15 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
 
     useEffect(() => {
         onChange(interventionState);
-        console.log('TCL: interventionState dispatch', interventionState);
     }, [interventionState]);
 
     const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
-        console.log('TCL: handleChangeInterventionSections -> value', value);
         const selectedSections = filter((section: SectionEntity) => includes(section.id, map(prop('value'), value)), allSections);
-
         setInterventionState(over(lensPath(['sections']), always(selectedSections)));
     };
 
     const handleChangeIndicators = (idx: number) => (value: ValueType<OptionType>) => {
+        console.log('TCL: handleChangeIndicators -> value', value);
         const selectedSection = prop('id', find(propEq('name', prop('label', value)), allSections));
         setInterventionState(over(lensPath(['indicators', idx, 'section']), always(selectedSection)));
     };
@@ -220,7 +225,9 @@ const InterventionsEdit: React.FC<InterventionsEditProps> = ({ list, closeSectio
 
     const dispatch = useAppDispatch();
     const { storageService } = useAppService();
+
     const createOnChange = (idx: number) => {
+
         const path = lensPath([key, 'interventions', idx]);
 
         return (intervention: Partial<InterventionEntity>) => {
@@ -229,6 +236,7 @@ const InterventionsEdit: React.FC<InterventionsEditProps> = ({ list, closeSectio
             onUpdatePayload(storageService, newPayload, dispatch);
         };
     };
+
     return (
         <EditWrapper title="Partnership Management Portal">
             {list && list.map(
