@@ -14,6 +14,7 @@ import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, fi
 import { ValueType } from 'react-select/src/types';
 import { onUpdatePayload } from 'pages/close-summary/actions';
 import { selectCurrentActiveSection } from 'selectors';
+import { createCloseSectionPayload } from 'lib/sections';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -258,9 +259,7 @@ const InterventionsEdit: React.FC<EditProps<InterventionEntity>> = ({ list }) =>
 
         return (intervention: Partial<InterventionEntity>) => {
             const updateState = over(path, always(intervention));
-            const newPayload: CloseSectionPayload = {
-                [`close_${closeSectionId}`]: updateState(closeSectionPayload)
-            };
+            const newPayload: CloseSectionPayload = createCloseSectionPayload(closeSectionId, updateState(closeSectionPayload));
             onUpdatePayload(storageService, newPayload, dispatch);
         };
     };
