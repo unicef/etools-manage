@@ -1,5 +1,5 @@
 import { createSlice } from 'redux-starter-kit';
-import { SectionEntity, NewSectionFromMerged, CloseSectionPayload, ZippedEntityResults } from 'entities/types';
+import { SectionEntity, NewSectionFromMerged, ModuleEntities } from 'entities/types';
 
 export interface Store {
     sections: SectionEntity[];
@@ -7,8 +7,9 @@ export interface Store {
     mergedSection: NewSectionFromMerged | null;
     error: string | null;
     loading: boolean;
-    closeSectionPayload: CloseSectionPayload | null;
-    moduleEditingName: keyof ZippedEntityResults | null;
+    closeSectionPayload: ModuleEntities | null;
+    moduleEditingName: keyof ModuleEntities | null;
+    currentActiveSection: number | null;
 }
 
 export const initialState: Store = {
@@ -18,7 +19,8 @@ export const initialState: Store = {
     error: null,
     loading: false,
     closeSectionPayload: null,
-    moduleEditingName: null
+    moduleEditingName: null,
+    currentActiveSection: null
 };
 
 const storeSlice = createSlice({
@@ -53,6 +55,9 @@ const storeSlice = createSlice({
         },
         updateCloseSectionPayload: (state, action) => {
             state.closeSectionPayload = action.payload;
+        },
+        onCurrentActiveSection: (state, action) => {
+            state.currentActiveSection = action.payload;
         }
     }
 });
@@ -67,6 +72,7 @@ export const {
     onSetMergedSection,
     onSetModuleEditingName,
     updateCloseSectionPayload,
+    onCurrentActiveSection,
     onThrowError
 
 } = storeSlice.actions;

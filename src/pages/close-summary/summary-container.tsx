@@ -3,8 +3,6 @@ import Box from 'components/box';
 import { createStyles, Theme, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { ConfirmButton } from 'components/buttons';
-import { useAppDispatch, useAppState } from 'contexts/app';
-import { onSetLoading } from 'slices/root-store';
 
 if (process.env.NODE_ENV !== 'production') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render');

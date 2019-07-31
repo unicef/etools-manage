@@ -243,8 +243,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
 };
 
 
-type InterventionsEditProps = EditProps<InterventionEntity>
-const InterventionsEdit: React.FC<InterventionsEditProps> = ({ list, closeSectionPayloadKey: key }) => {
+const InterventionsEdit: React.FC<EditProps> = ({ list, closeSectionPayloadKey: key }) => {
     const {
         closeSectionPayload
     } = useAppState();

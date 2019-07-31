@@ -76,6 +76,7 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "devDependencies": {
+    "@types/chroma-js": "^1.4.1",
     "@types/jest": "^24.0.11",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
     "@typescript-eslint/parser": "^1.6.0",

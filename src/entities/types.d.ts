@@ -12,6 +12,8 @@ export interface ZippedEntityResults {
     travels: TravelEntity[];
 }
 
+export type ModuleEntities = Omit<ZippedEntityResults, 'indicators'>
+
 export interface KeyToEntityMap {
     interventions: InterventionEntity;
     tpmActivities: TPMActivityEntity;
@@ -23,7 +25,7 @@ export interface KeyToEntityMap {
 
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>
 export interface CloseSectionPayload {
-    [id: string]: NonEmptyEntityResults;
+    [id: string]: ModuleEntities;
 }
 
 export interface AnyKeyVal {

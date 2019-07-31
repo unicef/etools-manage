@@ -2,38 +2,28 @@
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
 import { ZippedEntityResults, AnyKeyVal } from 'entities/types';
-import { zipObj, keys } from 'ramda';
-import { getEntityHandlers } from 'entities';
+
 import { Dispatch } from 'global-types';
-import { onSetLoading, onModuleEntitiesDataSuccess, onSetModuleEditingName, updateCloseSectionPayload } from 'slices/root-store';
+import { onSetLoading, onModuleEntitiesDataSuccess, onSetModuleEditingName, updateCloseSectionPayload, onCurrentActiveSection } from 'slices/root-store';
 
 
-export const onFetchModulesEntities = async (services: {backendService: BackendService; storageService: StorageService}, payload: string, dispatch: Dispatch) => {
+export const onFetchDataCloseSection = async (services: {backendService: BackendService; storageService: StorageService}, payload: string, dispatch: Dispatch) => {
     const { backendService, storageService } = services;
 
-    const entitiesData = storageService.getStoredEntitiesData(payload);
-    const entityHandlers = getEntityHandlers();
+    const dataFromStorage = storageService.getStoredEntitiesData(payload);
 
-    if (!entitiesData) {
+    if (!dataFromStorage) {
         dispatch(onSetLoading(true));
-        const entitiesSectionsData: Partial<ZippedEntityResults> = await backendService.getEntitiesForClose(payload);
-        const processedEntitiesData = zipObj(
-            keys(entitiesSectionsData),
+        const dataFromServer: Partial<ZippedEntityResults> = await backendService.getEntitiesForClose(payload);
 
-            keys(entitiesSectionsData).map(
-                (key: keyof ZippedEntityResults) => {
-                    const data = entitiesSectionsData[key];
-                    const handler: Function = entityHandlers[key];
-                    return handler(data, Number(payload)); //
-                }
-            ));
-        dispatch(onModuleEntitiesDataSuccess({
-            [payload]: processedEntitiesData
-        }));
+        dispatch(onModuleEntitiesDataSuccess(dataFromServer));
 
     } else {
-        dispatch(onModuleEntitiesDataSuccess({ [payload]: entitiesData }));
+        dispatch(onModuleEntitiesDataSuccess(dataFromStorage));
     }
+
+    dispatch(onCurrentActiveSection(Number(payload)));
+
 
 };
 

@@ -1,37 +1,45 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
-import { onFetchModulesEntities, onEditModuleSections } from './actions';
-import { ModuleEntitiesManager, DisplayDirector, Builders } from 'entities';
+import { onFetchDataCloseSection, onEditModuleSections } from './actions';
+import { ModuleEntitiesManager, DisplayDirector, Builders, EditProps, ValueOf } from 'entities';
 import Box from 'components/box';
 import { keys, propEq, find, prop } from 'ramda';
-import { ZippedEntityResults } from 'entities/types';
+import { ZippedEntityResults, KeyToEntityMap, AllEntities, ModuleEntities, CloseSectionPayload } from 'entities/types';
 import { notEmpty } from 'utils/helpers';
 import EntityConfigMapping from 'entities/config-map';
 import { SummaryItemProps, CloseSectionsSummary } from './summary-container';
 import { firstValue } from 'utils';
-import { selectCloseSectionPayload, selectModuleEditingName, selectSections } from 'selectors';
-import { Typography } from '@material-ui/core';
-
-if (process.env.NODE_ENV !== 'production') {
-    const whyDidYouRender = require('@welldone-software/why-did-you-render');
-    whyDidYouRender(React, {
-        onlyLogs: true,
-        titleColor: 'teal'
-    });
-}
+import InterventionsEdit from 'components/entity-edit/interventions';
+import TravelsEdit from 'components/entity-edit/travels';
+import ActionPointsEdit from 'components/entity-edit/action-points';
+import TPMActivitiesEdit from 'components/entity-edit/tpmActivities';
+import { selectCloseSectionPayload } from 'selectors';
 
 export interface CloseParams {id: string}
+
+export type EditComponentMappings = {[key in keyof Omit<KeyToEntityMap, 'indicators'>]: React.FC<EditProps>}
+
+
+const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
+    interventions: InterventionsEdit,
+    travels: TravelsEdit,
+    actionPoints: ActionPointsEdit,
+    tpmActivities: TPMActivitiesEdit
+};
+
 
 export const useClosePage = (id: string) => {
 
     const {
-        closeSectionPayload,
+        // closeSectionPayload,
         moduleEditingName,
         sections
     } = useAppState();
 
-    // const closeSectionPayload = selectCloseSectionPayload(useAppState());
+    const closeSectionPayload = selectCloseSectionPayload(useAppState());
+    console.log('TCL: useClosePage -> closeSectionPayload', closeSectionPayload);
+    // const numResolved = getNumResolvedInterventions(useAppState());
 
     const dispatch = useAppDispatch();
 
@@ -40,51 +48,52 @@ export const useClosePage = (id: string) => {
         storageService
     } = useAppService();
 
-    const [director] = useState<DisplayDirector>(new ModuleEntitiesManager());
-    const [builders, setBuilders] = useState<Builders>(director.entityBuilders);
+    // const [director] = useState<DisplayDirector>(new ModuleEntitiesManager());
+    // const [builders, setBuilders] = useState<Builders>(director.entityBuilders);
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
-    const [closeSectionData, setCloseSectionData] = useState<ZippedEntityResults | undefined>();
+    // const [closeSectionData, setCloseSectionData] = useState<ModuleEntities | undefined>();
 
-    const handleEdit = useCallback((entityName: keyof ZippedEntityResults) => () => {
-        onEditModuleSections(entityName, dispatch);
-    }, []);
+    // const handleEdit = useCallback((entityName: keyof ModuleEntities) => () => {
+    //     onEditModuleSections(entityName, dispatch);
+    // }, []);
 
     useEffect(() => {
-        onFetchModulesEntities({ backendService, storageService }, id, dispatch);
+        onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
     }, []);
+
+    // useEffect(() => {
+    //     if (closeSectionPayload) {
+    //         setCloseSectionData(firstValue(closeSectionPayload));
+    //         director.entitiesData = firstValue(closeSectionPayload);
+    //         setBuilders(director.entityBuilders);
+    //     }
+    // }, [closeSectionPayload]);
 
     useEffect(() => {
         if (closeSectionPayload) {
-            setCloseSectionData(firstValue(closeSectionPayload));
-            director.entitiesData = firstValue(closeSectionPayload);
-            setBuilders(director.entityBuilders);
-        }
-    }, [closeSectionPayload]);
-
-    useEffect(() => {
-        if (notEmpty(builders) && closeSectionData) {
             setModulesData(
-                keys(closeSectionData).map(
-                    (entityName: keyof ZippedEntityResults): SummaryItemProps => ({
-                        name: EntityConfigMapping[entityName].moduleName,
-                        itemsResolved: builders[entityName].numItemsResolved(closeSectionData[entityName], Number(id)),
-                        onEdit: handleEdit(entityName)
+                keys(closeSectionPayload).map(
+                    (entityName: keyof ModuleEntities): SummaryItemProps => ({
+                        name: entityName,
+                        itemsResolved: '0/0',
+                        onEdit: () => onEditModuleSections(entityName, dispatch)
                     })
                 )
             );
         }
-    }, [builders]);
+    }, [closeSectionPayload]);
 
-    const getEditComponent = (name: keyof ZippedEntityResults | null) => {
+    function getEditComponent(name: keyof EditComponentMappings | null): React.FC<EditProps>| null {
         if (name) {
-            return builders[name].Component;
+            return EDIT_COMPONENT_MODULE_MAPPING[name];
         }
 
         return null;
-    };
+    }
 
     return {
-        closeSectionData,
+        // closeSectionData,
+        closeSectionPayload,
         modulesData,
         sections,
         moduleEditingName,
@@ -100,19 +109,19 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
         moduleEditingName,
         sections,
         getEditComponent,
-        closeSectionData
+        closeSectionPayload
     } = useClosePage(id);
 
     const closeSectionName = prop('name', find(propEq('id', Number(id)), sections));
+    const list = moduleEditingName && closeSectionPayload[moduleEditingName] || undefined;
     const EditComponent = getEditComponent(moduleEditingName);
-
-    return modulesData && closeSectionData ? (
+    return modulesData && closeSectionPayload ? (
         <Box column>
             {
-                moduleEditingName ?
+                moduleEditingName && EditComponent ?
                     <EditComponent
                         closeSectionPayloadKey={id}
-                        list={closeSectionData[moduleEditingName]}
+                        list={list}
                     />
                     // <Typography>Check</Typography>
                     :
@@ -126,8 +135,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
 
 };
 
-// @ts-ignore
-CloseSummaryPage.whyDidYouRender = true;
 
 export default CloseSummaryPage;
 
