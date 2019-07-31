@@ -27,7 +27,6 @@ const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     tpmActivities: TPMActivitiesEdit
 };
 
-
 export const useClosePage = (id: string) => {
     const state = useAppState();
 
@@ -39,7 +38,6 @@ export const useClosePage = (id: string) => {
     const closeSectionPayload = selectCloseSectionPayload(state);
     const numResolvedByModule = selectNumItemsResolved(state);
 
-
     const dispatch = useAppDispatch();
 
     const {
@@ -49,14 +47,13 @@ export const useClosePage = (id: string) => {
 
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
 
-
     useEffect(() => {
         onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
     }, []);
 
-
     useEffect(() => {
         if (closeSectionPayload) {
+            console.log("TCL: useClosePage -> closeSectionPayload", closeSectionPayload)
             setModulesData(
                 keys(closeSectionPayload).map(
                     (entityName: keyof ModuleEntities): SummaryItemProps => ({
@@ -69,13 +66,11 @@ export const useClosePage = (id: string) => {
         }
     }, [closeSectionPayload]);
 
-
     function getEditComponent(name: keyof EditComponentMappings | null) {
 
         if (name) {
             return EDIT_COMPONENT_MODULE_MAPPING[name];
         }
-
         return null;
     }
 
@@ -87,7 +82,6 @@ export const useClosePage = (id: string) => {
         getEditComponent
     };
 };
-
 
 const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match }) => {
     const { id } = match.params;

@@ -13,6 +13,7 @@ import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
 import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, filter, includes, prop, find, concat, view, cond, isNil } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { onUpdatePayload } from 'pages/close-summary/actions';
+import { selectCurrentActiveSection } from 'selectors';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -111,7 +112,6 @@ interface InterventionEditItemProps extends InterventionEntity {
     onChange: ((intervention: Partial<InterventionEntity>) => void);
 }
 export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ number, title, sections, indicators, id, onChange }) => {
-    console.log('TCL: sections', sections);
     const styles = useStyles();
     const currentInterventionState = { number, title, sections, indicators, id };
     const {
@@ -190,7 +190,6 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
         }
 
         const newState = over(sectionLens, always(newSectionId), currentInterventionState);
-        console.log('TCL: handleChangeIndicators -> newState', newSectionId);
         setInterventionState(newState);
     };
 
@@ -217,12 +216,12 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
 
                     <Typography color="secondary" className={styles.numResolved}>{numResolved}</Typography>
 
-                    <Box
+                    {indicators.length ? <Box
                         onClick={handleCollapse}
                         className={styles.expand}
                         align="center">
                         {open ? <ExpandLess /> : <ExpandMore />}
-                    </Box>
+                    </Box> : null}
                 </Box>
             </Box>
             <Collapse timeout={0} in={open} className={styles.collapseContent}>
@@ -243,21 +242,25 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
 };
 
 
-const InterventionsEdit: React.FC<EditProps<InterventionEntity>> = ({ list, closeSectionPayloadKey: key }) => {
+const InterventionsEdit: React.FC<EditProps<InterventionEntity>> = ({ list }) => {
+    const state = useAppState();
     const {
         closeSectionPayload
-    } = useAppState();
+    } = state;
+
+    const closeSectionId = selectCurrentActiveSection(state);
 
     const dispatch = useAppDispatch();
     const { storageService } = useAppService();
 
     const createOnChange = (idx: number) => {
-
-        const path = lensPath([key, 'interventions', idx]);
+        const path = lensPath(['interventions', idx]);
 
         return (intervention: Partial<InterventionEntity>) => {
             const updateState = over(path, always(intervention));
-            const newPayload: CloseSectionPayload = updateState(closeSectionPayload);
+            const newPayload: CloseSectionPayload = {
+                [`close_${closeSectionId}`]: updateState(closeSectionPayload)
+            };
             onUpdatePayload(storageService, newPayload, dispatch);
         };
     };

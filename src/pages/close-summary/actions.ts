@@ -1,10 +1,11 @@
 
 import { BackendService } from 'services/backend';
-import StorageService from 'services/storage';
-import { ZippedEntityResults, StorageKeyVal } from 'entities/types';
+import StorageService, { StorageData } from 'services/storage';
+import { ZippedEntityResults, StorageKeyVal, ModuleEntities } from 'entities/types';
 
 import { Dispatch } from 'global-types';
 import { onSetLoading, onSetModuleEditingName, updateCloseSectionPayload, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess } from 'slices/root-store';
+import { firstValue, firstKey } from 'utils';
 
 
 export const onFetchDataCloseSection = async (
@@ -15,7 +16,7 @@ export const onFetchDataCloseSection = async (
 
     const { backendService, storageService } = services;
 
-    const dataFromStorage = storageService.getStoredEntitiesData('close');
+    const dataFromStorage = storageService.getStoredEntitiesData(`close_${payload}`);
 
     if (!dataFromStorage) {
         dispatch(onSetLoading(true));
@@ -28,16 +29,14 @@ export const onFetchDataCloseSection = async (
     }
 
     dispatch(onCurrentActiveSection(Number(payload)));
-
-
 };
 
 export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
     dispatch(onSetModuleEditingName(payload));
 };
 
-export const onUpdatePayload = (storageService: StorageService, payload: StorageKeyVal, dispatch: Dispatch) => {
-    storageService.storeEntitiesData(payload);
-    dispatch(updateCloseSectionPayload(payload));
+export const onUpdatePayload = (storageService: StorageService, payload: StorageData, dispatch: Dispatch) => {
+    storageService.storeEntitiesData(firstKey(payload), firstValue(payload));
+    dispatch(updateCloseSectionPayload(firstValue(payload)));
 };
 
