@@ -1,5 +1,6 @@
 import { createSlice } from 'redux-starter-kit';
 import { SectionEntity, NewSectionFromMerged, ModuleEntities } from 'entities/types';
+import { selectWithoutCurrentSection } from 'selectors/filter-sections';
 
 export interface Store {
     sections: SectionEntity[];
@@ -46,8 +47,13 @@ const storeSlice = createSlice({
             state.mergedSection = action.payload;
             state.loading = false;
         },
-        onModuleEntitiesDataSuccess: (state, action) => {
+        onFetchFromStorageSuccess: (state, action) => {
             state.closeSectionPayload = action.payload;
+        },
+        onFetchForCloseSuccess: (state, action) => {
+            state.closeSectionPayload = action.payload;
+            const withoutCurrentSection = selectWithoutCurrentSection(state);
+            state.closeSectionPayload = withoutCurrentSection;
             state.loading = false;
         },
         onSetModuleEditingName: (state, action) => {
@@ -66,13 +72,14 @@ const storeSlice = createSlice({
 export const {
     onCreateSectionSuccess,
     onGetSectionsSuccess,
-    onModuleEntitiesDataSuccess,
+    onFetchFromStorageSuccess,
     onResetCreatedSection,
     onSetLoading,
     onSetMergedSection,
     onSetModuleEditingName,
     updateCloseSectionPayload,
     onCurrentActiveSection,
+    onFetchForCloseSuccess,
     onThrowError
 
 } = storeSlice.actions;

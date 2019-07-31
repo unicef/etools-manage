@@ -1,22 +1,16 @@
-import React from 'react';
-import { EntityDisplay, KeyToEntityMap, ZippedEntityResults,
-    CloseSectionPayload } from './types';
+import { EntityDisplay, KeyToEntityMap, ZippedEntityResults
+} from './types';
 
-export interface EditProps {
-    list: ValueOf<CloseSectionPayload> | undefined;
+export interface EditProps<T> {
+    list: T[] | undefined;
     closeSectionPayloadKey: string;
 }
 
-export interface Builder<T> {
-    Component: React.FC<EditProps>;
-    numItemsResolved(items: T[]): string;
-}
 
 export interface EntityConfig<T> {
     displayProperties: EntityDisplay<T>[];
     title: string;
     sectionsProp: string;
-    builder?: Builder<T>;
     moduleName: string;
 }
 

@@ -1,6 +1,5 @@
 import { InterventionEntity, EntityDisplay } from './types';
 import { EntityConfig } from 'entities';
-import { PmpBuilder } from './pmp-builder';
 import { without, map } from 'ramda';
 
 export class InterventionConfig implements EntityConfig<InterventionEntity> {
@@ -21,10 +20,6 @@ export class InterventionConfig implements EntityConfig<InterventionEntity> {
 
     public get moduleName() {
         return 'PMP';
-    }
-
-    public get builder() {
-        return new PmpBuilder();
     }
 
 }

@@ -1,6 +1,5 @@
 import { EntityConfig } from 'entities';
 import { TPMActivityEntity, EntityDisplay } from './types';
-import { TPMBuilder } from './tpm-builder';
 import { map, propEq, reject } from 'ramda';
 
 
@@ -19,9 +18,6 @@ export default class TPMActivityConfig implements EntityConfig<TPMActivityEntity
         return 'sections';
     }
 
-    public get builder() {
-        return new TPMBuilder();
-    }
 
     public get moduleName() {
         return 'Third Party Monitoring';

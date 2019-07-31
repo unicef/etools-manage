@@ -1,22 +1,21 @@
 import { createSelector } from 'redux-starter-kit';
-import { identity } from 'ramda';
-import { firstValue } from 'utils';
 import { Store } from 'slices/root-store';
-import { CloseSectionPayload } from 'entities/types';
+import { ModuleEntities } from 'entities/types';
 
 
-export const selectCloseSectionPayload = createSelector<Store, CloseSectionPayload>(
+export const selectCloseSectionPayload = createSelector<Store, ModuleEntities>(
     ['closeSectionPayload'],
-    firstValue
 );
 
 export const selectModuleEditingName = createSelector(
     ['moduleEditingName'],
-    identity
 );
 
 export const selectSections = createSelector(
     ['sections'],
-    identity
+);
+
+export const selectCurrentActiveSection = createSelector(
+    ['currentActiveSection']
 );
 

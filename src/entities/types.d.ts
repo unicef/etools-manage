@@ -22,14 +22,18 @@ export interface KeyToEntityMap {
     indicators: IndicatorEntity;
 }
 
+export type EntityWithSingleSection = ActionPointEntity | TravelEntity | IndicatorEntity
+
 
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>
 export interface CloseSectionPayload {
     [id: string]: ModuleEntities;
 }
 
-export interface AnyKeyVal {
-    [key: string]: any;
+export type StorageKey = 'close' | 'split'
+
+export interface StorageKeyVal {
+    [key: StorageKey]: any;
 }
 
 export interface ActionPointEntity {
@@ -37,7 +41,7 @@ export interface ActionPointEntity {
     reference_number: string;
     description: string;
     status: string;
-    section: SectionEntity[];
+    section: SectionEntity;
 }
 
 

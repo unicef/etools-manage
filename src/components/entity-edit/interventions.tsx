@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InterventionEntity, IndicatorEntity, SectionEntity, CloseSectionPayload } from 'entities/types';
 import Box from 'components/box';
 import { EditProps } from 'entities';
@@ -243,7 +243,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ numb
 };
 
 
-const InterventionsEdit: React.FC<EditProps> = ({ list, closeSectionPayloadKey: key }) => {
+const InterventionsEdit: React.FC<EditProps<InterventionEntity>> = ({ list, closeSectionPayloadKey: key }) => {
     const {
         closeSectionPayload
     } = useAppState();
