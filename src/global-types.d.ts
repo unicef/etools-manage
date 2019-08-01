@@ -52,4 +52,4 @@ export type ClickHandler = () => void
 
 export type DispatchAction = PayloadAction<unknown, string> | PayloadActionCreator<void, string> | PayloadActionCreator<unknown, string> | PayloadAction<void, string>
 
-type Dispatch = (action: DispatchAction) => void
+export type Dispatch = (action: DispatchAction) => void

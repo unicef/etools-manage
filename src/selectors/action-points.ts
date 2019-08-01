@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-starter-kit';
-import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import { ModuleEntities, ActionPointEntity } from 'entities/types';
+import { selectCloseSectionPayload } from 'selectors';
+import { ModuleEntities } from 'entities/types';
 import { Store } from 'slices/root-store';
 import { prop } from 'ramda';
 import { clearCurrentSection, getNumResolved } from 'lib/sections';
@@ -13,10 +13,10 @@ export const selectActionPointsFromPayload = createSelector<Store, ModuleEntitie
 
 export const actionPointsWithoutCurrentSection = createSelector(
     [selectActionPointsFromPayload],
-     clearCurrentSection
+    clearCurrentSection
 );
 
 export const getNumResolvedActionPoints = createSelector(
     [selectActionPointsFromPayload],
     getNumResolved
-)
+);

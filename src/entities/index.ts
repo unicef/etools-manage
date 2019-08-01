@@ -1,4 +1,4 @@
-import { EntityDisplay, KeyToEntityMap, ZippedEntityResults
+import { EntityDisplay
 } from './types';
 
 export interface EditProps<T> {
@@ -14,13 +14,8 @@ export interface EntityConfig<T> {
     moduleName: string;
 }
 
-// TODO: map the types manually here
-export type Builders = {
-    [K in keyof KeyToEntityMap]: any
-};
 
 export type ValueOf<T> = T[keyof T];
-export type EntityUnion = ValueOf<ZippedEntityResults>
 
 type Filter<T, U> = T extends U ? T : never;  // Remove types from T that are not assignable to U
 

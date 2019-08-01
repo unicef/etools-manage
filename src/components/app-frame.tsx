@@ -62,7 +62,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     if (error) {
         throw error;
     }
-    // TODO: move this to sections list page
+
     useEffect(() => {
         onGetSections(service, dispatch);
     }, []);

@@ -16,6 +16,7 @@ import EntityConfigMapping from 'entities/config-map';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 
 export interface CloseParams {id: string}
+
 type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>
 
 export type EditComponentMappings = {[key in ModuleKeys]: React.FC<EditProps<KeyToEntityMap[key]>>}
@@ -53,7 +54,6 @@ export const useClosePage = (id: string) => {
 
     useEffect(() => {
         if (closeSectionPayload) {
-            console.log("TCL: useClosePage -> closeSectionPayload", closeSectionPayload)
             setModulesData(
                 keys(closeSectionPayload).map(
                     (entityName: keyof ModuleEntities): SummaryItemProps => ({

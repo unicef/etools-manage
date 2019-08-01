@@ -4,7 +4,7 @@ import StorageService, { StorageData } from 'services/storage';
 import { ZippedEntityResults } from 'entities/types';
 
 import { Dispatch } from 'global-types';
-import { onSetLoading, onSetModuleEditingName, updateCloseSectionPayload, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess } from 'slices/root-store';
+import { onSetLoading, onSetModuleEditingName, updateCloseSectionPayload, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError } from 'slices/root-store';
 import { firstValue, firstKey } from 'utils';
 import { prefixWithClose } from 'lib/sections';
 
@@ -18,10 +18,16 @@ export const onFetchDataCloseSection = async (
     const { backendService, storageService } = services;
 
     const dataFromStorage = storageService.getStoredEntitiesData(`close_${payload}`);
+    let dataFromServer: Partial<ZippedEntityResults>;
 
     if (!dataFromStorage) {
         dispatch(onSetLoading(true));
-        const dataFromServer: Partial<ZippedEntityResults> = await backendService.getEntitiesForClose(payload);
+        try {
+            dataFromServer = await backendService.getEntitiesForClose(payload);
+        } catch (err) {
+            dispatch(onThrowError(err.message));
+            return;
+        }
 
         dispatch(onFetchForCloseSuccess(dataFromServer));
 

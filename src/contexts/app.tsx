@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from 'react';
+import React, { useReducer, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { ChildrenProps, Dispatch } from 'global-types';
 import { ApiClient } from 'lib/http';
 import BackendApiService from 'services/backend';
@@ -6,13 +6,16 @@ import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
 import StorageService from 'services/storage';
 import { rootReducer, initialState, Store } from 'slices/root-store';
+import { middlewares } from 'lib/middlewares';
+import useEnhancedReducer from 'lib/enhanced-use-reducer';
 
 const AppStoreContext = React.createContext<Store | undefined>(initialState);
 const AppDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 const AppServiceContext = React.createContext<AppServices | undefined>(undefined);
 
 export function AppStoreProvider({ children }: ChildrenProps) {
-    const [state, dispatch] = useReducer(rootReducer, initialState);
+    const [state, dispatch] = useEnhancedReducer(rootReducer, initialState, middlewares);
+
     const appServices: AppServices = {
         sectionsService: new SectionsApiService(new ApiClient()),
         backendService: new BackendApiService(new ApiClient()),

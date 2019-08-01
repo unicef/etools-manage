@@ -4,14 +4,15 @@ import { createStyles, Theme, Typography, Paper, Container } from '@material-ui/
 import { makeStyles } from '@material-ui/styles';
 import { ConfirmButton } from 'components/buttons';
 import clsx from 'clsx';
+import { buildResolvedProgressString } from 'lib/sections';
 
-if (process.env.NODE_ENV !== 'production') {
-    const whyDidYouRender = require('@welldone-software/why-did-you-render');
-    whyDidYouRender(React, {
-        onlyLogs: true,
-        titleColor: 'teal'
-    });
-}
+// if (process.env.NODE_ENV !== 'production') {
+//     const whyDidYouRender = require('@welldone-software/why-did-you-render');
+//     whyDidYouRender(React, {
+//         onlyLogs: true,
+//         titleColor: 'teal'
+//     });
+// }
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,7 +48,7 @@ export interface CloseSummaryProps {
 
 export interface SummaryItemProps {
     name: string;
-    itemsResolved: string;
+    itemsResolved: number[];
     onEdit: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
 }
 
@@ -81,7 +82,7 @@ export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, items
 
         <Typography className={styles.moduleName} variant="body2">{name}</Typography>
 
-        <Typography variant="body2">Resolved items: {itemsResolved}</Typography>
+        <Typography variant="body2">Resolved items: {buildResolvedProgressString(...itemsResolved)}</Typography>
 
         <ConfirmButton onClick={onEdit}>Edit</ConfirmButton>
     </Box>;

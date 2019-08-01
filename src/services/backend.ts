@@ -100,8 +100,13 @@ export default class BackendApiService extends BaseService implements BackendSer
     }
 
     public async getEntitiesForClose(query: string): Promise<NonEmptyEntityResults> {
-        const zipped = await this.getZippedEntities(query);
-        return filter(notEmpty, zipped);
+        try {
+            const zipped = await this.getZippedEntities(query);
+            return filter(notEmpty, zipped);
+
+        } catch (err) {
+            throw err;
+        }
     }
 
     public async getZippedEntities(query: string): Promise<NonEmptyEntityResults> {

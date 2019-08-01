@@ -12,7 +12,7 @@ export const selectInterventionsFromPayload = createSelector<Store, ModuleEntiti
 
 export const getNumResolvedInterventions = createSelector(
     [selectInterventionsFromPayload],
-    (interventions: InterventionEntity[] = []): string => {
+    (interventions: InterventionEntity[] = []): number[] => {
         let total = 0;
         const numResolved = interventions.reduce((resolved, intervention) => {
             total++;
@@ -30,13 +30,13 @@ export const getNumResolvedInterventions = createSelector(
 
             return resolved;
         }, 0);
-        return `${numResolved}/${total}`;
+        return [numResolved, total];
     }
 );
 
 export const interventionsWithoutCurrentSection = createSelector(
     [selectCurrentActiveSection, selectInterventionsFromPayload],
-    (id: number, list: InterventionEntity[]=[]) => map(
+    (id: number, list: InterventionEntity[] = []) => map(
         (item: InterventionEntity) => {
             const removedSectionIndicators = item.indicators.map(
                 indicator => ({

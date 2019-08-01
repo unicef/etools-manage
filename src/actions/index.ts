@@ -13,7 +13,7 @@ export const onGetSections = async (service: SectionsService, dispatch: Dispatch
         dispatch(onSetLoading(true));
         sections = await service.getSections();
     } catch (error) {
-        throw new Error(error);
+        throw error;
     }
 
     sections = sections.map(sectionWithNumberId);

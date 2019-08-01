@@ -27,19 +27,19 @@ export const tpmActivitiesWithoutCurrentSection = createSelector(
 
 export const getNumResolvedTPMActivities = createSelector(
     [selectTPMFromPayload],
-    (tpmActivities: TPMActivityEntity[] = []): string => {
+    (tpmActivities: TPMActivityEntity[] = []): number[] => {
         let numResolved = reduce(
-            (sum: number, {sections}: {sections: SectionEntity[]})=> {
-                if (sections.length){
+            (sum: number, { sections }: {sections: SectionEntity[]}) => {
+                if (sections.length) {
                     numResolved++;
                 }
-                return sum
+                return sum;
             },
             0,
             tpmActivities
         );
 
-        return `${numResolved}/${tpmActivities.length}`
+        return [numResolved, tpmActivities.length];
     }
-)
+);
 
