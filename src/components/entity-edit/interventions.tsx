@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { InterventionEntity, IndicatorEntity, SectionEntity, CloseSectionPayload } from 'entities/types';
+import { InterventionEntity, IndicatorEntity, SectionEntity, CloseSectionPayload, ModuleEntities } from 'entities/types';
 import Box from 'components/box';
 import { EditProps } from 'entities';
 import { Typography, Theme, Collapse } from '@material-ui/core';
@@ -14,7 +14,6 @@ import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, fi
 import { ValueType } from 'react-select/src/types';
 import { onUpdatePayload } from 'pages/close-summary/actions';
 import { selectCurrentActiveSection } from 'selectors';
-import { createCloseSectionPayload } from 'lib/sections';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -259,7 +258,7 @@ const InterventionsEdit: React.FC<EditProps<InterventionEntity>> = ({ list }) =>
 
         return (intervention: Partial<InterventionEntity>) => {
             const updateState = over(path, always(intervention));
-            const newPayload: CloseSectionPayload = createCloseSectionPayload(closeSectionId, updateState(closeSectionPayload));
+            const newPayload: CloseSectionPayload = { [closeSectionId]: updateState(closeSectionPayload) };
             onUpdatePayload(storageService, newPayload, dispatch);
         };
     };

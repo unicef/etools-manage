@@ -1,5 +1,4 @@
-import { NonEmptyEntityResults, StorageKey, StorageKeyVal, ModuleEntities } from 'entities/types';
-import { firstValue, firstKey } from 'utils';
+import { StorageKey, ModuleEntities } from 'entities/types';
 
 export interface StorageClient {
     setItem: (key: string, value: string) => void;

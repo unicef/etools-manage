@@ -1,11 +1,12 @@
 
 import { BackendService } from 'services/backend';
 import StorageService, { StorageData } from 'services/storage';
-import { ZippedEntityResults, StorageKeyVal, ModuleEntities } from 'entities/types';
+import { ZippedEntityResults } from 'entities/types';
 
 import { Dispatch } from 'global-types';
 import { onSetLoading, onSetModuleEditingName, updateCloseSectionPayload, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess } from 'slices/root-store';
 import { firstValue, firstKey } from 'utils';
+import { prefixWithClose } from 'lib/sections';
 
 
 export const onFetchDataCloseSection = async (
@@ -36,7 +37,8 @@ export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
 };
 
 export const onUpdatePayload = (storageService: StorageService, payload: StorageData, dispatch: Dispatch) => {
-    storageService.storeEntitiesData(firstKey(payload), firstValue(payload));
+    const prefixedKey = prefixWithClose(firstKey(payload));
+    storageService.storeEntitiesData(prefixedKey, firstValue(payload));
     dispatch(updateCloseSectionPayload(firstValue(payload)));
 };
 

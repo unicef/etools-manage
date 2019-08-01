@@ -20,6 +20,6 @@ export const getNumResolved = (list: EntityWithSingleSection[] = []): string => 
 
 };
 
-export const createCloseSectionPayload = (sectionId: number, data: ModuleEntities) => ({
-    [`${CLOSE_SECTION_PREFIX}_${sectionId}`]: data
-});
+export const prefixWithClose = (key: string) => `${CLOSE_SECTION_PREFIX}_${key}`;
+
+// export const parseCloseSection;
