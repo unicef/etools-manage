@@ -14,8 +14,8 @@ const AppDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 const AppServiceContext = React.createContext<AppServices | undefined>(undefined);
 
 export function AppStoreProvider({ children }: ChildrenProps) {
-    const [state, dispatch] = createStore(rootReducer, initialState);
-
+    // const [state, dispatch] = createStore(rootReducer, initialState);
+    const [state, dispatch] = useReducer(rootReducer, initialState);
     const appServices: AppServices = {
         sectionsService: new SectionsApiService(new ApiClient()),
         backendService: new BackendApiService(new ApiClient()),

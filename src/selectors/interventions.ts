@@ -15,7 +15,7 @@ export const selectInterventionsFromPayload = createSelector<Store, Normalized<I
 
 export const selectInterventionIds = createSelector<Store, number[]>(
     [selectInterventionsFromPayload],
-    interventions => interventions.result.slice(0, 20)
+    interventions => interventions.result.slice(0, 10)
 );
 
 export const getNumResolvedInterventions = createSelector<Normalized<InterventionEntity>, number[]>(
@@ -40,7 +40,6 @@ export const getNumResolvedInterventions = createSelector<Normalized<Interventio
 
             return resolved;
         }, 0);
-        console.log('TCL: numResolved', numResolved);
         return [numResolved, total];
     }
 );

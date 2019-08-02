@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense, useMemo } from 'react';
 import { InterventionEntity, SectionEntity, InterventionSectionPayload } from 'entities/types';
 import { useEditInterventionStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
@@ -51,6 +51,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
     const selectedSectionIds = map(prop('id'), interventionState.sections);
 
     const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, selectedSectionIds));
+    console.log('TCL: selectedSections', selectedSections);
 
 
     // temp
@@ -70,6 +71,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
 
     useEffect(() => {
         if (!equals(initialInterventionState, interventionState)) {
+            console.log('ran!');
             onChange(interventionState);
         }
     }, [interventionState]);
@@ -106,8 +108,24 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
     const handleCollapse = () => setOpen(!open);
     const headingStyle = clsx(styles.collapsableHeading, styles.containerPad, open && styles.halfBorder);
     const { number, title, indicators } = interventionState;
+    // const CollapseIndicatorsMenu = useMemo(
+    //     () => (<Collapse timeout={0} in={open} className={styles.collapseContent}>
+    //         <Box className={styles.containerPad} align="center">
+    //             <Typography ><i>Applied indicators</i></Typography>
+    //         </Box>
+
+    //         <div >
+    //             <IndicatorEditItem
+    //                 onChange={handleChangeIndicators}
+    //                 sectionOptions={selectedSections}
+    //                 indicators={indicators}/>
+
+    //         </div>
+    //     </Collapse>), [selectedSections]
+    // );
+
     return (
-        <Box column className={styles.item}>
+        <div className={styles.item}>
             <Box
                 className={headingStyle}
                 align="center"
@@ -141,14 +159,10 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
                 </Box>
 
                 <div >
-                    <IndicatorEditItem
-                        onChange={handleChangeIndicators}
-                        sectionOptions={selectedSections}
-                        indicators={indicators}/>
-
+                    {/* {CollapseIndicatorsMenu} */}
                 </div>
             </Collapse>
-        </Box>
+        </div>
     );
 
 };
