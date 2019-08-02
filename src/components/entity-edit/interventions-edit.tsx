@@ -3,7 +3,8 @@ import { InterventionEntity } from 'entities/types';
 import { useAppState } from 'contexts/app';
 import EditWrapper from 'pages/close-summary/edit-wrapper';
 import { InterventionEditItem } from './intervention-edit-item';
-import { selectInterventionsFromPayload } from 'selectors/interventions';
+import { selectInterventionIds } from 'selectors/interventions';
+import { keys } from 'ramda';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -17,16 +18,16 @@ if (process.env.NODE_ENV !== 'production') {
 
 const InterventionsEdit: React.FC = memo(() => {
     const state = useAppState();
-    const list = selectInterventionsFromPayload(state);
+    const ids = selectInterventionIds(state);
 
     return (
         <EditWrapper title="Partnership Management Portal">
 
-            {list.slice(0, 25).map(
-                (intervention: InterventionEntity, idx: number) => (
+            {ids.map(
+                (id: number) => (
                     <InterventionEditItem
-                        idx={idx}
-                        key={intervention.number} />
+                        id={id}
+                        key={id} />
                 )
             )}
         </EditWrapper>

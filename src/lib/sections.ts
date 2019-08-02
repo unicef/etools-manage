@@ -1,24 +1,32 @@
-import { set, lensProp, map, reduce } from 'ramda';
+import { reduce, keys } from 'ramda';
 import { EntityWithSingleSection, SectionEntity } from 'entities/types';
 import { CLOSE_SECTION_PREFIX } from 'global-constants';
 
-const setSectionToUndefined = set(lensProp('section'), undefined);
 
-export const clearCurrentSection = (list: EntityWithSingleSection[] = []) => map(setSectionToUndefined, list);
+export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
+    const res = keys(entity).reduce(
+        (newEntity: EntityWithSingleSection, id: number) => {
+            return { ...newEntity, [id]: { ...newEntity[id], section: undefined } };
+        }, entity
+    );
+    return res;
+};
 
 export const buildResolvedProgressString = (...args: number[]): string => args.join('/');
 
-export const getNumResolved = (list: EntityWithSingleSection[] = []): number[] => {
+export const getNumResolved = (entity: EntityWithSingleSection = {}): number[] => {
+    const keysOfEntity = keys(entity);
     const numResolved = reduce(
-        (sum: number, { section }: {section: number | SectionEntity}) => {
-            if (section) {
+        (sum: number, id: number) => {
+            const obj = entity[id];
+            if (obj.section) {
                 sum++;
             }
             return sum;
         }, 0,
-        list
+        keysOfEntity
     );
-    return [numResolved, list.length];
+    return [numResolved, keysOfEntity.length];
 
 };
 

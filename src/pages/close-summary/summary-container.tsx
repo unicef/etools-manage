@@ -65,6 +65,7 @@ const useModulesSummary = (id: string) => {
     const {
         sections
     } = state;
+
     const {
         backendService,
         storageService

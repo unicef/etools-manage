@@ -27,14 +27,14 @@ if (process.env.NODE_ENV !== 'production') {
 
 
 interface InterventionEditItemProps {
-    idx: number;
+    id: number;
 }
 
-export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({ idx }) => {
+export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({ id }) => {
     const styles = useEditInterventionStyles();
     const state = useAppState();
     const interventions = selectInterventionsFromPayload(state);
-    const initialInterventionState = interventions[idx];
+    const initialInterventionState = interventions[id];
     const dispatch = useAppDispatch();
 
     const {
@@ -59,7 +59,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
         // const updateState = over(path, always(intervention));
         // const storagePayload: CloseSectionPayload = { [closeSectionId]: updateState(closeSectionPayload) };
         const storePayload: InterventionSectionPayload = {
-            idx,
+            id,
             sections: intervention.sections
         };
         // onUpdateStorage(storageService, storagePayload);

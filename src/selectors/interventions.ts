@@ -1,20 +1,32 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import { InterventionEntity } from 'entities/types';
+import { InterventionEntity, Normalized } from 'entities/types';
 import { Store } from 'slices/root-store';
-import { prop, map, without } from 'ramda';
+import { prop, map, without, keys } from 'ramda';
+import { normalize } from 'normalizr';
+import { interventionSchema } from 'entities/schemas';
 
 
-export const selectInterventionsFromPayload = createSelector<Store, InterventionEntity[]>(
+export const selectInterventionsFromPayload = createSelector<Store, Normalized<InterventionEntity>>(
     [selectCloseSectionPayload],
     prop('interventions'),
 );
 
-export const getNumResolvedInterventions = createSelector(
+
+export const selectInterventionIds = createSelector(
     [selectInterventionsFromPayload],
-    (interventions: InterventionEntity[] = []): number[] => {
+    inter => {
+        console.log('inter');
+        return keys(inter).slice(0, 25);
+    }
+);
+
+export const getNumResolvedInterventions = createSelector<Normalized<InterventionEntity>, number[]>(
+    [selectInterventionsFromPayload],
+    (interventions: Normalized<InterventionEntity> = {}): number[] => {
         let total = 0;
-        const numResolved = interventions.reduce((resolved, intervention) => {
+        const numResolved = keys(interventions).reduce((resolved: number, key: number) => {
+            const intervention = interventions[key];
             total++;
             if (intervention.sections.length > 0) {
                 resolved++;
@@ -36,24 +48,31 @@ export const getNumResolvedInterventions = createSelector(
 
 export const interventionsWithoutCurrentSection = createSelector(
     [selectCurrentActiveSection, selectInterventionsFromPayload],
-    (id: number, list: InterventionEntity[] = []) => map(
-        (item: InterventionEntity) => {
-            const removedSectionIndicators = item.indicators.map(
-                indicator => ({
-                    ...indicator,
-                    section: undefined
-                })
-            );
-            const res: InterventionEntity = ({
-                ...item,
-                indicators: removedSectionIndicators,
-                sections: without([id], item.sections) as number[]
-            });
+    (id: number, interventions: Normalized<InterventionEntity> = {}) => {
 
-            return res;
-        },
-        list
-    )
+        const newList = map(
+            (key: number) => {
+                const item: InterventionEntity = interventions[key];
+                const removedSectionIndicators = item.indicators.map(
+                    indicator => ({
+                        ...indicator,
+                        section: undefined
+                    })
+                );
+                const res: InterventionEntity = ({
+                    ...item,
+                    indicators: removedSectionIndicators,
+                    sections: without([id], item.sections) as number[]
+                });
+
+                return res;
+            },
+            keys(interventions)
+        );
+
+        const { entities } = normalize(newList, [interventionSchema]);
+        return entities.interventions;
+    }
 );
 
 

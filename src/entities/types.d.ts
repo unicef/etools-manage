@@ -1,16 +1,15 @@
 import { EntityConfig } from 'entities';
-import Section from './section-entity';
 
 export interface EntitiesDataResponse<T, U>{
     [field: string]: T | U;
 }
 
 export interface ZippedEntityResults {
-    indicators: IndicatorEntity[];
-    tpmActivities: TPMActivityEntity[];
-    actionPoints: ActionPointEntity[];
-    interventions: InterventionEntity[];
-    travels: TravelEntity[];
+    indicators: Normalized<IndicatorEntity>;
+    tpmActivities: Normalized<TPMActivityEntity>;
+    actionPoints: Normalized<ActionPointEntity>;
+    interventions: Normalized<InterventionEntity>;
+    travels: Normalized<TravelEntity>;
 }
 
 export type ModuleEntities = Omit<ZippedEntityResults, 'indicators'>
@@ -23,8 +22,12 @@ export interface KeyToEntityMap {
     indicators: IndicatorEntity;
 }
 
-export type EntityWithSingleSection = ActionPointEntity | TravelEntity | IndicatorEntity
+export type EntityWithSingleSection = Normalized<ActionPointEntity | TravelEntity | IndicatorEntity>
 
+export interface Normalized<T> {
+    entities: {[id: number]: T};
+    result: number[];
+}
 
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>
 export interface CloseSectionPayload {
@@ -33,9 +36,6 @@ export interface CloseSectionPayload {
 
 export type StorageKey = 'close' | 'split'
 
-export interface StorageKeyVal {
-    [key: StorageKey]: any;
-}
 
 export interface ActionPointEntity {
     id: number;
@@ -94,7 +94,7 @@ export interface NewSectionFromMerged {
 
 export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
 export interface InterventionSectionPayload {
-    idx: number;
+    id: number;
     sections: number[];
 }
 
@@ -103,7 +103,7 @@ export interface EntityDisplay<T> {
     propName: keyof T;
 }
 
-export type EntityCollectionUnion = IndicatorEntity[] | InterventionEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
+
 export type AllEntities = InterventionEntity | TPMActivityEntity | ActionPointEntity | TravelEntity | IndicatorEntity
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
