@@ -1,7 +1,7 @@
 import { zipObj, filter, prop, flatten, keys, flip, compose } from 'ramda';
 import BaseService from 'services';
 import { notEmpty } from 'utils/helpers';
-import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, IndicatorEntity, NonEmptyEntityResults, Normalized, AllEntities, NormalizedUnion } from 'entities/types';
+import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, IndicatorEntity, NonEmptyEntityResults, Normalized, AllEntities } from 'entities/types';
 import { normalize } from 'normalizr';
 import { interventionSchema, travelsSchema, tpmActivitiesSchema, actionPointsSchema } from 'entities/schemas';
 
@@ -48,7 +48,7 @@ export default class BackendApiService extends BaseService implements BackendSer
 
             return {
                 result,
-                entities: entities.interventions
+                data: entities.interventions
             };
 
         } catch (err) {
@@ -70,7 +70,7 @@ export default class BackendApiService extends BaseService implements BackendSer
 
             return {
                 result,
-                entities: entities.travels
+                data: entities.travels
             };
 
         } catch (err) {
@@ -88,7 +88,7 @@ export default class BackendApiService extends BaseService implements BackendSer
 
             return {
                 result,
-                entities: entities.tpmActivities
+                data: entities.tpmActivities
             };
 
         } catch (err) {
@@ -105,7 +105,7 @@ export default class BackendApiService extends BaseService implements BackendSer
 
             return {
                 result,
-                entities: entities.actionPoints
+                data: entities.actionPoints
             };
 
         } catch (err) {

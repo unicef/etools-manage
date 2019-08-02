@@ -1,20 +1,27 @@
 import { reduce, keys } from 'ramda';
-import { EntityWithSingleSection, SectionEntity } from 'entities/types';
+import { EntityWithSingleSection } from 'entities/types';
 import { CLOSE_SECTION_PREFIX } from 'global-constants';
 
+export const normDefault = { data: {}, result: [] };
 
-export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
+export const clearCurrentSection = (root: EntityWithSingleSection = normDefault) => {
+    const entity = root.data;
     const res = keys(entity).reduce(
-        (newEntity: EntityWithSingleSection, id: number) => {
+        (newEntity: typeof entity, id: number) => {
             return { ...newEntity, [id]: { ...newEntity[id], section: undefined } };
         }, entity
     );
-    return res;
+
+    return {
+        data: res,
+        result: root.result
+    };
 };
 
 export const buildResolvedProgressString = (...args: number[]): string => args.join('/');
 
-export const getNumResolved = (entity: EntityWithSingleSection = {}): number[] => {
+export const getNumResolved = (root: EntityWithSingleSection = normDefault): number[] => {
+    const entity = root.data;
     const keysOfEntity = keys(entity);
     const numResolved = reduce(
         (sum: number, id: number) => {

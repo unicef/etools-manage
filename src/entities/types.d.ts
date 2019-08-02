@@ -25,8 +25,12 @@ export interface KeyToEntityMap {
 export type EntityWithSingleSection = Normalized<ActionPointEntity | TravelEntity | IndicatorEntity>
 
 export interface Normalized<T> {
-    entities: {[id: number]: T};
+    data: {[id: number]: T};
     result: number[];
+}
+
+export interface NormalizedEntity<T> {
+    [id: number]: T;
 }
 
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>

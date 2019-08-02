@@ -69,7 +69,7 @@ const storeSlice = createSlice({
         onChangeInterventionSection: (state, action) => {
             const { id, sections } = action.payload;
             if (state.closeSectionPayload) {
-                state.closeSectionPayload.interventions.entities[id].sections = sections;
+                state.closeSectionPayload.interventions.data[id].sections = sections;
             } else {
                 return state;
             }

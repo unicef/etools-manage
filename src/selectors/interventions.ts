@@ -5,6 +5,7 @@ import { Store } from 'slices/root-store';
 import { prop, map, without, keys } from 'ramda';
 import { normalize } from 'normalizr';
 import { interventionSchema } from 'entities/schemas';
+import { normDefault } from 'lib/sections';
 
 
 export const selectInterventionsFromPayload = createSelector<Store, Normalized<InterventionEntity>>(
@@ -12,18 +13,15 @@ export const selectInterventionsFromPayload = createSelector<Store, Normalized<I
     prop('interventions'),
 );
 
-
-export const selectInterventionIds = createSelector(
+export const selectInterventionIds = createSelector<Store, number[]>(
     [selectInterventionsFromPayload],
-    inter => {
-        console.log('inter');
-        return keys(inter).slice(0, 25);
-    }
+    interventions => interventions.result.slice(0, 20)
 );
 
 export const getNumResolvedInterventions = createSelector<Normalized<InterventionEntity>, number[]>(
     [selectInterventionsFromPayload],
-    (interventions: Normalized<InterventionEntity> = {}): number[] => {
+    (root: Normalized<InterventionEntity> = normDefault): number[] => {
+        const { data: interventions } = root;
         let total = 0;
         const numResolved = keys(interventions).reduce((resolved: number, key: number) => {
             const intervention = interventions[key];
@@ -42,14 +40,15 @@ export const getNumResolvedInterventions = createSelector<Normalized<Interventio
 
             return resolved;
         }, 0);
+        console.log('TCL: numResolved', numResolved);
         return [numResolved, total];
     }
 );
 
 export const interventionsWithoutCurrentSection = createSelector(
     [selectCurrentActiveSection, selectInterventionsFromPayload],
-    (id: number, interventions: Normalized<InterventionEntity> = {}) => {
-
+    (id: number, root: Normalized<InterventionEntity> = normDefault) => {
+        const { data: interventions } = root;
         const newList = map(
             (key: number) => {
                 const item: InterventionEntity = interventions[key];
@@ -70,8 +69,8 @@ export const interventionsWithoutCurrentSection = createSelector(
             keys(interventions)
         );
 
-        const { entities } = normalize(newList, [interventionSchema]);
-        return entities.interventions;
+        const { entities, result } = normalize(newList, [interventionSchema]);
+        return { result, data: entities.interventions };
     }
 );
 
