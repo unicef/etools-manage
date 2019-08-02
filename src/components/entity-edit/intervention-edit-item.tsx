@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import { selectSectionsAsOptions } from 'selectors';
 import { onUpdateInterventionSection } from 'pages/close-summary/actions';
 import LoadingFallback from 'components/loading-fallback';
+import { selectInterventionsFromPayload } from 'selectors/interventions';
 
 const IndicatorEditItem = lazy(() => import('./indicator-edit-item'));
 
@@ -25,15 +26,15 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 
-interface InterventionEditItemProps extends InterventionEntity {
-    // onChange: ((intervention: InterventionEntity) => void);
+interface InterventionEditItemProps {
     idx: number;
 }
 
-export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({ number, title, sections, indicators, id, idx }) => {
+export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({ idx }) => {
     const styles = useEditInterventionStyles();
     const state = useAppState();
-    const currentInterventionState = { number, title, sections, indicators, id };
+    const interventions = selectInterventionsFromPayload(state);
+    const currentInterventionState = interventions[idx];
     const dispatch = useAppDispatch();
 
     const {
@@ -41,13 +42,13 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
     } = state;
 
     console.log('render edit item!');
-    const [interventionState, setInterventionState] = useState<InterventionEntity | undefined>();
+    const [interventionState, setInterventionState] = useState<InterventionEntity>(currentInterventionState);
 
     const [open, setOpen] = useState<boolean>(false);
 
     const sectionsAsOptions = selectSectionsAsOptions(state);
 
-    const selectedSectionIds = map(prop('id'), sections);
+    const selectedSectionIds = map(prop('id'), interventionState.sections);
 
     const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, selectedSectionIds));
 
@@ -104,6 +105,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
     const handleCollapse = () => setOpen(!open);
     const headingStyle = clsx(styles.collapsableHeading, styles.containerPad, open && styles.halfBorder);
+    const { number, title, indicators } = interventionState;
     return (
         <Box column className={styles.item}>
             <Box
@@ -151,7 +153,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
         </Box>
     );
 
-}, (prevProps, nextProps) => equals(prevProps, nextProps));
+});
 
 
 // @ts-ignore

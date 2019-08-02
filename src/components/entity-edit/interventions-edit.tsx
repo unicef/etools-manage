@@ -30,9 +30,7 @@ const InterventionsEdit: React.FC = memo(() => {
             {list.slice(0, 25).map(
                 (intervention: InterventionEntity, idx: number) => (
                     <InterventionEditItem
-                        // onChange={createOnChange(idx)}
                         idx={idx}
-                        {...intervention}
                         key={intervention.number} />
                 )
             )}
