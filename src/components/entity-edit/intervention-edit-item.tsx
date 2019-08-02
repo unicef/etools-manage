@@ -1,10 +1,10 @@
-import React, { useState, useEffect, lazy, Suspense, useMemo } from 'react';
+import React, { memo, useState, useEffect, lazy, Suspense } from 'react';
 import { InterventionEntity, SectionEntity, InterventionSectionPayload } from 'entities/types';
 import { useEditInterventionStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { map, propEq, over, T, lensPath, always, filter, includes, prop, find, view, cond, isNil, equals } from 'ramda';
+import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, filter, includes, prop, find, view, cond, isNil, equals } from 'ramda';
 import { useAppState, useAppDispatch } from 'contexts/app';
 import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
@@ -14,9 +14,8 @@ import { selectSectionsAsOptions } from 'selectors';
 import { onUpdateInterventionSection } from 'pages/close-summary/actions';
 import LoadingFallback from 'components/loading-fallback';
 import { selectInterventionsFromPayload } from 'selectors/interventions';
-import IndicatorEditItem from './indicator-edit-item';
 
-// const IndicatorEditItem = lazy(() => import('./indicator-edit-item'));
+const IndicatorEditItem = lazy(() => import('./indicator-edit-item'));
 
 if (process.env.NODE_ENV !== 'production') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -31,11 +30,11 @@ interface InterventionEditItemProps {
     id: number;
 }
 
-export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }) => {
+export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({ id }) => {
     const styles = useEditInterventionStyles();
     const state = useAppState();
-    const { data } = selectInterventionsFromPayload(state);
-    const initialInterventionState = data[id];
+    const interventions = selectInterventionsFromPayload(state);
+    const initialInterventionState = interventions[id];
     const dispatch = useAppDispatch();
 
     const {
@@ -159,13 +158,19 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
                 </Box>
 
                 <div >
-                    {/* {CollapseIndicatorsMenu} */}
+                    <Suspense fallback={ <LoadingFallback/> }>
+                        <IndicatorEditItem
+                            onChange={handleChangeIndicators}
+                            sectionOptions={selectedSections}
+                            indicators={indicators}/>
+                    </Suspense>
+
                 </div>
             </Collapse>
         </div>
     );
 
-};
+});
 
 
 // @ts-ignore

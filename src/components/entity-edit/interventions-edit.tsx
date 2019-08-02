@@ -1,8 +1,10 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
+import { InterventionEntity } from 'entities/types';
 import { useAppState } from 'contexts/app';
 import EditWrapper from 'pages/close-summary/edit-wrapper';
 import { InterventionEditItem } from './intervention-edit-item';
 import { selectInterventionIds } from 'selectors/interventions';
+import { keys } from 'ramda';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -22,12 +24,10 @@ const InterventionsEdit: React.FC = memo(() => {
         <EditWrapper title="Partnership Management Portal">
 
             {ids.map(
-                (id: number) => useMemo(
-                    () => (
-                        <InterventionEditItem
-                            id={id}
-                            key={id} />
-                    ), [id]
+                (id: number) => (
+                    <InterventionEditItem
+                        id={id}
+                        key={id} />
                 )
             )}
         </EditWrapper>

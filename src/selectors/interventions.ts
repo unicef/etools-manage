@@ -5,7 +5,6 @@ import { Store } from 'slices/root-store';
 import { prop, map, without, keys } from 'ramda';
 import { normalize } from 'normalizr';
 import { interventionSchema } from 'entities/schemas';
-import { normDefault } from 'lib/sections';
 
 
 export const selectInterventionsFromPayload = createSelector<Store, Normalized<InterventionEntity>>(
@@ -13,15 +12,18 @@ export const selectInterventionsFromPayload = createSelector<Store, Normalized<I
     prop('interventions'),
 );
 
-export const selectInterventionIds = createSelector<Store, number[]>(
+
+export const selectInterventionIds = createSelector(
     [selectInterventionsFromPayload],
-    interventions => interventions.result.slice(0, 10)
+    inter => {
+        console.log('inter');
+        return keys(inter).slice(0, 25);
+    }
 );
 
-export const getNumResolvedInterventions = createSelector<Normalized<InterventionEntity>, number[]>(
+export const getNumResolvedInterventions = createSelector<Store, number[]>(
     [selectInterventionsFromPayload],
-    (root: Normalized<InterventionEntity> = normDefault): number[] => {
-        const { data: interventions } = root;
+    (interventions: Normalized<InterventionEntity> = {}): number[] => {
         let total = 0;
         const numResolved = keys(interventions).reduce((resolved: number, key: number) => {
             const intervention = interventions[key];
@@ -46,8 +48,8 @@ export const getNumResolvedInterventions = createSelector<Normalized<Interventio
 
 export const interventionsWithoutCurrentSection = createSelector(
     [selectCurrentActiveSection, selectInterventionsFromPayload],
-    (id: number, root: Normalized<InterventionEntity> = normDefault) => {
-        const { data: interventions } = root;
+    (id: number, interventions: Normalized<InterventionEntity> = {}) => {
+
         const newList = map(
             (key: number) => {
                 const item: InterventionEntity = interventions[key];
@@ -68,8 +70,8 @@ export const interventionsWithoutCurrentSection = createSelector(
             keys(interventions)
         );
 
-        const { entities, result } = normalize(newList, [interventionSchema]);
-        return { result, data: entities.interventions };
+        const { entities } = normalize(newList, [interventionSchema]);
+        return entities.interventions;
     }
 );
 

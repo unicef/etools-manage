@@ -25,11 +25,6 @@ export interface KeyToEntityMap {
 export type EntityWithSingleSection = Normalized<ActionPointEntity | TravelEntity | IndicatorEntity>
 
 export interface Normalized<T> {
-    data: {[id: number]: T};
-    result: number[];
-}
-
-export interface NormalizedEntity<T> {
     [id: number]: T;
 }
 
