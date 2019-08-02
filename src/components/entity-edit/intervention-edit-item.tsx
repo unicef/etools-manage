@@ -34,15 +34,14 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
     const styles = useEditInterventionStyles();
     const state = useAppState();
     const interventions = selectInterventionsFromPayload(state);
-    const currentInterventionState = interventions[idx];
+    const initialInterventionState = interventions[idx];
     const dispatch = useAppDispatch();
 
     const {
         sections: allSections
     } = state;
 
-    console.log('render edit item!');
-    const [interventionState, setInterventionState] = useState<InterventionEntity>(currentInterventionState);
+    const [interventionState, setInterventionState] = useState<InterventionEntity>(initialInterventionState);
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -69,7 +68,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
 
     useEffect(() => {
-        if (interventionState) {
+        if (!equals(initialInterventionState, interventionState)) {
             onChange(interventionState);
         }
     }, [interventionState]);
@@ -81,7 +80,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
             [T, map(prop('value'))]
         ]);
         const selectedSections = filter((section: SectionEntity) => includes(section.id, valueOrDefault(value)), allSections);
-        const newState = over(lensPath(['sections']), always(selectedSections), currentInterventionState);
+        const newState = over(lensPath(['sections']), always(selectedSections), initialInterventionState);
         setInterventionState(newState);
     };
 
@@ -90,7 +89,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
         const selectedSectionId = prop('id', selectedSection);
 
         const sectionLens = lensPath(['indicators', idx, 'section']);
-        const currentSelected = view(sectionLens, currentInterventionState);
+        const currentSelected = view(sectionLens, initialInterventionState);
 
         let newSectionId;
 
@@ -99,7 +98,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
             newSectionId = selectedSectionId;
         }
 
-        const newState = over(sectionLens, always(newSectionId), currentInterventionState);
+        const newState = over(sectionLens, always(newSectionId), initialInterventionState);
         setInterventionState(newState);
     };
 

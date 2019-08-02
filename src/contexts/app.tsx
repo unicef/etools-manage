@@ -6,16 +6,15 @@ import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
 import StorageService from 'services/storage';
 import { rootReducer, initialState, Store } from 'slices/root-store';
-import { middlewares } from 'lib/middlewares';
-import useEnhancedReducer from 'lib/enhanced-use-reducer';
+import { createStore } from 'lib/create-store';
+
 
 const AppStoreContext = React.createContext<Store | undefined>(initialState);
 const AppDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 const AppServiceContext = React.createContext<AppServices | undefined>(undefined);
 
 export function AppStoreProvider({ children }: ChildrenProps) {
-    // const [state, dispatch] = useEnhancedReducer(rootReducer, initialState, middlewares);
-    const [state, dispatch] = useReducer(rootReducer, initialState);
+    const [state, dispatch] = createStore(rootReducer, initialState);
 
     const appServices: AppServices = {
         sectionsService: new SectionsApiService(new ApiClient()),

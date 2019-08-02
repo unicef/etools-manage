@@ -1,9 +1,6 @@
-import React, { memo, useCallback, useMemo } from 'react';
-import { InterventionEntity, CloseSectionPayload, InterventionSectionPayload } from 'entities/types';
-import { useAppState, useAppDispatch, useAppService } from 'contexts/app';
-import { selectCurrentActiveSection } from 'selectors';
-import { always, lensPath, over } from 'ramda';
-import { onUpdateStorage, onUpdateInterventionSection } from 'pages/close-summary/actions';
+import React, { memo } from 'react';
+import { InterventionEntity } from 'entities/types';
+import { useAppState } from 'contexts/app';
 import EditWrapper from 'pages/close-summary/edit-wrapper';
 import { InterventionEditItem } from './intervention-edit-item';
 import { selectInterventionsFromPayload } from 'selectors/interventions';
@@ -20,8 +17,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 const InterventionsEdit: React.FC = memo(() => {
     const state = useAppState();
-    const { closeSectionPayload } = state;
-    console.log('TCL: InterventionsEdit:React.FC -> closeSectionPayload', closeSectionPayload);
     const list = selectInterventionsFromPayload(state);
 
     return (

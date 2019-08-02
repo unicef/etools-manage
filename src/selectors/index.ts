@@ -23,7 +23,6 @@ export const selectCurrentActiveSection = createSelector(
 export const selectSectionsAsOptions = createSelector(
     [selectSections, selectCurrentActiveSection],
     (sections, current) => {
-        console.log('options!');
         const sectionsWithoutCurrent = reject(propEq('id', current), sections);
         const asOptions = map(({ name, id }: {name: string; id: number}) => ({ label: name, value: id }), sectionsWithoutCurrent);
         return asOptions;

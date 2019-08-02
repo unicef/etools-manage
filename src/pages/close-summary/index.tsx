@@ -43,7 +43,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
     const { id } = match.params;
     const { moduleEditingName } = useAppState();
     const EditComponent = getEditComponent(moduleEditingName);
-    console.log('rendering!');
     return (
         <Box column align="center">
             {

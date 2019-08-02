@@ -69,7 +69,6 @@ module.exports = function(webpackEnv) {
     : false
     : isEnvDevelopment && 'cheap-module-source-map';
 
-    console.log("TCL: devtool", devtool)
     return {
         mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
         // Stop compilation early in production
