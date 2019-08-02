@@ -61,19 +61,20 @@ module.exports = function(webpackEnv) {
         ? publicPath.slice(0, -1)
         : isEnvDevelopment && process.env.PUBLIC_URL;
     // Get environment variables to inject into our app.
-
+    console.log('shouldUseSourceMap', shouldUseSourceMap);
     const env = getClientEnvironment(publicUrl);
+    const devtool = isEnvProduction
+    ? shouldUseSourceMap
+    ? 'source-map'
+    : false
+    : isEnvDevelopment && 'cheap-module-source-map';
 
-
+    console.log("TCL: devtool", devtool)
     return {
         mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
         // Stop compilation early in production
         bail: isEnvProduction,
-        devtool: isEnvProduction
-            ? shouldUseSourceMap
-                ? 'source-map'
-                : false
-            : isEnvDevelopment && 'cheap-module-source-map',
+        devtool: devtool,
         // These are the "entry points" to our application.
         // This means they will be the "root" imports that are included in JS bundle.
         entry: [

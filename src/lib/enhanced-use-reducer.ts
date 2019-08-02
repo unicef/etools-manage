@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { compose } from 'ramda';
 import { rootReducer, Store } from 'slices/root-store';
 import { DispatchAction, Dispatch } from 'global-types';
+import { AppMiddleware } from './middlewares';
 
 
-function useEnhancedReducer(reducer: typeof rootReducer, initialState: Store, middlewares: any[]): [Store, Dispatch] {
+function useEnhancedReducer(reducer: typeof rootReducer, initialState: Store, middlewares: AppMiddleware[]): [Store, Dispatch] {
     const hook = useState(initialState);
     let state = hook[0];
     const setState = hook[1];
     const dispatch = (action: DispatchAction) => {
-        console.log('AAAAAAAAA', action);
         state = reducer(state, action);
         setState(state);
         return action;
@@ -17,9 +17,7 @@ function useEnhancedReducer(reducer: typeof rootReducer, initialState: Store, mi
 
     const store = {
         getState: () => state,
-        // @ts-ignore
         dispatch: (action: DispatchAction) => enhancedDispatch(action)
-
     };
 
     const chain = middlewares.map(middleware => middleware(store));

@@ -1,10 +1,17 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import Box from 'components/box';
 import { createStyles, Theme, Typography, Paper, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { ConfirmButton } from 'components/buttons';
 import clsx from 'clsx';
 import { buildResolvedProgressString } from 'lib/sections';
+import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
+import { selectCloseSectionPayload } from 'selectors';
+import { onFetchDataCloseSection, onEditModuleSections } from './actions';
+import { ModuleEntities } from 'entities/types';
+import EntityConfigMapping from 'entities/config-map';
+import { selectNumItemsResolved } from 'selectors/num-items-resolved';
+import { keys, propEq, find, prop } from 'ramda';
 
 // if (process.env.NODE_ENV !== 'production') {
 //     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -42,8 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 export interface CloseSummaryProps {
-    modulesData: SummaryItemProps[];
-    closingSection: string;
+    sectionId: string;
 }
 
 export interface SummaryItemProps {
@@ -52,7 +58,55 @@ export interface SummaryItemProps {
     onEdit: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
 }
 
-export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ modulesData, closingSection }) => {
+const useModulesSummary = (id: string) => {
+    const state = useAppState();
+    const dispatch = useAppDispatch();
+
+    const {
+        sections
+    } = state;
+    const {
+        backendService,
+        storageService
+    } = useAppService();
+
+    const numResolvedByModule = selectNumItemsResolved(state);
+
+    const closeSectionPayload = selectCloseSectionPayload(state);
+    const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
+
+    useEffect(() => {
+        onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
+    }, []);
+
+    useEffect(() => {
+        if (closeSectionPayload) {
+            setModulesData(
+                keys(closeSectionPayload).map(
+                    (entityName: keyof ModuleEntities): SummaryItemProps => ({
+                        name: EntityConfigMapping[entityName].moduleName,
+                        itemsResolved: numResolvedByModule[entityName],
+                        onEdit: () => onEditModuleSections(entityName, dispatch)
+                    })
+                )
+            );
+        }
+    }, [closeSectionPayload]);
+
+    return {
+        modulesData,
+        sections
+    };
+};
+
+export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ sectionId }) => {
+    const {
+        modulesData,
+        sections
+    } = useModulesSummary(sectionId);
+
+
+    const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
     const styles = useStyles();
     return (
         <Container maxWidth="sm">
@@ -64,13 +118,14 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ modules
                     </Typography>
                 </Box>
                 {
-                    modulesData.map(
+                    modulesData && modulesData.map(
                         module => (
                             <ModuleSummaryItem key={module.name} {...module} />
                         )
                     )
                 }
-            </Paper></Container>
+            </Paper>
+        </Container>
     );
 });
 

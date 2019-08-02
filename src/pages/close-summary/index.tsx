@@ -1,25 +1,28 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
-import { onFetchDataCloseSection, onEditModuleSections } from './actions';
-import { EditProps } from 'entities';
 import Box from 'components/box';
-import { keys, propEq, find, prop } from 'ramda';
 import { KeyToEntityMap, ModuleEntities } from 'entities/types';
 import { SummaryItemProps, CloseSectionsSummary } from './summary-container';
-import InterventionsEdit from 'components/entity-edit/interventions';
+import InterventionsEdit from 'components/entity-edit/interventions-edit';
 import TravelsEdit from 'components/entity-edit/travels';
 import ActionPointsEdit from 'components/entity-edit/action-points';
 import TPMActivitiesEdit from 'components/entity-edit/tpmActivities';
-import { selectCloseSectionPayload } from 'selectors';
-import EntityConfigMapping from 'entities/config-map';
-import { selectNumItemsResolved } from 'selectors/num-items-resolved';
+
+if (process.env.NODE_ENV !== 'production') {
+    const whyDidYouRender = require('@welldone-software/why-did-you-render');
+    whyDidYouRender(React, {
+        onlyLogs: true,
+        titleColor: 'teal'
+    });
+}
+
 
 export interface CloseParams {id: string}
 
 type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>
 
-export type EditComponentMappings = {[key in ModuleKeys]: React.FC<EditProps<KeyToEntityMap[key]>>}
+export type EditComponentMappings = {[key in ModuleKeys]: React.FC}
 
 const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     interventions: InterventionsEdit,
@@ -28,94 +31,31 @@ const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     tpmActivities: TPMActivitiesEdit
 };
 
-export const useClosePage = (id: string) => {
-    const state = useAppState();
+function getEditComponent(name: keyof EditComponentMappings | null) {
 
-    const {
-        moduleEditingName,
-        sections
-    } = state;
-
-    const closeSectionPayload = selectCloseSectionPayload(state);
-    const numResolvedByModule = selectNumItemsResolved(state);
-
-    const dispatch = useAppDispatch();
-
-    const {
-        backendService,
-        storageService
-    } = useAppService();
-
-    const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
-
-    useEffect(() => {
-        onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
-    }, []);
-
-    useEffect(() => {
-        if (closeSectionPayload) {
-            setModulesData(
-                keys(closeSectionPayload).map(
-                    (entityName: keyof ModuleEntities): SummaryItemProps => ({
-                        name: EntityConfigMapping[entityName].moduleName,
-                        itemsResolved: numResolvedByModule[entityName],
-                        onEdit: () => onEditModuleSections(entityName, dispatch)
-                    })
-                )
-            );
-        }
-    }, [closeSectionPayload]);
-
-    function getEditComponent(name: keyof EditComponentMappings | null) {
-
-        if (name) {
-            return EDIT_COMPONENT_MODULE_MAPPING[name];
-        }
-        return null;
+    if (name) {
+        return EDIT_COMPONENT_MODULE_MAPPING[name];
     }
-
-    return {
-        closeSectionPayload,
-        modulesData,
-        sections,
-        moduleEditingName,
-        getEditComponent
-    };
-};
+    return null;
+}
 
 const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match }) => {
     const { id } = match.params;
-    const {
-        modulesData,
-        moduleEditingName,
-        sections,
-        getEditComponent,
-        closeSectionPayload
-    } = useClosePage(id);
-
-    const closeSectionName = prop('name', find(propEq('id', Number(id)), sections));
-    const list = moduleEditingName && closeSectionPayload[moduleEditingName];
+    const { moduleEditingName } = useAppState();
     const EditComponent = getEditComponent(moduleEditingName);
-    return modulesData && closeSectionPayload ? (
+    console.log('rendering!');
+    return (
         <Box column align="center">
             {
-                moduleEditingName && EditComponent ?
-                    <EditComponent
-                        closeSectionPayloadKey={id}
-                        // @ts-ignore
-                        list={list}
-                    />
-                    // <Typography>Check</Typography>
-                    :
-                    <CloseSectionsSummary
-                        modulesData={modulesData}
-                        closingSection={closeSectionName}
-                    />
+                moduleEditingName && EditComponent ? <EditComponent /> : <CloseSectionsSummary sectionId={id}/>
+
             }
         </Box>
-    ) : null;
-
+    );
 };
+
+// @ts-ignore
+CloseSummaryPage.whyDidYouRender = true;
 
 
 export default CloseSummaryPage;

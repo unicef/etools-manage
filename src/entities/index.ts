@@ -2,7 +2,6 @@ import { EntityDisplay
 } from './types';
 
 export interface EditProps<T> {
-    list: T[] | undefined;
     closeSectionPayloadKey: string;
 }
 

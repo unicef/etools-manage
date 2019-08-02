@@ -29,7 +29,7 @@ export function ErrorCard(errorProps: FallbackProps) {
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                An error occured
+                 An error occured
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             {error && error.toString()}

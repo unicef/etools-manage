@@ -1,4 +1,5 @@
 import { EntityConfig } from 'entities';
+import Section from './section-entity';
 
 export interface EntitiesDataResponse<T, U>{
     [field: string]: T | U;
@@ -92,6 +93,10 @@ export interface NewSectionFromMerged {
 }
 
 export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
+export interface InterventionSectionPayload {
+    idx: number;
+    sections: number[];
+}
 
 export interface EntityDisplay<T> {
     label: string;

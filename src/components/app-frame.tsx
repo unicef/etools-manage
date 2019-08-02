@@ -71,7 +71,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 
     return (
         <Modals>
-            {loading && <Loader />}
+            {loading ? <Loader /> : null}
 
             <div className={styles.root}>
                 <CssBaseline />

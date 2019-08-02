@@ -1,13 +1,13 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import { InterventionEntity, ModuleEntities } from 'entities/types';
+import { InterventionEntity } from 'entities/types';
 import { Store } from 'slices/root-store';
 import { prop, map, without } from 'ramda';
 
 
-export const selectInterventionsFromPayload = createSelector<Store, ModuleEntities>(
+export const selectInterventionsFromPayload = createSelector<Store, InterventionEntity[]>(
     [selectCloseSectionPayload],
-    prop('interventions')
+    prop('interventions'),
 );
 
 export const getNumResolvedInterventions = createSelector(

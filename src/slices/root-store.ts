@@ -24,6 +24,7 @@ export const initialState: Store = {
     currentActiveSection: null
 };
 
+// TODO: split up reducers of closedSectionpayload
 const storeSlice = createSlice({
     initialState,
     reducers: {
@@ -64,6 +65,14 @@ const storeSlice = createSlice({
         },
         onCurrentActiveSection: (state, action) => {
             state.currentActiveSection = action.payload;
+        },
+        onChangeInterventionSection: (state, action) => {
+            const { idx, sections } = action.payload;
+            if (state.closeSectionPayload) {
+                state.closeSectionPayload.interventions[idx].sections = sections;
+            } else {
+                return state;
+            }
         }
     }
 });
@@ -80,7 +89,8 @@ export const {
     updateCloseSectionPayload,
     onCurrentActiveSection,
     onFetchForCloseSuccess,
-    onThrowError
+    onThrowError,
+    onChangeInterventionSection
 
 } = storeSlice.actions;
 

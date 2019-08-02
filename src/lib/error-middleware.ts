@@ -6,6 +6,7 @@ export const errorMiddleware: AppMiddleware = ({ getState }) => dispatch => acti
     if (state.error) {
         return;
     }
+
     dispatch(action);
 };
 
