@@ -1,19 +1,20 @@
 import React, { memo, useState, useEffect, lazy, Suspense } from 'react';
-import { InterventionEntity, SectionEntity, InterventionSectionPayload } from 'entities/types';
+import { InterventionEntity, SectionEntity, InterventionSectionPayload, CloseSectionPayload } from 'entities/types';
 import { useEditInterventionStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, filter, includes, prop, find, view, cond, isNil, equals } from 'ramda';
-import { useAppState, useAppDispatch } from 'contexts/app';
+import { useAppState, useAppDispatch, useAppService } from 'contexts/app';
 import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
 import { Typography, Collapse } from '@material-ui/core';
 import clsx from 'clsx';
-import { selectSectionsAsOptions } from 'selectors';
-import { onUpdateInterventionSection } from 'pages/close-summary/actions';
+import { selectSectionsAsOptions, selectCurrentActiveSection, selectCloseSectionPayload } from 'selectors';
+import { onUpdateInterventionSection, onUpdateStorage } from 'pages/close-summary/actions';
 import LoadingFallback from 'components/loading-fallback';
 import { selectInterventionsFromPayload } from 'selectors/interventions';
+import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 
 const IndicatorEditItem = lazy(() => import('./indicator-edit-item'));
 
@@ -34,8 +35,10 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
     const styles = useEditInterventionStyles();
     const state = useAppState();
     const interventions = selectInterventionsFromPayload(state);
+    const closeSectionPayload = selectCloseSectionPayload(state);
     const initialInterventionState = interventions[id];
     const dispatch = useAppDispatch();
+    const { storageService } = useAppService();
 
     const {
         sections: allSections
@@ -47,30 +50,29 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
     const sectionsAsOptions = selectSectionsAsOptions(state);
 
-    const selectedSectionIds = map(prop('id'), interventionState.sections);
+    const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, interventionState.sections));
 
-    const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, selectedSectionIds));
-    console.log('TCL: selectedSections', selectedSections);
-
-
+    const closeSectionId = selectCurrentActiveSection(state);
     // temp
-    const numResolved = '0/0';
+    const numResolved = selectNumItemsResolved(state).interventions;
 
     const onChange = (intervention: InterventionEntity) => {
-        // const updateState = over(path, always(intervention));
-        // const storagePayload: CloseSectionPayload = { [closeSectionId]: updateState(closeSectionPayload) };
+        console.log('TCL: onChange -> intervention', intervention);
+        const updateState = over(lensPath(['interventions', id]), always(intervention));
+        const storagePayload: CloseSectionPayload = { [closeSectionId]: updateState(closeSectionPayload) };
         const storePayload: InterventionSectionPayload = {
             id,
             sections: intervention.sections
         };
-        // onUpdateStorage(storageService, storagePayload);
         onUpdateInterventionSection(storePayload, dispatch);
+        onUpdateStorage(storageService, storagePayload);
+
+
     };
 
 
     useEffect(() => {
         if (!equals(initialInterventionState, interventionState)) {
-            console.log('ran!');
             onChange(interventionState);
         }
     }, [interventionState]);
@@ -82,7 +84,9 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
             [T, map(prop('value'))]
         ]);
         const selectedSections = filter((section: SectionEntity) => includes(section.id, valueOrDefault(value)), allSections);
-        const newState = over(lensPath(['sections']), always(selectedSections), initialInterventionState);
+        const idsOnly = map(prop('id'), selectedSections);
+
+        const newState = over(lensPath(['sections']), always(idsOnly), initialInterventionState);
         setInterventionState(newState);
     };
 
@@ -142,7 +146,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
                             options={sectionsAsOptions}/>
                     </Box>
 
-                    <Typography color="secondary" className={styles.numResolved}>{numResolved}</Typography>
+                    <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography>
 
                     {indicators.length ? <Box
                         onClick={handleCollapse}
@@ -152,7 +156,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
                     </Box> : null}
                 </Box>
             </Box>
-            <Collapse timeout={0} in={open} className={styles.collapseContent}>
+            {/* <Collapse timeout={0} in={open} className={styles.collapseContent}>
                 <Box className={styles.containerPad} align="center">
                     <Typography ><i>Applied indicators</i></Typography>
                 </Box>
@@ -166,7 +170,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
                     </Suspense>
 
                 </div>
-            </Collapse>
+            </Collapse> */}
         </div>
     );
 

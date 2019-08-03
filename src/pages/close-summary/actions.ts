@@ -4,7 +4,7 @@ import StorageService, { StorageData } from 'services/storage';
 import { ZippedEntityResults, InterventionSectionPayload } from 'entities/types';
 
 import { Dispatch } from 'global-types';
-import { onSetLoading, onSetModuleEditingName, updateCloseSectionPayload, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection } from 'slices/root-store';
+import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection } from 'slices/root-store';
 import { firstValue, firstKey } from 'utils';
 import { prefixWithClose } from 'lib/sections';
 

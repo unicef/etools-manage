@@ -77,7 +77,9 @@ const useModulesSummary = (id: string) => {
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
 
     useEffect(() => {
-        onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
+        if (!closeSectionPayload) {
+            onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
+        }
     }, []);
 
     useEffect(() => {

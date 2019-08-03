@@ -44,12 +44,10 @@ export default class BackendApiService extends BaseService implements BackendSer
         try {
             const url = `${process.env.REACT_APP_INTERVENTIONS_APPLIED_INDICATORS_ENDPOINT}${query}`;
             const response = await this._http.get<InterventionEntity>(url);
-            const { entities, result } = normalize(response, [interventionSchema]);
+            const { entities } = normalize(response, [interventionSchema]);
 
-            return {
-                result,
-                entities: entities.interventions
-            };
+            return entities.interventions;
+
 
         } catch (err) {
             const json = JSON.parse(err.message);
@@ -66,12 +64,9 @@ export default class BackendApiService extends BaseService implements BackendSer
         try {
             const url = `${process.env.REACT_APP_TAVELS_ENDPOINT}${query}`;
             const { data } = await this._http.get<TravelsResponse>(url);
-            const { entities, result } = normalize(data, [travelsSchema]);
+            const { entities } = normalize(data, [travelsSchema]);
 
-            return {
-                result,
-                entities: entities.travels
-            };
+            return entities.travels;
 
         } catch (err) {
             const json = JSON.parse(err.message);
@@ -84,12 +79,9 @@ export default class BackendApiService extends BaseService implements BackendSer
             const url = `${process.env.REACT_APP_TPM_ACTIVITIES_ENDPOINT}${query}`;
             const { results: response } = await this._http.get<BackendResponse<TPMActivityEntity>>(url);
 
-            const { entities, result } = normalize(response, [tpmActivitiesSchema]);
+            const { entities } = normalize(response, [tpmActivitiesSchema]);
 
-            return {
-                result,
-                entities: entities.tpmActivities
-            };
+            return entities.tpmActivities;
 
         } catch (err) {
             const json = JSON.parse(err.message);
@@ -101,12 +93,9 @@ export default class BackendApiService extends BaseService implements BackendSer
         try {
             const url = `${process.env.REACT_APP_ACTION_POINTS_ENDPOINT}${query}`;
             const { results: response } = await this._http.get<BackendResponse<ActionPointEntity>>(url);
-            const { entities, result } = normalize(response, [actionPointsSchema]);
 
-            return {
-                result,
-                entities: entities.actionPoints
-            };
+            const { entities } = normalize(response, [actionPointsSchema]);
+            return entities.actionPoints;
 
         } catch (err) {
             const json = JSON.parse(err.message);
