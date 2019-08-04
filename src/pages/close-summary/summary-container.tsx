@@ -140,7 +140,7 @@ export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, items
 
         <Typography className={styles.moduleName} variant="body2">{name}</Typography>
 
-        <Typography variant="body2">Resolved items: {buildResolvedProgressString(...itemsResolved)}</Typography>
+        <Typography variant="body2">Resolved items: {buildResolvedProgressString(itemsResolved)}</Typography>
 
         <ConfirmButton onClick={onEdit}>Edit</ConfirmButton>
     </Box>;

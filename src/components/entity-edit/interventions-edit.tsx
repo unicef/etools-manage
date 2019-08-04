@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 const InterventionsEdit: React.FC = memo(() => {
     const state = useAppState();
     const ids = selectInterventionIds(state);
-
+    console.log('asdasds');
     return (
         <EditWrapper title="Partnership Management Portal">
 

@@ -1,4 +1,4 @@
-import { reduce, keys } from 'ramda';
+import { reduce, keys, always, map, T, isNil, cond, prop } from 'ramda';
 import { EntityWithSingleSection, SectionEntity } from 'entities/types';
 import { CLOSE_SECTION_PREFIX } from 'global-constants';
 
@@ -12,7 +12,7 @@ export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
     return res;
 };
 
-export const buildResolvedProgressString = (...args: number[]): string => args.join('/');
+export const buildResolvedProgressString = (args: number[]): string => args.join('/');
 
 export const getNumResolved = (entity: EntityWithSingleSection = {}): number[] => {
     const keysOfEntity = keys(entity);
@@ -32,3 +32,7 @@ export const getNumResolved = (entity: EntityWithSingleSection = {}): number[] =
 
 export const prefixWithClose = (key: string) => `${CLOSE_SECTION_PREFIX}_${key}`;
 
+export const valueOrDefault = cond([
+    [isNil, always([])],
+    [T, map(prop('value'))]
+]);

@@ -73,6 +73,12 @@ const storeSlice = createSlice({
             } else {
                 return state;
             }
+        },
+        onUpdateInterventionState: (state, action) => {
+            const { indicators, id } = action.payload;
+            if (state.closeSectionPayload) {
+                state.closeSectionPayload.interventions[id].indicators = indicators;
+            }
         }
     }
 });
@@ -90,7 +96,8 @@ export const {
     onCurrentActiveSection,
     onFetchForCloseSuccess,
     onThrowError,
-    onChangeInterventionSection
+    onChangeInterventionSection,
+    onUpdateInterventionState
 
 } = storeSlice.actions;
 

@@ -97,6 +97,11 @@ export interface InterventionSectionPayload {
     sections: number[];
 }
 
+export interface IndicatorsPayload {
+    id: number;
+    indicators: IndicatorEntity[];
+}
+
 export interface EntityDisplay<T> {
     label: string;
     propName: keyof T;
