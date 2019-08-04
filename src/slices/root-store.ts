@@ -74,7 +74,7 @@ const storeSlice = createSlice({
                 return state;
             }
         },
-        onUpdateInterventionState: (state, action) => {
+        onUpdateInterventionIndicatorsState: (state, action) => {
             const { indicators, id } = action.payload;
             if (state.closeSectionPayload) {
                 state.closeSectionPayload.interventions[id].indicators = indicators;
@@ -97,7 +97,7 @@ export const {
     onFetchForCloseSuccess,
     onThrowError,
     onChangeInterventionSection,
-    onUpdateInterventionState
+    onUpdateInterventionIndicatorsState
 
 } = storeSlice.actions;
 

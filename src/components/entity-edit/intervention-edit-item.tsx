@@ -11,7 +11,7 @@ import Box from 'components/box';
 import { Typography, Collapse } from '@material-ui/core';
 import clsx from 'clsx';
 import { selectSectionsAsOptions, selectCurrentActiveSection, selectCloseSectionPayload } from 'selectors';
-import { onUpdateInterventionSection, onUpdateStorage, onUpdateIntervention } from 'pages/close-summary/actions';
+import { onUpdateInterventionSection, onUpdateStorage, onUpdateInterventionIndicators } from 'pages/close-summary/actions';
 import LoadingFallback from 'components/loading-fallback';
 import { selectInterventionsFromPayload } from 'selectors/interventions';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
@@ -104,21 +104,13 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
         const newState = over(sectionLens, always(newSectionId), interventionState);
         const { indicators } = newState;
         console.log('TCL: handleChangeIndicators -> newState', newState);
-        onUpdateIntervention({ indicators, id }, dispatch); //
+        // onUpdateInterventionIndicators({ indicators, id }, dispatch); //
         setInterventionState(newState);
     };
 
     const handleCollapse = () => setOpen(!open);
     const headingStyle = clsx(styles.collapsableHeading, styles.containerPad, open && styles.halfBorder);
     const { number, title } = interventionState;
-
-    const Indicators = useMemo(() => <IndicatorEditItem
-        parentId={id}
-        onChange={handleChangeIndicators}
-        sectionOptions={selectedSections}
-        // indicators={indicators}
-    />, [id]);
-
     return (
         <div className={styles.item}>
             <Box
@@ -154,7 +146,12 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
                 </Box>
 
                 <div >
-                    {Indicators}
+                    <IndicatorEditItem
+                        parentId={id}
+                        onChange={handleChangeIndicators}
+                        sectionOptions={selectedSections}
+        // indicators={indicators}
+                    />
 
                 </div>
             </div>}
@@ -166,3 +163,19 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
 
 // @ts-ignore
 InterventionEditItem.whyDidYouRender = true;
+
+
+const store = {
+    closeSectionPayload: {
+        interventions: {
+            5: {
+                sections: [2, 4],
+                title: 'Inter 5'
+            },
+            6: {
+                sections: [3],
+                title: 'inter 6'
+            }
+        }
+    }
+};
