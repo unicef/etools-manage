@@ -1,7 +1,7 @@
 import { zipObj, filter, prop, flatten, keys, flip, compose } from 'ramda';
 import BaseService from 'services';
 import { notEmpty } from 'utils/helpers';
-import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, IndicatorEntity, NonEmptyEntityResults, Normalized, AllEntities } from 'entities/types';
+import { InterventionEntity, TravelEntity, ActionPointEntity, TPMActivityEntity, IndicatorEntity, NonEmptyEntityResults, Normalized, AllEntities, NormalizedUnion } from 'entities/types';
 import { normalize } from 'normalizr';
 import { interventionSchema, travelsSchema, tpmActivitiesSchema, actionPointsSchema } from 'entities/schemas';
 

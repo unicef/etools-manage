@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         heading: {
             padding: theme.spacing(2)
+            // borderBottom: `1px solid ${theme.palette.divider}`
         }
     })
 );
@@ -33,10 +34,9 @@ const useStyles = makeStyles((theme: Theme) =>
 interface WrapperProps {
     children: React.ReactNode;
     title: string;
-    resolved: string;
 }
 
-const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
+const EditWrapper: React.FC<WrapperProps> = ({ children, title }) => {
     const dispatch = useAppDispatch();
     const styles = useStyles();
     const onClick = () => dispatch(onSetModuleEditingName(null));
@@ -53,9 +53,8 @@ const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
                 <BackIcon fontSize="large"/>
             </IconButton>
             <Paper >
-                <Box className={styles.heading} justify="between">
+                <Box className={styles.heading}>
                     <Typography className={styles.title} variant="subtitle1">{title} </Typography>
-                    <Typography color="textPrimary" variant="body2">Items resolved: {resolved}</Typography>
                 </Box>
 
                 <Box column className={styles.content}>

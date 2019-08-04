@@ -1,10 +1,10 @@
 
 import { BackendService } from 'services/backend';
 import StorageService, { StorageData } from 'services/storage';
-import { ZippedEntityResults, InterventionSectionPayload, IndicatorSectionPayload } from 'entities/types';
+import { ZippedEntityResults, InterventionSectionPayload } from 'entities/types';
 
 import { Dispatch } from 'global-types';
-import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onChangeIndicatorSection } from 'slices/root-store';
+import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection } from 'slices/root-store';
 import { firstValue, firstKey } from 'utils';
 import { prefixWithClose } from 'lib/sections';
 
@@ -51,6 +51,3 @@ export const onUpdateInterventionSection = (payload: InterventionSectionPayload,
     dispatch(onChangeInterventionSection(payload));
 };
 
-export const onUpdateIndicatorSection = (payload: IndicatorSectionPayload, dispatch: Dispatch) => {
-    dispatch(onChangeIndicatorSection(payload));
-};

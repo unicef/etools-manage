@@ -12,7 +12,7 @@ export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
     return res;
 };
 
-export const buildResolvedProgressString = (args: number[]): string => args.join('/');
+export const buildResolvedProgressString = (...args: number[]): string => args.join('/');
 
 export const getNumResolved = (entity: EntityWithSingleSection = {}): number[] => {
     const keysOfEntity = keys(entity);

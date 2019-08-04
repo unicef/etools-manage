@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme: Theme) =>
             borderBottom: `1px solid ${theme.palette.divider}`
         },
         heading: {
-            color: theme.palette.getContrastText(theme.palette.secondary.main),
             borderRadius: '8px 8px 0 0',
             padding: `14px ${theme.spacing(3)}px ${theme.spacing(1)}px`
         },
@@ -45,9 +44,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         moduleName: {
             width: '25%'
-        },
-        codeblock: {
-            lineHeight: `${theme.spacing(3)}px`
         }
     }));
 
@@ -119,8 +115,8 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
         <Container maxWidth="sm">
             <Paper className={styles.paper}>
                 <Box className={clsx(styles.heading, styles.lightSecondary)} align="center">
-                    <Typography className={styles.subtitle} color="inherit" variant="subtitle1">Closing section </Typography>
-                    <Typography className={styles.codeblock} color="inherit">
+                    <Typography className={styles.subtitle} color="primary" variant="subtitle1">Closing section </Typography>
+                    <Typography color="primary">
                         <code>{closingSection}</code>
                     </Typography>
                 </Box>
@@ -144,7 +140,7 @@ export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, items
 
         <Typography className={styles.moduleName} variant="body2">{name}</Typography>
 
-        <Typography variant="body2">Resolved items: {buildResolvedProgressString(itemsResolved)}</Typography>
+        <Typography variant="body2">Resolved items: {buildResolvedProgressString(...itemsResolved)}</Typography>
 
         <ConfirmButton onClick={onEdit}>Edit</ConfirmButton>
     </Box>;

@@ -16,7 +16,7 @@ export const selectInterventionsFromPayload = createSelector<Store, Normalized<I
 export const selectInterventionIds = createSelector(
     [selectInterventionsFromPayload],
     inter => {
-        return keys(inter);
+        return keys(inter).slice(0, 10);
     }
 );
 

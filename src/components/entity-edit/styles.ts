@@ -22,9 +22,6 @@ export const useEditInterventionStyles = makeStyles((theme: Theme) =>
         halfBorder: {
             borderRadius: `${theme.spacing(1)}px ${theme.spacing(1)}px 0 0`
         },
-        description: {
-            maxWidth: '50%'
-        },
         collapseContent: {
             border: `1px solid ${theme.palette.divider}`,
             borderTop: 'none',
@@ -35,7 +32,7 @@ export const useEditInterventionStyles = makeStyles((theme: Theme) =>
             cursor: 'pointer'
         },
         indicatorItem: {
-            padding: `${theme.spacing(2)}px 0`
+            paddingBottom: theme.spacing(2)
         },
         indicator: {
             padding: '6px 24px 6px 16px'
@@ -46,10 +43,7 @@ export const useEditInterventionStyles = makeStyles((theme: Theme) =>
         },
         dropdown: {
             margin: `0 ${theme.spacing(2)}px`,
-            width: 335
-        },
-        hidden: {
-            visibility: 'hidden'
+            minWidth: 335
         },
         indicatorDropdown: {
             maxHeight: 32,

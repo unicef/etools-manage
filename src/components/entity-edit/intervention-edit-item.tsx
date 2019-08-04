@@ -1,20 +1,22 @@
-import React, { memo, useState, useEffect, lazy, Suspense, useCallback, useMemo } from 'react';
+import React, { memo, useState, useEffect, lazy, Suspense } from 'react';
 import { InterventionEntity, SectionEntity, InterventionSectionPayload, CloseSectionPayload } from 'entities/types';
 import { useEditInterventionStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { map, propEq, over, T, lensPath, always, filter, includes, prop, find, view, cond, isNil, equals } from 'ramda';
+import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, filter, includes, prop, find, view, cond, isNil, equals } from 'ramda';
 import { useAppState, useAppDispatch, useAppService } from 'contexts/app';
 import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
-import { Typography } from '@material-ui/core';
+import { Typography, Collapse } from '@material-ui/core';
 import clsx from 'clsx';
 import { selectSectionsAsOptions, selectCurrentActiveSection, selectCloseSectionPayload } from 'selectors';
 import { onUpdateInterventionSection, onUpdateStorage } from 'pages/close-summary/actions';
+import LoadingFallback from 'components/loading-fallback';
 import { selectInterventionsFromPayload } from 'selectors/interventions';
-import IndicatorEditItem from './indicator-edit-item';
+import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 
+const IndicatorEditItem = lazy(() => import('./indicator-edit-item'));
 
 if (process.env.NODE_ENV !== 'production') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -29,15 +31,12 @@ interface InterventionEditItemProps {
     id: number;
 }
 
-export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }) => {
+export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({ id }) => {
     const styles = useEditInterventionStyles();
     const state = useAppState();
-
     const interventions = selectInterventionsFromPayload(state);
     const closeSectionPayload = selectCloseSectionPayload(state);
     const initialInterventionState = interventions[id];
-    console.log('TCL: initialInterventionState', initialInterventionState);
-
     const dispatch = useAppDispatch();
     const { storageService } = useAppService();
 
@@ -54,20 +53,17 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
     const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, interventionState.sections));
 
     const closeSectionId = selectCurrentActiveSection(state);
-
     // temp
-    const numResolved = [0, 2];
+    const numResolved = selectNumItemsResolved(state).interventions;
 
     const onChange = (intervention: InterventionEntity) => {
+        console.log('TCL: onChange -> intervention', intervention);
         const updateState = over(lensPath(['interventions', id]), always(intervention));
-
         const storagePayload: CloseSectionPayload = { [closeSectionId]: updateState(closeSectionPayload) };
-
         const storePayload: InterventionSectionPayload = {
             id,
             sections: intervention.sections
         };
-
         onUpdateInterventionSection(storePayload, dispatch);
         onUpdateStorage(storageService, storagePayload);
 
@@ -94,10 +90,42 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
         setInterventionState(newState);
     };
 
+    const handleChangeIndicators = (idx: number) => (value: ValueType<OptionType>) => {
+        const selectedSection = find(propEq('name', prop('label', value)), allSections);
+        const selectedSectionId = prop('id', selectedSection);
+
+        const sectionLens = lensPath(['indicators', idx, 'section']);
+        const currentSelected = view(sectionLens, initialInterventionState);
+
+        let newSectionId;
+
+        // removes selection when same one is clicked
+        if (currentSelected !== selectedSectionId) {
+            newSectionId = selectedSectionId;
+        }
+
+        const newState = over(sectionLens, always(newSectionId), initialInterventionState);
+        setInterventionState(newState);
+    };
 
     const handleCollapse = () => setOpen(!open);
     const headingStyle = clsx(styles.collapsableHeading, styles.containerPad, open && styles.halfBorder);
     const { number, title, indicators } = interventionState;
+    // const CollapseIndicatorsMenu = useMemo(
+    //     () => (<Collapse timeout={0} in={open} className={styles.collapseContent}>
+    //         <Box className={styles.containerPad} align="center">
+    //             <Typography ><i>Applied indicators</i></Typography>
+    //         </Box>
+
+    //         <div >
+    //             <IndicatorEditItem
+    //                 onChange={handleChangeIndicators}
+    //                 sectionOptions={selectedSections}
+    //                 indicators={indicators}/>
+
+    //         </div>
+    //     </Collapse>), [selectedSections]
+    // );
 
     return (
         <div className={styles.item}>
@@ -106,7 +134,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
                 align="center"
                 justify="between">
 
-                <Box className={styles.description} column>
+                <Box column>
                     <Typography variant="subtitle2">{number}</Typography>
                     <Typography>{title}</Typography>
                 </Box>
@@ -120,22 +148,33 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
 
                     <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography>
 
-                    <Box
+                    {indicators.length ? <Box
                         onClick={handleCollapse}
-                        className={clsx(styles.expand, indicators.length === 0 && styles.hidden)}
+                        className={styles.expand}
                         align="center">
                         {open ? <ExpandLess /> : <ExpandMore />}
-                    </Box>
+                    </Box> : null}
                 </Box>
             </Box>
-            {open && <IndicatorEditItem
-                parentId={id}
-                sectionOptions={selectedSections}
-            />}
+            {/* <Collapse timeout={0} in={open} className={styles.collapseContent}>
+                <Box className={styles.containerPad} align="center">
+                    <Typography ><i>Applied indicators</i></Typography>
+                </Box>
+
+                <div >
+                    <Suspense fallback={ <LoadingFallback/> }>
+                        <IndicatorEditItem
+                            onChange={handleChangeIndicators}
+                            sectionOptions={selectedSections}
+                            indicators={indicators}/>
+                    </Suspense>
+
+                </div>
+            </Collapse> */}
         </div>
     );
 
-};
+});
 
 
 // @ts-ignore
