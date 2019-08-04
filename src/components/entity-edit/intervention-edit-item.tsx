@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, lazy, Suspense } from 'react';
+import React, { memo, useState, useEffect, lazy, Suspense, useMemo } from 'react';
 import { InterventionEntity, SectionEntity, InterventionSectionPayload, CloseSectionPayload } from 'entities/types';
 import { useEditInterventionStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
@@ -16,8 +16,8 @@ import LoadingFallback from 'components/loading-fallback';
 import { selectInterventionsFromPayload } from 'selectors/interventions';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { valueOrDefault } from 'lib/sections';
+import IndicatorEditItem from './indicator-edit-item';
 
-const IndicatorEditItem = lazy(() => import('./indicator-edit-item'));
 
 if (process.env.NODE_ENV !== 'production') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -104,13 +104,20 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
         const newState = over(sectionLens, always(newSectionId), interventionState);
         const { indicators } = newState;
         console.log('TCL: handleChangeIndicators -> newState', newState);
-        // onUpdateIntervention({ indicators, id }, dispatch); //
+        onUpdateIntervention({ indicators, id }, dispatch); //
         setInterventionState(newState);
     };
 
     const handleCollapse = () => setOpen(!open);
     const headingStyle = clsx(styles.collapsableHeading, styles.containerPad, open && styles.halfBorder);
-    const { number, title, indicators } = interventionState;
+    const { number, title } = interventionState;
+
+    const Indicators = useMemo(() => <IndicatorEditItem
+        parentId={id}
+        onChange={handleChangeIndicators}
+        sectionOptions={selectedSections}
+        // indicators={indicators}
+    />, [id]);
 
     return (
         <div className={styles.item}>
@@ -133,12 +140,12 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
 
                     <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography>
 
-                    {indicators.length ? <Box
+                    <Box
                         onClick={handleCollapse}
                         className={styles.expand}
                         align="center">
                         {open ? <ExpandLess /> : <ExpandMore />}
-                    </Box> : null}
+                    </Box>
                 </Box>
             </Box>
             {open && <div className={styles.collapseContent}>
@@ -147,12 +154,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
                 </Box>
 
                 <div >
-                    <Suspense fallback={ <LoadingFallback/> }>
-                        <IndicatorEditItem
-                            onChange={handleChangeIndicators}
-                            sectionOptions={selectedSections}
-                            indicators={indicators}/>
-                    </Suspense>
+                    {Indicators}
 
                 </div>
             </div>}
