@@ -7,9 +7,10 @@ import {
     toLower,
     trim
 } from 'ramda';
-import { useAppState } from 'contexts/app';
 import { EntityConfig } from 'entities';
 import { CreateSectionPayload, SectionEntity, EntityDisplay } from './types';
+import { useSelector } from 'react-redux';
+import { selectSections } from 'selectors';
 
 
 export class NewSection implements CreateSectionPayload {
@@ -64,7 +65,7 @@ export default class Section implements Partial<EntityConfig<SectionEntity>> {
 
 export const useAddSection = () => {
     const [errorOnName, setNameError] = useState<string>('');
-    const { sections } = useAppState();
+    const sections = useSelector(selectSections);
     const [name, setName] = useState<string>('');
     const [sectionInstance] = useState<NewSection>(new NewSection());
 

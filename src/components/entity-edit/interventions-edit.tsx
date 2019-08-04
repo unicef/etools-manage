@@ -1,8 +1,8 @@
 import React, { memo, useMemo } from 'react';
-import { useAppState } from 'contexts/app';
 import EditWrapper from 'pages/close-summary/edit-wrapper';
-import { InterventionEditItem } from './intervention-edit-item';
+import { Container } from './intervention-edit-item';
 import { selectInterventionIds } from 'selectors/interventions';
+import { useSelector } from 'react-redux';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -15,8 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 
 const InterventionsEdit: React.FC = memo(() => {
-    const state = useAppState();
-    const ids = selectInterventionIds(state);
+    const ids = useSelector(selectInterventionIds);
     console.log('asdasds');
     return (
         <EditWrapper title="Partnership Management Portal">
@@ -24,7 +23,7 @@ const InterventionsEdit: React.FC = memo(() => {
             {ids.map(
                 (id: number) => useMemo(
                     () => (
-                        <InterventionEditItem
+                        <Container
                             id={id}
                             key={id} />
                     ), [id]

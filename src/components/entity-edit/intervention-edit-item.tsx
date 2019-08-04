@@ -5,18 +5,20 @@ import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, filter, includes, prop, find, view, cond, isNil, equals } from 'ramda';
-import { useAppState, useAppDispatch, useAppService } from 'contexts/app';
+import { useAppService } from 'contexts/app';
 import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
 import { Typography, Collapse } from '@material-ui/core';
 import clsx from 'clsx';
-import { selectSectionsAsOptions, selectCurrentActiveSection, selectCloseSectionPayload } from 'selectors';
+import { selectSectionsAsOptions, selectCurrentActiveSection, selectCloseSectionPayload, selectSections } from 'selectors';
 import { onUpdateInterventionSection, onUpdateStorage, onUpdateInterventionIndicators } from 'pages/close-summary/actions';
 import LoadingFallback from 'components/loading-fallback';
-import { selectInterventionsFromPayload } from 'selectors/interventions';
+import { selectInterventionsFromPayload, selectIntervention } from 'selectors/interventions';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { valueOrDefault } from 'lib/sections';
 import IndicatorEditItem from './indicator-edit-item';
+import { useSelector, useDispatch, connect } from 'react-redux';
+import { Store, onChangeInterventionSection } from 'slices/root-store';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -28,46 +30,69 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 
-interface InterventionEditItemProps {
+export interface InterventionEditItemProps {
     id: number;
+
 }
 
-export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }) => {
-    const styles = useEditInterventionStyles();
-    const state = useAppState();
-    const interventions = selectInterventionsFromPayload(state);
-    const closeSectionPayload = selectCloseSectionPayload(state);
-    console.log('TCL: closeSectionPayload', closeSectionPayload);
-    const initialInterventionState = interventions[id];
+export interface DispatchFromProps {
+    onUpdateInterventionSection: Function;
+}
 
-    const dispatch = useAppDispatch();
+export interface StateFromProps {
+    initialInterventionState: InterventionEntity;
+    sectionsAsOptions: OptionType[];
+    allSections: SectionEntity[];
+    closeSectionId: string;
+}
+
+const mapStateToProps = (state: Store, props: InterventionEditItemProps) => ({
+    initialInterventionState: selectIntervention(state, props),
+    allSections: selectSections(state),
+    sectionsAsOptions: selectSectionsAsOptions(state),
+    closeSectionId: selectCurrentActiveSection(state)
+
+});
+
+const mapDispatchToProps = {
+    onUpdateInterventionSection: onChangeInterventionSection
+};
+
+type ConnectProps = StateFromProps & DispatchFromProps & InterventionEditItemProps
+export const InterventionEditItem: React.FC<ConnectProps> = ({ id, initialInterventionState, onUpdateInterventionSection, closeSectionId, allSections, sectionsAsOptions }) => {
+    const styles = useEditInterventionStyles();
+    // const interventions = useSelector(selectInterventionsFromPayload);
+    // const closeSectionPayload = useSelector(selectCloseSectionPayload);
+    // @ts-ignore
+    // const initialInterventionState = useSelector(state => state.closeSectionPayload.interventions[id]);
+    console.log('TCL: initialInterventionState', initialInterventionState);
+    // const allSections = useSelector(selectSections);
+
+    // const dispatch = useDispatch();
     const { storageService } = useAppService();
 
-    const {
-        sections: allSections
-    } = state;
 
     const [interventionState, setInterventionState] = useState<InterventionEntity>(initialInterventionState);
 
     const [open, setOpen] = useState<boolean>(false);
 
-    const sectionsAsOptions = selectSectionsAsOptions(state);
+    // const sectionsAsOptions = useSelector(selectSectionsAsOptions);
 
     const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, interventionState.sections));
 
-    const closeSectionId = selectCurrentActiveSection(state);
+    // const closeSectionId = useSelector(selectCurrentActiveSection);
     // temp
-    const numResolved = selectNumItemsResolved(state).interventions;
+    // const { interventions: numResolved } = useSelector(selectNumItemsResolved);
 
     const onChange = (intervention: InterventionEntity) => {
         const updateState = over(lensPath(['interventions', id]), always(intervention));
-        const storagePayload: CloseSectionPayload = { [closeSectionId]: updateState(closeSectionPayload) };
+        // const storagePayload: CloseSectionPayload = { [closeSectionId]: updateState(closeSectionPayload) };
         const storePayload: InterventionSectionPayload = {
             id,
             sections: intervention.sections
         };
-        onUpdateInterventionSection(storePayload, dispatch);
-        onUpdateStorage(storageService, storagePayload);
+        onUpdateInterventionSection(storePayload);
+        // onUpdateStorage(storageService, storagePayload);
     };
 
 
@@ -130,7 +155,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
                             options={sectionsAsOptions}/>
                     </Box>
 
-                    <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography>
+                    {/* <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography> */}
 
                     <Box
                         onClick={handleCollapse}
@@ -164,18 +189,4 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = ({ id }
 // @ts-ignore
 InterventionEditItem.whyDidYouRender = true;
 
-
-const store = {
-    closeSectionPayload: {
-        interventions: {
-            5: {
-                sections: [2, 4],
-                title: 'Inter 5'
-            },
-            6: {
-                sections: [3],
-                title: 'inter 6'
-            }
-        }
-    }
-};
+export const Container = connect(mapStateToProps, mapDispatchToProps)(InterventionEditItem);

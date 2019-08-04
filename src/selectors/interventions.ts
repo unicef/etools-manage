@@ -1,10 +1,12 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
 import { InterventionEntity, Normalized } from 'entities/types';
-import { Store } from 'slices/root-store';
 import { prop, map, without, keys } from 'ramda';
+import { Store } from 'redux';
+
 import { normalize } from 'normalizr';
 import { interventionSchema } from 'entities/schemas';
+import { InterventionEditItemProps } from 'components/entity-edit/intervention-edit-item';
 
 
 export const selectInterventionsFromPayload = createSelector<Store, Normalized<InterventionEntity>>(
@@ -12,7 +14,7 @@ export const selectInterventionsFromPayload = createSelector<Store, Normalized<I
     prop('interventions'),
 );
 
-
+export const selectIntervention = (state: any, props: InterventionEditItemProps) => state.closeSectionPayload.interventions[props.id];
 export const selectInterventionIds = createSelector(
     [selectInterventionsFromPayload],
     inter => {

@@ -28,3 +28,19 @@ export const selectSectionsAsOptions = createSelector(
         return asOptions;
     }
 );
+
+export const selectLoading = createSelector(
+    ['loading']
+);
+
+export const selectError = createSelector(
+    ['error']
+);
+
+export const selectMergeSection = createSelector(
+    ['mergeSection']
+);
+
+export const selectCreatedSection = createSelector(
+    ['createdSection']
+);

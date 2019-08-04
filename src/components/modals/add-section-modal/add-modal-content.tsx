@@ -10,17 +10,19 @@ import { onSubmitCreateSection } from 'actions';
 
 import { useModalStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
-import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
+import { useAppService } from 'contexts/app';
 import { useAddSection } from 'entities/section-entity';
 import { SectionEntity } from 'entities/types';
 import { onToggleAddModal } from 'slices/modals';
 import { onResetCreatedSection } from 'slices/root-store';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectLoading, selectCreatedSection } from 'selectors';
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles({});
     const { sectionsService: service } = useAppService();
-    const { loading } = useAppState();
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
+    const loading = useSelector(selectLoading);
 
     const {
         errorOnName,
@@ -31,7 +33,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
         sectionInstance
     } = useAddSection();
 
-    const { createdSection } = useAppState();
+    const createdSection = useSelector(selectCreatedSection);
 
     const handleSubmit = () => onSubmitCreateSection(service, sectionInstance.payload, dispatch);
 
@@ -128,7 +130,7 @@ const SuccessModalContent: React.FC<SuccessContentProps> = ({ section, onClose }
 export default function AddSectionModal() {
     const { addModalOpen } = useModalsState();
     const dispatch = useModalsDispatch();
-    const appDispatch = useAppDispatch();
+    const appDispatch = useDispatch();
 
     const handleClose = () => {
         dispatch(onToggleAddModal);

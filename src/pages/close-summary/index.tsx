@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
+import { useAppService } from 'contexts/app';
 import Box from 'components/box';
 import { KeyToEntityMap, ModuleEntities } from 'entities/types';
 import { SummaryItemProps, CloseSectionsSummary } from './summary-container';
@@ -8,6 +8,8 @@ import InterventionsEdit from 'components/entity-edit/interventions-edit';
 import TravelsEdit from 'components/entity-edit/travels';
 import ActionPointsEdit from 'components/entity-edit/action-points';
 import TPMActivitiesEdit from 'components/entity-edit/tpmActivities';
+import { useSelector } from 'react-redux';
+import { selectModuleEditingName } from 'selectors';
 
 if (process.env.NODE_ENV !== 'production') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -41,7 +43,7 @@ function getEditComponent(name: keyof EditComponentMappings | null) {
 
 const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match }) => {
     const { id } = match.params;
-    const { moduleEditingName } = useAppState();
+    const moduleEditingName = useSelector(selectModuleEditingName);
     const EditComponent = getEditComponent(moduleEditingName);
     return (
         <Box column align="center">

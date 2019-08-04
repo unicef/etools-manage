@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch } from 'contexts/app';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Box from 'components/box';
 import { IconButton, makeStyles, createStyles, Theme, Paper, Typography } from '@material-ui/core';
 import { onSetModuleEditingName } from 'slices/root-store';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,13 +37,16 @@ interface WrapperProps {
 }
 
 const EditWrapper: React.FC<WrapperProps> = ({ children, title }) => {
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
     const styles = useStyles();
     const onClick = () => dispatch(onSetModuleEditingName(null));
 
     // reset the module editing name on unmount
-    useEffect(() => () => dispatch(onSetModuleEditingName(null)), []);
-
+    useEffect(
+        () => () => {
+            dispatch(onSetModuleEditingName(null));
+        }, []
+    );
     return (
         <div >
             <IconButton

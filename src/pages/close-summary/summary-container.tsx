@@ -5,13 +5,14 @@ import { makeStyles } from '@material-ui/styles';
 import { ConfirmButton } from 'components/buttons';
 import clsx from 'clsx';
 import { buildResolvedProgressString } from 'lib/sections';
-import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
-import { selectCloseSectionPayload } from 'selectors';
+import { useAppService } from 'contexts/app';
+import { selectCloseSectionPayload, selectSections } from 'selectors';
 import { onFetchDataCloseSection, onEditModuleSections } from './actions';
 import { ModuleEntities } from 'entities/types';
 import EntityConfigMapping from 'entities/config-map';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { keys, propEq, find, prop } from 'ramda';
+import { useSelector, useDispatch } from 'react-redux';
 
 // if (process.env.NODE_ENV !== 'production') {
 //     const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -59,21 +60,17 @@ export interface SummaryItemProps {
 }
 
 const useModulesSummary = (id: string) => {
-    const state = useAppState();
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
 
-    const {
-        sections
-    } = state;
 
     const {
         backendService,
         storageService
     } = useAppService();
 
-    const numResolvedByModule = selectNumItemsResolved(state);
-
-    const closeSectionPayload = selectCloseSectionPayload(state);
+    const numResolvedByModule = useSelector(selectNumItemsResolved);
+    const sections = useSelector(selectSections);
+    const closeSectionPayload = useSelector(selectCloseSectionPayload);
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
 
     useEffect(() => {

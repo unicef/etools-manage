@@ -3,17 +3,18 @@ import { compose, includes, filter, prop, toLower } from 'ramda';
 import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 import SectionsTable from 'components/sections-table';
-import { useAppState } from 'contexts/app';
 import SearchBar from 'components/search-bar';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
 import { SectionEntity } from 'entities/types';
 import { onSelectForMerge } from 'slices/modals';
+import { useSelector } from 'react-redux';
+import { selectSections } from 'selectors';
 
 
 const SectionsMainPage: React.FunctionComponent = () => {
 
-    const { sections } = useAppState();
+    const sections = useSelector(selectSections);
     const [filteredSections, setFilteredSections] = useState([] as SectionEntity[]);
     const [mergeActive, setMergeActive] = useState<boolean>(false);
 

@@ -4,13 +4,14 @@ import {
     includes
 } from 'ramda';
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
-import { useAppState } from 'contexts/app';
 import LoadingFallback from 'components/loading-fallback';
+import { useSelector } from 'react-redux';
+import { selectSections } from 'selectors';
 
 const MergeModalContent = lazy(() => import('./merge-modal-content'));
 
 export const useMergeState = () => {
-    const { sections } = useAppState();
+    const sections = useSelector(selectSections);
     const { mergeModalOpen, selectedForMerge } = useModalsState();
     const dispatch = useModalsDispatch();
 
