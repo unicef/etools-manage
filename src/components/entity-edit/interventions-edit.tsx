@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import EditWrapper from 'pages/close-summary/edit-wrapper';
-import { Container } from './intervention-edit-item';
+import { InterventionEditItem } from './intervention-edit-item';
 import { selectInterventionIds } from 'selectors/interventions';
 import { useSelector } from 'react-redux';
 
@@ -23,7 +23,7 @@ const InterventionsEdit: React.FC = memo(() => {
             {ids.map(
                 (id: number) => useMemo(
                     () => (
-                        <Container
+                        <InterventionEditItem
                             id={id}
                             key={id} />
                     ), [id]
