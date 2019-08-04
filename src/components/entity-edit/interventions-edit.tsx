@@ -3,6 +3,7 @@ import EditWrapper from 'pages/close-summary/edit-wrapper';
 import { InterventionEditItem } from './intervention-edit-item';
 import { selectInterventionIds } from 'selectors/interventions';
 import { useSelector } from 'react-redux';
+import { selectCurrentActiveSection } from 'selectors';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const InterventionsEdit: React.FC = memo(() => {
     const ids = useSelector(selectInterventionIds);
+
     console.log('asdasds');
     return (
         <EditWrapper title="Partnership Management Portal">

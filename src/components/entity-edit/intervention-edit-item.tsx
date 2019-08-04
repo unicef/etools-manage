@@ -54,7 +54,6 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
     const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, interventionState.sections));
 
-    // const closeSectionId = useSelector(selectCurrentActiveSection);
     // temp
     // const { interventions: numResolved } = useSelector(selectNumItemsResolved);
 
@@ -65,6 +64,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
             id,
             sections: intervention.sections
         };
+        // TODO: add storage action in middleware
         onUpdateInterventionSection(storePayload, dispatch);
         // onUpdateStorage(storageService, storagePayload);
     };
