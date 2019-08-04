@@ -1,6 +1,7 @@
 import { createSlice } from 'redux-starter-kit';
 import { SectionEntity, NewSectionFromMerged, ModuleEntities } from 'entities/types';
 import { selectWithoutCurrentSection } from 'selectors/filter-sections';
+import { lensPath, set } from 'ramda';
 
 export interface Store {
     sections: SectionEntity[];
@@ -73,6 +74,13 @@ const storeSlice = createSlice({
             } else {
                 return state;
             }
+        },
+        onChangeIndicatorSection: (state, action) => {
+            const { interventionId, idx, indicator } = action.payload;
+            if (state.closeSectionPayload) {
+                state.closeSectionPayload.interventions[interventionId]
+                    .indicators[idx] = indicator;
+            }
         }
     }
 });
@@ -90,7 +98,8 @@ export const {
     onCurrentActiveSection,
     onFetchForCloseSuccess,
     onThrowError,
-    onChangeInterventionSection
+    onChangeInterventionSection,
+    onChangeIndicatorSection
 
 } = storeSlice.actions;
 
