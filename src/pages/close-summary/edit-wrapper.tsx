@@ -37,7 +37,7 @@ interface WrapperProps {
     resolved: string;
 }
 
-const EditWrapper: React.FC<WrapperProps> = ({ children, title }) => {
+const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
     const dispatch = useDispatch();
     const styles = useStyles();
     const onClick = () => dispatch(onSetModuleEditingName(null));
@@ -57,8 +57,10 @@ const EditWrapper: React.FC<WrapperProps> = ({ children, title }) => {
                 <BackIcon fontSize="large"/>
             </IconButton>
             <Paper >
-                <Box className={styles.heading}>
+                <Box className={styles.heading} justify="between">
                     <Typography className={styles.title} variant="subtitle1">{title} </Typography>
+                    <Typography color="textPrimary" variant="body2">Items resolved: {resolved}</Typography>
+
                 </Box>
 
                 <Box column className={styles.content}>

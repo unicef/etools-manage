@@ -10,14 +10,14 @@ import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
 import { Typography, Collapse } from '@material-ui/core';
 import clsx from 'clsx';
-import { selectSectionsAsOptions, selectCurrentActiveSection, selectCloseSectionPayload, selectSections } from 'selectors';
-import { onUpdateInterventionSection, onUpdateStorage, onUpdateInterventionIndicators } from 'pages/close-summary/actions';
+import { selectSectionsAsOptions, selectSections } from 'selectors';
 import LoadingFallback from 'components/loading-fallback';
 import { selectInterventionsFromPayload } from 'selectors/interventions';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { valueOrDefault } from 'lib/sections';
 import IndicatorEditItem from './indicator-edit-item';
 import { useSelector, useDispatch } from 'react-redux';
+import { onSelectInterventionSection, onSelectIndicatorSection } from 'pages/close-summary/actions';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -73,14 +73,11 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
 
     const onChange = (intervention: InterventionEntity) => {
-        const updateState = over(lensPath(['interventions', id]), always(intervention));
-        // const storagePayload: CloseSectionPayload = { [closeSectionId]: updateState(closeSectionPayload) };
         const storePayload: InterventionSectionPayload = {
             id,
             sections: intervention.sections
         };
-        onUpdateInterventionSection(storePayload, dispatch);
-        // onUpdateStorage(storageService, storagePayload);
+        onSelectInterventionSection(storePayload, dispatch);
     };
 
 
@@ -117,7 +114,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
         const newState = over(sectionLens, always(newSectionId), interventionState);
         const { indicators } = newState;
         console.log('TCL: handleChangeIndicators -> newState', newState);
-        onUpdateInterventionIndicators({ indicators, id }, dispatch); //
+        onSelectIndicatorSection({ indicators, id }, dispatch); //
         setInterventionState(newState);
     };
 

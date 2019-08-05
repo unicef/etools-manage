@@ -42,16 +42,16 @@ export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
     dispatch(onSetModuleEditingName(payload));
 };
 
-export const onUpdateStorage = (storageService: StorageService, payload: StorageData) => {
-    const prefixedKey = prefixWithClose(firstKey(payload));
-    storageService.storeEntitiesData(prefixedKey, firstValue(payload));
-};
+// export const onUpdateStorage = (storageService: StorageService, payload: StorageData) => {
+//     const prefixedKey = prefixWithClose(firstKey(payload));
+//     storageService.storeEntitiesData(prefixedKey, firstValue(payload));
+// };
 
-export const onUpdateInterventionSection = (payload: InterventionSectionPayload, dispatch: Dispatch) => {
+export const onSelectInterventionSection = (payload: InterventionSectionPayload, dispatch: Dispatch) => {
     dispatch(onChangeInterventionSection(payload));
 };
 
-export const onUpdateInterventionIndicators = (payload: IndicatorsPayload, dispatch: Dispatch) => {
+export const onSelectIndicatorSection = (payload: IndicatorsPayload, dispatch: Dispatch) => {
     dispatch(onUpdateInterventionIndicatorsState(payload));
 };
 

@@ -1,6 +1,9 @@
 
 import { AppState } from './lib/reducer';
 import { ReactNode, useState } from 'react';
+import { Store } from 'slices/root-store';
+import { Dispatch, DispatchAction } from 'global-types';
+
 import { PayloadAction, PayloadActionCreator } from 'redux-starter-kit';
 // Store
 export type BaseStoreShape = Store<AppState>
@@ -9,7 +12,6 @@ export type BaseStoreShape = Store<AppState>
 export interface ProviderStore {
     children: ReactNode;
 }
-
 
 export interface UserProfile {
 
@@ -53,3 +55,8 @@ export type ClickHandler = () => void
 export type DispatchAction = PayloadAction<unknown, string> | PayloadActionCreator<void, string> | PayloadActionCreator<unknown, string> | PayloadAction<void, string>
 
 export type Dispatch = (action: DispatchAction) => void
+
+export type AppMiddleware = ({ getState }: {
+    getState: () => Store;
+}) => (dispatch: Dispatch) => (action: PayloadAction) => void
+

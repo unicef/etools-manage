@@ -1,4 +1,5 @@
 import { EntityConfig } from 'entities';
+import StorageService, { Storage } from 'services/storage';
 
 export interface EntitiesDataResponse<T, U>{
     [field: string]: T | U;
@@ -92,6 +93,8 @@ export interface NewSectionFromMerged {
 }
 
 export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
+
+
 export interface InterventionSectionPayload {
     id: number;
     sections: number[];

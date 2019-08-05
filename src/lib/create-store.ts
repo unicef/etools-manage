@@ -1,17 +1,18 @@
-import { createReducer } from 'react-use';
-import { configureStore, getDefaultMiddleware } from 'redux-starter-kit';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { configureStore } from 'redux-starter-kit';
 
 
 import { errorMiddleware } from './error-middleware';
 import logger from 'redux-logger';
-import { rootReducer, initialState, Store } from 'slices/root-store';
+import { rootReducer, Store } from 'slices/root-store';
+import storageMiddleware from './storage-middleware';
 
 
-const middleware = [...getDefaultMiddleware(), errorMiddleware, logger];
+const middleware = [
 
-
-// export const createStore = createReducer(errorMiddleware, logger);
+    storageMiddleware,
+    errorMiddleware,
+    logger
+];
 
 export default function configureAppStore(preloadedState: Store) {
 
@@ -21,6 +22,7 @@ export default function configureAppStore(preloadedState: Store) {
         devTools: process.env.NODE_ENV !== 'production',
         preloadedState
     });
+
     // @ts-ignore
     if (process.env.NODE_ENV !== 'production' && module.hot) {
         // @ts-ignore
