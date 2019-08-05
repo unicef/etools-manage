@@ -17,9 +17,7 @@ export const selectInterventionsFromPayload = createSelector<Store, Normalized<I
 export const selectIntervention = (state: any, props: InterventionEditItemProps) => state.closeSectionPayload.interventions[props.id];
 export const selectInterventionIds = createSelector(
     [selectInterventionsFromPayload],
-    inter => {
-        return keys(inter).slice(0, 10);
-    }
+    keys
 );
 
 export const getNumResolvedInterventions = createSelector<Store, number[]>(

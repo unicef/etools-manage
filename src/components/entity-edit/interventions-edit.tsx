@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-const customLabel = ({ from, to, count }: LabelDisplayedRowsArgss) => `Showing ${from}-${to} of ${count}`;
+const customLabel = ({ from, to, count }: LabelDisplayedRowsArgs) => `Showing ${from}-${to} of ${count}`;
 const InterventionsEdit: React.FC = memo(() => {
     const ids = useSelector(selectInterventionIds);
     const { interventions: numResolved } = useSelector(selectNumItemsResolved);

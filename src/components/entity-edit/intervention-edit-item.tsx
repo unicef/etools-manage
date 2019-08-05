@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, lazy, Suspense, useMemo } from 'react';
+import React, { memo, useState, useEffect, lazy, Suspense, useMemo, useCallback } from 'react';
 import { InterventionEntity, SectionEntity, InterventionSectionPayload, CloseSectionPayload } from 'entities/types';
 import { useEditInterventionStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
@@ -54,9 +54,23 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
     const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, interventionState.sections));
 
-    // const closeSectionId = useSelector(selectCurrentActiveSection);
-    // temp
-    // const { interventions: numResolved } = useSelector(selectNumItemsResolved);
+    const numResolved = useCallback(() => {
+        let total = 1;
+        let resolved = 0;
+        if (interventionState.sections.length) {
+            resolved++;
+        }
+        interventionState.indicators.forEach(
+            indicator => {
+                total++;
+                if (indicator.section) {
+                    resolved++;
+                }
+            }
+        );
+        return [resolved, total];
+    }, [interventionState])();
+
 
     const onChange = (intervention: InterventionEntity) => {
         const updateState = over(lensPath(['interventions', id]), always(intervention));
@@ -129,7 +143,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
                             options={sectionsAsOptions}/>
                     </Box>
 
-                    {/* <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography> */}
+                    <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography>
 
                     <Box
                         onClick={handleCollapse}
