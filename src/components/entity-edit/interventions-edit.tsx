@@ -8,6 +8,7 @@ import { usePagination } from 'components/table';
 import { buildResolvedProgressString } from 'lib/sections';
 import { EDIT_INTERVENTIONS_ROWS_PER_PAGE } from 'global-constants';
 import { TablePagination } from '@material-ui/core';
+import { LabelDisplayedRowsArgs } from '@material-ui/core/TablePagination';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -18,7 +19,7 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-const customLabel =
+const customLabel = ({ from, to, count }: LabelDisplayedRowsArgss) => `Showing ${from}-${to} of ${count}`;
 const InterventionsEdit: React.FC = memo(() => {
     const ids = useSelector(selectInterventionIds);
     const { interventions: numResolved } = useSelector(selectNumItemsResolved);
