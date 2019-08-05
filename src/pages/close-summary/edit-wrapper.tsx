@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface WrapperProps {
     children: React.ReactNode;
     title: string;
+    resolved: string;
 }
 
 const EditWrapper: React.FC<WrapperProps> = ({ children, title }) => {
