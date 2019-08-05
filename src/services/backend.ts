@@ -45,7 +45,6 @@ export default class BackendApiService extends BaseService implements BackendSer
             const url = `${process.env.REACT_APP_INTERVENTIONS_APPLIED_INDICATORS_ENDPOINT}${query}`;
             const response = await this._http.get<InterventionEntity>(url);
             const { entities } = normalize(response, [interventionSchema]);
-            debugger;
             return entities.interventions;
 
 

@@ -5,7 +5,7 @@ import Box from 'components/box';
 import { KeyToEntityMap, ModuleEntities } from 'entities/types';
 import { SummaryItemProps, CloseSectionsSummary } from './summary-container';
 import InterventionsEdit from 'components/entity-edit/interventions-edit';
-import TravelsEdit from 'components/entity-edit/travels';
+import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points';
 import TPMActivitiesEdit from 'components/entity-edit/tpmActivities';
 import { useSelector } from 'react-redux';

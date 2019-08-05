@@ -1,5 +1,4 @@
 import { EntityConfig } from 'entities';
-import StorageService, { Storage } from 'services/storage';
 
 export interface EntitiesDataResponse<T, U>{
     [field: string]: T | U;
@@ -26,7 +25,7 @@ export interface KeyToEntityMap {
 export type EntityWithSingleSection = Normalized<ActionPointEntity | TravelEntity | IndicatorEntity>
 
 export interface Normalized<T> {
-    [id: number]: T;
+    [id: string]: T;
 }
 
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>
@@ -84,6 +83,7 @@ export interface TravelEntity {
     section: number;
     reference_number: string;
     purpose: string;
+    traveler: string;
 }
 
 
@@ -95,13 +95,21 @@ export interface NewSectionFromMerged {
 export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
 
 
+export interface EditItemProps {
+    id: string;
+}
+
 export interface InterventionSectionPayload {
-    id: number;
+    id: string;
     sections: number[];
+}
+export interface TravelSectionPayload {
+    id: string;
+    section: number;
 }
 
 export interface IndicatorsPayload {
-    id: number;
+    id: string;
     indicators: IndicatorEntity[];
 }
 

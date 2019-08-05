@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 import { IndicatorEntity } from 'entities/types';
 import { OptionType, Dropdown } from 'components/dropdown';
 import { ValueType } from 'react-select/src/types';
-import { useEditInterventionStyles } from './styles';
+import { useEditItemStyles } from './styles';
 import { propEq, find } from 'ramda';
 import { Typography } from '@material-ui/core';
 import Box from 'components/box';
@@ -13,14 +13,13 @@ import { useSelector } from 'react-redux';
 
 
 interface IndicatorsProps {
-    // indicators: IndicatorEntity[];
-    parentId: number;
+    parentId: string;
     sectionOptions: OptionType[];
     onChange: ((idx: number) => (value: ValueType<OptionType>) => void);
 }
 
 const IndicatorEditItem: React.FC<IndicatorsProps> = memo(({ parentId, sectionOptions, onChange }) => {
-    const styles = useEditInterventionStyles();
+    const styles = useEditItemStyles();
     const indicators = useSelector(selectInterventionsFromPayload)[parentId].indicators;
     const getValue = (section: number | undefined) => {
         const res = find(propEq('value', section), sectionOptions);

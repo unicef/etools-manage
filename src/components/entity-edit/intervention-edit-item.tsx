@@ -1,23 +1,20 @@
-import React, { memo, useState, useEffect, lazy, Suspense, useMemo, useCallback } from 'react';
-import { InterventionEntity, SectionEntity, InterventionSectionPayload, CloseSectionPayload } from 'entities/types';
-import { useEditInterventionStyles } from './styles';
+import React, { memo, useState, useEffect, useCallback } from 'react';
+import { InterventionEntity, SectionEntity, InterventionSectionPayload, EditItemProps, ModuleEntities } from 'entities/types';
+import { useEditItemStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { keys, map, reject, head, compose, propEq, over, T, lensPath, always, filter, includes, prop, find, view, cond, isNil, equals } from 'ramda';
-import { useAppService } from 'contexts/app';
+import { map, propEq, over, lensPath, always, filter, includes, prop, find, view, equals } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
-import { Typography, Collapse } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { selectSectionsAsOptions, selectSections } from 'selectors';
-import LoadingFallback from 'components/loading-fallback';
-import { selectInterventionsFromPayload } from 'selectors/interventions';
-import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { valueOrDefault } from 'lib/sections';
 import IndicatorEditItem from './indicator-edit-item';
 import { useSelector, useDispatch } from 'react-redux';
 import { onSelectInterventionSection, onSelectIndicatorSection } from 'pages/close-summary/actions';
+import { Store } from 'slices/root-store';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -29,21 +26,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 
-export interface InterventionEditItemProps {
-    id: number;
-}
-
-
-export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({ id }) => {
-    const styles = useEditInterventionStyles();
-    // const interventions = useSelector(selectInterventionsFromPayload);
-    // const closeSectionPayload = useSelector(selectCloseSectionPayload);
-    const initialInterventionState = useSelector((state: any) => state.closeSectionPayload.interventions[id]);
+export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
+    const styles = useEditItemStyles();
+    const initialInterventionState = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).interventions[id]);
     console.log('TCL: initialInterventionState', initialInterventionState);
     const allSections = useSelector(selectSections);
 
     const dispatch = useDispatch();
-    const { storageService } = useAppService();
 
 
     const [interventionState, setInterventionState] = useState<InterventionEntity>(initialInterventionState);
@@ -89,11 +78,12 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
 
     const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
-
         const selectedSections = filter((section: SectionEntity) => includes(section.id, valueOrDefault(value)), allSections);
+
         const idsOnly = map(prop('id'), selectedSections);
 
         const newState = over(lensPath(['sections']), always(idsOnly), interventionState);
+
         setInterventionState(newState);
     };
 
@@ -113,13 +103,16 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
         const newState = over(sectionLens, always(newSectionId), interventionState);
         const { indicators } = newState;
-        console.log('TCL: handleChangeIndicators -> newState', newState);
-        onSelectIndicatorSection({ indicators, id }, dispatch); //
+
+        onSelectIndicatorSection({ indicators, id }, dispatch);
         setInterventionState(newState);
     };
 
     const handleCollapse = () => setOpen(!open);
-    const headingStyle = clsx(styles.collapsableHeading, styles.containerPad, open && styles.halfBorder);
+    const headingStyle = clsx(
+        styles.collapsableHeading, styles.itemBorderWrap,
+        styles.containerPad, open && styles.halfBorder);
+
     const { number, title } = interventionState;
     return (
         <div className={styles.item}>
@@ -144,7 +137,7 @@ export const InterventionEditItem: React.FC<InterventionEditItemProps> = memo(({
 
                     <Box
                         onClick={handleCollapse}
-                        className={styles.expand}
+                        className={clsx(styles.expand, !interventionState.indicators.length && styles.hideIcon)}
                         align="center">
                         {open ? <ExpandLess /> : <ExpandMore />}
                     </Box>

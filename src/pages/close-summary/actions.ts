@@ -1,12 +1,10 @@
 
 import { BackendService } from 'services/backend';
 import StorageService, { StorageData } from 'services/storage';
-import { ZippedEntityResults, InterventionSectionPayload, InterventionEntity, IndicatorsPayload } from 'entities/types';
+import { ZippedEntityResults, InterventionSectionPayload, InterventionEntity, IndicatorsPayload, TravelSectionPayload } from 'entities/types';
 
 import { Dispatch } from 'global-types';
-import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState } from 'slices/root-store';
-import { firstValue, firstKey } from 'utils';
-import { prefixWithClose } from 'lib/sections';
+import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection } from 'slices/root-store';
 
 
 export const onFetchDataCloseSection = async (
@@ -42,11 +40,6 @@ export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
     dispatch(onSetModuleEditingName(payload));
 };
 
-// export const onUpdateStorage = (storageService: StorageService, payload: StorageData) => {
-//     const prefixedKey = prefixWithClose(firstKey(payload));
-//     storageService.storeEntitiesData(prefixedKey, firstValue(payload));
-// };
-
 export const onSelectInterventionSection = (payload: InterventionSectionPayload, dispatch: Dispatch) => {
     dispatch(onChangeInterventionSection(payload));
 };
@@ -55,3 +48,6 @@ export const onSelectIndicatorSection = (payload: IndicatorsPayload, dispatch: D
     dispatch(onUpdateInterventionIndicatorsState(payload));
 };
 
+export const onSelectTravelSection = (payload: TravelSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateTravelSection(payload));
+};

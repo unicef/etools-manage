@@ -79,6 +79,10 @@ const storeSlice = createSlice({
             if (state.closeSectionPayload) {
                 state.closeSectionPayload.interventions[id].indicators = indicators;
             }
+        },
+        onUpdateTravelSection: (state, action) => {
+            const { section, id } = action.payload;
+            (state.closeSectionPayload as ModuleEntities).travels[id].section = section;
         }
     }
 });
@@ -96,6 +100,7 @@ export const {
     onCurrentActiveSection,
     onFetchForCloseSuccess,
     onThrowError,
+    onUpdateTravelSection,
     onChangeInterventionSection,
     onUpdateInterventionIndicatorsState
 

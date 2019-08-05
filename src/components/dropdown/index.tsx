@@ -15,7 +15,6 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { PlaceholderProps } from 'react-select/src/components/Placeholder';
 import { SingleValueProps } from 'react-select/src/components/SingleValue';
 import TextField, { BaseTextFieldProps } from '@material-ui/core/TextField';
-import { StylesConfig, styleFn } from 'react-select/src/styles';
 
 export interface OptionType {
     label: string;

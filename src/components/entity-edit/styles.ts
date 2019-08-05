@@ -2,19 +2,35 @@
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 
-export const useEditInterventionStyles = makeStyles((theme: Theme) =>
+export const useEditItemStyles = makeStyles((theme: Theme) =>
     createStyles({
         item: {
             borderRadius: 8,
+            marginBottom: theme.spacing(1)
+        },
+        itemBorderWrap: {
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: theme.spacing(1),
+            backgroundColor: theme.palette.grey[100]
+        },
+        travelWrapper: {
+            marginBottom: theme.spacing(1)
+        },
+        travel: {
+            minHeight: 68,
+            padding: theme.spacing(1)
+        },
+        travelDropdown: {
+            alignSelf: 'center'
+        },
+        travelerHeading: {
+            fontSize: 13,
             marginBottom: theme.spacing(1)
         },
         containerPad: {
             padding: `${theme.spacing(1.5)}px ${theme.spacing(3)}px`
         },
         collapsableHeading: {
-            border: `1px solid ${theme.palette.divider}`,
-            borderRadius: theme.spacing(1),
-            backgroundColor: theme.palette.grey[100],
             '&:hover': {
                 backgroundColor: theme.palette.grey[200]
             }
@@ -51,6 +67,12 @@ export const useEditInterventionStyles = makeStyles((theme: Theme) =>
         },
         numResolved: {
             whiteSpace: 'nowrap'
+        },
+        refNum: {
+            margin: `0 ${theme.spacing(1)}px`
+        },
+        hideIcon: {
+            visibility: 'hidden'
         }
 
     })

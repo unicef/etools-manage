@@ -4,22 +4,12 @@ import { InterventionEditItem } from './intervention-edit-item';
 import { selectInterventionIds } from 'selectors/interventions';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
-import { usePagination } from 'components/table';
+import { usePagination, customLabel } from 'components/table';
 import { buildResolvedProgressString } from 'lib/sections';
 import { EDIT_INTERVENTIONS_ROWS_PER_PAGE } from 'global-constants';
 import { TablePagination } from '@material-ui/core';
-import { LabelDisplayedRowsArgs } from '@material-ui/core/TablePagination';
 
 
-if (process.env.NODE_ENV !== 'production') {
-    const whyDidYouRender = require('@welldone-software/why-did-you-render');
-    whyDidYouRender(React, {
-        onlyLogs: true,
-        titleColor: 'teal'
-    });
-}
-
-const customLabel = ({ from, to, count }: LabelDisplayedRowsArgs) => `Showing ${from}-${to} of ${count}`;
 const InterventionsEdit: React.FC = memo(() => {
     const ids = useSelector(selectInterventionIds);
     const { interventions: numResolved } = useSelector(selectNumItemsResolved);
@@ -37,7 +27,7 @@ const InterventionsEdit: React.FC = memo(() => {
             {ids
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(
-                    (id: number) => {
+                    (id: string) => {
                         const Component = useMemo(
                             () => (
                                 <InterventionEditItem
@@ -50,7 +40,7 @@ const InterventionsEdit: React.FC = memo(() => {
                 )}
 
             {ids.length > 10 && <TablePagination
-                rowsPerPageOptions={[10]}
+                rowsPerPageOptions={[]}
                 labelDisplayedRows={customLabel}
                 component="div"
                 count={ids.length}
@@ -70,8 +60,6 @@ const InterventionsEdit: React.FC = memo(() => {
     );
 });
 
-// @ts-ignore
-InterventionsEdit.whyDidYouRender = true;
 
 export default (InterventionsEdit);
 

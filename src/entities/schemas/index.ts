@@ -23,8 +23,7 @@ export const indicatorSchema = new schema.Entity('indicators', {
 });
 
 export const interventionSchema = new schema.Entity('interventions', {
-    sections: [section],
-    indicators: [indicatorSchema]
+    sections: [section]
 });
 
 export const travelsSchema = new schema.Entity('travels');

@@ -1,5 +1,5 @@
 import { AppMiddleware } from 'global-types';
-import { onChangeInterventionSection, onUpdateInterventionIndicatorsState } from 'slices/root-store';
+import { onChangeInterventionSection, onUpdateTravelSection } from 'slices/root-store';
 import { includes } from 'ramda';
 import { prefixWithClose } from './sections';
 import StorageService, { Storage } from 'services/storage';
@@ -8,9 +8,8 @@ import { ModuleEntities } from 'entities/types';
 
 const USER_SELECTION_ACTIONS = [
     onChangeInterventionSection.type,
-    onUpdateInterventionIndicatorsState.type
+    onUpdateTravelSection.type
 ];
-
 
 const storageMiddleware = (service: Storage): AppMiddleware => {
     return ({ getState }) => dispatch => action => {
