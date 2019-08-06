@@ -43,6 +43,7 @@ const storeSlice = createSlice({
         onThrowError: (state, action) => {
             state.error = action.payload;
         },
+        // TODO: add toggling to middleware
         onSetLoading: (state, action) => {
             state.loading = action.payload;
         },

@@ -12,7 +12,6 @@ import { useMergeState } from '.';
 import { SectionBox, ReviewBox } from 'components/section-box';
 import { onToggleMergeModal } from 'slices/modals';
 
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {

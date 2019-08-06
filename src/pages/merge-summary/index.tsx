@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Typography, TableHead, TableRow, TableCell, Table, TableBody, Theme, Paper, TablePagination, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import queryString, { ParsedQuery } from 'query-string';
+import { Link, NavLink } from 'react-router-dom';
+import queryString from 'query-string';
 import Box from 'components/box';
 import { useAppService } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
@@ -12,7 +12,7 @@ import { usePagination } from 'components/table';
 import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
-import { EntityTableHeadProps, EntityTableProps, MergeProps } from './types';
+import { EntityTableHeadProps, EntityTableProps } from './types';
 import { MergeSectionsPayload, ZippedEntityResults } from 'entities/types';
 import { ConfirmButton } from 'components/buttons';
 import { SectionBox } from 'components/section-box';
@@ -22,7 +22,7 @@ import { selectSections, selectMergeSection } from 'selectors';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        tableRoot: {
+        container: {
             margin: `${theme.spacing(3)}px 0`
         },
         tableBody: {
@@ -39,12 +39,9 @@ const useStyles = makeStyles((theme: Theme) =>
         noWrap: {
             whiteSpace: 'nowrap'
         },
-        results: {
-            marginTop: theme.spacing(4)
-        },
+
         subtitle: {
             fontWeight: 500,
-            fontSize: 12,
             height: 16,
             lineHeight: '20px'
         }
@@ -67,7 +64,7 @@ const MergeSummaryPage: React.FC = () => {
     } = useAppService();
 
     const dispatch = useDispatch();
-    const { mergedSection } = useSelector(selectMergeSection);
+    const mergedSection = useSelector(selectMergeSection);
     const [summary, setSummary] = useState();
 
     const styles = useStyles();
@@ -102,22 +99,20 @@ const MergeSummaryPage: React.FC = () => {
                 {isEmpty(summary) ? 'Merge does not affect other entities. Confirm to complete merge.' : 'Confirm summary of changes'}
             </Typography>
             <Box align="center">
-                <Link to="/"><Button variant="contained">Cancel</Button></Link>
+                <NavLink to="/" style={{ textDecoration: 'none' }}><Button variant="contained">Cancel</Button></NavLink>
                 <ConfirmButton onClick={onConfirm} >Confirm</ConfirmButton>
             </Box>
         </Box>);
 
     const SuccessBox = () => (
-        <Box justify="between">
-            <Box column>
-                <Typography variant="h6" gutterBottom>
+        <Box column>
+            <Typography variant="h6" gutterBottom>
                      Merge successful.
-                </Typography>
-                <Box className={styles.results} column >
-                    <Typography variant="subtitle1" className={styles.subtitle}>Created section name:</Typography> {mergedSection && <SectionBox name={mergedSection.name} />}
-                </Box>
+            </Typography>
+            <Box className={styles.container} column >
+                <Typography variant="body1" className={styles.subtitle}>Created section name:</Typography> {mergedSection && <SectionBox name={mergedSection.name} />}
             </Box>
-            <Link to="/"><Button variant="contained">Back to Home</Button></Link>
+            <NavLink to="/" style={{ textDecoration: 'none' }}><Button variant="contained">Back to Home</Button></NavLink>
         </Box>
     );
 
@@ -203,7 +198,7 @@ function EntityChangesTable<T>({ config, list, selectedSections, newSectionName 
     );
 
     return (
-        <Paper className={styles.tableRoot}>
+        <Paper className={styles.container}>
             <EnhancedTableToolbar title={config.title} />
             <Table
                 aria-labelledby="tableTitle"

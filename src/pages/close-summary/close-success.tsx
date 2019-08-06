@@ -14,14 +14,17 @@ const CloseSectionSuccess: React.FC = () => {
     const sections = useSelector(selectSections);
     const sectionId = useSelector(selectCurrentActiveSection);
     const sectionName = prop('name', sections.find(propEq('id', sectionId)));
-    return <Container maxWidth="md">
-        <Paper>
-            <Typography className={styles.infoMsg}>Section {sectionName} successfully closed. </Typography>
-            <Box className={styles.itemSpacing} justify="center" >
-                <CloseButton />
-            </Box>
-        </Paper>
-    </Container>;
+
+    return (
+        <Container maxWidth="md">
+            <Paper>
+                <Typography className={styles.infoMsg}>Section {sectionName} successfully closed. </Typography>
+                <Box className={styles.itemSpacing} justify="center" >
+                    <CloseButton />
+                </Box>
+            </Paper>
+        </Container>
+    );
 };
 
 export default CloseSectionSuccess;

@@ -5,7 +5,7 @@ import { useSafeSetState } from 'utils/helpers';
 const BASE_URL = window.location.origin;
 
 
-export function checkStatus(response: Response, raw: boolean): Response {
+export async function checkStatus(response: Response, raw: boolean): Promise<Response> {
     if (raw) {
         return response;
     }
@@ -14,9 +14,15 @@ export function checkStatus(response: Response, raw: boolean): Response {
         return response;
     }
 
+    let message = response.statusText;
+
+    if (response.status === 400) {
+        message = await response.json();
+    }
+
 
     const error = new Error(JSON.stringify({
-        message: response.statusText,
+        message,
         code: response.status,
         ...response
     }));

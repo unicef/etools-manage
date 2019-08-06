@@ -37,7 +37,6 @@ export default class SectionsApiService extends BaseService implements SectionsS
                 this.bodyFromPayload(payload)
             );
             return response;
-            console.log('TCL: SectionsApiService -> response', response);
 
         } catch (err) {
             console.log(err);
@@ -53,7 +52,7 @@ export default class SectionsApiService extends BaseService implements SectionsS
             );
             return response;
         } catch (err) {
-            throw new Error('Error merging sections');
+            throw err;
         }
     }
 

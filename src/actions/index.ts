@@ -28,9 +28,8 @@ export const onSubmitMergeSections = async (service: SectionsService, payload: M
     try {
         const newSectionFromMerged = await service.mergeSections(payload);
         dispatch(onSetMergedSection(newSectionFromMerged));
-
     } catch (err) {
-        throw new Error(err);
+        dispatch(onThrowError(err));
     }
 
 };

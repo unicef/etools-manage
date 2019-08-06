@@ -38,7 +38,7 @@ export const selectError = createSelector(
 );
 
 export const selectMergeSection = createSelector(
-    ['mergeSection']
+    ['mergedSection']
 );
 
 export const selectCreatedSection = createSelector(
