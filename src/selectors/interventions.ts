@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import { InterventionEntity, Normalized } from 'entities/types';
+import { InterventionEntity, Normalized, ResolvedRatio } from 'entities/types';
 import { prop, map, without, keys } from 'ramda';
 import { Store } from 'redux';
 
@@ -18,11 +18,11 @@ export const selectInterventionIds = createSelector(
     keys
 );
 
-export const getNumResolvedInterventions = createSelector<Store, number[]>(
+export const getNumResolvedInterventions = createSelector<Store, ResolvedRatio>(
     [selectInterventionsFromPayload],
-    (interventions: Normalized<InterventionEntity> = {}): number[] => {
+    (interventions: Normalized<InterventionEntity> = {}): ResolvedRatio => {
         let total = 0;
-        const numResolved = keys(interventions).reduce((resolved: number, key: number) => {
+        const resolved = keys(interventions).reduce((resolved: number, key: number) => {
             const intervention = interventions[key];
             total++;
             if (intervention.sections.length > 0) {
@@ -39,7 +39,7 @@ export const getNumResolvedInterventions = createSelector<Store, number[]>(
 
             return resolved;
         }, 0);
-        return [numResolved, total];
+        return { resolved, total };
     }
 );
 

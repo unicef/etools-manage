@@ -1,12 +1,14 @@
 
 import { BackendService } from 'services/backend';
-import StorageService, { StorageData } from 'services/storage';
-import { ZippedEntityResults, InterventionSectionPayload, InterventionEntity, IndicatorsPayload, GenericSectionPayload } from 'entities/types';
+import StorageService from 'services/storage';
+import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload } from 'entities/types';
 
 import { Dispatch } from 'global-types';
-import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection } from 'slices/root-store';
+import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, updateCloseSectionPayload, onUpdateTPMSections } from 'slices/root-store';
 
-
+export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
+    dispatch(updateCloseSectionPayload(null));
+};
 export const onFetchDataCloseSection = async (
     services: {backendService: BackendService; storageService: StorageService},
     payload: string, dispatch: Dispatch) => {
@@ -40,7 +42,7 @@ export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
     dispatch(onSetModuleEditingName(payload));
 };
 
-export const onSelectInterventionSection = (payload: InterventionSectionPayload, dispatch: Dispatch) => {
+export const onSelectInterventionSection = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
     dispatch(onChangeInterventionSection(payload));
 };
 
@@ -54,4 +56,8 @@ export const onSelectTravelSection = (payload: GenericSectionPayload, dispatch: 
 
 export const onSelectActionPointSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
     dispatch(onUpdateActionPointSection(payload));
+};
+
+export const onSelectTPMSections = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateTPMSections(payload));
 };

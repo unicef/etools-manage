@@ -6,7 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            backgroundColor: '#f1f3f4',
+            backgroundColor: theme.palette.background.paper,
             width: 400,
             display: 'flex',
             alignItems: 'center',

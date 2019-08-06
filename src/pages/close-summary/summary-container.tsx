@@ -7,13 +7,13 @@ import clsx from 'clsx';
 import { buildResolvedProgressString } from 'lib/sections';
 import { useAppService } from 'contexts/app';
 import { selectCloseSectionPayload, selectSections } from 'selectors';
-import { onFetchDataCloseSection, onEditModuleSections } from './actions';
+import { onFetchDataCloseSection, onEditModuleSections, onResetCloseSectionPayload } from './actions';
 import { ModuleEntities } from 'entities/types';
 import EntityConfigMapping from 'entities/config-map';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { keys, propEq, find, prop } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
-import Loader, { Spinner } from 'components/loader';
+import { Spinner } from 'components/loader';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -56,7 +56,6 @@ export interface SummaryItemProps {
 const useModulesSummary = (id: string) => {
     const dispatch = useDispatch();
 
-
     const {
         backendService,
         storageService
@@ -68,10 +67,10 @@ const useModulesSummary = (id: string) => {
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
 
     useEffect(() => {
-        if (!closeSectionPayload) {
-            onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
-        }
-    }, []);
+        onResetCloseSectionPayload(dispatch);
+        onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
+    }, [id]);
+
 
     useEffect(() => {
         if (closeSectionPayload) {
@@ -103,7 +102,7 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
     const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
     const styles = useStyles();
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" id="cont">
             <Paper >
                 <Box className={clsx(styles.heading, styles.lightSecondary)} align="center">
                     <Typography color="inherit" className={styles.subtitle} variant="subtitle1">Closing section </Typography>

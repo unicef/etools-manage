@@ -23,7 +23,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
         travelDropdown: {
             alignSelf: 'center'
         },
-        travelerHeading: {
+        editItemHeading: {
             fontSize: 13,
             marginBottom: theme.spacing(1)
         },
@@ -44,7 +44,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             borderRadius: `0 0 ${theme.spacing(1)}px ${theme.spacing(1)}px`
         },
         expand: {
-            marginLeft: theme.spacing(4),
+            marginLeft: theme.spacing(1),
             cursor: 'pointer'
         },
         indicatorItem: {
@@ -66,7 +66,8 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             marginLeft: theme.spacing(6)
         },
         numResolved: {
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            width: 32
         },
         refNum: {
             marginRight: theme.spacing(1)

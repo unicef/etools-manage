@@ -1,6 +1,7 @@
 import { reduce, keys, always, map, T, isNil, cond, prop } from 'ramda';
-import { EntityWithSingleSection, SectionEntity } from 'entities/types';
+import { EntityWithSingleSection, ResolvedRatio } from 'entities/types';
 import { CLOSE_SECTION_PREFIX } from 'global-constants';
+import { resolve } from 'path';
 
 
 export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
@@ -12,11 +13,11 @@ export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
     return res;
 };
 
-export const buildResolvedProgressString = (args: number[]): string => args.join('/');
+export const buildResolvedProgressString = ({ resolved, total }: ResolvedRatio): string => `${resolved}/${total}`;
 
-export const getNumResolved = (entity: EntityWithSingleSection = {}): number[] => {
+export const getNumResolved = (entity: EntityWithSingleSection = {}): ResolvedRatio => {
     const keysOfEntity = keys(entity);
-    const numResolved = reduce(
+    const resolved = reduce(
         (sum: number, id: number) => {
             const obj = entity[id];
             if (obj.section) {
@@ -26,7 +27,7 @@ export const getNumResolved = (entity: EntityWithSingleSection = {}): number[] =
         }, 0,
         keysOfEntity
     );
-    return [numResolved, keysOfEntity.length];
+    return { resolved, total: keysOfEntity.length };
 
 };
 

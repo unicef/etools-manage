@@ -1,13 +1,18 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import { ModuleEntities, TPMActivityEntity, SectionEntity } from 'entities/types';
+import { ModuleEntities, TPMActivityEntity, SectionEntity, Normalized, ResolvedRatio } from 'entities/types';
 import { Store } from 'slices/root-store';
-import { prop, map, reject, propEq, reduce } from 'ramda';
+import { prop, map, reject, propEq, reduce, keys } from 'ramda';
 
 
 export const selectTPMFromPayload = createSelector<Store, ModuleEntities>(
     [selectCloseSectionPayload],
     prop('tpmActivities')
+);
+
+export const selectTPMActivitiesIds = createSelector(
+    [selectTPMFromPayload],
+    keys
 );
 
 export const tpmActivitiesWithoutCurrentSection = createSelector(
@@ -27,19 +32,21 @@ export const tpmActivitiesWithoutCurrentSection = createSelector(
 
 export const getNumResolvedTPMActivities = createSelector(
     [selectTPMFromPayload],
-    (tpmActivities: TPMActivityEntity[] = []): number[] => {
-        let numResolved = reduce(
-            (sum: number, { sections }: {sections: SectionEntity[]}) => {
+    (tpmActivities: Normalized<TPMActivityEntity> = {}): ResolvedRatio => {
+
+        const resolved = reduce(
+            (sum: number, key: string) => {
+                const { sections }: {sections: SectionEntity[]} = tpmActivities[key];
                 if (sections.length) {
-                    numResolved++;
+                    sum++;
                 }
                 return sum;
             },
             0,
-            tpmActivities
+            keys(tpmActivities)
         );
 
-        return [numResolved, tpmActivities.length];
+        return { resolved, total: keys(tpmActivities).length };
     }
 );
 

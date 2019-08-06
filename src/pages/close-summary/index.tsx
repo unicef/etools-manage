@@ -6,7 +6,7 @@ import { CloseSectionsSummary } from './summary-container';
 import InterventionsEdit from 'components/entity-edit/interventions-edit';
 import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points-edit';
-import TPMActivitiesEdit from 'components/entity-edit/tpmActivities';
+import TPMActivitiesEdit from 'components/entity-edit/tpm-edit';
 import { useSelector } from 'react-redux';
 import { selectModuleEditingName } from 'selectors';
 

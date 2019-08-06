@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { EDIT_TRAVELS_ROWS_PER_PAGE } from 'global-constants';
+import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { selectTravelsIds } from 'selectors/travels';
@@ -20,10 +20,10 @@ const TravelsEdit: React.FC = () => {
         handleChangeRowsPerPage
     } = usePagination();
 
-    const rowsPerPage = EDIT_TRAVELS_ROWS_PER_PAGE;
+    const rowsPerPage = EDIT_ITEMS_ROWS_PER_PAGE;
 
     return (<EditWrapper title="Trip Management" resolved={buildResolvedProgressString(numResolved)}>
-        <Typography className={styles.travelerHeading} variant="body2">(traveler, reference number, purpose)</Typography>
+        <Typography className={styles.editItemHeading} variant="body2">(traveler, reference number, purpose)</Typography>
         {ids
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map(

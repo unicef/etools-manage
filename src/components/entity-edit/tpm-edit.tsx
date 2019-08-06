@@ -1,35 +1,39 @@
 import React, { memo, useMemo } from 'react';
 import EditWrapper from 'pages/close-summary/edit-wrapper';
-import { InterventionEditItem } from './intervention-edit-item';
-import { selectInterventionIds } from 'selectors/interventions';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { usePagination, customLabel } from 'components/table';
 import { buildResolvedProgressString } from 'lib/sections';
 import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
-import { TablePagination } from '@material-ui/core';
+import { TablePagination, Typography } from '@material-ui/core';
+import { selectTPMActivitiesIds } from 'selectors/tpm-activities';
+import { useEditItemStyles } from './styles';
+import TPMActivityEditItem from './tpm-activity-edit-item';
 
 
-const InterventionsEdit: React.FC = memo(() => {
-    const ids = useSelector(selectInterventionIds);
-    const { interventions: numResolved } = useSelector(selectNumItemsResolved);
+const TPMEdit: React.FC = memo(() => {
+    const styles = useEditItemStyles();
+    const ids = useSelector(selectTPMActivitiesIds);
+    const { tpmActivities: numResolved } = useSelector(selectNumItemsResolved);
     const {
         page,
         handleChangePage,
         handleChangeRowsPerPage
     } = usePagination();
 
-
+    const rowsPerPage = EDIT_ITEMS_ROWS_PER_PAGE;
+    console.log('Edit Parent');
     return (
-        <EditWrapper title="Partnership Management Portal" resolved={buildResolvedProgressString(numResolved)}>
+        <EditWrapper title="Third Party Monitoring" resolved={buildResolvedProgressString(numResolved)}>
+            <Typography className={styles.editItemHeading} variant="body2">(reference number, tpm partner)</Typography>
 
             {ids
-                .slice(page * EDIT_ITEMS_ROWS_PER_PAGE, page * EDIT_ITEMS_ROWS_PER_PAGE + EDIT_ITEMS_ROWS_PER_PAGE)
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(
                     (id: string) => {
                         const Component = useMemo(
                             () => (
-                                <InterventionEditItem
+                                <TPMActivityEditItem
                                     id={id}
                                     key={id} />
                             ), [id]
@@ -60,5 +64,5 @@ const InterventionsEdit: React.FC = memo(() => {
 });
 
 
-export default (InterventionsEdit);
+export default TPMEdit;
 

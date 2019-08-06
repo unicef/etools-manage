@@ -33,8 +33,6 @@ export interface CloseSectionPayload {
     [id: string]: ModuleEntities;
 }
 
-export type StorageKey = 'close' | 'split'
-
 
 export interface ActionPointEntity {
     id: number;
@@ -63,6 +61,9 @@ export interface TPMActivityEntity {
     id: number;
     reference_number: string;
     status: string;
+    tpm_partner: {
+        name: string;
+    };
     sections: SectionEntity[];
 }
 export interface SectionEntity {
@@ -99,7 +100,7 @@ export interface EditItemProps {
     id: string;
 }
 
-export interface InterventionSectionPayload {
+export interface GenericMultiSectionPayload {
     id: string;
     sections: number[];
 }
@@ -107,6 +108,8 @@ export interface GenericSectionPayload {
     id: string;
     section: number;
 }
+
+export const
 
 export interface IndicatorsPayload {
     id: string;
@@ -118,6 +121,10 @@ export interface EntityDisplay<T> {
     propName: keyof T;
 }
 
+export interface ResolvedRatio {
+    resolved: number;
+    total: number;
+}
 
 export type AllEntities = InterventionEntity | TPMActivityEntity | ActionPointEntity | TravelEntity | IndicatorEntity
 

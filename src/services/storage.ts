@@ -1,4 +1,4 @@
-import { StorageKey, ModuleEntities } from 'entities/types';
+import { ModuleEntities } from 'entities/types';
 
 export interface StorageClient {
     setItem: (key: string, value: string) => void;
@@ -26,7 +26,7 @@ abstract class BaseStorage {
 
 export interface Storage {
     storeEntitiesData(key: string, data: ModuleEntities): void;
-    getStoredEntitiesData(key: StorageKey): ModuleEntities | null;
+    getStoredEntitiesData(key: string): ModuleEntities | null;
 }
 export default class StorageService extends BaseStorage implements Storage {
 

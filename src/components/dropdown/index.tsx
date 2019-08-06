@@ -257,7 +257,6 @@ const useDropdown = () => {
     };
 };
 
-type ProvidedValue = string[] | number[] | string | number
 
 export interface DropdownProps {
     options?: OptionType[];
@@ -280,6 +279,7 @@ export const DropdownMulti: React.FC<DropdownProps> = memo(({ options, value, di
                 styles={selectStyles}
                 inputId="react-select-multi"
                 TextFieldProps={{
+                    label: 'Section',
                     InputLabelProps: {
                         htmlFor: 'react-select-multi',
                         shrink: true

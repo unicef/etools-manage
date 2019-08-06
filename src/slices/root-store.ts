@@ -87,6 +87,11 @@ const storeSlice = createSlice({
         onUpdateActionPointSection: (state, action) => {
             const { section, id } = action.payload;
             (state.closeSectionPayload as ModuleEntities).actionPoints[id].section = section;
+        },
+        onUpdateTPMSections: (state, action) => {
+            const { sections, id } = action.payload;
+            (state.closeSectionPayload as ModuleEntities).tpmActivities[id].sections = sections;
+
         }
     }
 });
@@ -107,6 +112,7 @@ export const {
     onUpdateTravelSection,
     onChangeInterventionSection,
     onUpdateActionPointSection,
+    onUpdateTPMSections,
     onUpdateInterventionIndicatorsState
 } = storeSlice.actions;
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Box from 'components/box';
-import { IconButton, makeStyles, createStyles, Theme, Paper, Typography } from '@material-ui/core';
+import { IconButton, makeStyles, createStyles, Theme, Paper, Typography, Container } from '@material-ui/core';
 import { onSetModuleEditingName } from 'slices/root-store';
 import { useDispatch } from 'react-redux';
 
@@ -49,7 +49,7 @@ const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
         }, []
     );
     return (
-        <div >
+        <Container maxWidth="lg" >
             <IconButton
                 className={styles.icon}
                 size="medium"
@@ -67,7 +67,7 @@ const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
                     {children}
                 </Box>
             </Paper>
-        </div>
+        </Container>
     );
 };
 

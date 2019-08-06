@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { InterventionEntity, SectionEntity, InterventionSectionPayload, EditItemProps, ModuleEntities } from 'entities/types';
+import { InterventionEntity, SectionEntity, GenericMultiSectionPayload, EditItemProps, ModuleEntities } from 'entities/types';
 import { useEditItemStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -29,7 +29,6 @@ if (process.env.NODE_ENV !== 'production') {
 export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     const styles = useEditItemStyles();
     const initialInterventionState = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).interventions[id]);
-    console.log('TCL: initialInterventionState', initialInterventionState);
     const allSections = useSelector(selectSections);
 
     const dispatch = useDispatch();
@@ -62,7 +61,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 
 
     const onChange = (intervention: InterventionEntity) => {
-        const storePayload: InterventionSectionPayload = {
+        const storePayload: GenericMultiSectionPayload = {
             id,
             sections: intervention.sections
         };
@@ -78,11 +77,9 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 
 
     const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
-        const selectedSections = filter((section: SectionEntity) => includes(section.id, valueOrDefault(value)), allSections);
-
-        const idsOnly = map(prop('id'), selectedSections);
-
-        const newState = over(lensPath(['sections']), always(idsOnly), interventionState);
+        // use this instead of map(prop('value')) so that we can have null set as section for dropdown use
+        const selectedSectionIds = valueOrDefault(value);
+        const newState = over(lensPath(['sections']), always(selectedSectionIds), interventionState);
 
         setInterventionState(newState);
     };
@@ -153,7 +150,6 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
                         parentId={id}
                         onChange={handleChangeIndicators}
                         sectionOptions={selectedSections}
-        // indicators={indicators}
                     />
 
                 </div>

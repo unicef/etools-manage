@@ -3,6 +3,7 @@ import { getNumResolvedTPMActivities } from './tpm-activities';
 import { getNumResolvedActionPoints } from './action-points';
 import { getNumResolvedTravels } from './travels';
 import createSelector from 'selectorator';
+import { ResolvedRatio } from 'entities/types';
 
 export const selectNumItemsResolved = createSelector(
     [
@@ -11,6 +12,10 @@ export const selectNumItemsResolved = createSelector(
         getNumResolvedActionPoints,
         getNumResolvedTPMActivities
     ],
-    (interventions: number[], travels: number[], actionPoints: number[], tpmActivities: number[]) => ({ interventions, travels, actionPoints, tpmActivities })
+    (interventions: ResolvedRatio,
+        travels: ResolvedRatio,
+        actionPoints: ResolvedRatio,
+        tpmActivities: ResolvedRatio
+    ) => ({ interventions, travels, actionPoints, tpmActivities })
 
 );
