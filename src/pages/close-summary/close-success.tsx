@@ -17,7 +17,7 @@ const CloseSectionSuccess: React.FC = () => {
     return <Container maxWidth="md">
         <Paper>
             <Typography className={styles.infoMsg}>Section {sectionName} successfully closed. </Typography>
-            <Box className={styles.itemSpacing} justify="end" >
+            <Box className={styles.itemSpacing} justify="center" >
                 <CloseButton />
             </Box>
         </Paper>
