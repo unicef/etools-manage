@@ -33,4 +33,12 @@ export default function Loader() {
             <Typography className={styles.text}>Loading</Typography>
         </Box>
     </Box>;
+
+
 }
+
+export const Spinner = () => (
+    <Box column justify="center" align="center">
+        <CircularProgress color="secondary"/>
+    </Box>
+);

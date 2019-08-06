@@ -13,7 +13,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             borderRadius: theme.spacing(1),
             backgroundColor: theme.palette.grey[100]
         },
-        travelWrapper: {
+        editWrapper: {
             marginBottom: theme.spacing(1)
         },
         travel: {
@@ -69,7 +69,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             whiteSpace: 'nowrap'
         },
         refNum: {
-            margin: `0 ${theme.spacing(1)}px`
+            marginRight: theme.spacing(1)
         },
         hideIcon: {
             visibility: 'hidden'

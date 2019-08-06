@@ -2,18 +2,18 @@ import React, { useMemo } from 'react';
 import { EDIT_TRAVELS_ROWS_PER_PAGE } from 'global-constants';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
-import { selectTravelsIds } from 'selectors/travels';
+import { selectActionPointsIds } from 'selectors/action-points';
 import EditWrapper from 'pages/close-summary/edit-wrapper';
 import { buildResolvedProgressString } from 'lib/sections';
 import { usePagination, customLabel } from 'components/table';
 import { TablePagination, Typography } from '@material-ui/core';
-import TravelEditItem from './travel-edit-item';
 import { useEditItemStyles } from './styles';
+import ActionPointEditItem from './action-point-edit-item';
 
-const TravelsEdit: React.FC = () => {
-    const ids = useSelector(selectTravelsIds);
+const ActionPointsEdit: React.FC = () => {
+    const ids = useSelector(selectActionPointsIds);
     const styles = useEditItemStyles();
-    const { travels: numResolved } = useSelector(selectNumItemsResolved);
+    const { actionPoints: numResolved } = useSelector(selectNumItemsResolved);
     const {
         page,
         handleChangePage,
@@ -22,14 +22,14 @@ const TravelsEdit: React.FC = () => {
 
     const rowsPerPage = EDIT_TRAVELS_ROWS_PER_PAGE;
 
-    return (<EditWrapper title="Trip Management" resolved={buildResolvedProgressString(numResolved)}>
-        <Typography className={styles.travelerHeading} variant="body2">(traveler, reference number, purpose)</Typography>
+    return (<EditWrapper title="Action Points" resolved={buildResolvedProgressString(numResolved)}>
+        <Typography className={styles.travelerHeading} variant="body2">(reference number, description)</Typography>
         {ids
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map(
                 (id: string) => useMemo(
                     () => (
-                        <TravelEditItem
+                        <ActionPointEditItem
                             id={id}
                             key={id} />
                     ), [id]
@@ -55,4 +55,4 @@ const TravelsEdit: React.FC = () => {
     </EditWrapper>);
 };
 
-export default TravelsEdit;
+export default ActionPointsEdit;

@@ -13,7 +13,6 @@ export const selectInterventionsFromPayload = createSelector<Store, Normalized<I
     prop('interventions'),
 );
 
-
 export const selectInterventionIds = createSelector(
     [selectInterventionsFromPayload],
     keys

@@ -83,6 +83,10 @@ const storeSlice = createSlice({
         onUpdateTravelSection: (state, action) => {
             const { section, id } = action.payload;
             (state.closeSectionPayload as ModuleEntities).travels[id].section = section;
+        },
+        onUpdateActionPointSection: (state, action) => {
+            const { section, id } = action.payload;
+            (state.closeSectionPayload as ModuleEntities).actionPoints[id].section = section;
         }
     }
 });
@@ -102,8 +106,8 @@ export const {
     onThrowError,
     onUpdateTravelSection,
     onChangeInterventionSection,
+    onUpdateActionPointSection,
     onUpdateInterventionIndicatorsState
-
 } = storeSlice.actions;
 
 export const { reducer: rootReducer } = storeSlice;

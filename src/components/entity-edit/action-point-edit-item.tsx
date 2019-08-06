@@ -10,10 +10,10 @@ import { Dropdown, OptionType } from 'components/dropdown';
 import { selectSectionsAsOptions } from 'selectors';
 import { propEq } from 'ramda';
 import { ValueType } from 'react-select/src/types';
-import { onSelectTravelSection } from 'pages/close-summary/actions';
+import { onSelectActionPointSection } from 'pages/close-summary/actions';
 
 
-const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
+const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();
     const dispatch = useDispatch();
 
@@ -21,10 +21,9 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
 
     const {
         reference_number,
-        traveler,
-        purpose,
+        description,
         section
-    } = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).travels[id]);
+    } = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).actionPoints[id]);
 
     const selectedSection = sectionsAsOptions.find(propEq('value', section));
 
@@ -34,19 +33,15 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
             section,
             id
         };
-        onSelectTravelSection(payload, dispatch);
+        onSelectActionPointSection(payload, dispatch);
     };
 
     return (
         <div className={clsx(styles.editWrapper, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between">
                 <Box column >
-                    <Box>
-                        <Typography variant="body2"><b>{traveler}</b></Typography>
-                        <Typography className={styles.refNum} variant="subtitle2">{reference_number}</Typography>
-                    </Box>
-
-                    <Typography>{purpose}</Typography>
+                    <Typography className={styles.refNum} variant="subtitle2">{reference_number}</Typography>
+                    <Typography>{description}</Typography>
                 </Box>
 
                 <Box className={clsx(styles.dropdown, styles.indicatorDropdown, styles.travelDropdown)} >
@@ -62,4 +57,4 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
 
 };
 
-export default TravelEditItem;
+export default ActionPointEditItem;

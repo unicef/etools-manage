@@ -1,10 +1,10 @@
 
 import { BackendService } from 'services/backend';
 import StorageService, { StorageData } from 'services/storage';
-import { ZippedEntityResults, InterventionSectionPayload, InterventionEntity, IndicatorsPayload, TravelSectionPayload } from 'entities/types';
+import { ZippedEntityResults, InterventionSectionPayload, InterventionEntity, IndicatorsPayload, GenericSectionPayload } from 'entities/types';
 
 import { Dispatch } from 'global-types';
-import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection } from 'slices/root-store';
+import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection } from 'slices/root-store';
 
 
 export const onFetchDataCloseSection = async (
@@ -48,6 +48,10 @@ export const onSelectIndicatorSection = (payload: IndicatorsPayload, dispatch: D
     dispatch(onUpdateInterventionIndicatorsState(payload));
 };
 
-export const onSelectTravelSection = (payload: TravelSectionPayload, dispatch: Dispatch) => {
+export const onSelectTravelSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
     dispatch(onUpdateTravelSection(payload));
+};
+
+export const onSelectActionPointSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateActionPointSection(payload));
 };

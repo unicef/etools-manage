@@ -6,7 +6,7 @@ import { CLOSE_SECTION_PREFIX } from 'global-constants';
 export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
     const res = keys(entity).reduce(
         (newEntity: EntityWithSingleSection, id: number) => {
-            return { ...newEntity, [id]: { ...newEntity[id], section: undefined } };
+            return { ...newEntity, [id]: { ...newEntity[id], section: null } };
         }, entity
     );
     return res;

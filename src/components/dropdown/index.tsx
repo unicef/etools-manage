@@ -312,6 +312,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, di
                 styles={dropdownStyles}
                 inputId="react-select-multi"
                 TextFieldProps={{
+                    label: 'Section',
                     InputLabelProps: {
                         htmlFor: 'react-select-multi',
                         shrink: true

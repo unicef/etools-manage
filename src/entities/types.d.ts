@@ -103,7 +103,7 @@ export interface InterventionSectionPayload {
     id: string;
     sections: number[];
 }
-export interface TravelSectionPayload {
+export interface GenericSectionPayload {
     id: string;
     section: number;
 }

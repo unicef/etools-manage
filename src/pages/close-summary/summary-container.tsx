@@ -13,29 +13,23 @@ import EntityConfigMapping from 'entities/config-map';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { keys, propEq, find, prop } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
-
-// if (process.env.NODE_ENV !== 'production') {
-//     const whyDidYouRender = require('@welldone-software/why-did-you-render');
-//     whyDidYouRender(React, {
-//         onlyLogs: true,
-//         titleColor: 'teal'
-//     });
-// }
+import Loader, { Spinner } from 'components/loader';
 
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        paper: {
-            boxShadow: `0 0 0 2px ${theme.palette.secondary.main},0px 4px 4px 0px rgba(60,64,67,.3),0px 8px 12px 6px rgba(60,64,67,.15)`
-        },
         itemRoot: {
             minHeight: 32,
             padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
-            borderBottom: `1px solid ${theme.palette.divider}`
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            color: theme.palette.primary.contrastText
+
         },
         heading: {
             borderRadius: '8px 8px 0 0',
-            padding: `14px ${theme.spacing(3)}px ${theme.spacing(1)}px`
+            padding: `14px ${theme.spacing(3)}px ${theme.spacing(1)}px`,
+            color: theme.palette.primary.contrastText
+
         },
         lightSecondary: {
             backgroundColor: theme.palette.secondary.light
@@ -110,19 +104,20 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
     const styles = useStyles();
     return (
         <Container maxWidth="sm">
-            <Paper className={styles.paper}>
+            <Paper >
                 <Box className={clsx(styles.heading, styles.lightSecondary)} align="center">
-                    <Typography className={styles.subtitle} color="primary" variant="subtitle1">Closing section </Typography>
-                    <Typography color="primary">
+                    <Typography color="inherit" className={styles.subtitle} variant="subtitle1">Closing section </Typography>
+                    <Typography color="inherit">
                         <code>{closingSection}</code>
                     </Typography>
                 </Box>
                 {
-                    modulesData && modulesData.map(
+                    modulesData ? modulesData.map(
                         module => (
                             <ModuleSummaryItem key={module.name} {...module} />
                         )
-                    )
+                    ) :
+                        <Spinner/>
                 }
             </Paper>
         </Container>
@@ -135,9 +130,9 @@ export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, items
 
     return <Box className={styles.itemRoot} align="center" justify="between">
 
-        <Typography className={styles.moduleName} variant="body2">{name}</Typography>
+        <Typography color="inherit" className={styles.moduleName} variant="body2">{name}</Typography>
 
-        <Typography variant="body2">Resolved items: {buildResolvedProgressString(itemsResolved)}</Typography>
+        <Typography color="inherit" variant="body2">Resolved items: {buildResolvedProgressString(itemsResolved)}</Typography>
 
         <ConfirmButton onClick={onEdit}>Edit</ConfirmButton>
     </Box>;
