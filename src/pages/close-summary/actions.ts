@@ -65,7 +65,8 @@ export const onSelectTPMSections = (payload: GenericMultiSectionPayload, dispatc
 
 export const onSubmitCloseSection = async (service: SectionsService, payload: CloseSectionBackendPayload, dispatch: Dispatch) => {
     try {
-        const response = await service.closeSection(payload);
+        dispatch(onSetLoading(true));
+        await service.closeSection(payload);
     } catch (err) {
         dispatch(onThrowError(err.message));
         return;

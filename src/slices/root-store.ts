@@ -70,6 +70,7 @@ const storeSlice = createSlice({
         },
         onSuccessCloseSection: (state, action) => {
             state.closedSectionSuccess = action.payload;
+            state.loading = false;
         },
         onChangeInterventionSection: (state, action) => {
             const { id, sections } = action.payload;

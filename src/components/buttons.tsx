@@ -5,6 +5,8 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 
 import { withRouter } from 'react-router';
 import { useIconButtonStyles } from './table/styles';
+import { useDispatch } from 'react-redux';
+import { onSuccessCloseSection } from 'slices/root-store';
 
 
 export const useButtonStyles = makeStyles((theme: Theme) =>
@@ -57,12 +59,17 @@ export const BackIconButton = withRouter(({ history }) => {
 });
 
 export const CloseButton = withRouter(({ history }) => {
-    const iconStyles = useIconButtonStyles();
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        dispatch(onSuccessCloseSection(false));
+        history.push('/');
+    };
     return (
         <Button
-            className={iconStyles.icon}
+            variant="outlined"
             size="medium"
-            onClick={() => history.push('/')} >Close</Button>
+            onClick={handleClick} >Close</Button>
     );
 });
 

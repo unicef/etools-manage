@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentActiveSection, selectSections } from 'selectors';
 import { prop, propEq } from 'ramda';
 import { CloseButton } from 'components/buttons';
+import Box from 'components/box';
 
 
 const CloseSectionSuccess: React.FC = () => {
@@ -16,7 +17,9 @@ const CloseSectionSuccess: React.FC = () => {
     return <Container maxWidth="md">
         <Paper>
             <Typography className={styles.infoMsg}>Section {sectionName} successfully closed. </Typography>
-            <CloseButton />
+            <Box className={styles.itemSpacing} justify="end" >
+                <CloseButton />
+            </Box>
         </Paper>
     </Container>;
 };

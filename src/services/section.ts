@@ -37,8 +37,10 @@ export default class SectionsApiService extends BaseService implements SectionsS
                 this.bodyFromPayload(payload)
             );
             return response;
+            console.log('TCL: SectionsApiService -> response', response);
 
         } catch (err) {
+            console.log(err);
             throw new Error(err);
         }
     }

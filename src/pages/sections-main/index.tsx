@@ -29,7 +29,6 @@ const SectionsMainPage: React.FunctionComponent = () => {
         setFilteredSections(sections);
     }, [sections]);
 
-
     const onChangeSelected = useCallback((selected: string[]) => dispatch(onSelectForMerge(selected)), []);
 
     const tableProps = {

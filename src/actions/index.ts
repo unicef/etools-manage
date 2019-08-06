@@ -35,14 +35,14 @@ export const onSubmitMergeSections = async (service: SectionsService, payload: M
 
 };
 
-export const onSubmitCreateSection = async(service: SectionsService, payload: CreateSectionPayload, dispatch: Dispatch) => {
+export const onSubmitCreateSection = async(service: SectionsService, payload: CreateSectionPayload, dispatch: Dispatch): Promise<Error | void> => {
     dispatch(onSetLoading(true));
     let newSection;
     try {
         newSection = await service.createSection(payload);
-
     } catch (error) {
-        throw new Error(error);
+        dispatch(onSetLoading(false));
+        return error;
     }
     dispatch(onCreateSectionSuccess(newSection));
 };

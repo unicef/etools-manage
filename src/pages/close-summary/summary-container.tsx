@@ -160,7 +160,7 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
 export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, itemsResolved, onEdit }) => {
     const styles = useSummaryStyles();
 
-    return <Box className={styles.itemRoot} align="center" justify="between">
+    return <Box className={clsx(styles.itemRoot, styles.itemSpacing)} align="center" justify="between">
 
         <Typography color="inherit" className={styles.moduleCell} variant="body2">{name}</Typography>
 

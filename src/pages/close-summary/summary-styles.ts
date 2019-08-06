@@ -4,9 +4,11 @@ import { lighten } from '@material-ui/core/styles';
 
 export const useSummaryStyles = makeStyles((theme: Theme) =>
     createStyles({
-        itemRoot: {
+        itemSpacing: {
             minHeight: 32,
-            padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
+            padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`
+        },
+        itemRoot: {
             borderBottom: `1px solid ${theme.palette.divider}`,
             color: theme.palette.primary.contrastText
         },

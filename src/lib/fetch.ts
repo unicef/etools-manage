@@ -14,9 +14,11 @@ export function checkStatus(response: Response, raw: boolean): Response {
         return response;
     }
 
+
     const error = new Error(JSON.stringify({
         message: response.statusText,
-        code: response.status
+        code: response.status,
+        ...response
     }));
 
     throw error;
@@ -33,10 +35,11 @@ const wrappedFetch = (url: string, {
     credentials: 'same-origin', // send cookies for etools auth
     ...opts })
     .then((response: Response) => checkStatus(response, raw))
-    .then((response): Response | Promise<any> => {
+    .then(async (response): Promise<Response |any> => {
         if (raw) {
             return response;
         }
+
 
         return json ? response.json() : response.text();
     })

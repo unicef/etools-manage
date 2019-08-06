@@ -35,7 +35,12 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     const createdSection = useSelector(selectCreatedSection);
 
-    const handleSubmit = () => onSubmitCreateSection(service, sectionInstance.payload, dispatch);
+    const handleSubmit = async() => {
+        const error = await onSubmitCreateSection(service, sectionInstance.payload, dispatch);
+        if (error) {
+            setNameError('Section name already exists');
+        }
+    };
 
     const SubmitButton = () => {
         const btnContent = loading && <CircularProgress size={24} /> || 'Submit';
