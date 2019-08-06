@@ -56,9 +56,11 @@ export enum MaybeType {
 interface Just<T> {
     type: MaybeType.JUST;
     value: T;
+
 }interface Nothing {
     type: MaybeType.NOTHING;
 }// Type constructors
+
 function Just<T>(val: T): Just<T> {
     return {
         type: MaybeType.JUST,

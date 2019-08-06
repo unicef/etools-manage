@@ -22,6 +22,8 @@ export interface KeyToEntityMap {
     indicators: IndicatorEntity;
 }
 
+
+
 export type EntityWithSingleSection = Normalized<ActionPointEntity | TravelEntity | IndicatorEntity>
 
 export interface Normalized<T> {
@@ -29,8 +31,22 @@ export interface Normalized<T> {
 }
 
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>
+
 export interface CloseSectionPayload {
     [id: string]: ModuleEntities;
+}
+
+export interface SectionToEntity {
+    [name: string] : {
+        [key in BackendEntityNames]: number[]
+    }
+}
+
+export type BackendEntityNames = 'interventions' | 'applied_indicators' | 'travels' | 'tpm_activities' | 'action_points'
+
+export interface CloseSectionBackendPayload {
+    old_section: number;
+    new_sections: SectionToEntity
 }
 
 
@@ -39,7 +55,7 @@ export interface ActionPointEntity {
     reference_number: string;
     description: string;
     status: string;
-    section: SectionEntity;
+    section: number;
 }
 
 
@@ -66,6 +82,8 @@ export interface TPMActivityEntity {
     };
     sections: SectionEntity[];
 }
+
+export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'sections'> & {sections: number[]}
 export interface SectionEntity {
     id: number ;
     name: string;
@@ -106,7 +124,7 @@ export interface GenericMultiSectionPayload {
 }
 export interface GenericSectionPayload {
     id: string;
-    section: number;
+    section: number | null;
 }
 
 export const

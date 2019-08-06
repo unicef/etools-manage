@@ -1,6 +1,7 @@
-import { reduce, keys, always, map, T, isNil, cond, prop } from 'ramda';
+import { reduce, keys, always, map, T, isNil, cond, prop, propEq } from 'ramda';
 import { EntityWithSingleSection, ResolvedRatio } from 'entities/types';
 import { CLOSE_SECTION_PREFIX } from 'global-constants';
+import { OptionType } from 'components/dropdown';
 
 
 export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
@@ -36,3 +37,5 @@ export const valueOrDefault = cond([
     [isNil, always([])],
     [T, map(prop('value'))]
 ]);
+
+export const getSelectedSection = (options: OptionType[], section: number) => options.find(propEq('value', section)) || null;

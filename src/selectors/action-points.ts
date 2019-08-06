@@ -1,12 +1,12 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload } from 'selectors';
-import { ModuleEntities } from 'entities/types';
+import { ModuleEntities, ActionPointEntity } from 'entities/types';
 import { Store } from 'slices/root-store';
 import { prop, keys } from 'ramda';
 import { clearCurrentSection, getNumResolved } from 'lib/sections';
 
 
-export const selectActionPointsFromPayload = createSelector<Store, ModuleEntities>(
+export const selectActionPointsFromPayload = createSelector<Store, ActionPointEntity[]>(
     [selectCloseSectionPayload],
     prop('actionPoints')
 );

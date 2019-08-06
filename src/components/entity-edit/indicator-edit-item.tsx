@@ -1,6 +1,5 @@
 
 import React, { memo } from 'react';
-import { IndicatorEntity } from 'entities/types';
 import { OptionType, Dropdown } from 'components/dropdown';
 import { ValueType } from 'react-select/src/types';
 import { useEditItemStyles } from './styles';

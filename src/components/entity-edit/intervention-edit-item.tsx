@@ -163,18 +163,3 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 // @ts-ignore
 InterventionEditItem.whyDidYouRender = true;
 
-
-const store = {
-    closeSectionPayload: {
-        interventions: {
-            5: {
-                sections: [2, 4],
-                title: 'Inter 5'
-            },
-            6: {
-                sections: [3],
-                title: 'inter 6'
-            }
-        }
-    }
-};

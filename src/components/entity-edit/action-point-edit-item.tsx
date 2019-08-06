@@ -8,9 +8,10 @@ import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { Dropdown, OptionType } from 'components/dropdown';
 import { selectSectionsAsOptions } from 'selectors';
-import { propEq } from 'ramda';
+import { prop } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { onSelectActionPointSection } from 'pages/close-summary/actions';
+import { getSelectedSection } from 'lib/sections';
 
 
 const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
@@ -25,12 +26,17 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
         section
     } = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).actionPoints[id]);
 
-    const selectedSection = sectionsAsOptions.find(propEq('value', section));
+    const selectedSection = getSelectedSection(sectionsAsOptions, section);
 
     const onChange = (value: ValueType<OptionType>) => {
-        const section = Number((value as OptionType).value);
+        let selectedSectionId = prop('value', value);
+
+        if (section === selectedSectionId) {
+            selectedSectionId = null;
+        }
+
         const payload = {
-            section,
+            section: selectedSectionId,
             id
         };
         onSelectActionPointSection(payload, dispatch);
