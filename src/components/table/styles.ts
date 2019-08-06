@@ -41,3 +41,15 @@ export const useTableStyles = makeStyles((theme: Theme) =>
         }
     }),
 );
+
+
+export const useIconButtonStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        icon: {
+            padding: 0,
+            '&:hover': {
+                backgroundColor: 'inherit',
+                color: theme.palette.getContrastText('#fff')
+            }
+        }
+    }));

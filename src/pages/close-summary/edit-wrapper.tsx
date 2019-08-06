@@ -4,17 +4,10 @@ import Box from 'components/box';
 import { IconButton, makeStyles, createStyles, Theme, Paper, Typography, Container } from '@material-ui/core';
 import { onSetModuleEditingName } from 'slices/root-store';
 import { useDispatch } from 'react-redux';
+import { useIconButtonStyles } from 'components/table/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        icon: {
-            padding: 0,
-            marginBottom: theme.spacing(2),
-            '&:hover': {
-                backgroundColor: 'inherit',
-                color: theme.palette.getContrastText('#fff')
-            }
-        },
         content: {
             padding: theme.spacing(2)
         },
@@ -24,10 +17,10 @@ const useStyles = makeStyles((theme: Theme) =>
             fontSize: '0.875rem',
             lineHeight: '1rem'
         },
-        heading: {
-            padding: theme.spacing(2)
-            // borderBottom: `1px solid ${theme.palette.divider}`
+        section: {
+            marginBottom: theme.spacing(2)
         }
+
     })
 );
 
@@ -40,6 +33,7 @@ interface WrapperProps {
 const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
     const dispatch = useDispatch();
     const styles = useStyles();
+    const iconStyles = useIconButtonStyles();
     const onClick = () => dispatch(onSetModuleEditingName(null));
 
     // reset the module editing name on unmount
@@ -50,14 +44,15 @@ const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
     );
     return (
         <Container maxWidth="lg" >
-            <IconButton
-                className={styles.icon}
-                size="medium"
-                onClick={onClick}>
-                <BackIcon fontSize="large"/>
-            </IconButton>
+            <Box className={styles.section}>
+                <IconButton
+                    className={iconStyles.icon}
+                    size="medium"
+                    onClick={onClick}>
+                    <BackIcon fontSize="large"/>
+                </IconButton></Box>
             <Paper >
-                <Box className={styles.heading} justify="between">
+                <Box className={styles.content} justify="between">
                     <Typography className={styles.title} variant="subtitle1">{title} </Typography>
                     <Typography color="textPrimary" variant="body2">Items resolved: {resolved}</Typography>
 

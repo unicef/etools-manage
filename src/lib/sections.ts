@@ -1,7 +1,6 @@
 import { reduce, keys, always, map, T, isNil, cond, prop } from 'ramda';
 import { EntityWithSingleSection, ResolvedRatio } from 'entities/types';
 import { CLOSE_SECTION_PREFIX } from 'global-constants';
-import { resolve } from 'path';
 
 
 export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
