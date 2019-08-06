@@ -2,9 +2,7 @@ import React, { memo, useEffect, useState, lazy, Suspense } from 'react';
 import Box from 'components/box';
 import { createStyles, Theme, Typography, Paper, Container, LinearProgress, IconButton, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import BackIcon from '@material-ui/icons/ArrowBack';
 
-import { ConfirmButton } from 'components/buttons';
 import clsx from 'clsx';
 import { buildResolvedProgressString } from 'lib/sections';
 import { useAppService } from 'contexts/app';
@@ -18,52 +16,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'components/loader';
 import { lighten } from '@material-ui/core/styles';
 import { useIconButtonStyles } from 'components/table/styles';
-import { withRouter } from 'react-router';
 import LoadingFallback from 'components/loading-fallback';
+import { useSummaryStyles } from './summary-styles';
+import { BackIconButton } from 'components/buttons';
 
 const ConnectedConfirmButton = lazy(() => import('components/connected-submit-payload-button'));
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        itemRoot: {
-            minHeight: 32,
-            padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
-            borderBottom: `1px solid ${theme.palette.divider}`,
-            color: theme.palette.primary.contrastText
-
-        },
-        titleSize: {
-            fontSize: 16
-        },
-        heading: {
-            borderRadius: '8px 8px 0 0',
-            padding: `14px ${theme.spacing(3)}px ${theme.spacing(1)}px`,
-            color: theme.palette.primary.contrastText
-        },
-        lightSecondary: {
-            borderBottom: `1px solid ${theme.palette.divider}`,
-            backgroundColor: lighten(theme.palette.secondary.main, 0.5)
-        },
-        subtitle: {
-            marginRight: theme.spacing(2)
-        },
-        progressBar: {
-            margin: `${theme.spacing(3)}px 0 ${theme.spacing(1)}px`
-        },
-        moduleCell: {
-            width: '35%',
-            marginRight: theme.spacing(4)
-        },
-        infoMsg: {
-            padding: theme.spacing(3)
-        },
-        section: {
-            marginBottom: theme.spacing(3)
-        },
-        flex2: {
-            flex: 2
-        }
-    }));
 
 const useProgressStyles = makeStyles((theme: Theme) => createStyles(
     {
@@ -132,38 +90,26 @@ const useModulesSummary = (id: string) => {
 
 
 export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ sectionId }) => {
+
     const {
         modulesData,
         sections,
         progress
     } = useModulesSummary(sectionId);
 
-    const dispatch = useDispatch();
-    const styles = useStyles();
-    const iconStyles = useIconButtonStyles();
-    console.log('TCL: modules', modulesData);
-
+    const styles = useSummaryStyles();
 
     const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
     const progressStyles = useProgressStyles();
     const hasData = Boolean(modulesData && modulesData.length);
 
 
-    const BackButton = withRouter(({ history }) => (
-        <IconButton
-            className={iconStyles.icon}
-            size="medium"
-            onClick={() => history.push('/')}>
-            <BackIcon fontSize="large"/>
-        </IconButton>
-    ));
-
     return (
         <Container maxWidth="sm" id="cont">
             <Box className={styles.section} justify="between" align="center">
-                <BackButton />
+                <BackIconButton />
                 {progress < 100 ?
-                    <Button disabled>Confirm</Button> :
+                    <Button variant="outlined" disabled>Confirm</Button> :
                     <Suspense fallback={<LoadingFallback/>}>
                         <ConnectedConfirmButton />
                     </Suspense>
@@ -205,7 +151,6 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
                 <Typography align="center">Resolved items progress {progress}%</Typography>
             </Box>
 
-
             }
         </Container>
     );
@@ -213,7 +158,7 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
 
 
 export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, itemsResolved, onEdit }) => {
-    const styles = useStyles();
+    const styles = useSummaryStyles();
 
     return <Box className={styles.itemRoot} align="center" justify="between">
 

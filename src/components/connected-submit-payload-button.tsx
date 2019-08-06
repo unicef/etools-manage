@@ -1,15 +1,20 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getCloseSectionBackendPayload } from 'selectors/close-section-payload';
 import { ConfirmButton } from './buttons';
+import { onSubmitCloseSection } from 'pages/close-summary/actions';
+import { useAppService } from 'contexts/app';
 
 const ConnectedConfirmButton: React.FC = () => {
 
     const backendPayload = useSelector(getCloseSectionBackendPayload);
+    const { sectionsService } = useAppService();
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        console.log('BACK PAYLOAD', backendPayload);
+        onSubmitCloseSection(sectionsService, backendPayload, dispatch);
     };
+
     return (
         <ConfirmButton onClick={handleSubmit}>Confirm</ConfirmButton>
     );

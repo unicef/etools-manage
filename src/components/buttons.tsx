@@ -1,7 +1,10 @@
 import React from 'react';
-import { makeStyles, Theme, createStyles, Button } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Button, IconButton } from '@material-ui/core';
 import { amber } from '@material-ui/core/colors';
-import { useSelector } from 'react-redux';
+import BackIcon from '@material-ui/icons/ArrowBack';
+
+import { withRouter } from 'react-router';
+import { useIconButtonStyles } from './table/styles';
 
 
 export const useButtonStyles = makeStyles((theme: Theme) =>
@@ -40,4 +43,26 @@ export const ConfirmButton: React.FC<ConfirmBtnProps> = ({ onClick, color = 'sec
         </Button>);
 };
 
+
+export const BackIconButton = withRouter(({ history }) => {
+    const iconStyles = useIconButtonStyles();
+    return (
+        <IconButton
+            className={iconStyles.icon}
+            size="medium"
+            onClick={() => history.push('/')}>
+            <BackIcon fontSize="large"/>
+        </IconButton>
+    );
+});
+
+export const CloseButton = withRouter(({ history }) => {
+    const iconStyles = useIconButtonStyles();
+    return (
+        <Button
+            className={iconStyles.icon}
+            size="medium"
+            onClick={() => history.push('/')} >Close</Button>
+    );
+});
 

@@ -44,3 +44,6 @@ export const selectMergeSection = createSelector(
 export const selectCreatedSection = createSelector(
     ['createdSection']
 );
+export const selectClosedSectionSuccess = createSelector(
+    ['closedSectionSuccess']
+);

@@ -8,7 +8,8 @@ import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points-edit';
 import TPMActivitiesEdit from 'components/entity-edit/tpm-edit';
 import { useSelector } from 'react-redux';
-import { selectModuleEditingName } from 'selectors';
+import { selectModuleEditingName, selectClosedSectionSuccess } from 'selectors';
+import CloseSectionSuccess from './close-success';
 
 export interface CloseParams {id: string}
 
@@ -35,11 +36,14 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
     const { id } = match.params;
     const moduleEditingName = useSelector(selectModuleEditingName);
     const EditComponent = getEditComponent(moduleEditingName);
+    const closedSectionSuccess = useSelector(selectClosedSectionSuccess);
     return (
         <Box column align="center">
             {
-                moduleEditingName && EditComponent ? <EditComponent /> : <CloseSectionsSummary sectionId={id}/>
-
+                moduleEditingName && EditComponent ?
+                    <EditComponent /> :
+                    closedSectionSuccess ? <CloseSectionSuccess/> :
+                        <CloseSectionsSummary sectionId={id}/>
             }
         </Box>
     );

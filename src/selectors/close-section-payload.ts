@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-starter-kit';
-import { selectCloseSectionPayload, selectSections, selectCurrentActiveSection } from 'selectors';
-import { CloseSectionBackendPayload, ModuleEntities, BackendEntityNames, SectionToEntity, ActionPointEntity, InterventionEntity, TPMActivityEntity, Normalized, TravelEntity, SectionEntity, FormattedTPMActivityEntity } from 'entities/types';
+import { selectSections, selectCurrentActiveSection } from 'selectors';
+import { CloseSectionBackendPayload, BackendEntityNames, ActionPointEntity, InterventionEntity, Normalized, TravelEntity, SectionEntity, FormattedTPMActivityEntity } from 'entities/types';
 import { Store } from 'slices/root-store';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
@@ -24,50 +24,50 @@ export const getCloseSectionBackendPayload = createSelector<Store, CloseSectionB
             new_sections: {}
         };
 
-        keys(actionPoints).map(
+        keys(actionPoints).forEach(
             (id: string) => {
                 const { section } = actionPoints[id];
                 const sectionName = prop('name', sections.find(propEq('id', section)));
-                persistToPayload(payload, sectionName, 'action_points', section);
+                persistToPayload(payload, sectionName, 'action_points', Number(id));
             }
         );
 
-        keys(interventions).map(
+        keys(interventions).forEach(
             (id: string) => {
                 const { sections, indicators } = interventions[id];
-                sections.map(
+                sections.forEach(
                     section => {
                         const sectionName = prop('name', sections.find(propEq('id', section)));
-                        persistToPayload(payload, sectionName, 'interventions', section);
+                        persistToPayload(payload, sectionName, 'interventions', Number(id));
                     }
                 );
 
-                indicators.map(
-                    ({ section }) => {
+                indicators.forEach(
+                    ({ section, pk }) => {
                         const sectionName = prop('name', sections.find(propEq('id', section)));
-                        persistToPayload(payload, sectionName, 'applied_indicators', section as number);
+                        persistToPayload(payload, sectionName, 'applied_indicators', pk);
                     }
                 );
             }
         );
 
-        keys(tpmActivities).map(
+        keys(tpmActivities).forEach(
             (id: string) => {
                 const { sections } = tpmActivities[id];
-                sections.map(
+                sections.forEach(
                     section => {
                         const sectionName = prop('name', sections.find(propEq('id', section)));
-                        persistToPayload(payload, sectionName, 'tpm_activities', section);
+                        persistToPayload(payload, sectionName, 'tpm_activities', Number(id));
                     }
                 );
             }
         );
 
-        keys(travels).map(
+        keys(travels).forEach(
             (id: string) => {
                 const { section } = travels[id];
                 const sectionName = prop('name', sections.find(propEq('id', section)));
-                persistToPayload(payload, sectionName, 'travels', section);
+                persistToPayload(payload, sectionName, 'travels', Number(id));
             }
         );
 
@@ -79,13 +79,13 @@ export const getCloseSectionBackendPayload = createSelector<Store, CloseSectionB
             payload: CloseSectionBackendPayload,
             sectionName: string,
             entityName: BackendEntityNames,
-            value: number) {
+            id: number) {
 
             const existingSection = payload.new_sections[sectionName];
-            const entityValue = existingSection ? existingSection[entityName] : [];
+            const entityValue = existingSection ? existingSection[entityName] || [] : [];
             payload.new_sections[sectionName] = {
                 ...existingSection,
-                [entityName]: [...entityValue, value]
+                [entityName]: [...entityValue, id]
             };
         }
     }

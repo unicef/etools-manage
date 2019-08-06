@@ -14,7 +14,8 @@ import { AppServices } from 'services';
 import Loader from './loader';
 import { Link } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectLoading, selectError } from 'selectors';
+import { selectLoading, selectError, selectClosedSectionSuccess, selectSections } from 'selectors';
+import { onSuccessCloseSection } from 'slices/root-store';
 
 const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
@@ -60,6 +61,8 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const dispatch = useDispatch();
     const loading = useSelector(selectLoading);
     const error = useSelector(selectError);
+    const sections = useSelector(selectSections);
+    const closedSectionSuccess = useSelector(selectClosedSectionSuccess);
 
     if (error) {
         throw error;
@@ -67,7 +70,10 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 
     useEffect(() => {
         onGetSections(service, dispatch);
+        // dispatch(onSuccessCloseSection(false));
+        // refetch when a section is closed to get updated list
     }, []);
+
 
     const styles = useStyles({});
 

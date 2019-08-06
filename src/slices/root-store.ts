@@ -11,6 +11,7 @@ export interface Store {
     closeSectionPayload: ModuleEntities | null;
     moduleEditingName: keyof ModuleEntities | null;
     currentActiveSection: number | null;
+    closedSectionSuccess: boolean;
 }
 
 export const initialState: Store = {
@@ -21,7 +22,8 @@ export const initialState: Store = {
     loading: false,
     closeSectionPayload: null,
     moduleEditingName: null,
-    currentActiveSection: null
+    currentActiveSection: null,
+    closedSectionSuccess: false
 };
 
 // TODO: split up reducers of closedSectionpayload
@@ -66,6 +68,9 @@ const storeSlice = createSlice({
         onCurrentActiveSection: (state, action) => {
             state.currentActiveSection = action.payload;
         },
+        onSuccessCloseSection: (state, action) => {
+            state.closedSectionSuccess = action.payload;
+        },
         onChangeInterventionSection: (state, action) => {
             const { id, sections } = action.payload;
             if (state.closeSectionPayload) {
@@ -103,6 +108,7 @@ export const {
     onFetchFromStorageSuccess,
     onResetCreatedSection,
     onSetLoading,
+    onSuccessCloseSection,
     onSetMergedSection,
     onSetModuleEditingName,
     updateCloseSectionPayload,

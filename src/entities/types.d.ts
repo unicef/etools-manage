@@ -49,7 +49,6 @@ export interface CloseSectionBackendPayload {
     new_sections: SectionToEntity
 }
 
-
 export interface ActionPointEntity {
     id: number;
     reference_number: string;
@@ -62,6 +61,7 @@ export interface ActionPointEntity {
 export interface IndicatorEntity {
     title: string;
     section?: number;
+    pk: number;
 }
 
 export interface InterventionEntity {
@@ -111,7 +111,7 @@ export interface NewSectionFromMerged {
     name: string;
 }
 
-export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
+export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload | CloseSectionBackendPayload
 
 
 export interface EditItemProps {

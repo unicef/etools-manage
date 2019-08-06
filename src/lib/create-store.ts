@@ -5,10 +5,11 @@ import { errorMiddleware } from './error-middleware';
 import logger from 'redux-logger';
 import { rootReducer, Store } from 'slices/root-store';
 import storageMiddleware from './storage-middleware';
+import fetchLatestSectionsMiddleware from './latest-sections-middleware';
 
 
 const middleware = [
-
+    fetchLatestSectionsMiddleware,
     storageMiddleware,
     errorMiddleware,
     logger
