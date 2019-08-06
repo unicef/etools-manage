@@ -18,7 +18,7 @@ import { SectionEntity } from 'entities/types';
 import { usePagination } from 'components/table';
 import { stableSort, getSorting } from 'components/table/table-utils';
 import { useTableStyles } from 'components/table/styles';
-import MoreActionsMenu from './vertical-menu';
+import MoreActionsMenu from './more-actions-menu';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -107,7 +107,7 @@ export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<S
                     </TableCell>
                 ))}
                 <TableCell align="right" classes={{ root: styles.actionCell }} >
-                    <MoreActionsMenu/>
+                    <MoreActionsMenu />
                 </TableCell>
             </TableRow>
         </TableHead>
@@ -223,7 +223,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                                 <Typography variant="body2">{row.id}</Typography>
                                             </TableCell>
                                             <TableCell align="right" classes={{ root: styles.actionCell }} >
-                                                <MoreActionsMenu />
+                                                <MoreActionsMenu rowId={row.id}/>
                                             </TableCell>
                                         </TableRow>
                                     );

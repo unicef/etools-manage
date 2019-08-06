@@ -1,6 +1,6 @@
 import { EntityConfig } from 'entities';
 import { TravelEntity, EntityDisplay } from './types';
-import { TravelsBuilder } from './travels-builder';
+import { set, lensProp, map } from 'ramda';
 
 
 export default class TravelsConfig implements EntityConfig<TravelEntity> {
@@ -23,9 +23,16 @@ export default class TravelsConfig implements EntityConfig<TravelEntity> {
         return 'section';
     }
 
-    public get builder() {
-        return new TravelsBuilder();
+    public get moduleName() {
+        return 'Trip Management';
     }
 }
 
 
+
+// list.map(
+//     (travel: TravelEntity) => ({
+//         ...travel,
+//         section: undefined
+//     })
+// );

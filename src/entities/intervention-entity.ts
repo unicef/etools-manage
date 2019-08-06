@@ -1,21 +1,6 @@
 import { InterventionEntity, EntityDisplay } from './types';
 import { EntityConfig } from 'entities';
-import { PmpBuilder } from './pmp-builder';
-
-
-export default class Intervention implements InterventionEntity {
-    public id: number;
-    public number: string;
-    public title: string;;
-    public sections: number[];
-
-    public constructor({ id, number, title, sections }: InterventionEntity) {
-        this.id = id;
-        this.number = number;
-        this.title = title;
-        this.sections = sections;
-    }
-}
+import { without, map } from 'ramda';
 
 export class InterventionConfig implements EntityConfig<InterventionEntity> {
 
@@ -29,19 +14,32 @@ export class InterventionConfig implements EntityConfig<InterventionEntity> {
     public get title() {
         return 'PD/SSFAs';
     }
-    public get sectionsProp() {
+    public get sectionsProp(): keyof InterventionEntity {
         return 'sections';
     }
-
 
     public get moduleName() {
         return 'PMP';
     }
 
-    public get builder() {
-        return new PmpBuilder();
-    }
-
 }
 
 
+export const interventionRemoveSection = (list: InterventionEntity[], id: number) => map(
+    (item: InterventionEntity) => {
+        const removedSectionIndicators = item.indicators.map(
+            indicator => ({
+                ...indicator,
+                section: undefined
+            })
+        );
+        const res: InterventionEntity = ({
+            ...item,
+            indicators: removedSectionIndicators,
+            sections: without([id], item.sections) as number[]
+        });
+
+        return res;
+    },
+    list
+);

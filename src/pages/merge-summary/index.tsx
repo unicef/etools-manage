@@ -3,7 +3,7 @@ import { Typography, TableHead, TableRow, TableCell, Table, TableBody, Theme, Pa
 import { Link } from 'react-router-dom';
 import queryString, { ParsedQuery } from 'query-string';
 import Box from 'components/box';
-import { useAppService, useAppDispatch, useAppState } from 'contexts/app';
+import { useAppService } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
 import { keys, prop, map, filter, find, propEq, compose, isEmpty } from 'ramda';
 import EntityConfigMapping from 'entities/config-map';
@@ -16,6 +16,8 @@ import { EntityTableHeadProps, EntityTableProps, MergeProps } from './types';
 import { MergeSectionsPayload, ZippedEntityResults } from 'entities/types';
 import { ConfirmButton } from 'components/buttons';
 import { SectionBox } from 'components/section-box';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectSections, selectMergeSection } from 'selectors';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -64,8 +66,8 @@ const MergeSummaryPage: React.FC = () => {
         sectionsService
     } = useAppService();
 
-    const dispatch = useAppDispatch();
-    const { mergedSection } = useAppState();
+    const dispatch = useDispatch();
+    const { mergedSection } = useSelector(selectMergeSection);
     const [summary, setSummary] = useState();
 
     const styles = useStyles();
@@ -101,7 +103,7 @@ const MergeSummaryPage: React.FC = () => {
             </Typography>
             <Box align="center">
                 <Link to="/"><Button variant="contained">Cancel</Button></Link>
-                <ConfirmButton onClick={onConfirm} text="Confirm" />
+                <ConfirmButton onClick={onConfirm} >Confirm</ConfirmButton>
             </Box>
         </Box>);
 
@@ -133,7 +135,8 @@ const MergeSummaryPage: React.FC = () => {
                             selectedSections={selectedSections}
                             key={entity as string}
                             newSectionName={newName as string}
-                            config={EntityConfigMapping[entity]}
+                            // @ts-ignore
+                            config={EntityConfigMapping[entity]} //TODO: fix this typing
                             list={summary[entity]} />
                     );
                 }
@@ -175,7 +178,7 @@ function EntityChangesTable<T>({ config, list, selectedSections, newSectionName 
         handleChangePage,
         handleChangeRowsPerPage } = usePagination();
 
-    const { sections } = useAppState();
+    const sections = useSelector(selectSections);
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
 
@@ -188,7 +191,7 @@ function EntityChangesTable<T>({ config, list, selectedSections, newSectionName 
                 return map(prop('name'), sectionsOfEntity.filter(({ id }) => selectedSections.includes(id)));
             } else if (Array.isArray(sectionsOfEntity)) {
                 const idsOfSectionsChanging = filter((id: number) => selectedSections.includes(id), sectionsOfEntity);
-                return sections.filter(({ id }) => idsOfSectionsChanging.includes(id)).map(prop('name')).join(',');
+                return sections.filter(({ id }: {id: string}) => idsOfSectionsChanging.includes(id)).map(prop('name')).join(',');
             } else if (typeof sectionsOfEntity === 'object') {
                 return sectionsOfEntity.name;
             }

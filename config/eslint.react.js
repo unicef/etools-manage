@@ -22,5 +22,6 @@ module.exports = {
             version: '16.8'
         }
     },
-    rules: {}
+    rules: {
+    }
 };

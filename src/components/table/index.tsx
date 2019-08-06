@@ -1,4 +1,5 @@
 import React, { useState, Dispatch } from 'react';
+import { LabelDisplayedRowsArgs } from '@material-ui/core/TablePagination';
 
 export interface Paginator {
     page: number;
@@ -10,6 +11,8 @@ export interface Paginator {
     handleChangePage: (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, page: number) => void;
     handleChangeRowsPerPage: ((event: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
 }
+
+export const customLabel = ({ from, to, count }: LabelDisplayedRowsArgs) => `Showing ${from}-${to} of ${count}`;
 
 
 export const usePagination = (): Paginator => {

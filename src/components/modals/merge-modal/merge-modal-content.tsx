@@ -9,8 +9,8 @@ import { useAddSection } from 'entities/section-entity';
 import { useModalStyles } from '../styles';
 import Box from 'components/box';
 import { useMergeState } from '.';
-import { onToggleMergeModal } from 'actions';
 import { SectionBox, ReviewBox } from 'components/section-box';
+import { onToggleMergeModal } from 'slices/modals';
 
 
 const useStyles = makeStyles((theme: Theme) =>

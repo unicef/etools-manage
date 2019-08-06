@@ -185,7 +185,7 @@ module.exports = {
         'no-multi-str': 'error',
         'no-multiple-empty-lines': 'error',
         'no-native-reassign': 'error',
-        'no-negated-condition': 'error',
+        'no-negated-condition': 'off',
         'no-negated-in-lhs': 'error',
         'no-nested-ternary': 'off',
         'no-new': 'error',
@@ -237,6 +237,7 @@ module.exports = {
         'no-use-before-define': 'off',
         "@typescript-eslint/no-use-before-define":"off",
         "@typescript-eslint/explicit-function-return-type":"off",
+        "@typescript-eslint/camelcase": "off",
         'no-useless-call': 'error',
         'no-useless-computed-key': 'error',
         'no-useless-concat': 'error',
@@ -298,6 +299,7 @@ module.exports = {
             html: true
         }],
         'react/prop-types': 'off',
+        'react/display-name': 'off',
         'semi-spacing': [
             'error',
             {

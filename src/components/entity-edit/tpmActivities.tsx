@@ -4,7 +4,7 @@ import Box from 'components/box';
 import { EditProps } from 'entities';
 
 type TPMEditProps = EditProps<TPMActivityEntity>
-const TPMActivitiesEdit: React.FC<TPMEditProps> = props => {
+const TPMActivitiesEdit: React.FC = props => {
 
     return <Box>
         TPM Edit Box

@@ -1,37 +1,12 @@
 import React, { useContext, useReducer } from 'react';
-import { onToggleAddModal, onToggleSplitModal, onToggleMergeModal } from 'actions';
-import { modalsReducer } from 'reducers/modals';
-import { ChildrenProps } from 'global-types';
-import { PayloadAction } from 'redux-starter-kit';
+import { ChildrenProps, Dispatch } from 'global-types';
+import { ModalsState, initialStateModals, modalsReducer } from 'slices/modals';
 
-// TODO: Clean this file up ie seperate types into own files
-interface State {
-    addModalOpen: boolean;
-    splitModalOpen: boolean;
-    mergeModalOpen: boolean;
-    selectedForMerge: number[];
-}
-
-type ModalAction =
-    typeof onToggleAddModal |
-    typeof onToggleSplitModal |
-    typeof onToggleMergeModal | PayloadAction
-
-type Dispatch = (action: ModalAction) => void
-
-
-const ModalsStateContext = React.createContext<State | undefined>(undefined);
+const ModalsStateContext = React.createContext<ModalsState | undefined>(undefined);
 const ModalsDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 
-export const initialStateModals: State = {
-    addModalOpen: false,
-    splitModalOpen: false,
-    mergeModalOpen: false,
-    selectedForMerge: []
-};
+export function PageModalsProvider({ children }: ChildrenProps): JSX.Element {
 
-
-export function PageModalsProvider({ children }: ChildrenProps) {
     const [state, setModalsState] = useReducer(modalsReducer, initialStateModals);
     return (
         <ModalsStateContext.Provider value={state}>

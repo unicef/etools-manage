@@ -1,13 +1,18 @@
 import { EntityConfig } from 'entities';
 
+export interface EntitiesDataResponse<T, U>{
+    [field: string]: T | U;
+}
 
 export interface ZippedEntityResults {
-    indicators: IndicatorEntity[];
-    tpmActivities: TPMActivityEntity[];
-    actionPoints: ActionPointEntity[];
-    interventions: InterventionEntity[];
-    travels: TravelEntity[];
+    indicators: Normalized<IndicatorEntity>;
+    tpmActivities: Normalized<TPMActivityEntity>;
+    actionPoints: Normalized<ActionPointEntity>;
+    interventions: Normalized<InterventionEntity>;
+    travels: Normalized<TravelEntity>;
 }
+
+export type ModuleEntities = Omit<ZippedEntityResults, 'indicators'>
 
 export interface KeyToEntityMap {
     interventions: InterventionEntity;
@@ -18,7 +23,31 @@ export interface KeyToEntityMap {
 }
 
 
+
+export type EntityWithSingleSection = Normalized<ActionPointEntity | TravelEntity | IndicatorEntity>
+
+export interface Normalized<T> {
+    [id: string]: T;
+}
+
 export type NonEmptyEntityResults = Partial<ZippedEntityResults>
+
+export interface CloseSectionPayload {
+    [id: string]: ModuleEntities;
+}
+
+export interface SectionToEntity {
+    [name: string] : {
+        [key in BackendEntityNames]: number[]
+    }
+}
+
+export type BackendEntityNames = 'interventions' | 'applied_indicators' | 'travels' | 'tpm_activities' | 'action_points'
+
+export interface CloseSectionBackendPayload {
+    old_section: number;
+    new_sections: SectionToEntity
+}
 
 
 export interface ActionPointEntity {
@@ -26,13 +55,13 @@ export interface ActionPointEntity {
     reference_number: string;
     description: string;
     status: string;
-    section: SectionEntity[];
+    section: number;
 }
 
 
 export interface IndicatorEntity {
     title: string;
-    section: number;
+    section?: number;
 }
 
 export interface InterventionEntity {
@@ -40,7 +69,7 @@ export interface InterventionEntity {
     number: string;
     title: string;
     sections: number[];
-    indicators?: IndicatorEntity[];
+    indicators: IndicatorEntity[];
 }
 
 
@@ -48,8 +77,13 @@ export interface TPMActivityEntity {
     id: number;
     reference_number: string;
     status: string;
+    tpm_partner: {
+        name: string;
+    };
     sections: SectionEntity[];
 }
+
+export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'sections'> & {sections: number[]}
 export interface SectionEntity {
     id: number ;
     name: string;
@@ -68,6 +102,7 @@ export interface TravelEntity {
     section: number;
     reference_number: string;
     purpose: string;
+    traveler: string;
 }
 
 
@@ -78,14 +113,39 @@ export interface NewSectionFromMerged {
 
 export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload
 
+
+export interface EditItemProps {
+    id: string;
+}
+
+export interface GenericMultiSectionPayload {
+    id: string;
+    sections: number[];
+}
+export interface GenericSectionPayload {
+    id: string;
+    section: number | null;
+}
+
+export const
+
+export interface IndicatorsPayload {
+    id: string;
+    indicators: IndicatorEntity[];
+}
+
 export interface EntityDisplay<T> {
     label: string;
     propName: keyof T;
 }
 
-export type EntityCollectionUnion = IndicatorEntity[] | InterventionEntity[] | TPMActivityEntity[] | ActionPointEntity[] |TravelEntity[]
+export interface ResolvedRatio {
+    resolved: number;
+    total: number;
+}
+
 export type AllEntities = InterventionEntity | TPMActivityEntity | ActionPointEntity | TravelEntity | IndicatorEntity
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 
-export type EntityMap = {[K in keyof ZippedEntityResults]: EntityConfig<any>}
+export type EntityMap = {[K in keyof ZippedEntityResults]: WrapWithConfig<AllEntities>}

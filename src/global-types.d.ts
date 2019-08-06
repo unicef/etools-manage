@@ -1,47 +1,16 @@
 
 import { AppState } from './lib/reducer';
 import { ReactNode, useState } from 'react';
-import { Store, Reducer } from 'redux';
-import { LocationState } from 'redux-first-router';
-import { ROUTE_MAPPING } from 'lib/create-router';
-import { PAGE_ONE_NAMESPACE, PAGE_TWO_NAMESPACE } from 'global-constants';
-import { PageOneNamespaceShape } from 'pages/sections-main/types';
-import { PageTwoNamespaceShape } from 'pages/two/types';
+import { Store } from 'slices/root-store';
+import { Dispatch, DispatchAction } from 'global-types';
 
-
+import { PayloadAction, PayloadActionCreator } from 'redux-starter-kit';
 // Store
 export type BaseStoreShape = Store<AppState>
 
-export interface AppStore {
-    location: LocationState<typeof ROUTE_MAPPING>;
-    page: string;
-    ui: UiNamespaceShape;
-    // TODO: create object spread that imports all dynamically imported pages here
-    [PAGE_ONE_NAMESPACE]: PageOneNamespaceShape;
-    [PAGE_TWO_NAMESPACE]: PageTwoNamespaceShape;
-}
 
 export interface ProviderStore {
     children: ReactNode;
-}
-
-
-export type StoreShape = Partial<AppStore>;
-export type NamespaceKey = keyof StoreShape;
-export type ReducerMap = Partial<
-{ [k in NamespaceKey]: Reducer<AppStore[k]> }
->;
-
-
-// Non-page specific
-interface UiNamespaceShape {
-    isSidebarOpen: boolean;
-}
-
-export interface MenuItem {
-    text: string;
-    icon: string;
-    url: string;
 }
 
 export interface UserProfile {
@@ -82,3 +51,12 @@ export interface SuccessResponse {
 
 export type StateSetter = ReturnType<useState>
 export type ClickHandler = () => void
+
+export type DispatchAction = PayloadAction<unknown, string> | PayloadActionCreator<void, string> | PayloadActionCreator<unknown, string> | PayloadAction<void, string>
+
+export type Dispatch = (action: DispatchAction) => void
+
+export type AppMiddleware = ({ getState }: {
+    getState: () => Store;
+}) => (dispatch: Dispatch) => (action: PayloadAction) => void
+

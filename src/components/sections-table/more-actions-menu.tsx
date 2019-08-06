@@ -1,13 +1,13 @@
 import React from 'react';
 import Box from '../box';
 import { IconButton, Menu, MenuItem, Typography, Theme } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/DeleteForever';
 import SplitIcon from '@material-ui/icons/CallSplit';
 import clsx from 'clsx';
 import { useTableStyles } from '../table/styles';
 import { makeStyles, createStyles } from '@material-ui/styles';
-import { SectionEntity } from 'entities/types';
 
 const useMenuStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -28,13 +28,13 @@ const useMenuStyles = makeStyles((theme: Theme) =>
 
 
 interface RowActionsProps {
-    row?: SectionEntity;
+    rowId?: number;
     hidden?: boolean;
     className?: string | undefined;
 }
 
 // TODO: add onClick to menu items
-export default function MoreActions({ row, className = '' }: RowActionsProps) {
+export default function MoreActions({ rowId, className = '' }: RowActionsProps) {
     const styles = useTableStyles();
     const menuStyles = useMenuStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -64,10 +64,12 @@ export default function MoreActions({ row, className = '' }: RowActionsProps) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
 
-                <MenuItem classes={{ root: menuStyles.listItem }}>
-                    <DeleteIcon className={menuStyles.icon} color="secondary" />
-                    <Typography>Close section</Typography>
-                </MenuItem>
+                <Link to={`/close/${rowId}`}>
+                    <MenuItem classes={{ root: menuStyles.listItem }}>
+                        <DeleteIcon className={menuStyles.icon} color="secondary" />
+                        <Typography variant="body1">Close section</Typography>
+                    </MenuItem>
+                </Link>
                 <MenuItem classes={{ root: menuStyles.listItem }}>
                     <SplitIcon className={menuStyles.icon} color="secondary" />
                     <Typography>Split section</Typography>

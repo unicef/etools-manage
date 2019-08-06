@@ -1,62 +1,51 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { useAppState, useAppService, useAppDispatch } from 'contexts/app';
-import { onFetchModulesEntities } from './actions';
-import { ModuleEntitiesManager, DisplayDirector, Builders } from 'entities';
 import Box from 'components/box';
-import { keys } from 'ramda';
-import { ZippedEntityResults } from 'entities/types';
-import { notEmpty } from 'utils/helpers';
+import { KeyToEntityMap } from 'entities/types';
+import { CloseSectionsSummary } from './summary-container';
+import InterventionsEdit from 'components/entity-edit/interventions-edit';
+import TravelsEdit from 'components/entity-edit/travels-edit';
+import ActionPointsEdit from 'components/entity-edit/action-points-edit';
+import TPMActivitiesEdit from 'components/entity-edit/tpm-edit';
+import { useSelector } from 'react-redux';
+import { selectModuleEditingName } from 'selectors';
 
 export interface CloseParams {id: string}
 
-const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match, ...props }) => {
+type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>
+
+export type EditComponentMappings = {[key in ModuleKeys]: React.FC}
+
+const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
+    interventions: InterventionsEdit,
+    travels: TravelsEdit,
+    actionPoints: ActionPointsEdit,
+    tpmActivities: TPMActivitiesEdit
+};
+
+function getEditComponent(name: keyof EditComponentMappings | null) {
+
+    if (name) {
+        return EDIT_COMPONENT_MODULE_MAPPING[name];
+    }
+    return null;
+}
+
+const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match }) => {
     const { id } = match.params;
-    const { state } = props.location;
-
-    const { currentEntitiesData } = useAppState();
-    const dispatch = useAppDispatch();
-    const {
-        backendService,
-        sectionsService,
-        storageService
-    } = useAppService();
-
-    const director: DisplayDirector = new ModuleEntitiesManager();
-    const [builders, setBuilder] = useState<Builders>(director.entityBuilders);
-
-    useEffect(() => {
-        onFetchModulesEntities({ backendService, storageService }, id, dispatch);
-    }, []);
-
-    useEffect(() => {
-        if (currentEntitiesData) {
-            director.initialize(currentEntitiesData);
-            setBuilder(director.entityBuilders);
-            console.log('TCL: builders', builders);
-        }
-    }, [currentEntitiesData]);
-
-
+    const moduleEditingName = useSelector(selectModuleEditingName);
+    const EditComponent = getEditComponent(moduleEditingName);
     return (
-        <div>
-            HI, I found you {id && id},
-            <Box column>
-                { currentEntitiesData && notEmpty(builders) ? keys(currentEntitiesData).map(
-                    (entityName: keyof ZippedEntityResults) => {
-                        const { Component } = builders[entityName];
+        <Box column align="center">
+            {
+                moduleEditingName && EditComponent ? <EditComponent /> : <CloseSectionsSummary sectionId={id}/>
 
-                        return (
-                            <Component
-                                key={entityName}
-                                onChange={() => console.log('onChange', entityName)}
-                                list={currentEntitiesData[entityName]} />
-                        );
-                    }
-                ) : null}
-            </Box>
-        </div>
+            }
+        </Box>
     );
 };
 
+
 export default CloseSummaryPage;
+
+

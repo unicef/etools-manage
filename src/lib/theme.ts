@@ -2,6 +2,7 @@
 
 import red from '@material-ui/core/colors/red';
 import amber from '@material-ui/core/colors/amber';
+import blueGrey from '@material-ui/core/colors/blueGrey';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 
@@ -18,7 +19,7 @@ const theme = createMuiTheme({
             main: red.A400
         },
         background: {
-            default: '#fff'
+            default: blueGrey[50]
         },
         text: {
             primary: '#5f6368',
@@ -35,6 +36,12 @@ const theme = createMuiTheme({
             }
         },
         MuiPaper: {
+            root: {
+                '& a': {
+                    textDecoration: 'none',
+                    color: 'inherit'
+                }
+            },
             rounded: {
                 borderRadius: 8
             },

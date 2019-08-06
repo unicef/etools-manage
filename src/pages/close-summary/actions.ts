@@ -1,23 +1,63 @@
 
-import { createAction } from 'redux-starter-kit';
 import { BackendService } from 'services/backend';
-import { StoreDispatch } from 'contexts/app';
 import StorageService from 'services/storage';
-import { NonEmptyEntityResults } from 'entities/types';
-import { onSetLoading } from 'actions';
+import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload } from 'entities/types';
 
-export const onModuleEntitiesDataSuccess = createAction('moduleEntitiesDataSuccess');
+import { Dispatch } from 'global-types';
+import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, updateCloseSectionPayload, onUpdateTPMSections } from 'slices/root-store';
 
-export const onFetchModulesEntities = async (services: {backendService: BackendService; storageService: StorageService}, payload: string, dispatch: StoreDispatch) => {
+export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
+    dispatch(updateCloseSectionPayload(null));
+};
+export const onFetchDataCloseSection = async (
+    services: {backendService: BackendService; storageService: StorageService},
+    payload: string, dispatch: Dispatch) => {
+
+    dispatch(onCurrentActiveSection(Number(payload)));
+
     const { backendService, storageService } = services;
 
-    let entitiesData: NonEmptyEntityResults | null;
-    entitiesData = storageService.getStoredEntitiesData(payload);
+    const dataFromStorage = storageService.getStoredEntitiesData(`close_${payload}`);
+    let dataFromServer: Partial<ZippedEntityResults>;
 
-    if (!entitiesData) {
+    if (!dataFromStorage) {
         dispatch(onSetLoading(true));
-        entitiesData = await backendService.getEntitiesForClose(payload);
+        try {
+            dataFromServer = await backendService.getEntitiesForClose(payload);
+        } catch (err) {
+            dispatch(onThrowError(err.message));
+            return;
+        }
+
+        dispatch(onFetchForCloseSuccess(dataFromServer));
+
+    } else {
+        dispatch(onFetchFromStorageSuccess(dataFromStorage));
     }
 
-    dispatch(onModuleEntitiesDataSuccess(entitiesData));
+    dispatch(onCurrentActiveSection(Number(payload)));
+};
+
+export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
+    dispatch(onSetModuleEditingName(payload));
+};
+
+export const onSelectInterventionSection = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(onChangeInterventionSection(payload));
+};
+
+export const onSelectIndicatorSection = (payload: IndicatorsPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateInterventionIndicatorsState(payload));
+};
+
+export const onSelectTravelSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateTravelSection(payload));
+};
+
+export const onSelectActionPointSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateActionPointSection(payload));
+};
+
+export const onSelectTPMSections = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateTPMSections(payload));
 };

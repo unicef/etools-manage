@@ -45,8 +45,6 @@ export default class SectionsApiService extends BaseService implements SectionsS
 
     public async mergeSections(payload: MergeSectionsPayload): Promise<NewSectionFromMerged> {
         try {
-
-            console.log('mergeurl', mergeSectionUrl);
             const response = await this._http.post<NewSectionFromMerged>(
                 mergeSectionUrl,
                 this.bodyFromPayload(payload)
