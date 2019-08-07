@@ -8,7 +8,7 @@ import { onSetLoading, onGetSectionsSuccess, onSetMergedSection, onCreateSection
 import { Dispatch } from 'global-types';
 import { createAction } from 'redux-starter-kit';
 
-export const onSectionTableRender = createAction('onSectionTableRender');
+export const refreshSectionsList = createAction('refreshSectionsList');
 
 export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
     let sections;

@@ -1,5 +1,5 @@
 import { AppMiddleware } from 'global-types';
-import { onChangeInterventionSection, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections } from 'slices/root-store';
+import { onChangeInterventionSection, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections, onSuccessCloseSection } from 'slices/root-store';
 import { includes } from 'ramda';
 import { prefixWithClose } from './sections';
 import StorageService, { Storage } from 'services/storage';
@@ -16,10 +16,17 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
     return ({ getState }) => dispatch => action => {
         dispatch(action);
 
+        const state = getState();
+
         if (includes(action.type, USER_SELECTION_ACTIONS)) {
-            const state = getState();
             const key = prefixWithClose((state.currentActiveSection as number).toString());
             service.storeEntitiesData(key, state.closeSectionPayload as ModuleEntities);
+        }
+        const sectionJustClosed = action.type === onSuccessCloseSection.type && action.payload === true;
+
+        if (sectionJustClosed) {
+            const key = prefixWithClose((state.currentActiveSection as number).toString());
+            service.removeItem(key);
         }
 
     };

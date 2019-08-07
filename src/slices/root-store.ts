@@ -1,7 +1,7 @@
 import { createSlice } from 'redux-starter-kit';
 import { SectionEntity, NewSectionFromMerged, ModuleEntities } from 'entities/types';
 import { selectWithoutCurrentSection } from 'selectors/filter-sections';
-import { onSectionTableRender } from 'actions';
+import { refreshSectionsList } from 'actions';
 
 export interface Store {
     sections: SectionEntity[];
@@ -103,7 +103,7 @@ const storeSlice = createSlice({
         }
     },
     extraReducers: {
-        [onSectionTableRender.type]: state => state
+        [refreshSectionsList.type]: state => state
     }
 });
 

@@ -10,7 +10,7 @@ import { SectionEntity } from 'entities/types';
 import { onSelectForMerge } from 'slices/modals';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSections } from 'selectors';
-import { onSectionTableRender } from 'actions';
+import { refreshSectionsList } from 'actions';
 import Section from 'entities/section-entity';
 
 
@@ -46,7 +46,7 @@ const SectionsMainPage: React.FunctionComponent = () => {
 
         if (!mountedRef.current) {
             console.log('switching!');
-            dispatch(onSectionTableRender());
+            dispatch(refreshSectionsList());
             mountedRef.current = true;
         }
         return () => (mountedRef.current = false);
