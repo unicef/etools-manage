@@ -1,17 +1,18 @@
 import SectionsApiService, { SectionsService } from 'services/section';
 import { AppMiddleware } from 'global-types';
 import { ApiClient } from './http';
-import { onSuccessCloseSection, onCreateSectionSuccess } from 'slices/root-store';
-import { onGetSections } from 'actions';
+import { onCreateSectionSuccess } from 'slices/root-store';
+import { onGetSections, onSectionTableRender } from 'actions';
 
 const fetchLatestSectionsMiddleware = (service: SectionsService): AppMiddleware => {
     return () => dispatch => action => {
         dispatch(action);
 
-        const sectionJustClosed = action.type === onSuccessCloseSection.type && action.payload === true;
         const sectionJustCreated = action.type === onCreateSectionSuccess.type;
-
-        if (sectionJustClosed || sectionJustCreated) {
+        const sectionTableWasRendered = action.type === onSectionTableRender.type;
+        console.log('TCL: sectionTableWasRendered', sectionTableWasRendered);
+        if (sectionJustCreated || sectionTableWasRendered) {
+            console.log('TCL: sectionTableWasRendered', sectionTableWasRendered);
             onGetSections(service, dispatch);
         }
 

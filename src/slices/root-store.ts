@@ -1,6 +1,7 @@
 import { createSlice } from 'redux-starter-kit';
 import { SectionEntity, NewSectionFromMerged, ModuleEntities } from 'entities/types';
 import { selectWithoutCurrentSection } from 'selectors/filter-sections';
+import { onSectionTableRender } from 'actions';
 
 export interface Store {
     sections: SectionEntity[];
@@ -26,7 +27,7 @@ export const initialState: Store = {
     closedSectionSuccess: false
 };
 
-// TODO: split up reducers of closedSectionpayload
+// TODO: split up reducers using combineReducers
 const storeSlice = createSlice({
     initialState,
     reducers: {
@@ -100,6 +101,9 @@ const storeSlice = createSlice({
             (state.closeSectionPayload as ModuleEntities).tpmActivities[id].sections = sections;
 
         }
+    },
+    extraReducers: {
+        [onSectionTableRender.type]: state => state
     }
 });
 

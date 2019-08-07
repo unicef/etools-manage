@@ -6,6 +6,9 @@ import { isSectionsParamValid } from 'pages/merge-summary';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
 import { onSetLoading, onGetSectionsSuccess, onSetMergedSection, onCreateSectionSuccess, onThrowError } from 'slices/root-store';
 import { Dispatch } from 'global-types';
+import { createAction } from 'redux-starter-kit';
+
+export const onSectionTableRender = createAction('onSectionTableRender');
 
 export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
     let sections;

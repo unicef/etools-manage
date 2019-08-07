@@ -57,22 +57,12 @@ export interface AppFrameProps{
 
 const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const userData: User = useContext(UserContext);
-    const { sectionsService: service }: AppServices = useAppService();
-    const dispatch = useDispatch();
     const loading = useSelector(selectLoading);
     const error = useSelector(selectError);
-    const sections = useSelector(selectSections);
-    const closedSectionSuccess = useSelector(selectClosedSectionSuccess);
 
     if (error) {
         throw error;
     }
-
-    useEffect(() => {
-        onGetSections(service, dispatch);
-        // dispatch(onSuccessCloseSection(false));
-        // refetch when a section is closed to get updated list
-    }, []);
 
 
     const styles = useStyles({});

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { compose, includes, filter, prop, toLower } from 'ramda';
 import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
@@ -8,9 +8,19 @@ import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
 import { SectionEntity } from 'entities/types';
 import { onSelectForMerge } from 'slices/modals';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectSections } from 'selectors';
+import { onSectionTableRender } from 'actions';
+import Section from 'entities/section-entity';
 
+
+if (process.env.NODE_ENV !== 'production') {
+    const whyDidYouRender = require('@welldone-software/why-did-you-render');
+    whyDidYouRender(React, {
+        onlyLogs: true,
+        titleColor: 'teal'
+    });
+}
 
 const SectionsMainPage: React.FunctionComponent = () => {
 
@@ -18,7 +28,10 @@ const SectionsMainPage: React.FunctionComponent = () => {
     const [filteredSections, setFilteredSections] = useState([] as SectionEntity[]);
     const [mergeActive, setMergeActive] = useState<boolean>(false);
 
-    const dispatch = useModalsDispatch();
+    const modalsDispatch = useModalsDispatch();
+    const dispatch = useDispatch();
+
+    const mountedRef = useRef(false);
 
     const handleSearch = useCallback((str: string) => {
         const matching = filter(compose(includes(str.toLowerCase()), toLower, prop('name')));
@@ -29,7 +42,17 @@ const SectionsMainPage: React.FunctionComponent = () => {
         setFilteredSections(sections);
     }, [sections]);
 
-    const onChangeSelected = useCallback((selected: string[]) => dispatch(onSelectForMerge(selected)), []);
+    useEffect((): () => void => {
+
+        if (!mountedRef.current) {
+            console.log('switching!');
+            dispatch(onSectionTableRender());
+            mountedRef.current = true;
+        }
+        return () => (mountedRef.current = false);
+    }, []);
+
+    const onChangeSelected = useCallback((selected: string[]) => modalsDispatch(onSelectForMerge(selected)), []);
 
     const tableProps = {
         rows: filteredSections,
@@ -50,5 +73,8 @@ const SectionsMainPage: React.FunctionComponent = () => {
         </Box>
     );
 };
+
+// @ts-ignore
+SectionsMainPage.whyDidYouRender = true;
 
 export default SectionsMainPage;
