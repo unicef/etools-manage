@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import EditWrapper from 'pages/close-summary/edit-wrapper';
+import EditWrapper from 'pages/close-section/edit-wrapper';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { usePagination, customLabel } from 'components/table';

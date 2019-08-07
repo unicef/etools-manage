@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-starter-kit';
 import { Store } from 'slices/root-store';
-import { ModuleEntities } from 'entities/types';
-import { propEq, reject, map } from 'ramda';
+import { ModuleEntities, SectionEntity } from 'entities/types';
+import { propEq, reject, map, prop } from 'ramda';
 
 
 export const selectCloseSectionPayload = createSelector<Store, ModuleEntities>(
@@ -18,6 +18,11 @@ export const selectSections = createSelector(
 
 export const selectCurrentActiveSection = createSelector(
     ['currentActiveSection']
+);
+
+export const selectCurrentActiveSectionName = createSelector(
+    [selectCurrentActiveSection, selectSections],
+    (id: number, sections: SectionEntity[]) => prop('name', sections.find(propEq('id', id)))
 );
 
 export const selectSectionsAsOptions = createSelector(

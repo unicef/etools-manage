@@ -12,11 +12,11 @@ import { selectNumItemsResolved, selectTotalProgress } from 'selectors/num-items
 import { keys, propEq, find, prop } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'components/loader';
-import LoadingFallback from 'components/loading-fallback';
 import { useSummaryStyles } from './summary-styles';
-import { BackIconButton } from 'components/buttons';
+import { BackIconButton, ConfirmButton } from 'components/buttons';
 import ResolvedProgress from 'components/resolved-progress-bar';
-
+import CloseSectionSummary from './close-section-summary';
+import LoadingFallback from 'components/loading-fallback';
 const ConnectedConfirmButton = lazy(() => import('components/connected-submit-payload-button'));
 
 export interface CloseSummaryProps {
@@ -39,7 +39,6 @@ const useModulesSummary = (id: string) => {
 
     const numResolvedByModule = useSelector(selectNumItemsResolved);
 
-    const progress = useSelector(selectTotalProgress);
 
     const sections = useSelector(selectSections);
 
@@ -69,37 +68,84 @@ const useModulesSummary = (id: string) => {
 
     return {
         modulesData,
-        progress,
         sections
     };
 };
 
 
-export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ sectionId }) => {
+export const CloseSectionsPage: React.FC<CloseSummaryProps> = memo(({ sectionId }) => {
 
     const {
         modulesData,
-        sections,
-        progress
+        sections
     } = useModulesSummary(sectionId);
+    const progress = useSelector(selectTotalProgress);
 
+    const [viewCloseSummary, setViewCloseSummary] = useState<boolean>(false);
     const styles = useSummaryStyles();
 
     const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
+
     const hasData = Boolean(modulesData && modulesData.length);
 
+    const ActionBarIncomplete = (
+        <Box className={styles.section} justify="between">
+            <BackIconButton />
+            <Button variant="outlined" disabled>Confirm</Button>
+        </Box>
+    );
+
+    const ActionBarNoneAffected = (
+        <Box className={styles.section} justify="between" align="center">
+            <BackIconButton />
+            <Suspense fallback={<LoadingFallback/>}>
+                <ConnectedConfirmButton />
+            </Suspense>
+        </Box>
+    );
+
+    const ActionBarReviewReady = (
+        <Box className={styles.section} justify="between" align="center">
+            <BackIconButton />
+            <ConfirmButton onClick={() => setViewCloseSummary(true)}>Review and Confirm</ConfirmButton>
+        </Box>
+    );
+
+    // TODO: exttract these out to seperate component to clean up hash
+    return (
+        <Container maxWidth="md">
+            {
+                progress < 100 && hasData && ActionBarIncomplete
+            }
+            {
+                !hasData && ActionBarNoneAffected
+            }
+            {
+                !viewCloseSummary && progress === 100 && ActionBarReviewReady
+            }
+            {
+                viewCloseSummary ?
+                    <CloseSectionSummary onCancel={() => setViewCloseSummary(false)}/> :
+                    <ModulesSummary modulesData={modulesData} closingSection={closingSection}/>
+            }
+
+        </Container>
+    );
+});
+
+export interface ModulesSummaryProps {
+    modulesData: SummaryItemProps[] | undefined;
+    closingSection: string;
+}
+
+export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ closingSection, modulesData }) => {
+    const progress = useSelector(selectTotalProgress);
+
+    const styles = useSummaryStyles();
+    const hasData = Boolean(modulesData && modulesData.length);
 
     return (
-        <Container maxWidth="sm" id="cont">
-            <Box className={styles.section} justify="between" align="center">
-                <BackIconButton />
-                {progress < 100 ?
-                    <Button variant="outlined" disabled>Confirm</Button> :
-                    <Suspense fallback={<LoadingFallback/>}>
-                        <ConnectedConfirmButton />
-                    </Suspense>
-                }
-            </Box>
+        <Box column>
             <Paper>
                 <Box className={clsx(styles.heading, styles.lightSecondary)} align="center">
                     <Typography
@@ -123,13 +169,11 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
                         <Spinner/>
                 }
                 {!hasData && <Typography className={styles.infoMsg} >No entities are affected by closing this section.</Typography>}
-
             </Paper>
-            {hasData && <ResolvedProgress progress={progress} />
-            }
-        </Container>
-    );
-});
+
+            {hasData && <ResolvedProgress progress={progress} />}
+        </Box>);
+};
 
 
 export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(({ name, itemsResolved, onEdit }) => {

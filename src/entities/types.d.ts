@@ -148,8 +148,7 @@ export type AllEntities = InterventionEntity | TPMActivityEntity | ActionPointEn
 
 export type KeysOfUnion<T> = T extends any ? keyof T: never;
 
-export type AllEntitiesProperties = KeysOfUnion<AllEntities>;
-
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 
 export type EntityMap = {[K in keyof ZippedEntityResults]: WrapWithConfig<AllEntities>}
+

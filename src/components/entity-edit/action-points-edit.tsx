@@ -3,7 +3,7 @@ import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { selectActionPointsIds } from 'selectors/action-points';
-import EditWrapper from 'pages/close-summary/edit-wrapper';
+import EditWrapper from 'pages/close-section/edit-wrapper';
 import { buildResolvedProgressString } from 'lib/sections';
 import { usePagination, customLabel } from 'components/table';
 import { TablePagination, Typography } from '@material-ui/core';

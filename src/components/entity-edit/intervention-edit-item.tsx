@@ -13,7 +13,7 @@ import { selectSectionsAsOptions, selectSections } from 'selectors';
 import { valueOrDefault } from 'lib/sections';
 import IndicatorEditItem from './indicator-edit-item';
 import { useSelector, useDispatch } from 'react-redux';
-import { onSelectInterventionSection, onSelectIndicatorSection } from 'pages/close-summary/actions';
+import { onSelectInterventionSection, onSelectIndicatorSection } from 'pages/close-section/actions';
 import { Store } from 'slices/root-store';
 
 

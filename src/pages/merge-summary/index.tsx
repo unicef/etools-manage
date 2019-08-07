@@ -7,7 +7,7 @@ import { useAppService } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
 import { keys, isEmpty, prop, filter, compose, find, propEq, map } from 'ramda';
 import EntityConfigMapping from 'entities/config-map';
-import { MergeSectionsPayload, ZippedEntityResults, AllEntities, AllEntitiesProperties } from 'entities/types';
+import { MergeSectionsPayload, ZippedEntityResults } from 'entities/types';
 import { ConfirmButton, BackToMainButton } from 'components/buttons';
 import { SectionBox } from 'components/section-box';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,7 +15,6 @@ import { selectMergeSection, selectSections } from 'selectors';
 import { useReviewTableStyles } from 'components/modals/styles';
 import EntityChangesTable from 'components/entity-changes';
 import { isArrayOfObjects } from 'utils/helpers';
-import { ValueOf } from 'entities';
 
 
 // TODO: lazy load on route
@@ -33,6 +32,7 @@ const MergeSummaryPage: React.FC = () => {
     const dispatch = useDispatch();
     const mergedSection = useSelector(selectMergeSection);
     const [summary, setSummary] = useState();
+    console.log('TCL: MergeSummaryPage:React.FC -> summary', summary);
 
     const styles = useReviewTableStyles();
 
@@ -40,7 +40,6 @@ const MergeSummaryPage: React.FC = () => {
         const fetchSummary = async () => {
             const summary = await onFetchMergeSummary(service, selected as string, dispatch);
             setSummary(summary);
-            console.log('TCL: fetchSummary -> summary', summary);
         };
         fetchSummary();
     }, []);
@@ -116,9 +115,7 @@ const MergeSummaryPage: React.FC = () => {
                 (entity: keyof ZippedEntityResults) => {
                     return (
                         <EntityChangesTable
-                            // selectedSectionsIds={selectedSectionsIds}
                             key={entity as string}
-                            // newSectionName={newName as string}
                             // @ts-ignore
                             config={EntityConfigMapping[entity]} //TODO: fix this typing
                             getOldSections={getOldSections}

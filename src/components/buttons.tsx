@@ -26,7 +26,7 @@ export const useButtonStyles = makeStyles((theme: Theme) =>
 
 
 export interface ConfirmBtnProps {
-    onClick: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
+    onClick?: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
     children: React.ReactNode;
     color?: 'inherit' | 'primary' | 'secondary' | 'default';
     disabled?: boolean;

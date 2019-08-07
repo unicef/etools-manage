@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCloseSectionBackendPayload } from 'selectors/close-section-payload';
 import { ConfirmButton } from './buttons';
-import { onSubmitCloseSection } from 'pages/close-summary/actions';
+import { onSubmitCloseSection } from 'pages/close-section/actions';
 import { useAppService } from 'contexts/app';
 
 const ConnectedConfirmButton: React.FC = () => {
@@ -16,7 +16,7 @@ const ConnectedConfirmButton: React.FC = () => {
     };
 
     return (
-        <ConfirmButton onClick={handleSubmit}>Confirm</ConfirmButton>
+        <ConfirmButton onClick={handleSubmit}>Submit</ConfirmButton>
     );
 };
 

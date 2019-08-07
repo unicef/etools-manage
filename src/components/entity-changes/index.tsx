@@ -1,16 +1,13 @@
 
-import React, { useCallback } from 'react';
+import React from 'react';
 import { TableHead, TableRow, TableCell, Table, TableBody, Paper, TablePagination } from '@material-ui/core';
-import { keys, prop, map, filter, find, propEq, compose } from 'ramda';
+import { keys } from 'ramda';
 import { usePagination } from 'components/table';
 import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
-import { selectSections } from 'selectors';
 import { EntityTableHeadProps, EntityChangesTableProps } from 'pages/merge-summary/types';
 import { useReviewTableStyles } from 'components/modals/styles';
-import { useSelector } from 'react-redux';
-import { isArrayOfObjects } from 'utils/helpers';
 
 
 function EntityTableHead<T>({ entityConfig }: EntityTableHeadProps<T>) {
@@ -46,30 +43,8 @@ export default function EntityChangesTable<T>({ config, entity, getOldSections, 
         handleChangePage,
         handleChangeRowsPerPage } = usePagination();
 
-    // const sections = useSelector(selectSections);
     const entityIds = keys(entity);
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, entityIds.length - page * rowsPerPage);
-
-    // TODO: put inside selectors
-    // const getCorrespondingSection = useCallback(
-    //     item => {
-    //         console.log(item);
-    //         const { sectionsProp } = config;
-    //         const sectionsOfEntity = item[sectionsProp];
-    //         if (Array.isArray(sectionsOfEntity) && isArrayOfObjects(sectionsOfEntity)) {
-    //             return map(prop('name'), sectionsOfEntity.filter(({ id }) => selectedSections.includes(id)));
-    //         } else if (Array.isArray(sectionsOfEntity)) {
-    //             const idsOfSectionsChanging = filter((id: number) => selectedSections.includes(id), sectionsOfEntity);
-    //             return sections.filter(({ id }: {id: string}) => idsOfSectionsChanging.includes(id)).map(prop('name')).join(',');
-    //         } else if (typeof sectionsOfEntity === 'object') {
-    //             return sectionsOfEntity.name;
-    //         }
-    //         const sectionChangingName = compose(prop('name'), find(propEq('id', sectionsOfEntity)))(sections);
-
-    //         return sectionChangingName;
-    //     },
-    //     [sections],
-    // );
 
     return (
         <Paper className={styles.container}>
@@ -94,7 +69,6 @@ export default function EntityChangesTable<T>({ config, entity, getOldSections, 
                                             ({ label, propName }) => (
                                                 <TableCell
                                                     size="small"
-                                                    // classes={{ body: styles.cellStyle }}
                                                     className={
                                                         clsx(styles.cellStyle,
                                                             item[propName].length > MAX_CELL_WRAP_LENGTH ?
@@ -113,7 +87,7 @@ export default function EntityChangesTable<T>({ config, entity, getOldSections, 
                                         <TableCell
                                             align="right"
                                             classes={{ body: clsx(styles.cellStyle, styles.noWrap) }}
-                                        >{getNewSections(item)}</TableCell>
+                                        >{getNewSections(item, config.sectionsProp)}</TableCell>
                                     </TableRow>
                                 );
                             }

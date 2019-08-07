@@ -11,7 +11,7 @@ import { selectSectionsAsOptions } from 'selectors';
 import { includes } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { valueOrDefault } from 'lib/sections';
-import { onSelectTPMSections } from 'pages/close-summary/actions';
+import { onSelectTPMSections } from 'pages/close-section/actions';
 
 
 const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {

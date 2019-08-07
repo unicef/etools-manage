@@ -4,7 +4,7 @@ import { Location } from 'history';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Main from 'pages/sections-main';
 import MergeSummaryPage from 'pages/merge-summary';
-import CloseSummaryPage from 'pages/close-summary';
+import CloseSummaryPage from 'pages/close-section';
 
 // export type RouteProps = ReturnType<typeof Route>
 
@@ -15,6 +15,7 @@ export default function AppRouter() {
                 <Route exact path="/" component={Main} />
                 <Route path="/merge/" component={MergeSummaryPage} />
                 <Route path="/close/:id?" component={CloseSummaryPage} />
+
                 <Route component={NoMatch} />
             </Switch>
         </Router>
@@ -31,4 +32,3 @@ function NoMatch({ location }: {location: Location}) {
         </div>
     );
 }
-// (sections=?):sections?(&newName=?):newName?

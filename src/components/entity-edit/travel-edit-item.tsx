@@ -10,7 +10,7 @@ import { Dropdown, OptionType } from 'components/dropdown';
 import { selectSectionsAsOptions } from 'selectors';
 import { propEq, prop } from 'ramda';
 import { ValueType } from 'react-select/src/types';
-import { onSelectTravelSection } from 'pages/close-summary/actions';
+import { onSelectTravelSection } from 'pages/close-section/actions';
 import { getSelectedSection } from 'lib/sections';
 
 

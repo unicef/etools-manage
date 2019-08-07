@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import Box from 'components/box';
 import { KeyToEntityMap } from 'entities/types';
-import { CloseSectionsSummary } from './summary-container';
+import { CloseSectionsPage } from './close-section-page';
 import InterventionsEdit from 'components/entity-edit/interventions-edit';
 import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points-edit';
@@ -42,8 +42,9 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
             {
                 moduleEditingName && EditComponent ?
                     <EditComponent /> :
-                    closedSectionSuccess ? <CloseSectionSuccess/> :
-                        <CloseSectionsSummary sectionId={id}/>
+                    closedSectionSuccess ?
+                        <CloseSectionSuccess/> :
+                        <CloseSectionsPage sectionId={id}/>
             }
         </Box>
     );
@@ -53,3 +54,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
 export default CloseSummaryPage;
 
 
+// <Suspense fallback={<LoadingFallback/>}>
+// <ConnectedConfirmButton />
+// </Suspense>

@@ -12,6 +12,6 @@ interface EntityTableHeadProps<T> {
 export interface EntityChangesTableProps<T> {
     config: EntityConfig<T>;
     entity: Normalized<T>;
-    getOldSections: (item?: T, sectionsProp: string) => string;
-    getNewSections: (item?: T) => string;
+    getOldSections: (item: T, sectionsProp: string) => string;
+    getNewSections: (item: T, sectionsProp: string) => string;
 }

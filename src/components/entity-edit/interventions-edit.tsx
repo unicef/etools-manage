@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import EditWrapper from 'pages/close-summary/edit-wrapper';
+import EditWrapper from 'pages/close-section/edit-wrapper';
 import { InterventionEditItem } from './intervention-edit-item';
 import { selectInterventionIds } from 'selectors/interventions';
 import { useSelector } from 'react-redux';
