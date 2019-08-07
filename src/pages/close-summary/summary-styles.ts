@@ -27,9 +27,6 @@ export const useSummaryStyles = makeStyles((theme: Theme) =>
         subtitle: {
             marginRight: theme.spacing(2)
         },
-        progressBar: {
-            margin: `${theme.spacing(3)}px 0 ${theme.spacing(1)}px`
-        },
         moduleCell: {
             width: '35%',
             marginRight: theme.spacing(4)

@@ -1,8 +1,6 @@
 import React, { memo, useEffect, useState, lazy, Suspense } from 'react';
 import Box from 'components/box';
-import { createStyles, Theme, Typography, Paper, Container, LinearProgress, IconButton, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-
+import { Typography, Paper, Container, Button } from '@material-ui/core';
 import clsx from 'clsx';
 import { buildResolvedProgressString } from 'lib/sections';
 import { useAppService } from 'contexts/app';
@@ -14,28 +12,12 @@ import { selectNumItemsResolved, selectTotalProgress } from 'selectors/num-items
 import { keys, propEq, find, prop } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'components/loader';
-import { lighten } from '@material-ui/core/styles';
-import { useIconButtonStyles } from 'components/table/styles';
 import LoadingFallback from 'components/loading-fallback';
 import { useSummaryStyles } from './summary-styles';
 import { BackIconButton } from 'components/buttons';
+import ResolvedProgress from 'components/resolved-progress-bar';
 
 const ConnectedConfirmButton = lazy(() => import('components/connected-submit-payload-button'));
-
-
-const useProgressStyles = makeStyles((theme: Theme) => createStyles(
-    {
-        root: {
-            height: 10,
-            borderRadius: 8,
-            backgroundColor: lighten(theme.palette.secondary.main, 0.5)
-        },
-        bar: {
-            borderRadius: 20,
-            backgroundColor: theme.palette.secondary.main
-        }
-    }
-));
 
 export interface CloseSummaryProps {
     sectionId: string;
@@ -56,9 +38,13 @@ const useModulesSummary = (id: string) => {
     } = useAppService();
 
     const numResolvedByModule = useSelector(selectNumItemsResolved);
+
     const progress = useSelector(selectTotalProgress);
+
     const sections = useSelector(selectSections);
+
     const closeSectionPayload = useSelector(selectCloseSectionPayload);
+
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
 
     useEffect(() => {
@@ -100,7 +86,6 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
     const styles = useSummaryStyles();
 
     const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
-    const progressStyles = useProgressStyles();
     const hasData = Boolean(modulesData && modulesData.length);
 
 
@@ -140,17 +125,7 @@ export const CloseSectionsSummary: React.FC<CloseSummaryProps> = memo(({ section
                 {!hasData && <Typography className={styles.infoMsg} >No entities are affected by closing this section.</Typography>}
 
             </Paper>
-            {hasData && <Box column >
-                <LinearProgress
-                    classes={{ ...progressStyles }}
-                    className={styles.progressBar}
-                    variant="determinate"
-                    color="secondary"
-                    value={progress}
-                />
-                <Typography align="center">Resolved items progress {progress}%</Typography>
-            </Box>
-
+            {hasData && <ResolvedProgress progress={progress} />
             }
         </Container>
     );

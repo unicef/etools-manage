@@ -308,7 +308,6 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, la
         noSeparatorStyles,
         smallIndicatorStyles
     } = useDropdown();
-    console.log('DOISANE:D', otherProps);
 
     const dropdownStyles = { ...noSeparatorStyles, ...smallIndicatorStyles };
 

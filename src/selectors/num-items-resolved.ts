@@ -32,6 +32,10 @@ export const selectTotalProgress = createSelector<Store, number>(
     (...args: ResolvedRatio[]) => {
         const resolvedTotal = sum(map(prop('resolved'), args));
         const sumTotal = sum(map(prop('total'), args));
+
+        if (sumTotal === 0) {
+            return 0;
+        }
         return Math.round((resolvedTotal / sumTotal) * 100);
     }
 
