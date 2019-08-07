@@ -26,17 +26,13 @@ const InterventionsEdit: React.FC = memo(() => {
             {ids
                 .slice(page * EDIT_ITEMS_ROWS_PER_PAGE, page * EDIT_ITEMS_ROWS_PER_PAGE + EDIT_ITEMS_ROWS_PER_PAGE)
                 .map(
-                    (id: string) => {
-                        const Component = useMemo(
-                            () => (
-                                <InterventionEditItem
-                                    id={id}
-                                    key={id} />
-                            ), [id]
-                        );
-                        return Component;
-                    }
-                )}
+                    (id: string) => (
+                        <InterventionEditItem
+                            id={id}
+                            key={id} />
+                    )
+                )
+            }
 
             {ids.length > 10 && <TablePagination
                 rowsPerPageOptions={[]}
