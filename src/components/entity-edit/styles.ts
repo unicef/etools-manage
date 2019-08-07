@@ -51,7 +51,8 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             paddingBottom: theme.spacing(2)
         },
         indicator: {
-            padding: '6px 24px 6px 16px'
+            padding: '6px 24px 6px 16px',
+            minHeight: theme.spacing(8)
         },
         spacer: {
             width: 0,
@@ -74,6 +75,9 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
         },
         hideIcon: {
             visibility: 'hidden'
+        },
+        errorMsg: {
+            margin: `0 ${theme.spacing(1)}px`
         }
 
     })

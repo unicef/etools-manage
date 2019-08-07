@@ -36,6 +36,8 @@ const IndicatorEditItem: React.FC<IndicatorsProps> = memo(({ parentId, sectionOp
                         <Typography >{title}</Typography>
                         <Box className={clsx(styles.dropdown, styles.indicatorDropdown)}>
                             <Dropdown
+                                isDisabled={sectionOptions.length === 0}
+                                label={null}
                                 value={getValue(section)}
                                 onChange={onChange(idx)}
                                 options={sectionOptions}

@@ -203,13 +203,19 @@ const useDropdown = () => {
     }
 
     const selectStyles = {
-        input: (base: CSSProperties) => ({
+        input: (base: CSSProperties, state: any) => ({
             ...base,
             color: theme.palette.text.primary,
             '& input': {
                 font: 'inherit'
             }
         }),
+
+        container: (base: CSSProperties, state: any) => ({
+            ...base,
+            opacity: state.isDisabled ? 0.5 : 1
+        }),
+
 
         multiValue: (styles: CSSProperties) => {
             const color = chroma(theme.palette.secondary.main);
@@ -260,13 +266,14 @@ const useDropdown = () => {
 
 export interface DropdownProps {
     options?: OptionType[];
-    divider?: boolean;
+    label?: string | null;
     value?: OptionType | OptionType[] | null;
     onChange: ((value: ValueType<OptionType>) => void);
+    [prop: string]: any;
 }
 
 
-export const DropdownMulti: React.FC<DropdownProps> = memo(({ options, value, divider = false, onChange }) => {
+export const DropdownMulti: React.FC<DropdownProps> = memo(({ options, value, onChange, ...props }) => {
     const {
         selectStyles
     } = useDropdown();
@@ -291,16 +298,17 @@ export const DropdownMulti: React.FC<DropdownProps> = memo(({ options, value, di
                 value={value}
                 onChange={onChange}
                 isMulti
+                {...props}
             />
-            {divider && <div className={styles.divider} />}
         </div>);
 });
 
-export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, divider = false, ...otherProps }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, label = 'Section', ...otherProps }) => {
     const {
         noSeparatorStyles,
         smallIndicatorStyles
     } = useDropdown();
+    console.log('DOISANE:D', otherProps);
 
     const dropdownStyles = { ...noSeparatorStyles, ...smallIndicatorStyles };
 
@@ -312,11 +320,12 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, di
                 styles={dropdownStyles}
                 inputId="react-select-multi"
                 TextFieldProps={{
-                    label: 'Section',
+                    label,
                     InputLabelProps: {
                         htmlFor: 'react-select-multi',
                         shrink: true
                     }
+
 
                 }}
                 placeholder="Select section..."
@@ -326,6 +335,5 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, di
                 onChange={onChange}
                 {...otherProps}
             />
-            {divider && <div className={styles.divider} />}
         </div>);
 };

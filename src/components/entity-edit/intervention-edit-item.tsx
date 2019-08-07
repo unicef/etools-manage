@@ -143,6 +143,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
             {open && <div className={styles.collapseContent}>
                 <Box className={styles.containerPad} align="center">
                     <Typography ><i>Applied indicators</i></Typography>
+                    {!selectedSections.length && <Typography className={styles.errorMsg} color="error">You must select section(s) on PD/SSFA first. </Typography>}
                 </Box>
 
                 <div >
