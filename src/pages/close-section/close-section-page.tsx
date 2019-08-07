@@ -81,6 +81,7 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = memo(({ sectionId 
     } = useModulesSummary(sectionId);
     const progress = useSelector(selectTotalProgress);
 
+    // use ui slice to toggle view summary page or use router
     const [viewCloseSummary, setViewCloseSummary] = useState<boolean>(false);
     const styles = useSummaryStyles();
 
