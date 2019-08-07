@@ -8,10 +8,8 @@ import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
 import { SectionEntity } from 'entities/types';
 import { onSelectForMerge } from 'slices/modals';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectSections } from 'selectors';
-import { refreshSectionsList } from 'actions';
-import Section from 'entities/section-entity';
 
 
 if (process.env.NODE_ENV !== 'production') {

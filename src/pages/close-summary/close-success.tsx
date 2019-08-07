@@ -4,7 +4,7 @@ import { useSummaryStyles } from './summary-styles';
 import { useSelector } from 'react-redux';
 import { selectCurrentActiveSection, selectSections } from 'selectors';
 import { prop, propEq } from 'ramda';
-import { CloseButton } from 'components/buttons';
+import { BackToMainButton } from 'components/buttons';
 import Box from 'components/box';
 
 
@@ -20,7 +20,7 @@ const CloseSectionSuccess: React.FC = () => {
             <Paper>
                 <Typography className={styles.infoMsg}>Section {sectionName} successfully closed. </Typography>
                 <Box className={styles.itemSpacing} justify="center" >
-                    <CloseButton />
+                    <BackToMainButton >Close</BackToMainButton>
                 </Box>
             </Paper>
         </Container>

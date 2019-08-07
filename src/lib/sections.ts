@@ -39,3 +39,18 @@ export const valueOrDefault = cond([
 ]);
 
 export const getSelectedSection = (options: OptionType[], section: number) => options.find(propEq('value', section)) || null;
+
+export function isSectionsParamValid(str: string): boolean {
+    if (!str.length) {
+        return false;
+    }
+    const sections = str.split(',');
+    const sectionsStringValid = sections.reduce(
+        (acc, next): boolean => {
+            const sectionIdIsNumber = !isNaN(Number(next));
+            return sectionIdIsNumber && acc;
+        }, true);
+    return sectionsStringValid;
+}
+
+

@@ -59,7 +59,8 @@ export const BackIconButton = withRouter(({ history }) => {
     );
 });
 
-export const CloseButton = withRouter(({ history }) => {
+
+export const BackToMainButton = withRouter(({ history, children }) => {
     const dispatch = useDispatch();
 
     const handleClick = () => {
@@ -71,7 +72,9 @@ export const CloseButton = withRouter(({ history }) => {
         <Button
             variant="outlined"
             size="medium"
-            onClick={handleClick} >Close</Button>
+            onClick={handleClick}>
+            {children}
+        </Button>
     );
 });
 
