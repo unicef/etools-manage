@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import { useIconButtonStyles } from './table/styles';
 import { useDispatch } from 'react-redux';
 import { onSuccessCloseSection } from 'slices/root-store';
+import { refreshSectionsList } from 'actions';
 
 
 export const useButtonStyles = makeStyles((theme: Theme) =>
@@ -62,6 +63,7 @@ export const CloseButton = withRouter(({ history }) => {
     const dispatch = useDispatch();
 
     const handleClick = () => {
+        dispatch(refreshSectionsList());
         dispatch(onSuccessCloseSection(false));
         history.push('/');
     };

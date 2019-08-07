@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import EditWrapper from 'pages/close-summary/edit-wrapper';
 import { InterventionEditItem } from './intervention-edit-item';
 import { selectInterventionIds } from 'selectors/interventions';
@@ -18,7 +18,6 @@ const InterventionsEdit: React.FC = memo(() => {
         handleChangePage,
         handleChangeRowsPerPage
     } = usePagination();
-
 
     return (
         <EditWrapper title="Partnership Management Portal" resolved={buildResolvedProgressString(numResolved)}>

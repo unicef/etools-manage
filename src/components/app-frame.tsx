@@ -59,11 +59,16 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const userData: User = useContext(UserContext);
     const loading = useSelector(selectLoading);
     const error = useSelector(selectError);
+    const { sectionsService: service } = useAppService();
+    const dispatch = useDispatch();
 
     if (error) {
         throw error;
     }
 
+    useEffect(() => {
+        onGetSections(service, dispatch);
+    }, []);
 
     const styles = useStyles({});
 

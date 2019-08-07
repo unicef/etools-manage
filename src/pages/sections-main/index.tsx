@@ -29,9 +29,7 @@ const SectionsMainPage: React.FunctionComponent = () => {
     const [mergeActive, setMergeActive] = useState<boolean>(false);
 
     const modalsDispatch = useModalsDispatch();
-    const dispatch = useDispatch();
 
-    const mountedRef = useRef(false);
 
     const handleSearch = useCallback((str: string) => {
         const matching = filter(compose(includes(str.toLowerCase()), toLower, prop('name')));
@@ -41,16 +39,6 @@ const SectionsMainPage: React.FunctionComponent = () => {
     useEffect(() => {
         setFilteredSections(sections);
     }, [sections]);
-
-    useEffect((): () => void => {
-
-        if (!mountedRef.current) {
-            console.log('switching!');
-            dispatch(refreshSectionsList());
-            mountedRef.current = true;
-        }
-        return () => (mountedRef.current = false);
-    }, []);
 
     const onChangeSelected = useCallback((selected: string[]) => modalsDispatch(onSelectForMerge(selected)), []);
 

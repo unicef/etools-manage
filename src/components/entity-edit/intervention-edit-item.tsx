@@ -1,10 +1,10 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { InterventionEntity, SectionEntity, GenericMultiSectionPayload, EditItemProps, ModuleEntities } from 'entities/types';
+import { InterventionEntity, GenericMultiSectionPayload, EditItemProps, ModuleEntities } from 'entities/types';
 import { useEditItemStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { map, propEq, over, lensPath, always, filter, includes, prop, find, view, equals } from 'ramda';
+import { propEq, over, lensPath, always, includes, prop, find, view, equals } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
@@ -29,6 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
 export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     const styles = useEditItemStyles();
     const initialInterventionState = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).interventions[id]);
+    console.log('TCL: initialInterventionState', initialInterventionState);
     const allSections = useSelector(selectSections);
 
     const dispatch = useDispatch();
@@ -39,6 +40,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     const [open, setOpen] = useState<boolean>(false);
 
     const sectionsAsOptions = useSelector(selectSectionsAsOptions);
+    console.log('TCL: sectionsAsOptions', sectionsAsOptions);
 
     const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, interventionState.sections));
 
