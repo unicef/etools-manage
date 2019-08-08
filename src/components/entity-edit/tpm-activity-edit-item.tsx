@@ -7,8 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { OptionType, DropdownMulti } from 'components/dropdown';
-import { selectSectionsAsOptions, getSelectedOptions, selectExistingAsOptions, getOptionsWithoutExisting, getExistingSectionsStr } from 'selectors';
-import { includes } from 'ramda';
+import { getSelectedOptions, getOptionsWithoutExisting, getExistingSectionsStr } from 'selectors';
 import { ValueType } from 'react-select/src/types';
 import { valueOrDefault } from 'lib/sections';
 import { onSelectTPMSections } from 'pages/close-section/actions';
@@ -36,6 +35,7 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
             sections: selectedSectionIds,
             id
         };
+
         onSelectTPMSections(payload, dispatch);
     };
 

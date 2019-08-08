@@ -4,12 +4,12 @@ import { useEditItemStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { propEq, over, lensPath, always, includes, prop, find, view, equals, filter, without } from 'ramda';
+import { propEq, over, lensPath, always, prop, find, view, equals } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
 import clsx from 'clsx';
-import { selectSectionsAsOptions, selectSections, selectExistingAsOptions, getSelectedOptions, getOptionsWithoutExisting, getExistingSectionsStr } from 'selectors';
+import { selectSections, selectExistingAsOptions, getSelectedOptions, getOptionsWithoutExisting, getExistingSectionsStr } from 'selectors';
 import { valueOrDefault } from 'lib/sections';
 import IndicatorEditItem from './indicator-edit-item';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,14 +17,6 @@ import { onSelectInterventionSection, onSelectIndicatorSection } from 'pages/clo
 import { Store } from 'slices/root-store';
 import EntityConfigMapping from 'entities/config-map';
 
-
-if (process.env.NODE_ENV !== 'production') {
-    const whyDidYouRender = require('@welldone-software/why-did-you-render');
-    whyDidYouRender(React, {
-        onlyLogs: true,
-        titleColor: 'teal'
-    });
-}
 
 const indicatorsConfig = EntityConfigMapping.indicators;
 
@@ -132,6 +124,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
                     <Typography variant="subtitle2">{number}</Typography>
                     <Typography>{title}</Typography>
                 </Box>
+
                 <div className={clsx(styles.selectColumn)}>
                     { interventionState.existingSections.length ?
                         <Typography className={clsx(styles.secondaryHeading, styles.bottomMargin1)}
