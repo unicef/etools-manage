@@ -64,24 +64,25 @@ export interface IndicatorEntity {
     pk: number;
 }
 
-export interface InterventionEntity {
+export interface MultiSectionEntity {
+    sections: number[];
+    sections: number[];
+    existingSections: number[]; // we store sections that exist on the entity but cannot be removed at this property
+}
+export interface InterventionEntity extends MultiSectionEntity {
     id: number;
     number: string;
     title: string;
-    sections: number[];
-    existingSections: number[];
     indicators: IndicatorEntity[];
 }
 
-
-export interface TPMActivityEntity {
+export interface TPMActivityEntity extends MultiSectionEntity {
     id: number;
     reference_number: string;
     status: string;
     tpm_partner: {
         name: string;
     };
-    sections: SectionEntity[];
 }
 
 export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'sections'> & {sections: number[]}

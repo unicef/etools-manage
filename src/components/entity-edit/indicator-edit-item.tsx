@@ -4,7 +4,7 @@ import { OptionType, Dropdown } from 'components/dropdown';
 import { ValueType } from 'react-select/src/types';
 import { useEditItemStyles } from './styles';
 import { propEq, find } from 'ramda';
-import { Typography, Divider } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import Box from 'components/box';
 import clsx from 'clsx';
 import { selectInterventionsFromPayload } from 'selectors/interventions';

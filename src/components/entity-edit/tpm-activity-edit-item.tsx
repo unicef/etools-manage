@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { OptionType, DropdownMulti } from 'components/dropdown';
-import { selectSectionsAsOptions } from 'selectors';
+import { selectSectionsAsOptions, getSelectedOptions, selectExistingAsOptions, getOptionsWithoutExisting, getExistingSectionsStr } from 'selectors';
 import { includes } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { valueOrDefault } from 'lib/sections';
@@ -18,14 +18,16 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();
     const dispatch = useDispatch();
 
-    const sectionsAsOptions = useSelector(selectSectionsAsOptions);
     const {
         reference_number,
         tpm_partner,
-        sections
+        sections,
+        existingSections
     } = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).tpmActivities[id]);
 
-    const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, sections));
+    const selectedSections = useSelector(getSelectedOptions(sections));
+    const optionsWithoutExisting = useSelector(getOptionsWithoutExisting(existingSections));
+    const existingSectionsStr = useSelector(getExistingSectionsStr(existingSections));
 
     const onChange = (value: ValueType<OptionType>) => {
         const selectedSectionIds = valueOrDefault(value);
@@ -45,12 +47,21 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
                     <Typography>{tpm_partner.name}</Typography>
                 </Box>
 
-                <Box className={clsx(styles.dropdown)} >
-                    <DropdownMulti
-                        value={selectedSections}
-                        onChange={onChange}
-                        options={sectionsAsOptions}/>
-                </Box>
+                <div className={clsx(styles.selectColumn)}>
+                    { existingSections.length ?
+                        <Typography className={clsx(styles.secondaryHeading, styles.bottomMargin1)}
+                            variant="body2">
+                            <i>Existing sections: {existingSectionsStr}</i>
+                        </Typography>
+                        : null
+                    }
+                    <Box className={clsx(styles.dropdown)} >
+                        <DropdownMulti
+                            value={selectedSections}
+                            onChange={onChange}
+                            options={optionsWithoutExisting}/>
+                    </Box>
+                </div>
             </Box>
         </div>
     );

@@ -9,7 +9,7 @@ import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
 import clsx from 'clsx';
-import { selectSectionsAsOptions, selectSections } from 'selectors';
+import { selectSectionsAsOptions, selectSections, selectExistingAsOptions, getSelectedOptions, getOptionsWithoutExisting, getExistingSectionsStr } from 'selectors';
 import { valueOrDefault } from 'lib/sections';
 import IndicatorEditItem from './indicator-edit-item';
 import { useSelector, useDispatch } from 'react-redux';
@@ -41,18 +41,16 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 
     const [open, setOpen] = useState<boolean>(false);
 
-    const existingSectionsStr = allSections
-        .filter(section => interventionState.existingSections.includes(section.id))
-        .map(prop('name'))
-        .join(',');
+    const existingSectionsStr = getExistingSectionsStr(interventionState.existingSections);
 
-    const sectionsAsOptions: OptionType[] = useSelector(selectSectionsAsOptions);
-    const existingSectionsAsOptions = sectionsAsOptions.filter(({ value }) => includes(value, interventionState.existingSections));
+    const existingSectionsAsOptions = useSelector(selectExistingAsOptions(interventionState.existingSections));
 
-    const optionsWithoutExisting = without(existingSectionsAsOptions, sectionsAsOptions);
+    const optionsWithoutExisting = useSelector(getOptionsWithoutExisting(interventionState.existingSections));
 
-    const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, interventionState.sections));
+    const selectedSections = useSelector(getSelectedOptions(interventionState.sections));
+
     const indicatorOptions = selectedSections.concat(existingSectionsAsOptions);
+
     const numResolved = useCallback(() => {
         let total = 1;
         let resolved = 0;
