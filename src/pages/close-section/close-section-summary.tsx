@@ -39,12 +39,12 @@ const CloseSectionSummary: React.FC<CloseSectionSummaryProps> = ({ onCancel }) =
         const entitySection = prop(sectionsProp, item);
         if (Array.isArray(entitySection)) {
             const entitySectionNames = entitySection.map(
-                id => sections.find(propEq('id', id)).name
+                id => prop('name', sections.find(propEq('id', id)))
             );
             return entitySectionNames.join(',');
         }
 
-        return sections.find(propEq('id', entitySection)).name;
+        return prop('name', sections.find(propEq('id', entitySection)));
     };
 
     return (

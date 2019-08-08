@@ -13,7 +13,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             borderRadius: theme.spacing(1),
             backgroundColor: theme.palette.grey[100]
         },
-        editWrapper: {
+        bottomMargin1: {
             marginBottom: theme.spacing(1)
         },
         travel: {
@@ -59,8 +59,10 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             paddingRight: 40
         },
         dropdown: {
-            margin: `0 ${theme.spacing(2)}px`,
             minWidth: 335
+        },
+        selectColumn: {
+            margin: `0 ${theme.spacing(2)}px 0`
         },
         indicatorDropdown: {
             maxHeight: 32,
@@ -78,6 +80,9 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
         },
         errorMsg: {
             margin: `0 ${theme.spacing(1)}px`
+        },
+        secondaryHeading: {
+            fontSize: 12
         }
 
     })

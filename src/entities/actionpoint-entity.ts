@@ -22,13 +22,3 @@ export default class ActionPointConfig implements EntityConfig<ActionPointEntity
     }
 }
 
-
-export const actionPointsRemoveSection = (list: ActionPointEntity[], id: number) => map(
-    (actionPoint: ActionPointEntity) => {
-        const withoutSection = reject(propEq('id', id), actionPoint.section);
-        return ({
-            ...actionPoint,
-            section: withoutSection
-        });
-    }, list
-);

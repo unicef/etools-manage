@@ -10,6 +10,7 @@ import { SectionsService } from 'services/section';
 export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
     dispatch(updateCloseSectionPayload(null));
 };
+
 export const onFetchDataCloseSection = async (
     services: {backendService: BackendService; storageService: StorageService},
     payload: string, dispatch: Dispatch) => {
@@ -19,9 +20,11 @@ export const onFetchDataCloseSection = async (
     const { backendService, storageService } = services;
 
     const dataFromStorage = storageService.getStoredEntitiesData(`close_${payload}`);
-    let dataFromServer: Partial<ZippedEntityResults>;
 
     if (!dataFromStorage) {
+
+        let dataFromServer: Partial<ZippedEntityResults>;
+
         dispatch(onSetLoading(true));
         try {
             dataFromServer = await backendService.getEntitiesForClose(payload);

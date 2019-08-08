@@ -38,7 +38,7 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
     };
 
     return (
-        <div className={clsx(styles.editWrapper, styles.itemBorderWrap)}>
+        <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between" align="center">
                 <Box column >
                     <Typography className={styles.refNum} variant="subtitle2">{reference_number}</Typography>

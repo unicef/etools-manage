@@ -69,6 +69,7 @@ export interface InterventionEntity {
     number: string;
     title: string;
     sections: number[];
+    existingSections: number[];
     indicators: IndicatorEntity[];
 }
 

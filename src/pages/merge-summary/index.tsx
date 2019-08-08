@@ -68,7 +68,7 @@ const MergeSummaryPage: React.FC = () => {
                 return map(prop('name'), sectionsOfEntity.filter(({ id }) => selectedSectionsIds.includes(id)));
             } else if (Array.isArray(sectionsOfEntity)) {
                 const idsOfSectionsChanging = filter((id: number) => selectedSectionsIds.includes(id), sectionsOfEntity);
-                return sections.filter(({ id }: {id: string}) => idsOfSectionsChanging.includes(id)).map(prop('name')).join(',');
+                return sections.filter(({ id }: {id: number}) => idsOfSectionsChanging.includes(id)).map(prop('name')).join(',');
             } else if (typeof sectionsOfEntity === 'object') {
                 return prop('name', sectionsOfEntity);
             }

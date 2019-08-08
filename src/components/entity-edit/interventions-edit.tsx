@@ -13,7 +13,9 @@ import { customLabel } from 'components/table/table-utils';
 
 const InterventionsEdit: React.FC = memo(() => {
     const ids = useSelector(selectInterventionIds);
+
     const { interventions: numResolved } = useSelector(selectNumItemsResolved);
+
     const {
         page,
         handleChangePage,

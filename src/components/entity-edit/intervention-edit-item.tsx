@@ -4,7 +4,7 @@ import { useEditItemStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { propEq, over, lensPath, always, includes, prop, find, view, equals } from 'ramda';
+import { propEq, over, lensPath, always, includes, prop, find, view, equals, filter, without } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
@@ -15,6 +15,7 @@ import IndicatorEditItem from './indicator-edit-item';
 import { useSelector, useDispatch } from 'react-redux';
 import { onSelectInterventionSection, onSelectIndicatorSection } from 'pages/close-section/actions';
 import { Store } from 'slices/root-store';
+import EntityConfigMapping from 'entities/config-map';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -25,25 +26,33 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
+const indicatorsConfig = EntityConfigMapping.indicators;
+
 
 export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     const styles = useEditItemStyles();
     const initialInterventionState = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).interventions[id]);
-    console.log('TCL: initialInterventionState', initialInterventionState);
+
     const allSections = useSelector(selectSections);
 
     const dispatch = useDispatch();
-
 
     const [interventionState, setInterventionState] = useState<InterventionEntity>(initialInterventionState);
 
     const [open, setOpen] = useState<boolean>(false);
 
-    const sectionsAsOptions = useSelector(selectSectionsAsOptions);
-    console.log('TCL: sectionsAsOptions', sectionsAsOptions);
+    const existingSectionsStr = allSections
+        .filter(section => interventionState.existingSections.includes(section.id))
+        .map(prop('name'))
+        .join(',');
+
+    const sectionsAsOptions: OptionType[] = useSelector(selectSectionsAsOptions);
+    const existingSectionsAsOptions = sectionsAsOptions.filter(({ value }) => includes(value, interventionState.existingSections));
+
+    const optionsWithoutExisting = without(existingSectionsAsOptions, sectionsAsOptions);
 
     const selectedSections = sectionsAsOptions.filter((option: OptionType) => includes(option.value, interventionState.sections));
-
+    const indicatorOptions = selectedSections.concat(existingSectionsAsOptions);
     const numResolved = useCallback(() => {
         let total = 1;
         let resolved = 0;
@@ -108,6 +117,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     };
 
     const handleCollapse = () => setOpen(!open);
+
     const headingStyle = clsx(
         styles.collapsableHeading, styles.itemBorderWrap,
         styles.containerPad, open && styles.halfBorder);
@@ -124,38 +134,46 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
                     <Typography variant="subtitle2">{number}</Typography>
                     <Typography>{title}</Typography>
                 </Box>
-                <Box align="center">
-                    <Box className={styles.dropdown}>
-                        <DropdownMulti
-                            value={selectedSections}
-                            onChange={handleChangeInterventionSections}
-                            options={sectionsAsOptions}/>
-                    </Box>
+                <div className={clsx(styles.selectColumn)}>
+                    { interventionState.existingSections.length ?
+                        <Typography className={clsx(styles.secondaryHeading, styles.bottomMargin1)}
+                            variant="body2">
+                            <i>Existing sections: {existingSectionsStr}</i>
+                        </Typography>
+                        : null
+                    }
 
-                    <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography>
+                    <Box align="center">
+                        <Box className={styles.dropdown}>
+                            <DropdownMulti
+                                value={selectedSections}
+                                onChange={handleChangeInterventionSections}
+                                options={optionsWithoutExisting}/>
+                        </Box>
 
-                    <Box
-                        onClick={handleCollapse}
-                        className={clsx(styles.expand, !interventionState.indicators.length && styles.hideIcon)}
-                        align="center">
-                        {open ? <ExpandLess /> : <ExpandMore />}
+                        <Typography color="secondary" className={styles.numResolved}>{numResolved[0]}/{numResolved[1]}</Typography>
+
+                        <Box
+                            onClick={handleCollapse}
+                            className={clsx(styles.expand, !interventionState.indicators.length && styles.hideIcon)}
+                            align="center">
+                            {open ? <ExpandLess /> : <ExpandMore />}
+                        </Box>
                     </Box>
-                </Box>
+                </div>
             </Box>
             {open && <div className={styles.collapseContent}>
                 <Box className={styles.containerPad} align="center">
-                    <Typography ><i>Applied indicators</i></Typography>
-                    {!selectedSections.length && <Typography className={styles.errorMsg} color="error">You must select section(s) on PD/SSFA first. </Typography>}
+                    <Typography ><i>{indicatorsConfig.title}</i></Typography>
+                    {!indicatorOptions.length && <Typography className={styles.errorMsg} color="error">You must select section(s) on PD/SSFA first. </Typography>}
                 </Box>
 
-                <div >
-                    <IndicatorEditItem
-                        parentId={id}
-                        onChange={handleChangeIndicators}
-                        sectionOptions={selectedSections}
-                    />
+                <IndicatorEditItem
+                    parentId={id}
+                    onChange={handleChangeIndicators}
+                    sectionOptions={indicatorOptions}
+                />
 
-                </div>
             </div>}
         </div>
     );

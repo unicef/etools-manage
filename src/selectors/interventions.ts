@@ -59,7 +59,8 @@ export const interventionsWithoutCurrentSection = createSelector(
                 const res: InterventionEntity = ({
                     ...item,
                     indicators: removedSectionIndicators,
-                    sections: without([id], item.sections) as number[]
+                    sections: [],
+                    existingSections: without([id], item.sections) as number[]
                 });
 
                 return res;

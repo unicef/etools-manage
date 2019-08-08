@@ -43,7 +43,7 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
     };
 
     return (
-        <div className={clsx(styles.editWrapper, styles.itemBorderWrap)}>
+        <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between">
                 <Box column >
                     <Box>

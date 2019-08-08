@@ -12,7 +12,7 @@ export const selectModuleEditingName = createSelector(
     ['moduleEditingName'],
 );
 
-export const selectSections = createSelector(
+export const selectSections = createSelector<Store, SectionEntity[]>(
     ['sections'],
 );
 
