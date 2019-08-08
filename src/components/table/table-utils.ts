@@ -1,4 +1,5 @@
 import { Order } from './table';
+import { LabelDisplayedRowsArgs } from '@material-ui/core/TablePagination';
 
 export function stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
@@ -30,3 +31,5 @@ export function desc<T>(a: T, b: T, orderBy: keyof T) {
     }
     return 0;
 }
+
+export const customLabel = ({ from, to, count }: LabelDisplayedRowsArgs) => `Showing ${from}-${to} of ${count}`;

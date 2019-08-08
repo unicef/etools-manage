@@ -2,6 +2,7 @@ import { createSlice } from 'redux-starter-kit';
 import { SectionEntity, NewSectionFromMerged, ModuleEntities } from 'entities/types';
 import { selectWithoutCurrentSection } from 'selectors/filter-sections';
 import { refreshSectionsList } from 'actions';
+import { UIState } from 'global-types';
 
 export interface Store {
     sections: SectionEntity[];
@@ -13,6 +14,7 @@ export interface Store {
     moduleEditingName: keyof ModuleEntities | null;
     currentActiveSection: number | null;
     closedSectionSuccess: boolean;
+    ui: UIState;
 }
 
 export const initialState: Store = {
@@ -24,7 +26,10 @@ export const initialState: Store = {
     closeSectionPayload: null,
     moduleEditingName: null,
     currentActiveSection: null,
-    closedSectionSuccess: false
+    closedSectionSuccess: false,
+    ui: {
+        selectedMenuIdx: 0
+    }
 };
 
 // TODO: split up reducers using combineReducers
@@ -99,7 +104,9 @@ const storeSlice = createSlice({
         onUpdateTPMSections: (state, action) => {
             const { sections, id } = action.payload;
             (state.closeSectionPayload as ModuleEntities).tpmActivities[id].sections = sections;
-
+        },
+        onSelectMenuItem: (state, action) => {
+            state.ui.selectedMenuIdx = action.payload;
         }
     },
     extraReducers: {
@@ -124,6 +131,7 @@ export const {
     onUpdateTravelSection,
     onChangeInterventionSection,
     onUpdateActionPointSection,
+    onSelectMenuItem,
     onUpdateTPMSections,
     onUpdateInterventionIndicatorsState
 } = storeSlice.actions;

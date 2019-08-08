@@ -2,7 +2,7 @@
 import React from 'react';
 import { TableHead, TableRow, TableCell, Table, TableBody, Paper, TablePagination } from '@material-ui/core';
 import { keys } from 'ramda';
-import { usePagination } from 'components/table';
+import { usePagination } from 'components/table/use-paginator';
 import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';

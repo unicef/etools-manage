@@ -1,14 +1,15 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import EditWrapper from 'pages/close-section/edit-wrapper';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
-import { usePagination, customLabel } from 'components/table';
+import { usePagination } from 'components/table/use-paginator';
 import { buildResolvedProgressString } from 'lib/sections';
 import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
 import { TablePagination, Typography } from '@material-ui/core';
 import { selectTPMActivitiesIds } from 'selectors/tpm-activities';
 import { useEditItemStyles } from './styles';
 import TPMActivityEditItem from './tpm-activity-edit-item';
+import { customLabel } from 'components/table/table-utils';
 
 
 const TPMEdit: React.FC = memo(() => {
@@ -30,16 +31,12 @@ const TPMEdit: React.FC = memo(() => {
             {ids
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(
-                    (id: string) => {
-                        const Component = useMemo(
-                            () => (
-                                <TPMActivityEditItem
-                                    id={id}
-                                    key={id} />
-                            ), [id]
-                        );
-                        return Component;
-                    }
+                    (id: string) => (
+                        <TPMActivityEditItem
+                            id={id}
+                            key={id} />
+                    )
+
                 )}
 
             {ids.length > 10 && <TablePagination

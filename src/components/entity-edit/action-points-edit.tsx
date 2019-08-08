@@ -1,14 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { selectActionPointsIds } from 'selectors/action-points';
 import EditWrapper from 'pages/close-section/edit-wrapper';
 import { buildResolvedProgressString } from 'lib/sections';
-import { usePagination, customLabel } from 'components/table';
+import { usePagination } from 'components/table/use-paginator';
 import { TablePagination, Typography } from '@material-ui/core';
 import { useEditItemStyles } from './styles';
 import ActionPointEditItem from './action-point-edit-item';
+import { customLabel } from 'components/table/table-utils';
 
 const ActionPointsEdit: React.FC = () => {
     const ids = useSelector(selectActionPointsIds);
@@ -27,13 +28,12 @@ const ActionPointsEdit: React.FC = () => {
         {ids
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map(
-                (id: string) => useMemo(
-                    () => (
-                        <ActionPointEditItem
-                            id={id}
-                            key={id} />
-                    ), [id]
+                (id: string) => (
+                    <ActionPointEditItem
+                        id={id}
+                        key={id} />
                 )
+
             )}
 
         {ids.length > 10 && <TablePagination

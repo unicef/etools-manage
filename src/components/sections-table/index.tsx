@@ -15,7 +15,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import { Order, EnhancedTableHeadProps, TableToolbarProps, HeadRow } from '../table/table';
 import { SectionEntity } from 'entities/types';
-import { usePagination } from 'components/table';
+import { usePagination } from 'components/table/use-paginator';
 import { stableSort, getSorting } from 'components/table/table-utils';
 import { useTableStyles } from 'components/table/styles';
 import MoreActionsMenu from './more-actions-menu';
@@ -120,6 +120,7 @@ export interface SectionTableProps {
     onChangeSelected: (selected: string[]) => void;
 }
 
+
 const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive, onChangeSelected }) => {
     const styles = useTableStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
@@ -132,7 +133,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
         handleChangePage,
         handleChangeRowsPerPage,
         rowsPerPageOptions
-    } = usePagination();
+    } = usePagination(10);
 
     function handleRequestSort(event: React.MouseEvent<unknown>, property: keyof SectionEntity) {
         const isDesc = orderBy === property && order === 'desc';

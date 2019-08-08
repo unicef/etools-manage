@@ -13,6 +13,10 @@ export interface ProviderStore {
     children: ReactNode;
 }
 
+export interface UIState {
+    selectedMenuIdx: number;
+}
+
 export interface UserProfile {
 
     countries_available: {

@@ -52,8 +52,3 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
 
 
 export default CloseSummaryPage;
-
-
-// <Suspense fallback={<LoadingFallback/>}>
-// <ConnectedConfirmButton />
-// </Suspense>

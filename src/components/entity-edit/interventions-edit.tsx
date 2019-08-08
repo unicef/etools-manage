@@ -4,10 +4,11 @@ import { InterventionEditItem } from './intervention-edit-item';
 import { selectInterventionIds } from 'selectors/interventions';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
-import { usePagination, customLabel } from 'components/table';
+import { usePagination } from 'components/table/use-paginator';
 import { buildResolvedProgressString } from 'lib/sections';
 import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
 import { TablePagination } from '@material-ui/core';
+import { customLabel } from 'components/table/table-utils';
 
 
 const InterventionsEdit: React.FC = memo(() => {

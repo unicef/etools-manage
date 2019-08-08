@@ -1,14 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { selectTravelsIds } from 'selectors/travels';
 import EditWrapper from 'pages/close-section/edit-wrapper';
 import { buildResolvedProgressString } from 'lib/sections';
-import { usePagination, customLabel } from 'components/table';
+import { usePagination } from 'components/table/use-paginator';
 import { TablePagination, Typography } from '@material-ui/core';
 import TravelEditItem from './travel-edit-item';
 import { useEditItemStyles } from './styles';
+import { customLabel } from 'components/table/table-utils';
 
 const TravelsEdit: React.FC = () => {
     const ids = useSelector(selectTravelsIds);
@@ -27,12 +28,10 @@ const TravelsEdit: React.FC = () => {
         {ids
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map(
-                (id: string) => useMemo(
-                    () => (
-                        <TravelEditItem
-                            id={id}
-                            key={id} />
-                    ), [id]
+                (id: string) => (
+                    <TravelEditItem
+                        id={id}
+                        key={id} />
                 )
             )}
 
