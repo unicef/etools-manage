@@ -1,7 +1,7 @@
 
 import { AppState } from './lib/reducer';
 import { ReactNode, useState } from 'react';
-import { Store } from 'slices/root-store';
+import { Store } from 'store/root-store';
 import { Dispatch, DispatchAction } from 'global-types';
 
 import { PayloadAction, PayloadActionCreator } from 'redux-starter-kit';

@@ -1,11 +1,11 @@
 import { configureStore } from 'redux-starter-kit';
-
-
-import { errorMiddleware } from './error-middleware';
+import { combineReducers } from 'redux';
 import logger from 'redux-logger';
-import { rootReducer, Store } from 'slices/root-store';
+import { errorMiddleware } from './error-middleware';
+import { rootReducer, Store } from 'store/root-store';
 import storageMiddleware from './storage-middleware';
 import fetchLatestSectionsMiddleware from './latest-sections-middleware';
+import { closeSectionPayloadReducer } from 'store/close-section-slice';
 
 
 const middleware = [
@@ -15,13 +15,17 @@ const middleware = [
     logger
 ];
 
-export default function configureAppStore(preloadedState: Store) {
+const reducer = combineReducers({
+    closeSectionPayload: closeSectionPayloadReducer,
+    ...rootReducer
+});
+
+export default function configureAppStore() {
 
     const store = configureStore({
-        reducer: rootReducer,
+        reducer,
         middleware,
-        devTools: process.env.NODE_ENV !== 'production',
-        preloadedState
+        devTools: process.env.NODE_ENV !== 'production'
     });
 
     // @ts-ignore

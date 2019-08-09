@@ -5,7 +5,7 @@ import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
 import StorageService from 'services/storage';
-import { initialState } from 'slices/root-store';
+import { initialState } from 'store/root-store';
 import configureAppStore from 'lib/create-store';
 import { Provider } from 'react-redux';
 

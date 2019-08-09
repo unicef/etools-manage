@@ -13,8 +13,8 @@ import { setValueFromEvent } from 'utils';
 import { useAppService } from 'contexts/app';
 import { useAddSection } from 'entities/section-entity';
 import { SectionEntity } from 'entities/types';
-import { onToggleAddModal } from 'slices/modals';
-import { onResetCreatedSection } from 'slices/root-store';
+import { onToggleAddModal } from 'store/modals';
+import { onResetCreatedSection } from 'store/root-store';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLoading, selectCreatedSection } from 'selectors';
 

@@ -6,8 +6,8 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import { withRouter } from 'react-router';
 import { useIconButtonStyles } from './table/styles';
 import { useDispatch } from 'react-redux';
-import { onSuccessCloseSection } from 'slices/root-store';
 import { refreshSectionsList } from 'actions';
+import { onSuccessCloseSection } from 'store/root-store';
 
 
 export const useButtonStyles = makeStyles((theme: Theme) =>

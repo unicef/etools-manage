@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Box from 'components/box';
 import { IconButton, makeStyles, createStyles, Theme, Paper, Typography, Container } from '@material-ui/core';
-import { onSetModuleEditingName } from 'slices/root-store';
+import { onSetModuleEditingName } from 'store/root-store';
 import { useDispatch } from 'react-redux';
 import { useIconButtonStyles } from 'components/table/styles';
 

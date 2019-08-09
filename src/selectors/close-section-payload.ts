@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectSections, selectCurrentActiveSection } from 'selectors';
 import { CloseSectionBackendPayload, BackendEntityNames, ActionPointEntity, InterventionEntity, Normalized, TravelEntity, SectionEntity, FormattedTPMActivityEntity } from 'entities/types';
-import { Store } from 'slices/root-store';
+import { Store } from 'store/root-store';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
 import { selectTravelsFromPayload } from './travels';

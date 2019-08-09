@@ -2,7 +2,7 @@ import React from 'react';
 import { EditItemProps, ModuleEntities } from 'entities/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
-import { Store } from 'slices/root-store';
+import { Store } from 'store/root-store';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
