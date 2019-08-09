@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload } from 'selectors';
 import { ModuleEntities, ActionPointEntity } from 'entities/types';
-import { Store } from 'slices/root-store';
+import { Store } from 'store/root-store';
 import { prop, keys } from 'ramda';
 import { clearCurrentSection, getNumResolved } from 'lib/sections';
 

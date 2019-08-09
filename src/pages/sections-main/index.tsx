@@ -7,7 +7,7 @@ import SearchBar from 'components/search-bar';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
 import { SectionEntity } from 'entities/types';
-import { onSelectForMerge } from 'slices/modals';
+import { onSelectForMerge } from 'store/modals';
 import { useSelector } from 'react-redux';
 import { selectSections } from 'selectors';
 

@@ -4,7 +4,7 @@ import StorageService from 'services/storage';
 import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload, CloseSectionBackendPayload } from 'entities/types';
 
 import { Dispatch } from 'global-types';
-import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, updateCloseSectionPayload, onUpdateTPMSections, onSuccessCloseSection } from 'slices/root-store';
+import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, updateCloseSectionPayload, onUpdateTPMSections, onSuccessCloseSection } from 'store/root-store';
 import { SectionsService } from 'services/section';
 
 export const onResetCloseSectionPayload = (dispatch: Dispatch) => {

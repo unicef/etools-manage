@@ -1,9 +1,9 @@
 import { AppMiddleware } from 'global-types';
-import { onChangeInterventionSection, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections, onSuccessCloseSection, onUpdateInterventionIndicatorsState } from 'slices/root-store';
 import { includes } from 'ramda';
 import { prefixWithClose } from './sections';
 import StorageService, { Storage } from 'services/storage';
 import { ModuleEntities } from 'entities/types';
+import { onUpdateTravelSection, onChangeInterventionSection, onUpdateActionPointSection, onUpdateInterventionIndicatorsState, onUpdateTPMSections } from 'store/close-section-slice';
 
 const USER_SELECTION_ACTIONS = [
     onChangeInterventionSection.type,

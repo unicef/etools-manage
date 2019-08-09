@@ -14,7 +14,7 @@ import { valueOrDefault } from 'lib/sections';
 import IndicatorEditItem from './indicator-edit-item';
 import { useSelector, useDispatch } from 'react-redux';
 import { onSelectInterventionSection, onSelectIndicatorSection } from 'pages/close-section/actions';
-import { Store } from 'slices/root-store';
+import { Store } from 'store/root-store';
 import EntityConfigMapping from 'entities/config-map';
 
 

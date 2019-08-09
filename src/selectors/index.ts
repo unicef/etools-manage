@@ -1,5 +1,5 @@
 import { createSelector } from 'redux-starter-kit';
-import { Store } from 'slices/root-store';
+import { Store } from 'store/root-store';
 import { ModuleEntities, SectionEntity } from 'entities/types';
 import { propEq, reject, map, prop, includes, without } from 'ramda';
 import { OptionType } from 'components/dropdown';

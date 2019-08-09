@@ -5,7 +5,7 @@ import { getNumResolvedTravels } from './travels';
 import { createSelector } from 'redux-starter-kit';
 import { ResolvedRatio } from 'entities/types';
 import { sum, map, prop } from 'ramda';
-import { Store } from 'slices/root-store';
+import { Store } from 'store/root-store';
 
 export const selectNumItemsResolved = createSelector(
     [

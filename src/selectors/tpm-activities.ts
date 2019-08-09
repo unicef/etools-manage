@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
 import { TPMActivityEntity, SectionEntity, Normalized, ResolvedRatio, FormattedTPMActivityEntity } from 'entities/types';
-import { Store } from 'slices/root-store';
+import { Store } from 'store/root-store';
 import { prop, map, reject, propEq, reduce, keys } from 'ramda';
 
 

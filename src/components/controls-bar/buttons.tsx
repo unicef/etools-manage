@@ -7,7 +7,7 @@ import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
 // import { onToggleMergeModal, onToggleAddModal } from 'actions';
 import { ClickHandler } from 'global-types';
 import { useButtonStyles } from 'components/buttons';
-import { onToggleMergeModal, onToggleAddModal } from 'slices/modals';
+import { onToggleMergeModal, onToggleAddModal } from 'store/modals';
 
 
 export interface MergeButtonProps {
