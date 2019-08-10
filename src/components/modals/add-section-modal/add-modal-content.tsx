@@ -33,7 +33,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
         sectionInstance
     } = useAddSection();
 
-    const createdSection = { id: 25, name: 'Some new section' };
+    const createdSection = useSelector(selectCreatedSection);
 
     const handleSubmit = async() => {
         const error = await onSubmitCreateSection(service, sectionInstance.payload, dispatch);
