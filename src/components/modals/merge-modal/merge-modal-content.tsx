@@ -72,18 +72,13 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
             </ReviewBox>
 
             <FormControl
-                classes={{
-                    root: formStyles.formRoot
-                }}
                 error={Boolean(errorOnName.length)}>
 
-                <InputLabel
-                    className={formStyles.formLabel}
-                    shrink htmlFor="new-section-name">New section</InputLabel>
+
                 <Input
                     className={formStyles.input}
                     classes={{
-                        input: formStyles.inputHeight,
+                        input: formStyles.inputPad,
                         focused: formStyles.inputFocused
                     }}
                     disableUnderline

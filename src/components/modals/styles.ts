@@ -9,7 +9,8 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(2)
         },
         icon: {
-            fontSize: 24
+            fontSize: 24,
+            marginLeft: -10
         },
         subtitle: {
             fontWeight: 500,
@@ -26,31 +27,19 @@ export const useModalStyles = makeStyles((theme: Theme) =>
         entity: {
             color: blue[900]
         },
-        inputHeight: {
-            height: 'auto'
-        },
         input: {
-            fontSize: '0.875rem',
-            backgroundColor: '#f1f3f4',
-            color: theme.palette.text.secondary,
-            borderRadius: 4,
-            height: 'auto',
-            boxShadow: '0 0 0 2px transparent inset, 0 0 0 1px #e0e0e0 inset'
+            fontSize: '1.5rem',
+            height: 28,
+            paddingLeft: 0,
+            fontWeight: 400,
+            color: '#3c4043'
 
+        },
+        inputPad: {
         },
         inputFocused: {
             backgroundColor: theme.palette.primary.main,
             boxShadow: '0 0 0 2px transparent inset, 0 0 0 1px #e0e0e0 inset'
-
-        },
-        formRoot: {
-            '& label.Mui-focused': {
-                color: '#202124'
-            }
-        },
-        formLabel: {
-            color: theme.palette.text.primary,
-            marginBottom: theme.spacing(1)
         },
         confirmBtn: {
             width: 86,
