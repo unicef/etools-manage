@@ -1,5 +1,4 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
-import blue from '@material-ui/core/colors/blue';
 
 
 export const useModalStyles = makeStyles((theme: Theme) =>

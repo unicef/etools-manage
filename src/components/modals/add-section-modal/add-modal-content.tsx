@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, InputLabel, Input, FormControl, FormHelperText, Button, CircularProgress } from '@material-ui/core';
+import { Typography, InputLabel, Input, FormControl, FormHelperText, Button, CircularProgress, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import Box from 'components/box';
@@ -88,6 +88,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                     </Box>
             }
         </>
+
     );
 };
 

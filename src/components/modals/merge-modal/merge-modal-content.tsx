@@ -59,7 +59,6 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     return (
         <>
             <Box className={formStyles.header} align="center">
-                <MergeIcon color="inherit" className={formStyles.icon}/>
                 <Typography
                     className={formStyles.subtitle}
                     color="inherit"
@@ -78,7 +77,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                 <Input
                     className={formStyles.input}
                     classes={{
-                        input: formStyles.inputPad,
+                        input: formStyles.input,
                         focused: formStyles.inputFocused
                     }}
                     disableUnderline
