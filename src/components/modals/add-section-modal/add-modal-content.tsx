@@ -33,7 +33,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
         sectionInstance
     } = useAddSection();
 
-    const createdSection = useSelector(selectCreatedSection);
+    const createdSection = { id: 25, name: 'Some new section' };
 
     const handleSubmit = async() => {
         const error = await onSubmitCreateSection(service, sectionInstance.payload, dispatch);
@@ -103,15 +103,10 @@ const SuccessModalContent: React.FC<SuccessContentProps> = ({ section, onClose }
     return (
         <Box column>
             <Typography variant="h6">Section successfully added.</Typography>
-            <Box className={styles.summaryContainer} justify="between">
+            <Box className={styles.summaryContainer}>
                 <Box column>
-                    <Typography className={styles.subHeading} variant="subtitle1">Name</Typography>
+                    <Typography className={styles.subHeading} variant="body2">Name</Typography>
                     <Typography className={styles.entity} variant="body1">{section.name}</Typography>
-                </Box>
-
-                <Box column>
-                    <Typography className={styles.subHeading} variant="subtitle1">Id</Typography>
-                    <Typography className={styles.entity} variant="body1">{section.id}</Typography>
                 </Box>
 
             </Box>

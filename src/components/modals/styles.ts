@@ -8,10 +8,6 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.hint,
             marginBottom: theme.spacing(2)
         },
-        icon: {
-            fontSize: 24,
-            marginLeft: -10
-        },
         subtitle: {
             fontWeight: 500,
             fontSize: 14,
@@ -20,12 +16,15 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             paddingLeft: theme.spacing(1)
         },
         subHeading: {
-            fontSize: 12,
-            color: theme.palette.text.hint
-
+            fontSize: '.75rem',
+            fontWeight: 500,
+            color: theme.palette.action.active
         },
         entity: {
-            color: blue[900]
+            color: theme.palette.secondary.contrastText,
+            fontSize: '1.5rem',
+            fontWeight: 500,
+            lineHeight: '2rem'
         },
         input: {
             fontSize: '1.5rem',
@@ -33,9 +32,6 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             paddingLeft: 0,
             fontWeight: 400,
             color: '#3c4043'
-
-        },
-        inputPad: {
         },
         inputFocused: {
             backgroundColor: theme.palette.primary.main,
@@ -47,8 +43,10 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             color: theme.palette.primary.main
         },
         summaryContainer: {
-            backgroundColor: '#eee',
-            padding: theme.spacing(2)
+            marginTop: theme.spacing(2),
+            '& >*': {
+                paddingRight: theme.spacing(4)
+            }
         },
         closeBtn: {
             marginTop: theme.spacing(3),
