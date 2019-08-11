@@ -59,6 +59,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     return (
         <>
             <Box className={formStyles.header} align="center">
+                <MergeIcon color="inherit"/>
                 <Typography
                     className={formStyles.subtitle}
                     color="inherit"

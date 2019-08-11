@@ -25,6 +25,7 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             fontWeight: 500,
             lineHeight: '2rem'
         },
+
         input: {
             fontSize: '1.5rem',
             height: 28,
