@@ -2,10 +2,14 @@
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
 import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload, CloseSectionBackendPayload } from 'entities/types';
-
 import { Dispatch } from 'global-types';
-import { onSetLoading, onSetModuleEditingName, onCurrentActiveSection, onFetchForCloseSuccess, onFetchFromStorageSuccess, onThrowError, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, updateCloseSectionPayload, onUpdateTPMSections, onSuccessCloseSection } from 'store/root-store';
 import { SectionsService } from 'services/section';
+import { updateCloseSectionPayload, onFetchForCloseSuccess, onFetchFromStorageSuccess, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections } from 'reducers/close-section-payload';
+import { onCurrentActiveSection } from 'reducers/current-active-section';
+import { onSetLoading } from 'reducers/loading';
+import { onThrowError } from 'reducers/error';
+import { onSetModuleEditingName } from 'reducers/module-editing-name';
+import { onSuccessCloseSection } from 'reducers/closed-section-success';
 
 export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
     dispatch(updateCloseSectionPayload(null));

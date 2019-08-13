@@ -1,10 +1,10 @@
 
 import { AppState } from './lib/reducer';
 import { ReactNode, useState } from 'react';
-import { Store } from 'store/root-store';
 import { Dispatch, DispatchAction } from 'global-types';
 
 import { PayloadAction, PayloadActionCreator } from 'redux-starter-kit';
+import { FullStoreShape } from 'contexts/app';
 // Store
 export type BaseStoreShape = Store<AppState>
 
@@ -61,6 +61,6 @@ export type DispatchAction = PayloadAction<unknown, string> | PayloadActionCreat
 export type Dispatch = (action: DispatchAction) => void
 
 export type AppMiddleware = ({ getState }: {
-    getState: () => Store;
+    getState: () => FullStoreShape;
 }) => (dispatch: Dispatch) => (action: PayloadAction) => void
 

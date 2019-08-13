@@ -1,8 +1,8 @@
 import SectionsApiService, { SectionsService } from 'services/section';
 import { AppMiddleware } from 'global-types';
 import { ApiClient } from './http';
-import { onCreateSectionSuccess } from 'store/root-store';
 import { onGetSections, refreshSectionsList } from 'actions';
+import { onCreateSectionSuccess } from 'reducers/created-section';
 
 const fetchLatestSectionsMiddleware = (service: SectionsService): AppMiddleware => {
     return () => dispatch => action => {

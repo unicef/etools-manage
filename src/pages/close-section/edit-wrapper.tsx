@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Box from 'components/box';
 import { IconButton, makeStyles, createStyles, Theme, Paper, Typography, Container } from '@material-ui/core';
-import { onSetModuleEditingName } from 'store/root-store';
 import { useDispatch } from 'react-redux';
 import { useIconButtonStyles } from 'components/table/styles';
+import { onSetModuleEditingName } from 'reducers/module-editing-name';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

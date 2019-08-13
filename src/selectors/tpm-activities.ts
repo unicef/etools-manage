@@ -1,11 +1,11 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import { TPMActivityEntity, SectionEntity, Normalized, ResolvedRatio, FormattedTPMActivityEntity } from 'entities/types';
-import { Store } from 'store/root-store';
+import { TPMActivityEntity, Normalized, ResolvedRatio, FormattedTPMActivityEntity } from 'entities/types';
 import { prop, map, reject, propEq, reduce, keys } from 'ramda';
+import { FullStoreShape } from 'contexts/app';
 
 
-export const selectTPMFromPayload = createSelector<Store, Normalized<FormattedTPMActivityEntity>>(
+export const selectTPMFromPayload = createSelector<FullStoreShape, Normalized<FormattedTPMActivityEntity>>(
     [selectCloseSectionPayload],
     prop('tpmActivities')
 );

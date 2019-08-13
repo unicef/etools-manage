@@ -1,12 +1,9 @@
 import { configureStore } from 'redux-starter-kit';
-import { combineReducers } from 'redux';
 import logger from 'redux-logger';
 import { errorMiddleware } from './error-middleware';
-import { rootReducer, Store } from 'store/root-store';
 import storageMiddleware from './storage-middleware';
 import fetchLatestSectionsMiddleware from './latest-sections-middleware';
-import { closeSectionPayloadReducer } from 'store/close-section-slice';
-
+import reducer from 'reducers';
 
 const middleware = [
     fetchLatestSectionsMiddleware,
@@ -15,10 +12,6 @@ const middleware = [
     logger
 ];
 
-const reducer = combineReducers({
-    closeSectionPayload: closeSectionPayloadReducer,
-    ...rootReducer
-});
 
 export default function configureAppStore() {
 
@@ -31,7 +24,7 @@ export default function configureAppStore() {
     // @ts-ignore
     if (process.env.NODE_ENV !== 'production' && module.hot) {
         // @ts-ignore
-        module.hot.accept('slices/root-store', () => store.replaceReducer(rootReducer));
+        module.hot.accept('reducers', () => store.replaceReducer(reducer));
     }
     return store;
 }

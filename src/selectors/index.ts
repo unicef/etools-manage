@@ -1,11 +1,11 @@
 import { createSelector } from 'redux-starter-kit';
-import { Store } from 'store/root-store';
 import { ModuleEntities, SectionEntity } from 'entities/types';
 import { propEq, reject, map, prop, includes, without } from 'ramda';
 import { OptionType } from 'components/dropdown';
+import { FullStoreShape } from 'contexts/app';
 
 
-export const selectCloseSectionPayload = createSelector<Store, ModuleEntities>(
+export const selectCloseSectionPayload = createSelector<FullStoreShape, ModuleEntities>(
     ['closeSectionPayload'],
 );
 
@@ -13,8 +13,11 @@ export const selectModuleEditingName = createSelector(
     ['moduleEditingName'],
 );
 
-export const selectSections = createSelector<Store, SectionEntity[]>(
+export const selectSections = createSelector<FullStoreShape, SectionEntity[]>(
     ['sections'],
+    sections => {
+        return sections;
+    }
 );
 
 export const selectCurrentActiveSection = createSelector(
@@ -26,7 +29,7 @@ export const selectCurrentActiveSectionName = createSelector(
     (id: number, sections: SectionEntity[]) => prop('name', sections.find(propEq('id', id)))
 );
 
-export const selectSectionsAsOptions = createSelector<Store, OptionType[]>(
+export const selectSectionsAsOptions = createSelector<FullStoreShape, OptionType[]>(
     [selectSections, selectCurrentActiveSection],
     (sections, current) => {
         const sectionsWithoutCurrent = reject(propEq('id', current), sections);
