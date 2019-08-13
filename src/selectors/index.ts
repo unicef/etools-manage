@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-starter-kit';
 import { ModuleEntities, SectionEntity } from 'entities/types';
-import { propEq, reject, map, prop, includes, without } from 'ramda';
+import { propEq, reject, map, prop, includes, without, filter } from 'ramda';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
 
@@ -16,9 +16,15 @@ export const selectModuleEditingName = createSelector(
 export const selectSections = createSelector<FullStoreShape, SectionEntity[]>(
     ['sections'],
     sections => {
-        return sections;
+        const activeSection = propEq('active', true);
+        return filter(activeSection, sections);
     }
 );
+
+export const selectSectionsWithInactive = createSelector<FullStoreShape, SectionEntity[]>(
+    ['sections'],
+);
+
 
 export const selectCurrentActiveSection = createSelector(
     ['currentActiveSection']

@@ -3,9 +3,10 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core';
 
 export const useTableStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            width: '100%',
-            marginTop: theme.spacing(3)
+        toggleRow: {
+            marginTop: theme.spacing(3),
+            marginBottom: theme.spacing(1),
+            marginLeft: 0
         },
         paper: {
             width: '100%',

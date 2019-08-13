@@ -7,16 +7,18 @@ import { StateSetter } from 'global-types';
 export interface ControlsBarProps {
     mergeActive: boolean;
     setMergeActive: StateSetter;
+
 }
 
 export default function ControlsBar({ mergeActive, setMergeActive }: ControlsBarProps) {
-
     const handleToggleMerge = () => {
         setMergeActive(!mergeActive);
     };
 
     return (
         <Box align="center">
+
+
             { mergeActive ?
                 <ConfirmMergeButton /> :
                 <AddSectionButton />

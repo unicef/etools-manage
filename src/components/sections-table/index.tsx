@@ -73,8 +73,7 @@ export const EnhancedTableToolbar = ({ title, children, className }: TableToolba
 
 
 const headRows: HeadRow<SectionEntity>[] = [
-    { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
-    { id: 'id', numeric: true, disablePadding: false, label: 'Id' }
+    { id: 'name', numeric: false, disablePadding: true, label: 'Name' }
 ];
 
 export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<SectionEntity>) {
@@ -177,7 +176,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
-        <Paper className={clsx(styles.paper, styles.root)}>
+        <Paper className={clsx(styles.paper)}>
             <div className={styles.tableWrapper}>
                 <Table
                     className={styles.table}
@@ -219,9 +218,6 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
 
                                             <TableCell classes={{ root: styles.text }} component="th" id={labelId} scope="row" padding="none">
                                                 {row.name}
-                                            </TableCell>
-                                            <TableCell className={styles.tuck} align="right">
-                                                <Typography variant="body2">{row.id}</Typography>
                                             </TableCell>
                                             <TableCell align="right" classes={{ root: styles.actionCell }} >
                                                 <MoreActionsMenu rowId={row.id}/>
