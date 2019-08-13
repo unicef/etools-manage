@@ -24,8 +24,6 @@ export const onGetSections = async (service: SectionsService, dispatch: Dispatch
     }
 
     sections = sections.map(sectionWithNumberId);
-
-    dispatch(onSetLoading(false));
     dispatch(onGetSectionsSuccess(sections));
 };
 
@@ -47,7 +45,6 @@ export const onSubmitCreateSection = async(service: SectionsService, payload: Cr
     try {
         newSection = await service.createSection(payload);
     } catch (error) {
-        dispatch(onSetLoading(false));
         return error;
     }
     dispatch(onCreateSectionSuccess(newSection));
@@ -61,9 +58,7 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
     }
 
     dispatch(onSetLoading(true));
-
     let summary: NonEmptyEntityResults;
-
     try {
         summary = await service.getEntitiesForMerge(payload);
         dispatch(onSetLoading(false));

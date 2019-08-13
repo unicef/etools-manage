@@ -120,7 +120,6 @@ export interface SectionTableProps {
     onChangeSelected: (selected: string[]) => void;
 }
 
-
 const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive, onChangeSelected }) => {
     const styles = useTableStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
