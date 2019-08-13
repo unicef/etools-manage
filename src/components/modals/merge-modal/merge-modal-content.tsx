@@ -10,7 +10,7 @@ import { useModalStyles } from '../styles';
 import Box from 'components/box';
 import { useMergeState } from '.';
 import { SectionBox, ReviewBox } from 'components/section-box';
-import { onToggleMergeModal } from 'store/modals';
+import { onToggleMergeModal } from 'reducers/modals';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

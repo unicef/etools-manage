@@ -2,8 +2,8 @@ import { AppMiddleware } from 'global-types';
 import { includes } from 'ramda';
 import { prefixWithClose } from './sections';
 import StorageService, { Storage } from 'services/storage';
-import { ModuleEntities } from 'entities/types';
-import { onUpdateTravelSection, onChangeInterventionSection, onUpdateActionPointSection, onUpdateInterventionIndicatorsState, onUpdateTPMSections } from 'store/close-section-slice';
+import { onUpdateTravelSection, onChangeInterventionSection, onUpdateActionPointSection, onUpdateInterventionIndicatorsState, onUpdateTPMSections } from 'reducers/close-section-payload';
+import { onSuccessCloseSection } from 'reducers/closed-section-success';
 
 const USER_SELECTION_ACTIONS = [
     onChangeInterventionSection.type,
@@ -21,7 +21,7 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
 
         if (includes(action.type, USER_SELECTION_ACTIONS)) {
             const key = prefixWithClose((state.currentActiveSection as number).toString());
-            service.storeEntitiesData(key, state.closeSectionPayload as ModuleEntities);
+            service.storeEntitiesData(key, state.closeSectionPayload);
         }
         const sectionJustClosed = action.type === onSuccessCloseSection.type && action.payload === true;
 

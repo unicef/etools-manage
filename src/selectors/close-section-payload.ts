@@ -1,15 +1,15 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectSections, selectCurrentActiveSection } from 'selectors';
 import { CloseSectionBackendPayload, BackendEntityNames, ActionPointEntity, InterventionEntity, Normalized, TravelEntity, SectionEntity, FormattedTPMActivityEntity } from 'entities/types';
-import { Store } from 'store/root-store';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
 import { selectTravelsFromPayload } from './travels';
 import { selectActionPointsFromPayload } from './action-points';
 import { propEq, prop, keys } from 'ramda';
+import { FullStoreShape } from 'contexts/app';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
-export const getCloseSectionBackendPayload = createSelector<Store, CloseSectionBackendPayload >(
+export const getCloseSectionBackendPayload = createSelector<FullStoreShape, CloseSectionBackendPayload >(
     [selectActionPointsFromPayload, selectInterventionsFromPayload, selectTPMFromPayload, selectTravelsFromPayload, selectSections, selectCurrentActiveSection],
     (actionPoints: Normalized<ActionPointEntity>,
         interventions: Normalized<InterventionEntity>,

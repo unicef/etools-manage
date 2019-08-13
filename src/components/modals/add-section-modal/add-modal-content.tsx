@@ -13,10 +13,10 @@ import { setValueFromEvent } from 'utils';
 import { useAppService } from 'contexts/app';
 import { useAddSection } from 'entities/section-entity';
 import { SectionEntity } from 'entities/types';
-import { onToggleAddModal } from 'store/modals';
-import { onResetCreatedSection } from 'store/root-store';
+import { onToggleAddModal } from 'reducers/modals';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLoading, selectCreatedSection } from 'selectors';
+import { onResetCreatedSection } from 'reducers/created-section';
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles({});
@@ -134,12 +134,12 @@ const SuccessModalContent: React.FC<SuccessContentProps> = ({ section, onClose }
 
 export default function AddSectionModal() {
     const { addModalOpen } = useModalsState();
-    const dispatch = useModalsDispatch();
-    const appDispatch = useDispatch();
+    const modalDispatch = useModalsDispatch();
+    const dispatch = useDispatch();
 
     const handleClose = () => {
-        dispatch(onToggleAddModal());
-        appDispatch(onResetCreatedSection());
+        modalDispatch(onToggleAddModal());
+        dispatch(onResetCreatedSection());
     };
 
     return (

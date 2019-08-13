@@ -2,7 +2,6 @@ import React from 'react';
 import { EditItemProps, ModuleEntities } from 'entities/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
-import { Store } from 'store/root-store';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
@@ -12,6 +11,7 @@ import { prop } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { onSelectActionPointSection } from 'pages/close-section/actions';
 import { getSelectedSection } from 'lib/sections';
+import { FullStoreShape } from 'contexts/app';
 
 
 const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
@@ -24,7 +24,7 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
         reference_number,
         description,
         section
-    } = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).actionPoints[id]);
+    } = useSelector((state: FullStoreShape) => state.closeSectionPayload.actionPoints[id]);
 
     const selectedSection = getSelectedSection(sectionsAsOptions, section);
 

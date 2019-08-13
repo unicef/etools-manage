@@ -5,7 +5,7 @@ import { getNumResolvedTravels } from './travels';
 import { createSelector } from 'redux-starter-kit';
 import { ResolvedRatio } from 'entities/types';
 import { sum, map, prop } from 'ramda';
-import { Store } from 'store/root-store';
+import { FullStoreShape } from 'contexts/app';
 
 export const selectNumItemsResolved = createSelector(
     [
@@ -22,7 +22,7 @@ export const selectNumItemsResolved = createSelector(
 
 );
 
-export const selectTotalProgress = createSelector<Store, number>(
+export const selectTotalProgress = createSelector<FullStoreShape, number>(
     [
         getNumResolvedInterventions,
         getNumResolvedTravels,

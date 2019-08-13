@@ -3,10 +3,14 @@ import { SectionsService } from 'services/section';
 import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService } from 'services/backend';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
-import { onSetLoading, onGetSectionsSuccess, onSetMergedSection, onCreateSectionSuccess, onThrowError } from 'store/root-store';
 import { Dispatch } from 'global-types';
 import { createAction } from 'redux-starter-kit';
 import { isSectionsParamValid } from 'lib/sections';
+import { onSetLoading } from 'reducers/loading';
+import { onGetSectionsSuccess } from 'reducers/sections';
+import { onSetMergedSection } from 'reducers/merged-section';
+import { onThrowError } from 'reducers/error';
+import { onCreateSectionSuccess } from 'reducers/created-section';
 
 export const refreshSectionsList = createAction('refreshSectionsList');
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { EditItemProps, ModuleEntities } from 'entities/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
-import { Store } from 'store/root-store';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
@@ -11,6 +10,7 @@ import { getSelectedOptions, getOptionsWithoutExisting, getExistingSectionsStr }
 import { ValueType } from 'react-select/src/types';
 import { valueOrDefault } from 'lib/sections';
 import { onSelectTPMSections } from 'pages/close-section/actions';
+import { FullStoreShape } from 'contexts/app';
 
 
 const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
@@ -22,7 +22,7 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
         tpm_partner,
         sections,
         existingSections
-    } = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).tpmActivities[id]);
+    } = useSelector((state: FullStoreShape) => state.closeSectionPayload.tpmActivities[id]);
 
     const selectedSections = useSelector(getSelectedOptions(sections));
     const optionsWithoutExisting = useSelector(getOptionsWithoutExisting(existingSections));

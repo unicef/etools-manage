@@ -14,8 +14,8 @@ import { valueOrDefault } from 'lib/sections';
 import IndicatorEditItem from './indicator-edit-item';
 import { useSelector, useDispatch } from 'react-redux';
 import { onSelectInterventionSection, onSelectIndicatorSection } from 'pages/close-section/actions';
-import { Store } from 'store/root-store';
 import EntityConfigMapping from 'entities/config-map';
+import { FullStoreShape } from 'contexts/app';
 
 
 const indicatorsConfig = EntityConfigMapping.indicators;
@@ -23,7 +23,7 @@ const indicatorsConfig = EntityConfigMapping.indicators;
 
 export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     const styles = useEditItemStyles();
-    const initialInterventionState = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).interventions[id]);
+    const initialInterventionState = useSelector((state: FullStoreShape) => state.closeSectionPayload.interventions[id]);
 
     const allSections = useSelector(selectSections);
 
