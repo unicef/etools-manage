@@ -39,6 +39,11 @@ export const useTableStyles = makeStyles((theme: Theme) =>
         },
         tuck: {
             paddingRight: 0
+        },
+        rowDisabled: {
+            opacity: 0.5,
+            cursor: 'default',
+            pointerEvents: 'none'
         }
     }),
 );

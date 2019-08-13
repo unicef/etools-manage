@@ -19,6 +19,7 @@ import { usePagination } from 'components/table/use-paginator';
 import { stableSort, getSorting } from 'components/table/table-utils';
 import { useTableStyles } from 'components/table/styles';
 import MoreActionsMenu from './more-actions-menu';
+import { ListItem } from '@material-ui/core';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -200,6 +201,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
 
                                     return (
                                         <TableRow
+                                            className={clsx(row.active === false && styles.rowDisabled)}
                                             hover
                                             role="checkbox"
                                             aria-checked={isItemSelected}
@@ -208,6 +210,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                             selected={isItemSelected}
                                             onClick={event => handleClick(event, String(row.id))}
                                         >
+                                            {/* <ListItem> */}
                                             <TableCell padding="checkbox">
                                                 {mergeActive && <Checkbox
                                                     checked={isItemSelected}
@@ -216,12 +219,13 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
                                                 />}
                                             </TableCell>
 
-                                            <TableCell classes={{ root: styles.text }} component="th" id={labelId} scope="row" padding="none">
+                                            <TableCell classes={{ root: styles.text }} id={labelId} scope="row" padding="none">
                                                 {row.name}
                                             </TableCell>
                                             <TableCell align="right" classes={{ root: styles.actionCell }} >
                                                 <MoreActionsMenu rowId={row.id}/>
                                             </TableCell>
+                                            {/* </ListItem> */}
                                         </TableRow>
                                     );
                                 })}
