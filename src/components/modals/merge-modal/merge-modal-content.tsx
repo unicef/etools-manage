@@ -59,7 +59,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     return (
         <>
             <Box className={formStyles.header} align="center">
-                <MergeIcon color="inherit" className={formStyles.icon}/>
+                <MergeIcon color="inherit"/>
                 <Typography
                     className={formStyles.subtitle}
                     color="inherit"
@@ -72,18 +72,13 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
             </ReviewBox>
 
             <FormControl
-                classes={{
-                    root: formStyles.formRoot
-                }}
                 error={Boolean(errorOnName.length)}>
 
-                <InputLabel
-                    className={formStyles.formLabel}
-                    shrink htmlFor="new-section-name">New section</InputLabel>
+
                 <Input
                     className={formStyles.input}
                     classes={{
-                        input: formStyles.inputHeight,
+                        input: formStyles.input,
                         focused: formStyles.inputFocused
                     }}
                     disableUnderline

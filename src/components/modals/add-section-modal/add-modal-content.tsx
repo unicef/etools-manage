@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, InputLabel, Input, FormControl, FormHelperText, Button, CircularProgress } from '@material-ui/core';
+import { Typography, InputLabel, Input, FormControl, FormHelperText, Button, CircularProgress, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import Box from 'components/box';
@@ -55,36 +55,25 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     return (
         <>
-            <Box className={styles.header} align="center">
-                <AddIcon color="inherit" className={styles.icon}/>
-                <Box><Typography
-                    className={styles.subtitle}
-                    color="inherit"
-                    variant="subtitle1">Add new section</Typography></Box>
-            </Box>
+            <Box className={styles.header} align="center" />
             {
                 createdSection ?
                     <SuccessModalContent section={createdSection} onClose={onClose} />
 
-                    : <>
+                    : <Box column>
                         <FormControl
-                            classes={{
-                                root: styles.formRoot
-                            }}
                             error={Boolean(errorOnName.length)}>
 
-                            <InputLabel
+                            {/* <InputLabel
                                 className={styles.formLabel}
-                                shrink htmlFor="new-section-name">New section</InputLabel>
+                                shrink htmlFor="new-section-name">New section</InputLabel> */}
                             <Input
                                 id="new-section-name"
-                                className={styles.input}
+                                // className={styles.input}
                                 classes={{
-                                    input: styles.inputHeight,
-                                    focused: styles.inputFocused
+                                    input: styles.input
                                 }}
-                                disableUnderline
-                                placeholder="Enter new section name"
+                                placeholder="Add new section"
                                 value={name}
                                 onChange={setValueFromEvent(setName)}
                                 onBlur={handleValidateSection}
@@ -96,9 +85,10 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                             <Button onClick={onClose}>Cancel</Button>
                             <SubmitButton />
                         </Box>
-                    </>
+                    </Box>
             }
         </>
+
     );
 };
 
@@ -114,15 +104,10 @@ const SuccessModalContent: React.FC<SuccessContentProps> = ({ section, onClose }
     return (
         <Box column>
             <Typography variant="h6">Section successfully added.</Typography>
-            <Box className={styles.summaryContainer} justify="between">
+            <Box className={styles.summaryContainer}>
                 <Box column>
-                    <Typography className={styles.subHeading} variant="subtitle1">Name</Typography>
+                    <Typography className={styles.subHeading} variant="body2">Name</Typography>
                     <Typography className={styles.entity} variant="body1">{section.name}</Typography>
-                </Box>
-
-                <Box column>
-                    <Typography className={styles.subHeading} variant="subtitle1">Id</Typography>
-                    <Typography className={styles.entity} variant="body1">{section.id}</Typography>
                 </Box>
 
             </Box>
