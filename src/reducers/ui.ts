@@ -14,15 +14,16 @@ export const ui = createSlice({
         setCloseSectionActionBar: (state, action) => {
             state.closeSectionActionBar = action.payload;
         },
-        reviewSelected: (state, action) => {
-            state.viewCloseSummary = true;
+        onSetViewCloseSummary: (state, action) => {
+            state.viewCloseSummary = action.payload;
+
         }
     }
 });
 export const {
     onSelectMenuItem,
     setCloseSectionActionBar,
-    reviewSelected
+    onSetViewCloseSummary
 } = ui.actions;
 export const { reducer: uiReducer } = ui;
 

@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import Box from 'components/box';
-import { BackToMainButton, ConfirmButton } from 'components/buttons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectCloseSectionPayload, selectCurrentActiveSectionName, selectSections } from 'selectors';
 import { keys, prop, propEq } from 'ramda';
 import { ModuleEntities, IndicatorEntity, AllEntities } from 'entities/types';
@@ -9,17 +8,20 @@ import EntityChangesTable from 'components/entity-changes';
 import EntityConfigMapping from 'entities/config-map';
 import LoadingFallback from 'components/loading-fallback';
 import { Button } from '@material-ui/core';
-import { ClickHandler } from 'global-types';
+import { onSelectHideReview } from './actions';
+
 const ConnectedConfirmButton = lazy(() => import('components/connected-submit-payload-button'));
 
 
-export interface CloseSectionSummaryProps {
-    onCancel: ClickHandler;
-}
-const CloseSectionSummary: React.FC<CloseSectionSummaryProps> = ({ onCancel }) => {
+const CloseSectionSummary: React.FC = () => {
     const closeSectionPayload = useSelector(selectCloseSectionPayload);
     const oldSectionName = useSelector(selectCurrentActiveSectionName);
     const sections = useSelector(selectSections);
+    const dispatch = useDispatch();
+
+    const onCancel = () => {
+        onSelectHideReview(dispatch);
+    };
 
     const ConfirmBox = () => (
         <Box align="center">

@@ -51,8 +51,11 @@ const useModulesSummary = () => {
     const setActionBarPayload = useSelector(deriveCloseSectionActionBar);
 
     useEffect(() => {
+        onSetActionBar(dispatch, setActionBarPayload);
+    }, [setActionBarPayload]);
+
+    useEffect(() => {
         if (closeSectionPayload) {
-            onSetActionBar(dispatch, setActionBarPayload);
             console.log('closesecitonpayload');
             setModulesData(
                 keys(closeSectionPayload).map(
@@ -89,8 +92,8 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) =>
 
     const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
 
-
     const actionBar = useSelector(selectCloseSectionActionBar);
+
     const viewCloseSummary = useSelector(selectViewCloseSummary);
 
     const ActionBar = ActionBarMapping[actionBar];
@@ -100,7 +103,7 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) =>
             {ActionBar ? <ActionBar/> : null}
             {
                 viewCloseSummary ?
-                    <CloseSectionSummary onCancel={() => null}/> :
+                    <CloseSectionSummary/> :
                     <ModulesSummary modulesData={modulesData} closingSection={closingSection}/>
             }
 

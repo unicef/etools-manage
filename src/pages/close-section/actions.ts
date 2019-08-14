@@ -12,7 +12,7 @@ import { onSetModuleEditingName } from 'reducers/module-editing-name';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
 import { getCloseSectionPrefixKey } from 'lib/sections';
 import { ActionBarKeys } from './types';
-import { setCloseSectionActionBar, reviewSelected } from 'reducers/ui';
+import { setCloseSectionActionBar, onSetViewCloseSummary } from 'reducers/ui';
 
 export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
     dispatch(updateCloseSectionPayload(null));
@@ -84,10 +84,15 @@ export const onSubmitCloseSection = async (service: SectionsService, payload: Cl
     dispatch(onSuccessCloseSection());
 };
 
-export const onSetActionBar = (dispatch: Dispatch, payload: ActionBarKeys) => {
+export const onSetActionBar = (dispatch: Dispatch, payload: ActionBarKeys | '') => {
+    console.log('setting action bar', payload);
+
     dispatch(setCloseSectionActionBar(payload));
 };
 
 export const onSelectShowReview = (dispatch: Dispatch) => {
-    dispatch(reviewSelected());
+    dispatch(onSetViewCloseSummary(true));
+};
+export const onSelectHideReview = (dispatch: Dispatch) => {
+    dispatch(onSetViewCloseSummary(false));
 };
