@@ -14,9 +14,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 import { User } from 'global-types';
-import { UserContext } from '../contexts/user';
+// import { UserContext } from '../contexts/user';
 import { useAppService } from 'contexts/app';
-import { onGetSections } from 'actions';
+import { onGetSections, fetchUserProfile } from 'actions';
 import { Modals } from 'contexts/page-modals';
 import Loader from './loader';
 import { Link, IconButton, Drawer, useTheme, Divider, List } from '@material-ui/core';
@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectLoading, selectError } from 'selectors';
 import { DRAWER_WIDTH } from 'global-constants';
 import { selectMenuItem } from 'selectors/ui';
+import { selectUserProfile } from 'selectors/user';
 
 const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
@@ -102,7 +103,7 @@ export interface AppFrameProps{
 }
 
 const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
-    const userData: User = useContext(UserContext);
+    const userData: User = useSelector(selectUserProfile);
     const [open, setOpen] = React.useState<boolean>(false);
 
     const selectedIndex = useSelector(selectMenuItem);
@@ -117,6 +118,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 
     useEffect(() => {
         onGetSections(service, dispatch);
+        fetchUserProfile(dispatch);
     }, []);
 
     function handleDrawerOpen() {

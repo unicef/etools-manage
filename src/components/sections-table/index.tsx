@@ -19,7 +19,6 @@ import { usePagination } from 'components/table/use-paginator';
 import { stableSort, getSorting } from 'components/table/table-utils';
 import { useTableStyles } from 'components/table/styles';
 import MoreActionsMenu from './more-actions-menu';
-import { ListItem } from '@material-ui/core';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -73,13 +72,13 @@ export const EnhancedTableToolbar = ({ title, children, className }: TableToolba
 };
 
 
-const headRows: HeadRow<SectionEntity>[] = [
+const headRows: HeadRow<SectionOrderby>[] = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Name' }
 ];
 
-export function EnhancedTableHead<SectionEntity>(props: EnhancedTableHeadProps<SectionEntity>) {
+export function EnhancedTableHead<SectionOrderby>(props: EnhancedTableHeadProps<SectionOrderby>) {
     const { order, orderBy, onRequestSort } = props;
-    const createSortHandler = (property: keyof SectionEntity) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof SectionOrderby) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
     };
     const styles = useTableStyles({});
@@ -119,12 +118,13 @@ export interface SectionTableProps {
     mergeActive: boolean;
     onChangeSelected: (selected: string[]) => void;
 }
+type SectionOrderby = Omit<SectionEntity, 'active'>;
 
-const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive, onChangeSelected }) => {
+const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onChangeSelected }) => {
     const styles = useTableStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
-    const [orderBy, setOrderBy] = React.useState<keyof SectionEntity>('name');
+    const [orderBy, setOrderBy] = React.useState<keyof SectionOrderby >('name');
     const [selected, setSelected] = React.useState<string[]>([]);
     const {
         page,
@@ -134,7 +134,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows = [], mergeActive
         rowsPerPageOptions
     } = usePagination(10);
 
-    function handleRequestSort(event: React.MouseEvent<unknown>, property: keyof SectionEntity) {
+    function handleRequestSort(event: React.MouseEvent<unknown>, property: keyof SectionOrderby) {
         const isDesc = orderBy === property && order === 'desc';
         setOrder(isDesc ? 'asc' : 'desc');
         setOrderBy(property);

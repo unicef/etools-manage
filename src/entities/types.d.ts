@@ -89,6 +89,7 @@ export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'sections'> & {
 export interface SectionEntity {
     id: number ;
     name: string;
+    active: boolean;
 }
 
 export interface CreateSectionPayload {

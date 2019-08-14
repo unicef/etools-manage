@@ -14,9 +14,7 @@ const fetchLatestSectionsMiddleware = (service: SectionsService): AppMiddleware 
             onGetSections(service, dispatch);
         }
 
-
     };
 };
-
 
 export default fetchLatestSectionsMiddleware(new SectionsApiService(new ApiClient()));

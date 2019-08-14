@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState, lazy, Suspense } from 'react';
+import React, { memo, useEffect, useState, lazy, Suspense, useCallback, useRef } from 'react';
 import Box from 'components/box';
 import { Typography, Paper, Container, Button } from '@material-ui/core';
 import clsx from 'clsx';
@@ -17,7 +17,9 @@ import { BackIconButton, ConfirmButton } from 'components/buttons';
 import ResolvedProgress from 'components/resolved-progress-bar';
 import CloseSectionSummary from './close-section-summary';
 import LoadingFallback from 'components/loading-fallback';
+
 const ConnectedConfirmButton = lazy(() => import('components/connected-submit-payload-button'));
+
 
 export interface CloseSummaryProps {
     sectionId: string;
@@ -38,6 +40,7 @@ const useModulesSummary = (id: string) => {
     } = useAppService();
 
     const numResolvedByModule = useSelector(selectNumItemsResolved);
+    console.log('TCL: useModulesSummary -> numResolvedByModule', numResolvedByModule);
 
 
     const sections = useSelector(selectSections);
@@ -46,14 +49,15 @@ const useModulesSummary = (id: string) => {
 
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
 
+
     useEffect(() => {
         onResetCloseSectionPayload(dispatch);
         onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
     }, [id]);
 
-
     useEffect(() => {
         if (closeSectionPayload) {
+            console.log('closesecitonpayload');
             setModulesData(
                 keys(closeSectionPayload).map(
                     (entityName: keyof ModuleEntities): SummaryItemProps => ({
@@ -73,12 +77,14 @@ const useModulesSummary = (id: string) => {
 };
 
 
-export const CloseSectionsPage: React.FC<CloseSummaryProps> = memo(({ sectionId }) => {
+export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) => {
+    console.log('render');
 
     const {
         modulesData,
         sections
     } = useModulesSummary(sectionId);
+
     const progress = useSelector(selectTotalProgress);
 
     // use ui slice to toggle view summary page or use router
@@ -132,7 +138,10 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = memo(({ sectionId 
 
         </Container>
     );
-});
+};
+
+// @ts-ignore
+CloseSectionsPage.whyDidYouRender = true;
 
 export interface ModulesSummaryProps {
     modulesData: SummaryItemProps[] | undefined;

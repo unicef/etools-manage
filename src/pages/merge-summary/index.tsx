@@ -32,7 +32,6 @@ const MergeSummaryPage: React.FC = () => {
     const dispatch = useDispatch();
     const mergedSection = useSelector(selectMergeSection);
     const [summary, setSummary] = useState();
-    console.log('TCL: MergeSummaryPage:React.FC -> summary', summary);
 
     const styles = useReviewTableStyles();
 

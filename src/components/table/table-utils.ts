@@ -13,14 +13,12 @@ export function stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
     return stabilizedThis.map(el => el[0]);
 }
 
-
 export function getSorting<K extends keyof any>(
     order: Order,
     orderBy: K,
 ): (a: { [key in K]: number | string }, b: { [key in K]: number | string }) => number {
     return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
-
 
 export function desc<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {

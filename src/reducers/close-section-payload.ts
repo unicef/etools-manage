@@ -1,6 +1,5 @@
 import { createSlice } from 'redux-starter-kit';
 import { ModuleEntities } from 'entities/types';
-import { selectWithoutCurrentSection } from 'selectors/filter-sections';
 
 const initialState: ModuleEntities = {
     interventions: {},

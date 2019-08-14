@@ -23,7 +23,7 @@ const indicatorsConfig = EntityConfigMapping.indicators;
 
 export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     const styles = useEditItemStyles();
-    const initialInterventionState = useSelector((state: FullStoreShape) => state.closeSectionPayload.interventions[id]);
+    const initialInterventionState = useSelector((state: FullStoreShape) => (state.closeSectionPayload as ModuleEntities).interventions[id]);
 
     const allSections = useSelector(selectSections);
 

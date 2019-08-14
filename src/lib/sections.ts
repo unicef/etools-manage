@@ -1,8 +1,8 @@
 import { reduce, keys, always, map, T, isNil, cond, prop, propEq } from 'ramda';
 import { EntityWithSingleSection, ResolvedRatio } from 'entities/types';
 import { OptionType } from 'components/dropdown';
+import { FullStoreShape } from 'contexts/app';
 import { CLOSE_SECTION_PREFIX } from 'global-constants';
-
 
 export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
     const res = keys(entity).reduce(
@@ -31,7 +31,8 @@ export const getNumResolved = (entity: EntityWithSingleSection = {}): ResolvedRa
 
 };
 
-export const prefixWithClose = (key: string) => `${CLOSE_SECTION_PREFIX}_${key}`;
+// @ts-ignore
+export const prefixWithClose = (state: FullStoreShape) => `${CLOSE_SECTION_PREFIX}_${state.currentActiveSection}_${state.user.country.name}`;
 
 export const valueOrDefault = cond([
     [isNil, always([])],

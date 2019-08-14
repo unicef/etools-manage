@@ -9,6 +9,7 @@ import { moduleEditingNameReducer } from 'reducers/module-editing-name';
 import { cuurentActiveSectionReducer } from 'reducers/current-active-section';
 import { closedSectionSuccessReducer } from 'reducers/closed-section-success';
 import { uiReducer } from 'reducers/ui';
+import { userReducer } from './user';
 
 
 const reducer = combineReducers({
@@ -21,7 +22,8 @@ const reducer = combineReducers({
     moduleEditingName: moduleEditingNameReducer,
     currentActiveSection: cuurentActiveSectionReducer,
     closedSectionSuccess: closedSectionSuccessReducer,
-    ui: uiReducer
+    ui: uiReducer,
+    user: userReducer
 });
 
 export default reducer;

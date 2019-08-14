@@ -4,9 +4,11 @@ import { errorMiddleware } from './error-middleware';
 import storageMiddleware from './storage-middleware';
 import fetchLatestSectionsMiddleware from './latest-sections-middleware';
 import reducer from 'reducers';
+import { filterCurrentSectionMiddleware } from './filter-current-section-middleware';
 
 const middleware = [
     fetchLatestSectionsMiddleware,
+    filterCurrentSectionMiddleware,
     storageMiddleware,
     errorMiddleware,
     logger

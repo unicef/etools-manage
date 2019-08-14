@@ -6,7 +6,7 @@ import { Dispatch } from 'global-types';
 import { SectionsService } from 'services/section';
 import { updateCloseSectionPayload, onFetchForCloseSuccess, onFetchFromStorageSuccess, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections } from 'reducers/close-section-payload';
 import { onCurrentActiveSection } from 'reducers/current-active-section';
-import { onSetLoading } from 'reducers/loading';
+import { requestStarted } from 'reducers/loading';
 import { onThrowError } from 'reducers/error';
 import { onSetModuleEditingName } from 'reducers/module-editing-name';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
@@ -24,12 +24,11 @@ export const onFetchDataCloseSection = async (
     const { backendService, storageService } = services;
 
     const dataFromStorage = storageService.getStoredEntitiesData(`close_${payload}`);
-
     if (!dataFromStorage) {
 
         let dataFromServer: Partial<ZippedEntityResults>;
 
-        dispatch(onSetLoading(true));
+        dispatch(requestStarted());
         try {
             dataFromServer = await backendService.getEntitiesForClose(payload);
         } catch (err) {
@@ -72,11 +71,11 @@ export const onSelectTPMSections = (payload: GenericMultiSectionPayload, dispatc
 
 export const onSubmitCloseSection = async (service: SectionsService, payload: CloseSectionBackendPayload, dispatch: Dispatch) => {
     try {
-        dispatch(onSetLoading(true));
+        dispatch(requestStarted());
         await service.closeSection(payload);
     } catch (err) {
         dispatch(onThrowError(err.message));
         return;
     }
-    dispatch(onSuccessCloseSection(true));
+    dispatch(onSuccessCloseSection());
 };

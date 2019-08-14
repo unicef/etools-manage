@@ -38,12 +38,10 @@ export interface UserProfile {
     first_name: string;
     last_name: string;
     job_title: string | null;
-    name: string;
     user: number;
-    username: string;
 }
 
-export type User = UserProfile | null;
+export type User = UserProfile;
 
 export interface ChildrenProps {
     children: React.ReactNode;
