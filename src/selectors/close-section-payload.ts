@@ -90,3 +90,4 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
         }
     }
 );
+

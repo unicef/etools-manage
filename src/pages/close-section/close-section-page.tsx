@@ -17,6 +17,12 @@ import { BackIconButton, ConfirmButton } from 'components/buttons';
 import ResolvedProgress from 'components/resolved-progress-bar';
 import CloseSectionSummary from './close-section-summary';
 import LoadingFallback from 'components/loading-fallback';
+import { ACTION_BAR_DISABLED_ACTIONS, ACTION_BAR_CONNECTED, ACTION_BAR_REVIEW } from './constants';
+import ActionBarDisabled from './action-bar/disabled-actions';
+import ActionBarConnectedConfirm from './action-bar/connected-confirm';
+import ActionBarReviewReady from './action-bar/review-ready';
+import { selectCloseSectionActionBar, selectViewCloseSummary } from 'selectors/ui';
+import { CloseSectionActionsMap } from './types';
 
 const ConnectedConfirmButton = lazy(() => import('components/connected-submit-payload-button'));
 
@@ -65,6 +71,12 @@ const useModulesSummary = () => {
 };
 
 
+const ActionBarMapping: CloseSectionActionsMap = {
+    [ACTION_BAR_DISABLED_ACTIONS]: ActionBarDisabled,
+    [ACTION_BAR_CONNECTED]: ActionBarConnectedConfirm,
+    [ACTION_BAR_REVIEW]: ActionBarReviewReady
+};
+
 export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) => {
 
     const {
@@ -74,41 +86,18 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) =>
 
     const progress = useSelector(selectTotalProgress);
 
-    // use ui slice to toggle view summary page or use router
-    const [viewCloseSummary, setViewCloseSummary] = useState<boolean>(false);
-    const styles = useSummaryStyles();
-
     const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
 
     const hasData = Boolean(modulesData && modulesData.length);
 
-    const ActionBarIncomplete = (
-        <Box className={styles.section} justify="between">
-            <BackIconButton />
-            <Button variant="outlined" disabled>Confirm</Button>
-        </Box>
-    );
+    const actionBar = useSelector(selectCloseSectionActionBar);
+    const viewCloseSummary = useSelector(selectViewCloseSummary);
 
-    const ActionBarNoneAffected = (
-        <Box className={styles.section} justify="between" align="center">
-            <BackIconButton />
-            <Suspense fallback={<LoadingFallback/>}>
-                <ConnectedConfirmButton />
-            </Suspense>
-        </Box>
-    );
+    const ActionBar = ActionBarMapping[actionBar];
 
-    const ActionBarReviewReady = (
-        <Box className={styles.section} justify="between" align="center">
-            <BackIconButton />
-            <ConfirmButton onClick={() => setViewCloseSummary(true)}>Review and Confirm</ConfirmButton>
-        </Box>
-    );
-
-    // TODO: exttract these out to seperate component to clean up hash
     return (
         <Container maxWidth="md">
-            {
+            {/* {
                 progress < 100 && hasData && ActionBarIncomplete
             }
             {
@@ -116,7 +105,8 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) =>
             }
             {
                 !viewCloseSummary && progress === 100 && ActionBarReviewReady
-            }
+            } */}
+            {ActionBar ? <ActionBar/> : null}
             {
                 viewCloseSummary ?
                     <CloseSectionSummary onCancel={() => setViewCloseSummary(false)}/> :

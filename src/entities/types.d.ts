@@ -23,7 +23,6 @@ export interface KeyToEntityMap {
 }
 
 
-
 export type EntityWithSingleSection = Normalized<ActionPointEntity | TravelEntity | IndicatorEntity>
 
 export interface Normalized<T> {
@@ -37,16 +36,16 @@ export interface CloseSectionPayload {
 }
 
 export interface SectionToEntity {
-    [name: string] : {
+    [name: string]: {
         [key in BackendEntityNames]: number[]
-    }
+    };
 }
 
 export type BackendEntityNames = 'interventions' | 'applied_indicators' | 'travels' | 'tpm_activities' | 'action_points'
 
 export interface CloseSectionBackendPayload {
     old_section: number;
-    new_sections: SectionToEntity
+    new_sections: SectionToEntity;
 }
 
 export interface ActionPointEntity {
@@ -130,7 +129,6 @@ export interface GenericSectionPayload {
     section: number | null;
 }
 
-export const
 
 export interface IndicatorsPayload {
     id: string;

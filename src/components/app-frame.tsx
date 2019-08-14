@@ -13,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import { User, UserProfile } from 'global-types';
+import { UserProfile } from 'global-types';
 // import { UserContext } from '../contexts/user';
 import { useAppService } from 'contexts/app';
 import { onGetSections, fetchUserProfile } from 'actions';
