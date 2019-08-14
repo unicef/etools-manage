@@ -1,12 +1,17 @@
 import { createSelector } from 'redux-starter-kit';
 import { ModuleEntities, SectionEntity } from 'entities/types';
-import { propEq, reject, map, prop, includes, without, filter } from 'ramda';
+import { propEq, reject, map, prop, includes, without, filter, keys } from 'ramda';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
 
 
 export const selectCloseSectionPayload = createSelector<FullStoreShape, ModuleEntities>(
     ['closeSectionPayload'],
+);
+
+export const selectCloseSectionPayloadKeys = createSelector(
+    ['closeSectionPayload'],
+    keys
 );
 
 export const selectModuleEditingName = createSelector(

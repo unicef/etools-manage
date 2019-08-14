@@ -1,7 +1,7 @@
 
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
-import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload, CloseSectionBackendPayload } from 'entities/types';
+import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload, CloseSectionBackendPayload, FetchStoragePayload } from 'entities/types';
 import { Dispatch } from 'global-types';
 import { SectionsService } from 'services/section';
 import { updateCloseSectionPayload, onFetchForCloseSuccess, onFetchFromStorageSuccess, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections } from 'reducers/close-section-payload';
@@ -10,27 +10,29 @@ import { requestStarted } from 'reducers/loading';
 import { onThrowError } from 'reducers/error';
 import { onSetModuleEditingName } from 'reducers/module-editing-name';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
+import { getCloseSectionPrefixKey } from 'lib/sections';
 
 export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
     dispatch(updateCloseSectionPayload(null));
 };
 
+
 export const onFetchDataCloseSection = async (
     services: {backendService: BackendService; storageService: StorageService},
-    payload: string, dispatch: Dispatch) => {
-
+    payload: FetchStoragePayload, dispatch: Dispatch) => {
     dispatch(onCurrentActiveSection(Number(payload)));
 
     const { backendService, storageService } = services;
+    const key = getCloseSectionPrefixKey(payload);
 
-    const dataFromStorage = storageService.getStoredEntitiesData(`close_${payload}`);
+    const dataFromStorage = storageService.getStoredEntitiesData(key);
     if (!dataFromStorage) {
 
         let dataFromServer: Partial<ZippedEntityResults>;
 
         dispatch(requestStarted());
         try {
-            dataFromServer = await backendService.getEntitiesForClose(payload);
+            dataFromServer = await backendService.getEntitiesForClose(payload.id);
         } catch (err) {
             dispatch(onThrowError(err.message));
             return;

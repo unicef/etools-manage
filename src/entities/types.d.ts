@@ -137,6 +137,10 @@ export interface IndicatorsPayload {
     indicators: IndicatorEntity[];
 }
 
+export interface FetchStoragePayload {
+    id: string;
+    countryName: string;
+}
 export interface EntityDisplay<T> {
     label: string;
     propName: keyof T;

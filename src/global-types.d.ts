@@ -41,7 +41,6 @@ export interface UserProfile {
     user: number;
 }
 
-export type User = UserProfile;
 
 export interface ChildrenProps {
     children: React.ReactNode;

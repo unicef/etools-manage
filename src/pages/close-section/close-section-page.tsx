@@ -31,17 +31,10 @@ export interface SummaryItemProps {
     onEdit: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
 }
 
-const useModulesSummary = (id: string) => {
+const useModulesSummary = () => {
     const dispatch = useDispatch();
 
-    const {
-        backendService,
-        storageService
-    } = useAppService();
-
     const numResolvedByModule = useSelector(selectNumItemsResolved);
-    console.log('TCL: useModulesSummary -> numResolvedByModule', numResolvedByModule);
-
 
     const sections = useSelector(selectSections);
 
@@ -49,11 +42,6 @@ const useModulesSummary = (id: string) => {
 
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
 
-
-    useEffect(() => {
-        onResetCloseSectionPayload(dispatch);
-        onFetchDataCloseSection({ backendService, storageService }, id, dispatch);
-    }, [id]);
 
     useEffect(() => {
         if (closeSectionPayload) {
@@ -78,12 +66,11 @@ const useModulesSummary = (id: string) => {
 
 
 export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) => {
-    console.log('render');
 
     const {
         modulesData,
         sections
-    } = useModulesSummary(sectionId);
+    } = useModulesSummary();
 
     const progress = useSelector(selectTotalProgress);
 

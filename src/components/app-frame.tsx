@@ -13,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import { User } from 'global-types';
+import { User, UserProfile } from 'global-types';
 // import { UserContext } from '../contexts/user';
 import { useAppService } from 'contexts/app';
 import { onGetSections, fetchUserProfile } from 'actions';
@@ -103,7 +103,7 @@ export interface AppFrameProps{
 }
 
 const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
-    const userData: User = useSelector(selectUserProfile);
+    const userData: UserProfile = useSelector(selectUserProfile);
     const [open, setOpen] = React.useState<boolean>(false);
 
     const selectedIndex = useSelector(selectMenuItem);

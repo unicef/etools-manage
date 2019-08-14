@@ -6,8 +6,8 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import { withRouter } from 'react-router';
 import { useIconButtonStyles } from './table/styles';
 import { useDispatch } from 'react-redux';
-import { refreshSectionsList } from 'actions';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
+import { refreshSectionsList, renderSectionsList } from 'actions/action-constants';
 
 
 export const useButtonStyles = makeStyles((theme: Theme) =>
@@ -49,11 +49,17 @@ export const ConfirmButton: React.FC<ConfirmBtnProps> = ({ onClick, color = 'sec
 
 export const BackIconButton = withRouter(({ history }) => {
     const iconStyles = useIconButtonStyles();
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        dispatch(renderSectionsList());
+        history.push('/');
+    };
     return (
         <IconButton
             className={iconStyles.icon}
             size="medium"
-            onClick={() => history.push('/')}>
+            onClick={handleClick}>
             <BackIcon fontSize="large"/>
         </IconButton>
     );
@@ -77,4 +83,5 @@ export const BackToMainButton = withRouter(({ history, children }) => {
         </Button>
     );
 });
+
 

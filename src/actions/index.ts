@@ -4,17 +4,15 @@ import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService } from 'services/backend';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
 import { Dispatch } from 'global-types';
-import { createAction } from 'redux-starter-kit';
 import { isSectionsParamValid } from 'lib/sections';
 import { requestStarted } from 'reducers/loading';
 import { onGetSectionsSuccess } from 'reducers/sections';
 import { onSetMergedSection } from 'reducers/merged-section';
 import { onThrowError } from 'reducers/error';
 import { onCreateSectionSuccess } from 'reducers/created-section';
-import wrappedFetch, { useFetch } from 'lib/fetch';
+import wrappedFetch from 'lib/fetch';
 import { onUserProfileSuccess } from 'reducers/user';
 
-export const refreshSectionsList = createAction('refreshSectionsList');
 
 export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
     let sections;
@@ -60,7 +58,9 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
     }
 
     dispatch(requestStarted());
+
     let summary: NonEmptyEntityResults;
+
     try {
         summary = await service.getEntitiesForMerge(payload);
         dispatch(requestStarted(false));
