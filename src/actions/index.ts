@@ -5,7 +5,7 @@ import { BackendService } from 'services/backend';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
 import { Dispatch } from 'global-types';
 import { isSectionsParamValid } from 'lib/sections';
-import { requestStarted } from 'reducers/loading';
+import { requestStarted, requestComplete } from 'reducers/loading';
 import { onGetSectionsSuccess } from 'reducers/sections';
 import { onSetMergedSection } from 'reducers/merged-section';
 import { onThrowError } from 'reducers/error';
@@ -63,7 +63,7 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
 
     try {
         summary = await service.getEntitiesForMerge(payload);
-        dispatch(requestStarted(false));
+        dispatch(requestComplete());
         return summary;
 
     } catch (err) {

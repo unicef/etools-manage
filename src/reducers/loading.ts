@@ -9,7 +9,8 @@ import { onCreateSectionSuccess } from './created-section';
 export const loading = createSlice({
     initialState: false,
     reducers: {
-        requestStarted: (state, action) => true
+        requestStarted: (state, action) => true,
+        requestComplete: (state, action) => false
     },
     extraReducers: {
         [onFetchForCloseSuccess.type]: (state, action) => false,
@@ -19,5 +20,5 @@ export const loading = createSlice({
         [onGetSectionsSuccess.type]: (state, action) => false
     }
 });
-export const { requestStarted } = loading.actions;
+export const { requestStarted, requestComplete } = loading.actions;
 export const { reducer: loadingReducer } = loading;
