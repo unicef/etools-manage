@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { buildResolvedProgressString } from 'lib/sections';
 import { useAppService } from 'contexts/app';
 import { selectCloseSectionPayload, selectSections } from 'selectors';
-import { onFetchDataCloseSection, onEditModuleSections, onResetCloseSectionPayload } from './actions';
+import { onFetchDataCloseSection, onEditModuleSections, onResetCloseSectionPayload, onSetActionBar } from './actions';
 import { ModuleEntities, ResolvedRatio } from 'entities/types';
 import EntityConfigMapping from 'entities/config-map';
 import { selectNumItemsResolved, selectTotalProgress } from 'selectors/num-items-resolved';
@@ -21,7 +21,7 @@ import { ACTION_BAR_DISABLED_ACTIONS, ACTION_BAR_CONNECTED, ACTION_BAR_REVIEW } 
 import ActionBarDisabled from './action-bar/disabled-actions';
 import ActionBarConnectedConfirm from './action-bar/connected-confirm';
 import ActionBarReviewReady from './action-bar/review-ready';
-import { selectCloseSectionActionBar, selectViewCloseSummary } from 'selectors/ui';
+import { selectCloseSectionActionBar, selectViewCloseSummary, deriveCloseSectionActionBar } from 'selectors/ui';
 import { CloseSectionActionsMap } from './types';
 
 const ConnectedConfirmButton = lazy(() => import('components/connected-submit-payload-button'));
@@ -48,9 +48,11 @@ const useModulesSummary = () => {
 
     const [modulesData, setModulesData] = useState<SummaryItemProps[]| undefined>();
 
+    const setActionBarPayload = useSelector(deriveCloseSectionActionBar);
 
     useEffect(() => {
         if (closeSectionPayload) {
+            onSetActionBar(dispatch, setActionBarPayload);
             console.log('closesecitonpayload');
             setModulesData(
                 keys(closeSectionPayload).map(
@@ -84,11 +86,9 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) =>
         sections
     } = useModulesSummary();
 
-    const progress = useSelector(selectTotalProgress);
 
     const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
 
-    const hasData = Boolean(modulesData && modulesData.length);
 
     const actionBar = useSelector(selectCloseSectionActionBar);
     const viewCloseSummary = useSelector(selectViewCloseSummary);
@@ -97,19 +97,10 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) =>
 
     return (
         <Container maxWidth="md">
-            {/* {
-                progress < 100 && hasData && ActionBarIncomplete
-            }
-            {
-                !hasData && ActionBarNoneAffected
-            }
-            {
-                !viewCloseSummary && progress === 100 && ActionBarReviewReady
-            } */}
             {ActionBar ? <ActionBar/> : null}
             {
                 viewCloseSummary ?
-                    <CloseSectionSummary onCancel={() => setViewCloseSummary(false)}/> :
+                    <CloseSectionSummary onCancel={() => null}/> :
                     <ModulesSummary modulesData={modulesData} closingSection={closingSection}/>
             }
 
