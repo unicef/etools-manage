@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '../box';
 import { IconButton, Menu, MenuItem, Typography, Theme } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/DeleteForever';
 import SplitIcon from '@material-ui/icons/CallSplit';
@@ -11,7 +11,9 @@ import { makeStyles, createStyles } from '@material-ui/styles';
 import { useModalsDispatch } from 'contexts/page-modals';
 import { onToggleSplitModal } from 'reducers/modals';
 import { onCurrentActiveSection } from 'reducers/current-active-section';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserProfile } from 'selectors/user';
+import { useAppService } from 'contexts/app';
 
 const useMenuStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,6 +47,13 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+
+    const {
+        storageService
+    } = useAppService();
+
+    const user = useSelector(selectUserProfile);
+
     function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
         setAnchorEl(event.currentTarget);
     }
@@ -53,9 +62,14 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
         setAnchorEl(null);
     }
 
+    const redirectIfSplitExists = withRouter(({ history })=>{
+        const
+    });
+
     function handleClickSplit() {
+        dispatch(onCurrentActiveSection(Number(rowId)));
+        redirectIfSplitExists();
         modalsDispatch(onToggleSplitModal);
-        dispatch(onCurrentActiveSection(Number(rowId)))
         handleClose();
     }
 
@@ -76,7 +90,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
 
-                <Link to={`/close/${rowId}`}>
+                <Link to={getCloseSectionUrl(rowId)}>
                     <MenuItem classes={{ root: menuStyles.listItem }}>
                         <DeleteIcon className={menuStyles.icon} color="secondary" />
                         <Typography variant="body1">Close section</Typography>

@@ -27,6 +27,7 @@ import { makeStyles, createStyles } from '@material-ui/styles';
 import { SectionBox } from 'components/section-box';
 import clsx from 'clsx';
 import {  onSectionSplit } from 'pages/split-section/actions';
+import { getSplitSectionUrl } from 'lib/sections';
 
 const useSplitStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -96,7 +97,7 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     } = useAddSection();
 
     const handleSubmit = (history: History) => () => {
-        const splitUrl = `/split/${currentActiveSection}`;
+        const splitUrl = getSplitSectionUrl(currentActiveSection);
         onClose();
         const payload = [{ name, active: true }, { name: nameTwo, active: true }];
         onSectionSplit(dispatch, payload);
