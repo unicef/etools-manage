@@ -20,11 +20,11 @@ export const tpmActivitiesWithoutCurrentSection = createSelector(
     (list: TPMActivityEntity[] = [], id: number) => {
         return map(
             (tpmActivity: TPMActivityEntity) => {
-                const withoutSection = reject(propEq('id', id), tpmActivity.sections).map(prop('id'));
+                const withoutCurrentSection = reject(propEq('id', id), tpmActivity.sections).map(prop('name'));
                 return ({
                     ...tpmActivity,
                     sections: [],
-                    existingSections: withoutSection
+                    existingSections: withoutCurrentSection
                 });
             }, list
         );
@@ -37,7 +37,7 @@ export const getNumResolvedTPMActivities = createSelector(
 
         const resolved = reduce(
             (sum: number, key: string) => {
-                const { sections }: {sections: number[]} = tpmActivities[key];
+                const { sections }: {sections: string[]} = tpmActivities[key];
                 if (sections.length) {
                     sum++;
                 }

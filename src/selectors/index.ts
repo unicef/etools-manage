@@ -45,8 +45,7 @@ export const selectSectionsAsOptions = createSelector<FullStoreShape, OptionType
     [selectSections, selectCurrentActiveSection, selectNamesFromSplit],
     (sections, current, namesFromSplit) => {
         const sectionsWithoutCurrent = reject(propEq('id', current), sections);
-        const sortedWithNamesFromSplit = compose(sortBy(prop('name')),concat(sectionsWithoutCurrent, namesFromSplit))
-        debugger
+        const sortedWithNamesFromSplit = sortBy(prop('name'), concat(sectionsWithoutCurrent, namesFromSplit));
         const asOptions = map(({ name }: {name: string}) => ({ label: name, value: name }), sortedWithNamesFromSplit);
         return asOptions;
     }
@@ -58,7 +57,7 @@ export const selectExistingAsOptions = (existing: string[]) => createSelector(
     (sectionsAsOptions: OptionType[]) => sectionsAsOptions.filter(({ value }) => includes(value, existing))
 );
 
-export const getSelectedOptions = (sections: number[]) => createSelector(
+export const getSelectedOptions = (sections: string[]) => createSelector(
     [selectSectionsAsOptions],
     sectionsAsOptions => sectionsAsOptions.filter(
         (option: OptionType) => includes(option.value, sections)

@@ -48,7 +48,7 @@ export interface CloseSectionBackendPayload {
     new_sections: SectionToEntity;
 }
 
-export type  NewSectionFromSplitPayload = {name: string; active: boolean;}
+export interface NewSectionFromSplitPayload {name: string; active: boolean}
 
 export interface ActionPointEntity {
     id: number;
@@ -66,7 +66,7 @@ export interface IndicatorEntity {
 }
 
 export interface MultiSectionEntity {
-    sections: number[] | string[];
+    sections: string[];
     existingSections: string[]; // we store sections that exist on the entity but cannot be removed at this property
 }
 export interface InterventionEntity extends MultiSectionEntity {
