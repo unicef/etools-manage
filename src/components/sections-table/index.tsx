@@ -106,7 +106,7 @@ export function EnhancedTableHead<SectionOrderby>(props: EnhancedTableHeadProps<
                     </TableCell>
                 ))}
                 <TableCell align="right" classes={{ root: styles.actionCell }} >
-                    <MoreActionsMenu />
+                    <MoreActionsMenu rowId={2001} />
                 </TableCell>
             </TableRow>
         </TableHead>
@@ -214,7 +214,6 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onC
                                             selected={isItemSelected}
                                             onClick={event => handleClick(event, String(row.id))}
                                         >
-                                            {/* <ListItem> */}
                                             <TableCell padding="checkbox">
                                                 {mergeActive && <Checkbox
                                                     checked={isItemSelected}

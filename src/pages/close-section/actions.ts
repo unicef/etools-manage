@@ -13,7 +13,6 @@ import { onSuccessCloseSection } from 'reducers/closed-section-success';
 import { getCloseSectionPrefixKey } from 'lib/sections';
 import { ActionBarKeys } from './types';
 import { setCloseSectionActionBar, onSetViewCloseSummary } from 'reducers/ui';
-import { newSectionsCreated } from 'reducers/sections';
 
 export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
     dispatch(updateCloseSectionPayload(null));

@@ -4,7 +4,6 @@ import { prefixWithClose, prefixWithSplit } from './sections';
 import StorageService, { Storage } from 'services/storage';
 import { onUpdateTravelSection, onChangeInterventionSection, onUpdateActionPointSection, onUpdateInterventionIndicatorsState, onUpdateTPMSections } from 'reducers/close-section-payload';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
-import { newSectionsCreated } from 'reducers/sections';
 import { persistToStorage } from 'pages/split-section/actions';
 
 
