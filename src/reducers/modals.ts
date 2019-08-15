@@ -22,8 +22,8 @@ const modalsSlice = createSlice({
         onToggleAddModal: state => {
             state.addModalOpen = !state.addModalOpen;
         },
-        onToggleSplitModal: state => {
-            state.splitModalOpen = !state.splitModalOpen;
+        splitModalActive: (state, action) => {
+            state.splitModalOpen = action.payload;
         },
         onToggleMergeModal: state => {
             state.mergeModalOpen = !state.mergeModalOpen;
@@ -38,7 +38,7 @@ export const {
     onSelectForMerge,
     onToggleAddModal,
     onToggleMergeModal,
-    onToggleSplitModal
+    splitModalActive
 } = modalsSlice.actions;
 
 export const { reducer: modalsReducer } = modalsSlice;

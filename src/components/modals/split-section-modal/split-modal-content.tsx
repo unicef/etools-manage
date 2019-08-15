@@ -8,18 +8,24 @@ import { History } from 'history';
 
 import { withRouter } from 'react-router';
 import { useAddSection } from 'entities/section-entity';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentActiveSection } from 'selectors';
 import { setValueFromEvent } from 'utils';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
-import { onToggleSplitModal } from 'reducers/modals';
+import { splitModalActive } from 'reducers/modals';
+import { resetActiveSection } from 'reducers/current-active-section';
 
 
 export default function SplitModal() {
     const { splitModalOpen } = useModalsState();
-    const dispatch = useModalsDispatch();
 
-    const handleClose = () => dispatch(onToggleSplitModal);
+    const modalsDispatch = useModalsDispatch();
+    const dispatch = useDispatch();
+
+    const handleClose = () => {
+        dispatch(resetActiveSection());
+        modalsDispatch(splitModalActive(false));
+    };
 
     return (
         <BaseModal open={splitModalOpen} onClose={handleClose}>
@@ -32,6 +38,7 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     const formStyles = useModalStyles();
     const currentActiveSection = useSelector(selectCurrentActiveSection);
+    console.log('TCL: currentActiveSection', currentActiveSection);
     // const [state, dispatch] = useReducer(splitModalReducer, splitSectionInitialState);
     // const { nameOne, nameTwo } = state;
     const {
