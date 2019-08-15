@@ -31,7 +31,6 @@ export const selectSectionsWithInactive = createSelector<FullStoreShape, Section
     ['sections'],
 );
 
-
 export const selectCurrentActiveSection = createSelector(
     ['currentActiveSection']
 );

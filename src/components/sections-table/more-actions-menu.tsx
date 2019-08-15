@@ -46,7 +46,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     const menuStyles = useMenuStyles();
     const [redirect, setRedirect] = useState<boolean>(false);
     const modalsDispatch = useModalsDispatch();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const countryName = useSelector(selectCountryName);
@@ -55,7 +55,6 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
         storageService
     } = useAppService();
 
-    const user = useSelector(selectUserProfile);
 
     function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
         setAnchorEl(event.currentTarget);
@@ -65,14 +64,14 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
         setAnchorEl(null);
     }
 
-    function redirectIfSplitExists(){
-        const splitKey = getSplitSectionPrefixKey({id: String(rowId), countryName });
+    function redirectIfSplitExists() {
+        const splitKey = getSplitSectionPrefixKey({ id: String(rowId), countryName });
         const newNamesFromSplit = storageService.getStoredEntitiesData(splitKey);
-        if (newNamesFromSplit){
+        if (newNamesFromSplit) {
             setRedirect(true);
             modalsDispatch(onToggleSplitModal);
         }
-    };
+    }
 
     function handleClickSplit() {
         dispatch(onCurrentActiveSection(Number(rowId)));
@@ -81,8 +80,8 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
         handleClose();
     }
 
-    if (redirect){
-        return <Redirect to={getSplitSectionUrl(String(rowId))}></Redirect>
+    if (redirect) {
+        return <Redirect push to={getSplitSectionUrl(String(rowId))} />;
     }
 
     return (

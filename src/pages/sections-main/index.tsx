@@ -8,11 +8,12 @@ import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
 import { SectionEntity } from 'entities/types';
 import { onSelectForMerge } from 'reducers/modals';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectSections, selectSectionsWithInactive } from 'selectors';
 import Switch from '@material-ui/core/Switch';
 import { Container, FormControlLabel, FormGroup, Typography } from '@material-ui/core';
 import { useTableStyles } from 'components/table/styles';
+import { renderSectionsList } from 'actions/action-constants';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -31,7 +32,9 @@ const SectionsMainPage: React.FunctionComponent = () => {
     const [filteredSections, setFilteredSections] = useState([] as SectionEntity[]);
     const [mergeActive, setMergeActive] = useState<boolean>(false);
     const [showInactive, setShowInactive] = useState<boolean>(false);
+
     const modalsDispatch = useModalsDispatch();
+    const dispatch = useDispatch();
 
     function handleToggleInactive(event: React.ChangeEvent<HTMLInputElement>) {
         const { checked } = event.target;
@@ -52,6 +55,10 @@ const SectionsMainPage: React.FunctionComponent = () => {
     useEffect(() => {
         setFilteredSections(sections);
     }, [sections]);
+
+    useEffect(() => {
+        dispatch(renderSectionsList());
+    });
 
     const onChangeSelected = useCallback((selected: string[]) => modalsDispatch(onSelectForMerge(selected)), []);
 

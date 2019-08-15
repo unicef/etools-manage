@@ -56,7 +56,6 @@ const useModulesSummary = () => {
 
     useEffect(() => {
         if (closeSectionPayload) {
-            console.log('closesecitonpayload');
             setModulesData(
                 keys(closeSectionPayload).map(
                     (entityName: keyof ModuleEntities): SummaryItemProps => ({

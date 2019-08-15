@@ -49,10 +49,8 @@ export const ConfirmButton: React.FC<ConfirmBtnProps> = ({ onClick, color = 'sec
 
 export const BackIconButton = withRouter(({ history }) => {
     const iconStyles = useIconButtonStyles();
-    const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(renderSectionsList());
         history.push('/');
     };
     return (
