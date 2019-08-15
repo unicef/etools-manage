@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditItemProps, ModuleEntities } from 'entities/types';
+import { EditItemProps } from 'entities/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,10 +29,10 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
     const existingSectionsStr = useSelector(getExistingSectionsStr(existingSections));
 
     const onChange = (value: ValueType<OptionType>) => {
-        const selectedSectionIds = valueOrDefault(value);
+        const selectedSectionNames = valueOrDefault(value);
 
         const payload = {
-            sections: selectedSectionIds,
+            sections: selectedSectionNames,
             id
         };
 

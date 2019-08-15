@@ -10,7 +10,7 @@ const SplitModal: React.FC = () => {
     return splitModalOpen ?
 
         <Suspense fallback={<LoadingFallback/> }>
-            <SplitModalContent />
+            {/* <SplitModalContent /> */}
         </Suspense>
         : null;
 

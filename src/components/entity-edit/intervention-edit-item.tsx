@@ -79,27 +79,27 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 
     const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
         // use this instead of map(prop('value')) so that we can have null set as section for dropdown use
-        const selectedSectionIds = valueOrDefault(value);
-        const newState = over(lensPath(['sections']), always(selectedSectionIds), interventionState);
+        const selectedSections = valueOrDefault(value);
+        const newState = over(lensPath(['sections']), always(selectedSections), interventionState);
 
         setInterventionState(newState);
     };
 
     const handleChangeIndicators = (idx: number) => (value: ValueType<OptionType>) => {
         const selectedSection = find(propEq('name', prop('label', value)), allSections);
-        const selectedSectionId = prop('id', selectedSection);
+        const selectedSectionName = prop('name', selectedSection);
 
         const sectionLens = lensPath(['indicators', idx, 'section']);
         const currentSelected = view(sectionLens, interventionState);
 
-        let newSectionId;
+        let newSectionName;
 
         // removes selection when same one is clicked
-        if (currentSelected !== selectedSectionId) {
-            newSectionId = selectedSectionId;
+        if (currentSelected !== selectedSectionName) {
+            newSectionName = selectedSectionName;
         }
 
-        const newState = over(sectionLens, always(newSectionId), interventionState);
+        const newState = over(sectionLens, always(newSectionName), interventionState);
         const { indicators } = newState;
 
         onSelectIndicatorSection({ indicators, id }, dispatch);

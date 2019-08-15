@@ -44,7 +44,7 @@ export const selectSectionsAsOptions = createSelector<FullStoreShape, OptionType
     [selectSections, selectCurrentActiveSection],
     (sections, current) => {
         const sectionsWithoutCurrent = reject(propEq('id', current), sections);
-        const asOptions = map(({ name, id }: {name: string; id: number}) => ({ label: name, value: id }), sectionsWithoutCurrent);
+        const asOptions = map(({ name, id }: {name: string; id: number}) => ({ label: name, value: name }), sectionsWithoutCurrent);
         return asOptions;
     }
 );

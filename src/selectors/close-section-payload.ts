@@ -26,7 +26,7 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
         keys(actionPoints).forEach(
             (id: string) => {
                 const { section } = actionPoints[id];
-                const sectionName = prop('name', sections.find(propEq('id', section)));
+                const sectionName = prop('name', sections.find(propEq('name', section)));
                 persistToPayload(payload, sectionName, 'action_points', Number(id));
             }
         );
@@ -36,14 +36,14 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
                 const { sections: selectedSections, indicators } = interventions[id];
                 selectedSections.forEach(
                     section => {
-                        const sectionName = prop('name', sections.find(propEq('id', section)));
+                        const sectionName = prop('name', sections.find(propEq('name', section)));
                         persistToPayload(payload, sectionName, 'interventions', Number(id));
                     }
                 );
 
                 indicators.forEach(
                     ({ section, pk }) => {
-                        const sectionName = prop('name', sections.find(propEq('id', section)));
+                        const sectionName = prop('name', sections.find(propEq('name', section)));
                         persistToPayload(payload, sectionName, 'applied_indicators', pk);
                     }
                 );
@@ -55,8 +55,7 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
                 const { sections: selectedSections } = tpmActivities[id];
                 selectedSections.forEach(
                     section => {
-                        debugger;
-                        const sectionName = prop('name', sections.find(propEq('id', section)));
+                        const sectionName = prop('name', sections.find(propEq('name', section)));
                         persistToPayload(payload, sectionName, 'tpm_activities', Number(id));
                     }
                 );
@@ -66,7 +65,7 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
         keys(travels).forEach(
             (id: string) => {
                 const { section } = travels[id];
-                const sectionName = prop('name', sections.find(propEq('id', section)));
+                const sectionName = prop('name', sections.find(propEq('name', section)));
                 persistToPayload(payload, sectionName, 'travels', Number(id));
             }
         );

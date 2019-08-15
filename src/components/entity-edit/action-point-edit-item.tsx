@@ -29,14 +29,14 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
     const selectedSection = getSelectedSection(sectionsAsOptions, section);
 
     const onChange = (value: ValueType<OptionType>) => {
-        let selectedSectionId = prop('value', value);
+        let selectedSectionName = prop('value', value);
 
-        if (section === selectedSectionId) {
-            selectedSectionId = null;
+        if (section === selectedSectionName) {
+            selectedSectionName = null;
         }
 
         const payload = {
-            section: selectedSectionId,
+            section: selectedSectionName,
             id
         };
         onSelectActionPointSection(payload, dispatch);
