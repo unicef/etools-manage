@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import Box from 'components/box';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCloseSectionPayload, selectCurrentActiveSectionName, selectSections } from 'selectors';
-import { keys, prop, propEq } from 'ramda';
+import { keys, prop } from 'ramda';
 import { ModuleEntities, IndicatorEntity, AllEntities } from 'entities/types';
 import EntityChangesTable from 'components/entity-changes';
 import EntityConfigMapping from 'entities/config-map';
@@ -16,7 +16,6 @@ const ConnectedConfirmButton = lazy(() => import('components/connected-submit-pa
 const CloseSectionSummary: React.FC = () => {
     const closeSectionPayload = useSelector(selectCloseSectionPayload);
     const oldSectionName = useSelector(selectCurrentActiveSectionName);
-    const sections = useSelector(selectSections);
     const dispatch = useDispatch();
 
     const onCancel = () => {
@@ -40,18 +39,14 @@ const CloseSectionSummary: React.FC = () => {
     const getNewSections = (item: Exclude<AllEntities, IndicatorEntity>, sectionsProp: string) => {
         const entitySection = prop(sectionsProp, item);
         if (Array.isArray(entitySection)) {
-            const entitySectionNames = entitySection.map(
-                id => prop('name', sections.find(propEq('id', id)))
-            );
-            return entitySectionNames.join(',');
+            return entitySection.join(',');
         }
 
-        return prop('name', sections.find(propEq('id', entitySection)));
+        return entitySection;
     };
 
     return (
         <Box column>
-            <ConfirmBox />
             {keys(closeSectionPayload).map(
                 (entity: keyof ModuleEntities) => (
                     <EntityChangesTable
@@ -64,6 +59,9 @@ const CloseSectionSummary: React.FC = () => {
                     />
                 )
             )}
+            <Box justify="end">
+                <ConfirmBox />
+            </Box>
         </Box>
     );
 };

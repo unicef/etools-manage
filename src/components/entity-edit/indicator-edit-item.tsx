@@ -20,11 +20,13 @@ interface IndicatorsProps {
 const IndicatorEditItem: React.FC<IndicatorsProps> = memo(({ parentId, sectionOptions, onChange }) => {
     const styles = useEditItemStyles();
     const indicators = useSelector(selectInterventionsFromPayload)[parentId].indicators;
+
     const getValue = (section: number | undefined) => {
         const res = find(propEq('value', section), sectionOptions);
         return res === undefined ? null : res;
     };
-    return <Box className={styles.indicatorItem} align="center">
+
+   return <Box className={styles.indicatorItem} align="center">
         <div className={styles.spacer} />
         <Box column >
             { indicators.map(

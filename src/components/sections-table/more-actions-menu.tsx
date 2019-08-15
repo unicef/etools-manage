@@ -51,6 +51,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     }
 
     function handleClickSplit() {
+        // set current active section
         dispatch(onToggleSplitModal);
     }
 

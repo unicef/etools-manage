@@ -1,17 +1,19 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
 
 import { useModalsState } from 'contexts/page-modals';
 import LoadingFallback from 'components/loading-fallback';
+const SplitModalContent = lazy(() => import('./split-modal-content'));
 
 
-const SplitModal: React.FC = () => {
+const SplitSectionModal: React.FC = () => {
     const { splitModalOpen } = useModalsState();
 
     return splitModalOpen ?
 
         <Suspense fallback={<LoadingFallback/> }>
-            {/* <SplitModalContent /> */}
+            <SplitModalContent />
         </Suspense>
         : null;
 
 };
+export default SplitSectionModal;

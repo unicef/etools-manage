@@ -50,7 +50,7 @@ export interface SuccessResponse {
     success: string;
 }
 
-export type StateSetter = ReturnType<useState>
+export type StateSetter = React.Dispatch<React.SetStateAction<any>>
 export type ClickHandler = () => void
 
 export type DispatchAction = PayloadAction<unknown, string> | PayloadActionCreator<void, string> | PayloadActionCreator<unknown, string> | PayloadAction<void, string>

@@ -1,7 +1,7 @@
 import React from 'react';
 import MergeIcon from '@material-ui/icons/MergeType';
 import { History } from 'history';
-import { makeStyles, Theme, createStyles, Typography,  Input, FormControl, FormHelperText, Button } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Typography, FormControl, FormHelperText, Button, Input } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import BaseModal, { ModalContentProps } from '..';
 import { setValueFromEvent } from 'utils';
