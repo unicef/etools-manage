@@ -13,12 +13,12 @@ import CloseSectionSuccess from './close-success';
 import { onResetCloseSectionPayload, onFetchDataCloseSection } from './actions';
 import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';
+import { MatchParams } from 'global-types';
+import { onCurrentActiveSection } from 'reducers/current-active-section';
 
-export interface CloseParams {id: string}
+type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>;
 
-type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>
-
-export type EditComponentMappings = {[key in ModuleKeys]: React.FC}
+export type EditComponentMappings = { [key in ModuleKeys]: React.FC };
 
 const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     interventions: InterventionsEdit,
@@ -34,24 +34,21 @@ function getEditComponent(name: keyof EditComponentMappings | null) {
     return null;
 }
 
-const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match }) => {
+const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({
+    match
+}) => {
     const { id } = match.params;
     const dispatch = useDispatch();
 
-    const {
-        backendService,
-        storageService
-    } = useAppService();
-
+    const { backendService, storageService } = useAppService();
     const user = useSelector(selectUserProfile);
-
-    const moduleEditingName = useSelector(selectModuleEditingName);
-    const EditComponent = getEditComponent(moduleEditingName);
-    const closedSectionSuccess = useSelector(selectClosedSectionSuccess);
 
     useEffect(() => {
         if (user) {
+            dispatch(onCurrentActiveSection(Number(id)));
+
             const { name: countryName } = user.country;
+
             onResetCloseSectionPayload(dispatch);
             onFetchDataCloseSection(
                 { backendService, storageService },
@@ -61,18 +58,25 @@ const CloseSummaryPage: React.FC<RouteComponentProps<CloseParams>> = ({ match })
         }
     }, [id, user]);
 
+    return <CloseSectionRender id={id}/>
+};
+
+export const CloseSectionRender: React.FC<MatchParams> = ({ id }) => {
+    const moduleEditingName = useSelector(selectModuleEditingName);
+    const EditComponent = getEditComponent(moduleEditingName);
+    const closedSectionSuccess = useSelector(selectClosedSectionSuccess);
+
     return (
         <Box column align="center">
-            {
-                moduleEditingName && EditComponent ?
-                    <EditComponent /> :
-                    closedSectionSuccess ?
-                        <CloseSectionSuccess/> :
-                        <CloseSectionsPage sectionId={id}/>
-            }
+            {moduleEditingName && EditComponent ? (
+                <EditComponent />
+            ) : closedSectionSuccess ? (
+                <CloseSectionSuccess />
+            ) : (
+                <CloseSectionsPage sectionId={id} />
+            )}
         </Box>
     );
 };
-
 
 export default CloseSummaryPage;

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '../box';
 import { IconButton, Menu, MenuItem, Typography, Theme } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import MoreVerticalIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/DeleteForever';
 import SplitIcon from '@material-ui/icons/CallSplit';
@@ -9,9 +9,12 @@ import clsx from 'clsx';
 import { useTableStyles } from '../table/styles';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { useModalsDispatch } from 'contexts/page-modals';
-import { splitModalActive } from 'reducers/modals';
-import { useDispatch } from 'react-redux';
+import { onToggleSplitModal } from 'reducers/modals';
 import { onCurrentActiveSection } from 'reducers/current-active-section';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserProfile, selectCountryName } from 'selectors/user';
+import { useAppService } from 'contexts/app';
+import { getCloseSectionUrl, getSplitSectionPrefixKey, getSplitSectionUrl } from 'lib/sections';
 
 const useMenuStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,7 +35,7 @@ const useMenuStyles = makeStyles((theme: Theme) =>
 
 
 interface RowActionsProps {
-    rowId?: number;
+    rowId: number;
     hidden?: boolean;
     className?: string | undefined;
 }
@@ -41,11 +44,18 @@ interface RowActionsProps {
 export default function MoreActions({ rowId, className = '' }: RowActionsProps) {
     const styles = useTableStyles();
     const menuStyles = useMenuStyles();
-
+    const [redirect, setRedirect] = useState<boolean>(false);
     const modalsDispatch = useModalsDispatch();
     const dispatch = useDispatch();
-
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const countryName = useSelector(selectCountryName);
+
+    const {
+        storageService
+    } = useAppService();
+
+    const user = useSelector(selectUserProfile);
 
     function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
         setAnchorEl(event.currentTarget);
@@ -55,10 +65,24 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
         setAnchorEl(null);
     }
 
+    function redirectIfSplitExists() {
+        const splitKey = getSplitSectionPrefixKey({ id: String(rowId), countryName });
+        const newNamesFromSplit = storageService.getStoredEntitiesData(splitKey);
+        if (newNamesFromSplit) {
+            setRedirect(true);
+            modalsDispatch(onToggleSplitModal);
+        }
+    }
+
     function handleClickSplit() {
         dispatch(onCurrentActiveSection(Number(rowId)));
-        modalsDispatch(splitModalActive(true));
+        redirectIfSplitExists();
+        modalsDispatch(onToggleSplitModal);
         handleClose();
+    }
+
+    if (redirect) {
+        return <Redirect to={getSplitSectionUrl(String(rowId))} />;
     }
 
     return (
@@ -78,7 +102,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
 
-                <Link to={`/close/${rowId}`}>
+                <Link to={getCloseSectionUrl(String(rowId))}>
                     <MenuItem classes={{ root: menuStyles.listItem }}>
                         <DeleteIcon className={menuStyles.icon} color="secondary" />
                         <Typography variant="body1">Close section</Typography>

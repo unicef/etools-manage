@@ -1,7 +1,7 @@
 
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
-import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload, CloseSectionBackendPayload, FetchStoragePayload } from 'entities/types';
+import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload, CloseSectionBackendPayload, FetchStoragePayload, NewSectionFromSplitPayload } from 'entities/types';
 import { Dispatch } from 'global-types';
 import { SectionsService } from 'services/section';
 import { updateCloseSectionPayload, onFetchForCloseSuccess, onFetchFromStorageSuccess, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections } from 'reducers/close-section-payload';
@@ -22,7 +22,8 @@ export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
 export const onFetchDataCloseSection = async (
     services: {backendService: BackendService; storageService: StorageService},
     payload: FetchStoragePayload, dispatch: Dispatch) => {
-    dispatch(onCurrentActiveSection(Number(payload)));
+
+    dispatch(onCurrentActiveSection(Number(payload.id)));
 
     const { backendService, storageService } = services;
     const key = getCloseSectionPrefixKey(payload);
@@ -46,7 +47,6 @@ export const onFetchDataCloseSection = async (
         dispatch(onFetchFromStorageSuccess(dataFromStorage));
     }
 
-    dispatch(onCurrentActiveSection(Number(payload.id)));
 };
 
 export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
@@ -93,6 +93,8 @@ export const onSetActionBar = (dispatch: Dispatch, payload: ActionBarKeys | '') 
 export const onSelectShowReview = (dispatch: Dispatch) => {
     dispatch(onSetViewCloseSummary(true));
 };
+
 export const onSelectHideReview = (dispatch: Dispatch) => {
     dispatch(onSetViewCloseSummary(false));
 };
+

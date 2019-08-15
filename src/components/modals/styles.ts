@@ -5,6 +5,8 @@ export const useModalStyles = makeStyles((theme: Theme) =>
     createStyles({
         header: {
             color: theme.palette.text.hint,
+        },
+        modalSection : {
             marginBottom: theme.spacing(2)
         },
         subtitle: {
@@ -33,10 +35,12 @@ export const useModalStyles = makeStyles((theme: Theme) =>
             fontWeight: 400,
             color: '#3c4043'
         },
+
         inputFocused: {
             backgroundColor: theme.palette.primary.main,
             boxShadow: '0 0 0 2px transparent inset, 0 0 0 1px #e0e0e0 inset'
         },
+
         confirmBtn: {
             width: 86,
             marginLeft: theme.spacing(1),

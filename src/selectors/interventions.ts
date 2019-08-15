@@ -60,7 +60,7 @@ export const interventionsWithoutCurrentSection = createSelector(
                     ...item,
                     indicators: removedSectionIndicators,
                     sections: [],
-                    existingSections: without([id], item.sections) as number[]
+                    existingSections: without([id], item.sections)
                 });
 
                 return res;

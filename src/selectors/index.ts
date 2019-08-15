@@ -1,8 +1,9 @@
 import { createSelector } from 'redux-starter-kit';
 import { ModuleEntities, SectionEntity } from 'entities/types';
-import { propEq, reject, map, prop, includes, without, filter, keys } from 'ramda';
+import { propEq, reject, map, prop, includes, without, filter, keys, concat, compose, sortBy } from 'ramda';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
+import { selectNamesFromSplit } from './split-section';
 
 
 export const selectCloseSectionPayload = createSelector<FullStoreShape, ModuleEntities>(
@@ -41,16 +42,18 @@ export const selectCurrentActiveSectionName = createSelector(
 );
 
 export const selectSectionsAsOptions = createSelector<FullStoreShape, OptionType[]>(
-    [selectSections, selectCurrentActiveSection],
-    (sections, current) => {
+    [selectSections, selectCurrentActiveSection, selectNamesFromSplit],
+    (sections, current, namesFromSplit) => {
         const sectionsWithoutCurrent = reject(propEq('id', current), sections);
-        const asOptions = map(({ name, id }: {name: string; id: number}) => ({ label: name, value: name }), sectionsWithoutCurrent);
+        const sortedWithNamesFromSplit = compose(sortBy(prop('name')),concat(sectionsWithoutCurrent, namesFromSplit))
+        debugger
+        const asOptions = map(({ name }: {name: string}) => ({ label: name, value: name }), sortedWithNamesFromSplit);
         return asOptions;
     }
 );
 
 // Note: higher order selectors will not memoize this way
-export const selectExistingAsOptions = (existing: number[]) => createSelector(
+export const selectExistingAsOptions = (existing: string[]) => createSelector(
     [selectSectionsAsOptions],
     (sectionsAsOptions: OptionType[]) => sectionsAsOptions.filter(({ value }) => includes(value, existing))
 );
@@ -62,16 +65,15 @@ export const getSelectedOptions = (sections: number[]) => createSelector(
     )
 );
 
-
-export const getOptionsWithoutExisting = (existing: number[]) => createSelector(
+export const getOptionsWithoutExisting = (existing: string[]) => createSelector(
     [selectSectionsAsOptions, selectExistingAsOptions(existing)],
     (sectionsAsOptions, existingAsOptions) => without(existingAsOptions, sectionsAsOptions)
 );
 
-export const getExistingSectionsStr = (existing: number[]) => createSelector(
+export const getExistingSectionsStr = (existing: string[]) => createSelector(
     [selectSections],
     (sections: SectionEntity[]) => sections
-        .filter(section => existing.includes(section.id))
+        .filter(section => existing.includes(section.name))
         .map(prop('name'))
         .join(',')
 );

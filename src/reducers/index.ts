@@ -10,6 +10,7 @@ import { cuurentActiveSectionReducer } from 'reducers/current-active-section';
 import { closedSectionSuccessReducer } from 'reducers/closed-section-success';
 import { uiReducer } from 'reducers/ui';
 import { userReducer } from './user';
+import { namesFromSplitReducer } from './names-from-split';
 
 
 const reducer = combineReducers({
@@ -23,7 +24,8 @@ const reducer = combineReducers({
     currentActiveSection: cuurentActiveSectionReducer,
     closedSectionSuccess: closedSectionSuccessReducer,
     ui: uiReducer,
-    user: userReducer
+    user: userReducer,
+    namesFromSplit: namesFromSplitReducer
 });
 
 export default reducer;

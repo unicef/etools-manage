@@ -75,8 +75,12 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
 
 export const fetchUserProfile = async(dispatch: Dispatch) => {
     dispatch(requestStarted());
+    try {
+        const data = await wrappedFetch(process.env.REACT_APP_USER_PROFILE_ENDPOINT as string);
+        dispatch(onUserProfileSuccess(data));
 
-    const data = await wrappedFetch(process.env.REACT_APP_USER_PROFILE_ENDPOINT as string);
+    } catch (err){
+        dispatch(onThrowError(err))
+    }
 
-    dispatch(onUserProfileSuccess(data));
 };
