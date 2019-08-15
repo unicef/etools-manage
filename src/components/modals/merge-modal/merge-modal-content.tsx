@@ -11,8 +11,9 @@ import Box from 'components/box';
 import { useMergeState } from '.';
 import { SectionBox, ReviewBox } from 'components/section-box';
 import { onToggleMergeModal } from 'reducers/modals';
+import clsx from 'clsx';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             width: 440
@@ -59,7 +60,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     return (
         <>
-            <Box className={formStyles.header} align="center">
+            <Box className={clsx(formStyles.header, formStyles.modalSection)} align="center">
                 <MergeIcon color="inherit"/>
                 <Typography
                     className={formStyles.subtitle}

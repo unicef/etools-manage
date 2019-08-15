@@ -30,7 +30,7 @@ export class NewSection implements CreateSectionPayload {
     }
 
     private sectionValidator (name: string, sections: SectionEntity[]): Promise<boolean> {
-        const findSameName = find(compose(equals(trim(name)), toLower, prop('name')));
+        const findSameName = find(compose(equals(toLower(trim(name))), toLower, prop('name')));
         const nameExists = findSameName(sections) !== undefined;
         return new Promise(resolve => resolve(!nameExists));
     }
@@ -76,6 +76,8 @@ export const useAddSection = () => {
 
     const handleValidateSection = async () => {
         const isValid = await sectionInstance.isValidName(sections);
+        console.log('validate');
+
         if (!isValid) {
             setNameError('Section name already exists');
         }

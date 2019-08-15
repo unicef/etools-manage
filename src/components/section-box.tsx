@@ -3,7 +3,7 @@ import React from 'react';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { Theme, Typography } from '@material-ui/core';
 import Box from './box';
-
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,12 +30,18 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface SectionBoxProps {
     name: string;
+    className?: string;
 }
 
-export const SectionBox: React.FC<SectionBoxProps> = ({ name }) => {
+export const SectionBox: React.FC<SectionBoxProps> = ({ name, className='' }) => {
     const styles = useStyles({});
+    const rootStyle = clsx({
+        [className]: true,
+        [styles.section]: true
+    });
+
     return (
-        <Box column className={styles.section}>
+        <Box column className={rootStyle}>
             <Typography className={styles.sectionName} variant="h6">{name}</Typography>
         </Box>
     );

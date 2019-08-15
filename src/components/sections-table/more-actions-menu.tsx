@@ -10,6 +10,8 @@ import { useTableStyles } from '../table/styles';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { useModalsDispatch } from 'contexts/page-modals';
 import { onToggleSplitModal } from 'reducers/modals';
+import { onCurrentActiveSection } from 'reducers/current-active-section';
+import { useDispatch } from 'react-redux';
 
 const useMenuStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,7 +41,8 @@ interface RowActionsProps {
 export default function MoreActions({ rowId, className = '' }: RowActionsProps) {
     const styles = useTableStyles();
     const menuStyles = useMenuStyles();
-    const dispatch = useModalsDispatch();
+    const modalsDispatch = useModalsDispatch();
+    const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
@@ -51,8 +54,9 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     }
 
     function handleClickSplit() {
-        // set current active section
-        dispatch(onToggleSplitModal);
+        modalsDispatch(onToggleSplitModal);
+        dispatch(onCurrentActiveSection(Number(rowId)))
+        handleClose();
     }
 
     return (

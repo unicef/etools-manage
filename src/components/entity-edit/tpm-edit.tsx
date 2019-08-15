@@ -11,7 +11,6 @@ import { useEditItemStyles } from './styles';
 import TPMActivityEditItem from './tpm-activity-edit-item';
 import { customLabel } from 'components/table/table-utils';
 
-
 const TPMEdit: React.FC = memo(() => {
     const styles = useEditItemStyles();
     const ids = useSelector(selectTPMActivitiesIds);

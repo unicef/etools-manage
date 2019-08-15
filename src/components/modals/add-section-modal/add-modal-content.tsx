@@ -17,6 +17,7 @@ import { onToggleAddModal } from 'reducers/modals';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLoading, selectCreatedSection } from 'selectors';
 import { onResetCreatedSection } from 'reducers/created-section';
+import clsx from 'clsx';
 
 const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles({});
@@ -55,7 +56,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     return (
         <>
-            <Box className={styles.header} align="center" />
+            <Box className={clsx(styles.header, styles.modalSection)} align="center" />
             {
                 createdSection ?
                     <SuccessModalContent section={createdSection} onClose={onClose} />
@@ -69,7 +70,6 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                                 shrink htmlFor="new-section-name">New section</InputLabel> */}
                             <Input
                                 id="new-section-name"
-                                // className={styles.input}
                                 classes={{
                                     input: styles.input
                                 }}
