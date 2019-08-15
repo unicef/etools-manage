@@ -15,7 +15,7 @@ import { History } from 'history';
 
 import { withRouter } from 'react-router';
 import { useAddSection } from 'entities/section-entity';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
     selectCurrentActiveSection,
     selectCurrentActiveSectionName
@@ -26,11 +26,12 @@ import { onToggleSplitModal } from 'reducers/modals';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { SectionBox } from 'components/section-box';
 import clsx from 'clsx';
+import {  onSectionSplit } from 'pages/split-section/actions';
 
 const useSplitStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: 650
+            width: 600
         },
         input: {
             height: theme.spacing(3),
@@ -41,7 +42,7 @@ const useSplitStyles = makeStyles((theme: Theme) =>
         },
         flipIcon: {
             transform: 'rotate(180deg)',
-            color: theme.palette.text.hint,
+            color: theme.palette.text.hint
         },
         formRoot: {
             alignItems: 'center',
@@ -76,8 +77,8 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const currentSectionName = useSelector(selectCurrentActiveSectionName);
     const currentActiveSection = useSelector(selectCurrentActiveSection);
 
-    // const [state, dispatch] = useReducer(splitModalReducer, splitSectionInitialState);
-    // const { nameOne, nameTwo } = state;
+    const dispatch = useDispatch();
+
     const {
         errorOnName,
         setNameError,
@@ -94,18 +95,12 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
         setName: setNameTwo
     } = useAddSection();
 
-    // const handleChange = (setter: PayloadActionCreator<unknown, string>) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { value }: {value: string} = event.target;
-    //     dispatch(setter(value));
-
-    // };
-
-    // Temp
     const handleSubmit = (history: History) => () => {
-        const closeSectionUrl = `/close/${currentActiveSection}`;
+        const splitUrl = `/split/${currentActiveSection}`;
         onClose();
-        // dispatch to add new sections from state
-        history.push(closeSectionUrl);
+        const payload = [{ name, active: true }, { name: nameTwo, active: true }];
+        onSectionSplit(dispatch, payload);
+        history.push(splitUrl);
     };
 
     const SubmitButton = withRouter(({ history }) => (
@@ -126,7 +121,6 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     return (
         <Box column>
             <Box className={clsx(styles.header, styles.modalSection)} align="center">
-                {/* <SplitIcon color="inherit" /> */}
                 <Typography
                     className={styles.subtitle}
                     color="inherit"
@@ -137,10 +131,7 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
             <Box column align="center">
                 <SectionBox name={currentSectionName} className={styles.modalSection} />
-                <SplitIcon
-                    fontSize="large"
-                    className={splitStyles.flipIcon}
-                />
+                <SplitIcon fontSize="large" className={splitStyles.flipIcon} />
             </Box>
             <Box className={styles.modalSection} justify="center">
                 <FormControl

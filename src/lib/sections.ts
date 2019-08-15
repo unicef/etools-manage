@@ -2,7 +2,7 @@ import { reduce, keys, always, map, T, isNil, cond, prop, propEq } from 'ramda';
 import { EntityWithSingleSection, ResolvedRatio, FetchStoragePayload } from 'entities/types';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
-import { CLOSE_SECTION_PREFIX } from 'global-constants';
+import { CLOSE_SECTION_PREFIX, SPLIT_SECTION_PREFIX } from 'global-constants';
 
 export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
     const res = keys(entity).reduce(
@@ -34,6 +34,10 @@ export const getNumResolved = (entity: EntityWithSingleSection = {}): ResolvedRa
 // @ts-ignore
 export const prefixWithClose = (state: FullStoreShape) => `${CLOSE_SECTION_PREFIX}_${state.currentActiveSection}_${state.user.country.name}`;
 export const getCloseSectionPrefixKey = (payload: FetchStoragePayload) => `${CLOSE_SECTION_PREFIX}_${payload.id}_${payload.countryName}`;
+
+// @ts-ignore
+export const prefixWithSplit = (state: FullStoreShape) => `${SPLIT_SECTION_PREFIX}_${state.currentActiveSection}_${state.user.country.name}`;
+export const getSplitSectionPrefixKey = (payload: FetchStoragePayload) => `${SPLIT_SECTION_PREFIX}_${payload.id}_${payload.countryName}`;
 
 export const valueOrDefault = cond([
     [isNil, always([])],

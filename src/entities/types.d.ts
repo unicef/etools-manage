@@ -48,6 +48,8 @@ export interface CloseSectionBackendPayload {
     new_sections: SectionToEntity;
 }
 
+export type  NewSectionFromSplitPayload = {name: string; active: boolean;}
+ 
 export interface ActionPointEntity {
     id: number;
     reference_number: string;

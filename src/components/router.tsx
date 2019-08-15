@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Main from 'pages/sections-main';
 import MergeSummaryPage from 'pages/merge-summary';
 import CloseSummaryPage from 'pages/close-section';
+import SplitSectionPage from 'pages/split-section';
 
 // export type RouteProps = ReturnType<typeof Route>
 
@@ -15,6 +16,7 @@ export default function AppRouter() {
                 <Route exact path="/" component={Main} />
                 <Route path="/merge/" component={MergeSummaryPage} />
                 <Route path="/close/:id?" component={CloseSummaryPage} />
+                <Route path="/split/:id?" component={SplitSectionPage} />
 
                 <Route component={NoMatch} />
             </Switch>
