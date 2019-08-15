@@ -28,7 +28,6 @@ const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
 };
 
 function getEditComponent(name: keyof EditComponentMappings | null) {
-
     if (name) {
         return EDIT_COMPONENT_MODULE_MAPPING[name];
     }

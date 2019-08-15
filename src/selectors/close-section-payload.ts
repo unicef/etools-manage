@@ -18,7 +18,6 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
         sections: SectionEntity[],
         oldSection: number) => {
 
-
         const payload: CloseSectionBackendPayload = {
             old_section: oldSection,
             new_sections: {}
@@ -34,8 +33,8 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
 
         keys(interventions).forEach(
             (id: string) => {
-                const { sections, indicators } = interventions[id];
-                sections.forEach(
+                const { sections: selectedSections, indicators } = interventions[id];
+                selectedSections.forEach(
                     section => {
                         const sectionName = prop('name', sections.find(propEq('id', section)));
                         persistToPayload(payload, sectionName, 'interventions', Number(id));
@@ -53,9 +52,10 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
 
         keys(tpmActivities).forEach(
             (id: string) => {
-                const { sections } = tpmActivities[id];
-                sections.forEach(
+                const { sections: selectedSections } = tpmActivities[id];
+                selectedSections.forEach(
                     section => {
+                        debugger;
                         const sectionName = prop('name', sections.find(propEq('id', section)));
                         persistToPayload(payload, sectionName, 'tpm_activities', Number(id));
                     }

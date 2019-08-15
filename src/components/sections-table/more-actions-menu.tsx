@@ -8,6 +8,8 @@ import SplitIcon from '@material-ui/icons/CallSplit';
 import clsx from 'clsx';
 import { useTableStyles } from '../table/styles';
 import { makeStyles, createStyles } from '@material-ui/styles';
+import { useModalsDispatch } from 'contexts/page-modals';
+import { onToggleSplitModal } from 'reducers/modals';
 
 const useMenuStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,6 +39,7 @@ interface RowActionsProps {
 export default function MoreActions({ rowId, className = '' }: RowActionsProps) {
     const styles = useTableStyles();
     const menuStyles = useMenuStyles();
+    const dispatch = useModalsDispatch();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
@@ -45,6 +48,10 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
 
     function handleClose() {
         setAnchorEl(null);
+    }
+
+    function handleClickSplit() {
+        dispatch(onToggleSplitModal);
     }
 
     return (
@@ -70,7 +77,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                         <Typography variant="body1">Close section</Typography>
                     </MenuItem>
                 </Link>
-                <MenuItem classes={{ root: menuStyles.listItem }}>
+                <MenuItem classes={{ root: menuStyles.listItem }} onClick={handleClickSplit}>
                     <SplitIcon className={menuStyles.icon} color="secondary" />
                     <Typography>Split section</Typography>
                 </MenuItem>

@@ -116,11 +116,12 @@ export function EnhancedTableHead<SectionOrderby>(props: EnhancedTableHeadProps<
 export interface SectionTableProps {
     rows: SectionEntity[];
     mergeActive: boolean;
+    showInactive: boolean;
     onChangeSelected: (selected: string[]) => void;
 }
 type SectionOrderby = Omit<SectionEntity, 'active'>;
 
-const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onChangeSelected }) => {
+const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onChangeSelected, showInactive }) => {
     const styles = useTableStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
@@ -131,8 +132,12 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onC
         rowsPerPage,
         handleChangePage,
         handleChangeRowsPerPage,
-        rowsPerPageOptions
+        rowsPerPageOptions,
+        maybeResetPage
     } = usePagination(10);
+
+    maybeResetPage(rows);
+
 
     function handleRequestSort(event: React.MouseEvent<unknown>, property: keyof SectionOrderby) {
         const isDesc = orderBy === property && order === 'desc';

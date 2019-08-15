@@ -13,6 +13,7 @@ export interface MergeButtonProps {
     onClick: ClickHandler;
     mergeActive: boolean;
 }
+
 export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
     const styles = useButtonStyles({});
     const btnText = mergeActive ? 'Cancel Merge' : 'Merge';

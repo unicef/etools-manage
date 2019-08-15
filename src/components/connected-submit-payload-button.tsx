@@ -8,6 +8,7 @@ import { useAppService } from 'contexts/app';
 const ConnectedConfirmButton: React.FC = () => {
 
     const backendPayload = useSelector(getCloseSectionBackendPayload);
+    console.log('TCL: ConnectedConfirmButton:React.FC -> backendPayload', backendPayload);
     const { sectionsService } = useAppService();
     const dispatch = useDispatch();
 

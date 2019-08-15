@@ -1,7 +1,7 @@
 import React from 'react';
 import MergeIcon from '@material-ui/icons/MergeType';
 import { History } from 'history';
-import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormControl, FormHelperText, Button } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Typography,  Input, FormControl, FormHelperText, Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import BaseModal, { ModalContentProps } from '..';
 import { setValueFromEvent } from 'utils';
@@ -41,6 +41,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const [first, second] = selectedSectionsFromCollection;
 
     const mergeConfirmUrl = `/merge/?sections=${selectedForMerge.join(',')}&newName=${name}`;
+
     const handleSubmit = (history: History) => () => {
         onClose();
         history.push(mergeConfirmUrl);

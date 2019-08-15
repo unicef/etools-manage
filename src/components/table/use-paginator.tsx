@@ -6,6 +6,7 @@ export interface Paginator {
     rowsPerPage: number;
     setRowsPerPage: Dispatch<React.SetStateAction<number>>;
     rowsPerPageOptions: number[];
+    maybeResetPage: (rows: any[]) => void;
     setRowsPerPageOptions: Dispatch<React.SetStateAction<number[]>>;
     handleChangePage: (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, page: number) => void;
     handleChangeRowsPerPage: ((event: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
@@ -25,6 +26,12 @@ export const usePagination = (rowsPerPageDefault = 5, rowsPerPageOptionsDefault 
         setRowsPerPage(Number(event.target.value));
     }
 
+    function maybeResetPage(rows: any[]) {
+        if (page > rows.length / rowsPerPage) {
+            setPage(0);
+        }
+    }
+
 
     return {
         page,
@@ -34,6 +41,7 @@ export const usePagination = (rowsPerPageDefault = 5, rowsPerPageOptionsDefault 
         handleChangePage,
         handleChangeRowsPerPage,
         rowsPerPageOptions,
+        maybeResetPage,
         setRowsPerPageOptions
     };
 };

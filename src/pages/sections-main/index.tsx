@@ -58,8 +58,10 @@ const SectionsMainPage: React.FunctionComponent = () => {
     const tableProps = {
         rows: filteredSections,
         mergeActive,
-        onChangeSelected
+        onChangeSelected,
+        showInactive
     };
+
     const tableStyles = useTableStyles();
 
     return (
