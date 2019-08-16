@@ -50,18 +50,20 @@ export interface CloseSectionBackendPayload {
 
 export interface NewSectionFromSplitPayload {name: string; active: boolean}
 
+export type SectionAction = 'close' | 'split'
+
 export interface ActionPointEntity {
     id: number;
     reference_number: string;
     description: string;
     status: string;
-    section: number;
+    section: string;
 }
 
 
 export interface IndicatorEntity {
     title: string;
-    section?: number;
+    section: string;
     pk: number;
 }
 
@@ -85,7 +87,7 @@ export interface TPMActivityEntity extends MultiSectionEntity {
     };
 }
 
-export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'sections'> & {sections: number[]}
+export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'sections'> & {sections: string[]}
 export interface SectionEntity {
     id: number ;
     name: string;
@@ -102,7 +104,7 @@ export interface MergeSectionsPayload {
 }
 export interface TravelEntity {
     id: number;
-    section: number;
+    section: string;
     reference_number: string;
     purpose: string;
     traveler: string;
@@ -128,6 +130,11 @@ export interface GenericMultiSectionPayload {
 export interface GenericSectionPayload {
     id: string;
     section: number | null;
+}
+
+export interface InProgressItem {
+    action: SectionAction;
+    name: string;
 }
 
 

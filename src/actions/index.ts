@@ -12,6 +12,8 @@ import { onThrowError } from 'reducers/error';
 import { onCreateSectionSuccess } from 'reducers/created-section';
 import wrappedFetch from 'lib/fetch';
 import { onUserProfileSuccess } from 'reducers/user';
+import StorageService from 'services/storage';
+import { getInProgressSuccess } from 'reducers/in-progress-items';
 
 
 export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
@@ -79,8 +81,13 @@ export const fetchUserProfile = async(dispatch: Dispatch) => {
         const data = await wrappedFetch(process.env.REACT_APP_USER_PROFILE_ENDPOINT as string);
         dispatch(onUserProfileSuccess(data));
 
-    } catch (err){
-        dispatch(onThrowError(err))
+    } catch (err) {
+        dispatch(onThrowError(err));
     }
 
+};
+
+export const getInProgressItems = (dispatch: Dispatch, storageService: StorageService) => {
+    const actionKeys = storageService.getAllItems();
+    dispatch(getInProgressSuccess(actionKeys));
 };

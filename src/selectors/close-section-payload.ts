@@ -1,21 +1,20 @@
 import { createSelector } from 'redux-starter-kit';
-import { selectSections, selectCurrentActiveSection } from 'selectors';
+import { selectCurrentActiveSection } from 'selectors';
 import { CloseSectionBackendPayload, BackendEntityNames, ActionPointEntity, InterventionEntity, Normalized, TravelEntity, SectionEntity, FormattedTPMActivityEntity } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
 import { selectTravelsFromPayload } from './travels';
 import { selectActionPointsFromPayload } from './action-points';
-import { propEq, prop, keys } from 'ramda';
+import { keys } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
 export const getCloseSectionBackendPayload = createSelector<FullStoreShape, CloseSectionBackendPayload >(
-    [selectActionPointsFromPayload, selectInterventionsFromPayload, selectTPMFromPayload, selectTravelsFromPayload, selectSections, selectCurrentActiveSection],
+    [selectActionPointsFromPayload, selectInterventionsFromPayload, selectTPMFromPayload, selectTravelsFromPayload, selectCurrentActiveSection],
     (actionPoints: Normalized<ActionPointEntity>,
         interventions: Normalized<InterventionEntity>,
         tpmActivities: Normalized<FormattedTPMActivityEntity>,
         travels: Normalized<TravelEntity>,
-        sections: SectionEntity[],
         oldSection: number) => {
 
         const payload: CloseSectionBackendPayload = {
@@ -26,8 +25,7 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
         keys(actionPoints).forEach(
             (id: string) => {
                 const { section } = actionPoints[id];
-                const sectionName = prop('name', sections.find(propEq('name', section)));
-                persistToPayload(payload, sectionName, 'action_points', Number(id));
+                persistToPayload(payload, section, 'action_points', Number(id));
             }
         );
 
@@ -35,16 +33,14 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
             (id: string) => {
                 const { sections: selectedSections, indicators } = interventions[id];
                 selectedSections.forEach(
-                    section => {
-                        const sectionName = prop('name', sections.find(propEq('name', section)));
-                        persistToPayload(payload, sectionName, 'interventions', Number(id));
+                    (section: string) => {
+                        persistToPayload(payload, section, 'interventions', Number(id));
                     }
                 );
 
                 indicators.forEach(
                     ({ section, pk }) => {
-                        const sectionName = prop('name', sections.find(propEq('name', section)));
-                        persistToPayload(payload, sectionName, 'applied_indicators', pk);
+                        persistToPayload(payload, section, 'applied_indicators', pk);
                     }
                 );
             }
@@ -54,9 +50,8 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
             (id: string) => {
                 const { sections: selectedSections } = tpmActivities[id];
                 selectedSections.forEach(
-                    section => {
-                        const sectionName = prop('name', sections.find(propEq('name', section)));
-                        persistToPayload(payload, sectionName, 'tpm_activities', Number(id));
+                    (section: string) => {
+                        persistToPayload(payload, section, 'tpm_activities', Number(id));
                     }
                 );
             }
@@ -65,8 +60,7 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
         keys(travels).forEach(
             (id: string) => {
                 const { section } = travels[id];
-                const sectionName = prop('name', sections.find(propEq('name', section)));
-                persistToPayload(payload, sectionName, 'travels', Number(id));
+                persistToPayload(payload, section, 'travels', Number(id));
             }
         );
 

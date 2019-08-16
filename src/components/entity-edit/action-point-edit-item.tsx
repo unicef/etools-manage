@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditItemProps, ModuleEntities } from 'entities/types';
+import { EditItemProps } from 'entities/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,6 @@ import { ValueType } from 'react-select/src/types';
 import { onSelectActionPointSection } from 'pages/close-section/actions';
 import { getSelectedSection } from 'lib/sections';
 import { FullStoreShape } from 'contexts/app';
-
 
 const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();

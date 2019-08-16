@@ -26,12 +26,12 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
             service.storeEntitiesData(key, state.closeSectionPayload);
         }
 
-        if (action.type === persistToStorage.type){
+        if (action.type === persistToStorage.type) {
             const key = prefixWithSplit(state);
-            service.storeEntitiesData(key, action.payload)
+            service.storeEntitiesData(key, action.payload);
         }
 
-        const sectionJustClosed = action.type === onSuccessCloseSection.type && action.payload === true;
+        const sectionJustClosed = action.type === onSuccessCloseSection.type;
 
         if (sectionJustClosed) {
             const key = prefixWithClose(state);

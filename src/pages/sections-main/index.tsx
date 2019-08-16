@@ -14,6 +14,7 @@ import Switch from '@material-ui/core/Switch';
 import { Container, FormControlLabel, FormGroup, Typography } from '@material-ui/core';
 import { useTableStyles } from 'components/table/styles';
 import { renderSectionsList } from 'actions/action-constants';
+import InProgressTable from 'components/in-progress-table';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -81,7 +82,10 @@ const SectionsMainPage: React.FunctionComponent = () => {
                 <Switch checked={showInactive} onChange={handleToggleInactive} aria-label="Show inactive switch" />
                 <Typography>Show inactive</Typography>
             </Box>
+
             <SectionsTable {...tableProps}/>
+
+            <InProgressTable />
 
             <PageModals />
         </Container>

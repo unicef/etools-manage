@@ -53,7 +53,7 @@ export const interventionsWithoutCurrentSection = createSelector(
                 const removedSectionIndicators = item.indicators.map(
                     indicator => ({
                         ...indicator,
-                        section: undefined
+                        section: ''
                     })
                 );
 

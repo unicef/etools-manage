@@ -85,8 +85,6 @@ export const onSubmitCloseSection = async (service: SectionsService, payload: Cl
 };
 
 export const onSetActionBar = (dispatch: Dispatch, payload: ActionBarKeys | '') => {
-    console.log('setting action bar', payload);
-
     dispatch(setCloseSectionActionBar(payload));
 };
 

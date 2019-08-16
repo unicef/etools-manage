@@ -12,9 +12,9 @@ import { ConfirmButton, BackToMainButton } from 'components/buttons';
 import { SectionBox } from 'components/section-box';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectMergeSection, selectSections } from 'selectors';
-import { useReviewTableStyles } from 'components/modals/styles';
 import EntityChangesTable from 'components/entity-changes';
 import { isArrayOfObjects } from 'utils/helpers';
+import { useReviewTableStyles } from 'components/styles';
 
 
 // TODO: lazy load on route

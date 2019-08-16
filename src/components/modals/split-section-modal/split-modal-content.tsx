@@ -26,7 +26,7 @@ import { onToggleSplitModal } from 'reducers/modals';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { SectionBox } from 'components/section-box';
 import clsx from 'clsx';
-import {  onSectionSplit } from 'pages/split-section/actions';
+import { onSectionSplit } from 'pages/split-section/actions';
 import { getSplitSectionUrl } from 'lib/sections';
 
 const useSplitStyles = makeStyles((theme: Theme) =>

@@ -7,7 +7,7 @@ import { EnhancedTableToolbar } from 'components/sections-table';
 import clsx from 'clsx';
 import { MAX_CELL_WRAP_LENGTH } from 'global-constants';
 import { EntityTableHeadProps, EntityChangesTableProps } from 'pages/merge-summary/types';
-import { useReviewTableStyles } from 'components/modals/styles';
+import { useReviewTableStyles } from 'components/styles';
 
 
 function EntityTableHead<T>({ entityConfig }: EntityTableHeadProps<T>) {

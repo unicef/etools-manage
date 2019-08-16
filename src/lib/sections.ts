@@ -2,7 +2,7 @@ import { reduce, keys, always, map, T, isNil, cond, prop, propEq } from 'ramda';
 import { EntityWithSingleSection, ResolvedRatio, FetchStoragePayload } from 'entities/types';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
-import { CLOSE_SECTION_PREFIX, SPLIT_SECTION_PREFIX , SPLIT_SECTION_PATH, CLOSE_SECTION_PATH} from 'global-constants';
+import { CLOSE_SECTION_PREFIX, SPLIT_SECTION_PREFIX, SPLIT_SECTION_PATH, CLOSE_SECTION_PATH } from 'global-constants';
 
 export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
     const res = keys(entity).reduce(
@@ -44,7 +44,7 @@ export const valueOrDefault = cond([
     [T, map(prop('value'))]
 ]);
 
-export const getSelectedSection = (options: OptionType[], section: number) => options.find(propEq('value', section)) || null;
+export const getSelectedSection = (options: OptionType[], section: string) => options.find(propEq('value', section)) || null;
 
 export function isSectionsParamValid(str: string): boolean {
     if (!str.length) {
@@ -60,5 +60,5 @@ export function isSectionsParamValid(str: string): boolean {
 }
 
 
-export const getSplitSectionUrl = (id: string)=> `${SPLIT_SECTION_PATH}${id}`
-export const getCloseSectionUrl = (id: string)=> `${CLOSE_SECTION_PATH}${id}`
+export const getSplitSectionUrl = (id: string) => `${SPLIT_SECTION_PATH}${id}`;
+export const getCloseSectionUrl = (id: string) => `${CLOSE_SECTION_PATH}${id}`;

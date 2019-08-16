@@ -1,5 +1,6 @@
 import { createSlice } from 'redux-starter-kit';
 import { ACTION_BAR_DISABLED_ACTIONS } from 'pages/close-section/constants';
+import { onSuccessCloseSection } from './closed-section-success';
 
 export const ui = createSlice({
     initialState: {
@@ -16,7 +17,11 @@ export const ui = createSlice({
         },
         onSetViewCloseSummary: (state, action) => {
             state.viewCloseSummary = action.payload;
-
+        }
+    },
+    extraReducers: {
+        [onSuccessCloseSection.type]: state => {
+            state.viewCloseSummary = false;
         }
     }
 });
