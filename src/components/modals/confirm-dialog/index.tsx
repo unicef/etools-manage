@@ -38,10 +38,10 @@ export default function ConfirmDialog({ open, handleConfirm, handleClose, rowToD
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title">Delete item</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Delete progress</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete this item?
+                        Are you sure you want to remove this work in progress?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
