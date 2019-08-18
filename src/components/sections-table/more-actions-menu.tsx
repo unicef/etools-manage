@@ -15,6 +15,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUserProfile, selectCountryName } from 'selectors/user';
 import { useAppService } from 'contexts/app';
 import { getCloseSectionUrl, getSplitSectionPrefixKey, getSplitSectionUrl } from 'lib/sections';
+import { deriveRowsFromInProgress } from 'selectors/in-progress-items';
+import { includes } from 'ramda';
+import { SectionAction } from 'entities/types';
 
 const useMenuStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -47,6 +50,9 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     const [redirect, setRedirect] = useState<boolean>(false);
     const modalsDispatch = useModalsDispatch();
     const dispatch = useDispatch();
+
+    const inProgressItems = useSelector(deriveRowsFromInProgress);
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const countryName = useSelector(selectCountryName);
@@ -84,6 +90,14 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
         return <Redirect push to={getSplitSectionUrl(String(rowId))} />;
     }
 
+    function isDisabled(actionType: SectionAction) {
+        const isInprogressItem = inProgressItems.find(({ id }: {id: string}) => id === String(rowId));
+        if (isInprogressItem) {
+            return isInprogressItem.action !== actionType;
+        }
+        return false;
+    }
+
     return (
         <Box >
             <IconButton
@@ -101,13 +115,15 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
 
-                <Link to={getCloseSectionUrl(String(rowId))}>
-                    <MenuItem classes={{ root: menuStyles.listItem }}>
-                        <DeleteIcon className={menuStyles.icon} color="secondary" />
-                        <Typography variant="body1">Close section</Typography>
-                    </MenuItem>
-                </Link>
-                <MenuItem classes={{ root: menuStyles.listItem }} onClick={handleClickSplit}>
+                <MenuItem disabled={isDisabled('close')} classes={{ root: menuStyles.listItem }}>
+                    <Link to={getCloseSectionUrl(String(rowId))}>
+                        <Box>
+                            <DeleteIcon className={menuStyles.icon} color="secondary" />
+                            <Typography variant="body1">Close section</Typography>
+                        </Box>
+                    </Link>
+                </MenuItem>
+                <MenuItem disabled={isDisabled('split')} classes={{ root: menuStyles.listItem }} onClick={handleClickSplit}>
                     <SplitIcon className={menuStyles.icon} color="secondary" />
                     <Typography>Split section</Typography>
                 </MenuItem>

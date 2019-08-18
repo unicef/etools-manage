@@ -25,11 +25,9 @@ export default function ConfirmDialog({ open, handleConfirm, handleClose, rowToD
     const onConfirm = () => {
         try {
             onRemoveItemInProgress(dispatch, (rowToDelete as InProgressItem).storageKey);
-
         } catch (err) {
             dispatch(onThrowError(err));
         }
-
         handleConfirm && handleConfirm();
     };
 
