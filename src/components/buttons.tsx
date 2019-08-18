@@ -7,7 +7,7 @@ import { withRouter } from 'react-router';
 import { useIconButtonStyles } from './table/styles';
 import { useDispatch } from 'react-redux';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
-import { refreshSectionsList, renderSectionsList } from 'actions/action-constants';
+import { refreshSectionsList } from 'actions/action-constants';
 
 
 export const useButtonStyles = makeStyles((theme: Theme) =>

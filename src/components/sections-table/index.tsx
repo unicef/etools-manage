@@ -183,6 +183,7 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onC
     return (
         <Paper className={clsx(styles.paper)}>
             <div className={styles.tableWrapper}>
+                <EnhancedTableToolbar title="Sections" />
                 <Table
                     className={styles.table}
                     aria-labelledby="tableTitle"

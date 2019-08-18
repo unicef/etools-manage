@@ -58,7 +58,7 @@ const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({
         }
     }, [id, user]);
 
-    return <CloseSectionRender id={id}/>
+    return <CloseSectionRender id={id}/>;
 };
 
 export const CloseSectionRender: React.FC<MatchParams> = ({ id }) => {
@@ -73,7 +73,7 @@ export const CloseSectionRender: React.FC<MatchParams> = ({ id }) => {
             ) : closedSectionSuccess ? (
                 <CloseSectionSuccess />
             ) : (
-                <CloseSectionsPage sectionId={id} />
+                <CloseSectionsPage />
             )}
         </Box>
     );

@@ -8,5 +8,5 @@ export type ActionBarKeys = typeof ACTION_BAR_DISABLED_ACTIONS | typeof ACTION_B
     type KEYS = 'action-bar-disabled' | 'action-bar-connected' | 'action-bar-review'
 
 export type CloseSectionActionsMap ={
-    [key in ActionBarKeys]: () => JSX.Element;
+    [key in ActionBarKeys]: (props?) => JSX.Element;
 }

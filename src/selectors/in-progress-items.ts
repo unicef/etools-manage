@@ -1,7 +1,8 @@
 import { createSelector } from 'redux-starter-kit';
-import { selectSections } from 'selectors';
+import { selectSections, selectCurrentActiveSection } from 'selectors';
 import { parseKeyForId, parseKeyForAction } from 'lib/sections';
-import { includes, allPass, reject, map, propEq } from 'ramda';
+import { map, propEq } from 'ramda';
+import { InProgressItem } from 'entities/types';
 
 
 export const selectInProgress = createSelector(
@@ -14,20 +15,6 @@ export const deriveRowsFromInProgress = createSelector(
         if (!items.length || !sections.length) {
             return [];
         }
-        const splitIds = items
-            .filter(
-                (key: string) => key.includes('split')
-            ).map(
-                parseKeyForId
-            );
-
-        const isCloseAction = includes('close');
-        const isCloseFromSplit = (key: string) => includes(parseKeyForId(key), splitIds);
-
-        // We don't want to list split sections as both and split in progress items
-        const removeDuplicateClose = reject(
-            allPass([isCloseAction, isCloseFromSplit])
-        );
 
         const buildRowItem = (key: string) => {
             const id = parseKeyForId(key);
@@ -36,14 +23,21 @@ export const deriveRowsFromInProgress = createSelector(
             return {
                 name: section.name,
                 action,
+                storageKey: key,
                 id
             };
         };
 
-        const filtered = removeDuplicateClose(items);
-
-        const rows = map(buildRowItem, filtered);
+        const rows = map(buildRowItem, items);
         return rows;
     }
 );
 
+
+export const getStorageKeyFromCurrentActive = createSelector(
+    [selectCurrentActiveSection, deriveRowsFromInProgress],
+    (currentId: number, rows: InProgressItem[]) => {
+        const row = rows.find(({ id }) => Number(id) === currentId);
+        return row;
+    }
+);

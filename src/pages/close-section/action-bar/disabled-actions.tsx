@@ -1,16 +1,23 @@
 import React from 'react';
-import { BackIconButton } from 'components/buttons';
+import { BackIconButton, useButtonStyles } from 'components/buttons';
 import Box from 'components/box';
 import { Button } from '@material-ui/core';
+import CancelSectionActionButton from './cancel-button';
 import { useSummaryStyles } from '../summary-styles';
 
 
-export default function ActionBarDisabled() {
+function ActionBarDisabled() {
     const styles = useSummaryStyles();
+    const btnStyles = useButtonStyles();
     return (
         <Box className={styles.section} justify="between">
             <BackIconButton />
-            <Button variant="outlined" disabled>Confirm</Button>
+            <Box>
+                <CancelSectionActionButton />
+                <Button variant="outlined" disabled className={btnStyles.button}>Confirm</Button>
+            </Box>
         </Box>
     );
 }
+
+export default ActionBarDisabled;

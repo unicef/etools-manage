@@ -5,6 +5,7 @@ import StorageService, { Storage } from 'services/storage';
 import { onUpdateTravelSection, onChangeInterventionSection, onUpdateActionPointSection, onUpdateInterventionIndicatorsState, onUpdateTPMSections } from 'reducers/close-section-payload';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
 import { persistToStorage } from 'pages/split-section/actions';
+import { removeItemFromInProgress } from 'reducers/in-progress-items';
 
 
 const USER_SELECTION_ACTIONS = [
@@ -21,6 +22,9 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
 
         const state = getState();
 
+        const sectionJustClosed = action.type === onSuccessCloseSection.type;
+        const itemInProgressRemoved = action.type === removeItemFromInProgress.type;
+
         if (includes(action.type, USER_SELECTION_ACTIONS)) {
             const key = prefixWithClose(state);
             service.storeEntitiesData(key, state.closeSectionPayload);
@@ -31,11 +35,13 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
             service.storeEntitiesData(key, action.payload);
         }
 
-        const sectionJustClosed = action.type === onSuccessCloseSection.type;
-
         if (sectionJustClosed) {
             const key = prefixWithClose(state);
             service.removeItem(key);
+        }
+
+        if (itemInProgressRemoved) {
+            service.removeItem(action.payload);
         }
 
     };

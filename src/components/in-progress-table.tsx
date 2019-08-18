@@ -1,23 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Paper, TableHead, TableRow, TableCell, TableBody, Table, IconButton, Button, Tooltip } from '@material-ui/core';
-import OpenInBrowserIcon from '@material-ui/icons/OpenInBrowser';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-
 import { useTableStyles } from './table/styles';
 import { EnhancedTableToolbar } from './sections-table';
 import { useAppService } from 'contexts/app';
 import { useSelector, useDispatch } from 'react-redux';
-import { getInProgressItems } from 'actions';
+import { getInProgressItems, onRemoveItemInProgress } from 'actions';
 import { deriveRowsFromInProgress } from 'selectors/in-progress-items';
 import { InProgressItem } from 'entities/types';
 import { capitalize } from 'utils';
 import clsx from 'clsx';
-import Box from './box';
+import ConfirmDeleteDialog from './modals/confirm-dialog';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 
 const ProgressTableHead: React.FC = () => {
-    const styles = useTableStyles();
     return (
         <TableHead>
             <TableRow>
@@ -35,15 +33,27 @@ const ProgressTableHead: React.FC = () => {
     );
 };
 
-const InProgressTable: React.FC = () => {
+
+const InProgressTable: React.FC<RouteComponentProps> = ({ history }) => {
 
     const styles = useTableStyles();
     const rows = useSelector(deriveRowsFromInProgress);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+    const [rowToDelete, setRowToDelete] = useState<InProgressItem | undefined>(undefined);
     const dispatch = useDispatch();
     const { storageService } = useAppService();
 
+    const handleDelete = (row: InProgressItem) => () => {
+        setDeleteDialogOpen(true);
+        setRowToDelete(row);
+    };
+
+    const handleClickEdit = (row: InProgressItem) => () => {
+        history.push(`/${row.action}/${row.id}`);
+    };
+
     useEffect(() => {
-        getInProgressItems(dispatch, storageService);
+        getInProgressItems(storageService, dispatch);
     }, []);
 
 
@@ -65,13 +75,14 @@ const InProgressTable: React.FC = () => {
                                             color="secondary"
                                             className={styles.icon}
                                             size="small"
-                                            onClick={() => null}>
+                                            onClick={handleClickEdit(row)}>
                                             <EditIcon />
                                         </IconButton>
                                     </Tooltip>
 
                                     <Tooltip title="Delete" placement="top">
                                         <IconButton
+                                            onClick={handleDelete(row)}
                                             size="small"
                                             className={clsx(styles.icon, styles.rightIcon)}
                                             edge="end" aria-label="delete">
@@ -88,8 +99,14 @@ const InProgressTable: React.FC = () => {
                 </TableBody>
             </Table>
 
+            <ConfirmDeleteDialog
+                open={deleteDialogOpen}
+                handleClose={() => setDeleteDialogOpen(false)}
+                rowToDelete={rowToDelete}
+            />
+
         </Paper>
     );
 };
 
-export default InProgressTable;
+export default withRouter(InProgressTable);

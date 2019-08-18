@@ -15,6 +15,7 @@ import { Container, FormControlLabel, FormGroup, Typography } from '@material-ui
 import { useTableStyles } from 'components/table/styles';
 import { renderSectionsList } from 'actions/action-constants';
 import InProgressTable from 'components/in-progress-table';
+import { selectInProgress } from 'selectors/in-progress-items';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -33,6 +34,8 @@ const SectionsMainPage: React.FunctionComponent = () => {
     const [filteredSections, setFilteredSections] = useState([] as SectionEntity[]);
     const [mergeActive, setMergeActive] = useState<boolean>(false);
     const [showInactive, setShowInactive] = useState<boolean>(false);
+
+    const inProgress = useSelector(selectInProgress);
 
     const modalsDispatch = useModalsDispatch();
     const dispatch = useDispatch();
@@ -85,7 +88,7 @@ const SectionsMainPage: React.FunctionComponent = () => {
 
             <SectionsTable {...tableProps}/>
 
-            <InProgressTable />
+            {inProgress.length ? <InProgressTable /> : null}
 
             <PageModals />
         </Container>

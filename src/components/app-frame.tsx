@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { UserProfile } from 'global-types';
 // import { UserContext } from '../contexts/user';
 import { useAppService } from 'contexts/app';
-import { onGetSections, fetchUserProfile } from 'actions';
+import { onGetSections, fetchUserProfile, getInProgressItems } from 'actions';
 import { Modals } from 'contexts/page-modals';
 import Loader from './loader';
 import { Link, IconButton, Drawer, useTheme, Divider, List } from '@material-ui/core';
@@ -108,7 +108,8 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const selectedIndex = useSelector(selectMenuItem);
     const loading = useSelector(selectLoading);
     const error = useSelector(selectError);
-    const { sectionsService: service } = useAppService();
+
+    const { storageService, sectionsService: service } = useAppService();
     const dispatch = useDispatch();
 
     if (error) {
@@ -118,6 +119,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     useEffect(() => {
         onGetSections(service, dispatch);
         fetchUserProfile(dispatch);
+        getInProgressItems(storageService, dispatch);
     }, []);
 
     function handleDrawerOpen() {

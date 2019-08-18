@@ -1,4 +1,4 @@
-import { reduce, keys, always, map, T, isNil, cond, prop, propEq } from 'ramda';
+import { reduce, keys, always, map, T, isNil, cond, prop, propEq, includes, reject, allPass } from 'ramda';
 import { EntityWithSingleSection, ResolvedRatio, FetchStoragePayload } from 'entities/types';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
@@ -41,9 +41,29 @@ export const getSplitSectionPrefixKey = (payload: FetchStoragePayload) => `${SPL
 
 export const parseKeyForId = (key: string) => {
     return key.split('_')[1];
- 
+
 };
 export const parseKeyForAction = (key: string) => key.split('_')[0];
+
+export const filterDuplicateClose = (keys: string[]) => {
+    const splitIds = keys
+        .filter(
+            (key: string) => key.includes('split')
+        ).map(
+            parseKeyForId
+        );
+
+    const isCloseAction = includes('close');
+    const isCloseFromSplit = (key: string) => includes(parseKeyForId(key), splitIds);
+
+    // We remove a close section action if split exists for that section
+    const removeDuplicateClose = reject(
+        allPass([isCloseAction, isCloseFromSplit])
+    );
+
+    return removeDuplicateClose(keys);
+};
+
 
 export const valueOrDefault = cond([
     [isNil, always([])],

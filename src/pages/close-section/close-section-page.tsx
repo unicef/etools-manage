@@ -4,7 +4,7 @@ import { Typography, Paper, Container, Button } from '@material-ui/core';
 import clsx from 'clsx';
 import { buildResolvedProgressString } from 'lib/sections';
 import { useAppService } from 'contexts/app';
-import { selectCloseSectionPayload, selectSections } from 'selectors';
+import { selectCloseSectionPayload, selectSections, selectCurrentActiveSectionName } from 'selectors';
 import { onFetchDataCloseSection, onEditModuleSections, onResetCloseSectionPayload, onSetActionBar } from './actions';
 import { ModuleEntities, ResolvedRatio } from 'entities/types';
 import EntityConfigMapping from 'entities/config-map';
@@ -23,13 +23,8 @@ import ActionBarConnectedConfirm from './action-bar/connected-confirm';
 import ActionBarReviewReady from './action-bar/review-ready';
 import { selectCloseSectionActionBar, selectViewCloseSummary, deriveCloseSectionActionBar } from 'selectors/ui';
 import { CloseSectionActionsMap } from './types';
+import { selectNamesFromSplit } from 'selectors/split-section';
 
-const ConnectedConfirmButton = lazy(() => import('components/connected-submit-payload-button'));
-
-
-export interface CloseSummaryProps {
-    sectionId: string;
-}
 
 export interface SummaryItemProps {
     name: string;
@@ -81,15 +76,11 @@ const ActionBarMapping: CloseSectionActionsMap = {
     [ACTION_BAR_REVIEW]: ActionBarReviewReady
 };
 
-export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) => {
+export const CloseSectionsPage: React.FC = () => {
 
     const {
-        modulesData,
-        sections
+        modulesData
     } = useModulesSummary();
-
-
-    const closingSection = prop('name', find(propEq('id', Number(sectionId)), sections));
 
     const actionBar = useSelector(selectCloseSectionActionBar);
 
@@ -103,7 +94,7 @@ export const CloseSectionsPage: React.FC<CloseSummaryProps> = ({ sectionId }) =>
             {
                 viewCloseSummary ?
                     <CloseSectionSummary/> :
-                    <ModulesSummary modulesData={modulesData} closingSection={closingSection}/>
+                    <ModulesSummary modulesData={modulesData} />
             }
 
         </Container>
@@ -115,28 +106,63 @@ CloseSectionsPage.whyDidYouRender = true;
 
 export interface ModulesSummaryProps {
     modulesData: SummaryItemProps[] | undefined;
-    closingSection: string;
 }
 
-export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ closingSection, modulesData }) => {
+export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ modulesData }) => {
     const progress = useSelector(selectTotalProgress);
-
+    const closingSection = useSelector(selectCurrentActiveSectionName);
     const styles = useSummaryStyles();
+    const namesFromSplit = useSelector(selectNamesFromSplit);
+
     const hasData = Boolean(modulesData && modulesData.length);
+
+    const isSplitSection = Boolean(namesFromSplit.length);
+
+    const titleText = isSplitSection ? 'Split Section' : 'Close Section';
 
     return (
         <Box column>
+            <Box align="center" className={styles.section}>
+                <Typography
+                    color="inherit"
+                    className={clsx(styles.subtitle, styles.headingItem, styles.titleAction, styles.titleSize)}
+                    variant="body1">{titleText}</Typography>
+                <Typography
+                    className={clsx(styles.headingItem, styles.titleSize)}
+                    variant="body1"
+                    color="inherit"
+                >
+                    <code>{closingSection}</code>
+                </Typography>
+
+                {
+                    isSplitSection ? <Box align="center">
+                        <Typography
+                            className={clsx(styles.headingItem, styles.titleAction, styles.titleSize)}
+                            color="inherit"
+                            variant="body1">into
+                        </Typography>
+
+                        <Typography
+                            className={styles.titleSize}
+                            variant="body1"
+                            color="inherit"
+                        >
+                            <code>{namesFromSplit.map(prop('name')).join(' & ')}</code>
+                        </Typography>
+                    </Box> : null
+                }
+            </Box>
+
+
             <Paper>
                 <Box className={clsx(styles.heading, styles.lightSecondary)} align="center">
                     <Typography
                         color="inherit"
-                        className={clsx(styles.subtitle, styles.titleSize)}
-                        variant="body1">Closing section </Typography>
-                    <Typography
-                        variant="body1"
-                        color="inherit">
-                        <code>{closingSection}</code>
-                    </Typography>
+                        className={clsx(styles.titleSize)}
+                        variant="body1">Modules Items Affected</Typography>
+
+
                 </Box>
                 {
                     modulesData ?

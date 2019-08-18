@@ -24,8 +24,17 @@ export const useSummaryStyles = makeStyles((theme: Theme) =>
             borderBottom: `1px solid ${theme.palette.divider}`,
             backgroundColor: lighten(theme.palette.secondary.main, 0.5)
         },
-        subtitle: {
+        headingItem: {
             marginRight: theme.spacing(2)
+
+        },
+        subtitle: {
+            fontSize: 20,
+            lineHeight: '28px',
+            padding: `${theme.spacing(1.5)}px 0`
+        },
+        titleAction: {
+            fontWeight: 500
         },
         moduleCell: {
             width: '35%',

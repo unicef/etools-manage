@@ -10,7 +10,6 @@ export default function PageModals() {
             <SplitSectionModal />
             <MergeModal />
             <AddSectionModal />
-
         </>
     );
 

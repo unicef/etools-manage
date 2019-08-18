@@ -135,6 +135,7 @@ export interface InProgressItem {
     action: SectionAction;
     name: string;
     id: string;
+    storageKey: string;
 }
 
 
