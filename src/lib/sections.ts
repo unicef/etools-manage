@@ -39,6 +39,12 @@ export const getCloseSectionPrefixKey = (payload: FetchStoragePayload) => `${CLO
 export const prefixWithSplit = (state: FullStoreShape) => `${SPLIT_SECTION_PREFIX}_${state.currentActiveSection}_${state.user.country.name}`;
 export const getSplitSectionPrefixKey = (payload: FetchStoragePayload) => `${SPLIT_SECTION_PREFIX}_${payload.id}_${payload.countryName}`;
 
+export const parseKeyForId = (key: string) => {
+    return key.split('_')[1];
+ 
+};
+export const parseKeyForAction = (key: string) => key.split('_')[0];
+
 export const valueOrDefault = cond([
     [isNil, always([])],
     [T, map(prop('value'))]

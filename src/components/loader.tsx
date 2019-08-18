@@ -30,7 +30,7 @@ export default function Loader() {
     return <Box justify="center" align="center" className={styles.root}>
         <Box column justify="center" align="center">
             <CircularProgress color="secondary"/>
-            <Typography className={styles.text}>Loading</Typography>
+            {/* <Typography className={styles.text}>Loading</Typography> */}
         </Box>
     </Box>;
 

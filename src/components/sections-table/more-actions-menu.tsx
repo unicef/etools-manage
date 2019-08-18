@@ -88,7 +88,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
         <Box >
             <IconButton
                 onClick={handleClick}
-                className={clsx(className, styles.icon)}
+                className={clsx(className, styles.icon, styles.showOnHover)}
                 size="small"
                 aria-label="More Actions">
                 <MoreVerticalIcon/>

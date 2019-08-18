@@ -88,6 +88,7 @@ export interface TPMActivityEntity extends MultiSectionEntity {
 }
 
 export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'sections'> & {sections: string[]}
+
 export interface SectionEntity {
     id: number ;
     name: string;
@@ -110,14 +111,12 @@ export interface TravelEntity {
     traveler: string;
 }
 
-
 export interface NewSectionFromMerged {
     pk: number;
     name: string;
 }
 
 export type SectionServicePayload = CreateSectionPayload | MergeSectionsPayload | CloseSectionBackendPayload
-
 
 export interface EditItemProps {
     id: string;
@@ -135,6 +134,7 @@ export interface GenericSectionPayload {
 export interface InProgressItem {
     action: SectionAction;
     name: string;
+    id: string;
 }
 
 

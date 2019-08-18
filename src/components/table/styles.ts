@@ -30,9 +30,14 @@ export const useTableStyles = makeStyles((theme: Theme) =>
         },
         icon: {
             width: 40,
-            height: 40,
-            visibility: 'hidden',
+            height: 40
+        },
+        rightIcon: {
+            marginLeft: theme.spacing(1)
+        },
 
+        showOnHover: {
+            visibility: 'hidden',
             '.MuiTableRow-root.MuiTableRow-hover:hover &': {
                 visibility: 'visible'
             }
