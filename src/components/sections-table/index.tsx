@@ -19,6 +19,8 @@ import { usePagination } from 'components/table/use-paginator';
 import { stableSort, getSorting } from 'components/table/table-utils';
 import { useTableStyles } from 'components/table/styles';
 import MoreActionsMenu from './more-actions-menu';
+import { useSelector } from 'react-redux';
+import { deriveRowsFromInProgress } from 'selectors/in-progress-items';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -136,6 +138,9 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onC
         maybeResetPage
     } = usePagination(10);
 
+    const inProgressItems = useSelector(deriveRowsFromInProgress);
+
+
     maybeResetPage(rows);
 
 
@@ -152,28 +157,30 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onC
         }
     }, [mergeActive]);
 
-    function handleClick(event: React.MouseEvent<unknown>, name: string) {
-        if (!mergeActive) {
-            return;
-        }
-        const selectedIndex = selected.indexOf(name);
-        let newSelected: string[] = [];
+    function handleClick(name: string) {
+        return () => {
+            if (!mergeActive) {
+                return;
+            }
+            const selectedIndex = selected.indexOf(name);
+            let newSelected: string[] = [];
 
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
+            if (selectedIndex === -1) {
+                newSelected = newSelected.concat(selected, name);
+            } else if (selectedIndex === 0) {
+                newSelected = newSelected.concat(selected.slice(1));
+            } else if (selectedIndex === selected.length - 1) {
+                newSelected = newSelected.concat(selected.slice(0, -1));
+            } else if (selectedIndex > 0) {
+                newSelected = newSelected.concat(
+                    selected.slice(0, selectedIndex),
+                    selected.slice(selectedIndex + 1),
+                );
+            }
 
-        setSelected(newSelected);
-        onChangeSelected(newSelected);
+            setSelected(newSelected);
+            onChangeSelected(newSelected);
+        };
     }
 
     const isSelected = (id: string) => selected.indexOf(id) !== -1;
@@ -200,25 +207,28 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onC
                             stableSort(rows, getSorting(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    // @ts-ignore
+
                                     const isItemSelected = isSelected(String(row.id));
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
+                                    const isAlreadyInProgress = Boolean(inProgressItems.find(({ id }: {id: string}) => id === String(row.id)));
+
+                                    const rowDisabled = (!isItemSelected && selected.length > 1) || (mergeActive && isAlreadyInProgress) || row.active === false;
+
                                     return (
                                         <TableRow
-                                            className={clsx(row.active === false && styles.rowDisabled)}
+                                            className={clsx(rowDisabled && styles.rowDisabled)}
                                             hover
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
                                             key={row.name}
                                             selected={isItemSelected}
-                                            onClick={event => handleClick(event, String(row.id))}
+                                            onClick={handleClick(String(row.id))}
                                         >
                                             <TableCell padding="checkbox">
                                                 {mergeActive && <Checkbox
                                                     checked={isItemSelected}
-                                                    disabled={!isItemSelected && selected.length > 1}
                                                     inputProps={{ 'aria-labelledby': labelId }}
                                                 />}
                                             </TableCell>
@@ -229,7 +239,6 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onC
                                             <TableCell align="right" classes={{ root: styles.actionCell }} >
                                                 <MoreActionsMenu rowId={row.id}/>
                                             </TableCell>
-                                            {/* </ListItem> */}
                                         </TableRow>
                                     );
                                 })}

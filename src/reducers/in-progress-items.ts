@@ -18,9 +18,6 @@ const inProgressItems = createSlice({
         }
 
 
-    },
-    extraReducers: {
-        // [renderSectionsList.type]: (state, action) => false
     }
 });
 export const { getInProgressSuccess, addItemToInProgress, removeItemFromInProgress } = inProgressItems.actions;
