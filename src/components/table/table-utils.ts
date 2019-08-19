@@ -13,6 +13,7 @@ export function stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
     return stabilizedThis.map(el => el[0]);
 }
 
+// eslint-disable-next-line
 export function getSorting<K extends keyof any>(
     order: Order,
     orderBy: K,
