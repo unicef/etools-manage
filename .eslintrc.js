@@ -238,7 +238,7 @@ module.exports = {
         "@typescript-eslint/no-use-before-define":"off",
         "@typescript-eslint/explicit-function-return-type":"off",
         "@typescript-eslint/camelcase": "off",
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "warn",
         'no-useless-call': 'error',
         'no-useless-computed-key': 'error',
         'no-useless-concat': 'error',

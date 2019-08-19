@@ -193,7 +193,7 @@ const useDropdown = () => {
                 font: 'inherit'
             }
         }),
-
+        // eslint-disable-next-line
         container: (base: CSSProperties, state: any) => ({
             ...base,
             opacity: state.isDisabled ? 0.5 : 1
@@ -252,6 +252,7 @@ export interface DropdownProps {
     label?: string | null;
     value?: OptionType | OptionType[] | null;
     onChange: ((value: ValueType<OptionType>) => void);
+    // eslint-disable-next-line
     [prop: string]: any;
 }
 

@@ -1,4 +1,5 @@
 import wrappedFetch from './fetch';
+/* eslint-disable */
 
 // TODO: create type for config when tests are made
 export interface HttpClient {
@@ -34,3 +35,5 @@ export class ApiClient implements HttpClient {
         return response;
     }
 }
+
+/* eslint-enable */
