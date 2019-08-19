@@ -7,7 +7,7 @@ const currentActiveSection = createSlice({
         onCurrentActiveSection: (state, action) => action.payload
     },
     extraReducers: {
-        [renderSectionsList.type]: (state, action) => -1
+        [renderSectionsList.type]: () => -1
     }
 });
 export const { onCurrentActiveSection } = currentActiveSection.actions;

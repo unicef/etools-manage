@@ -7,11 +7,11 @@ import { getSplitSectionPrefixKey } from 'lib/sections';
 import { onFetchDataCloseSection } from 'pages/close-section/actions';
 import { updateNamesFromSplit } from 'reducers/names-from-split';
 
-export const persistToStorage = createAction('persistToStorage')
+export const persistToStorage = createAction('persistToStorage');
 
 export const onFetchDataSplitSection = async (
-  services: {backendService: BackendService; storageService: StorageService},
-  payload: FetchStoragePayload, dispatch: Dispatch) => {
+    services: {backendService: BackendService; storageService: StorageService},
+    payload: FetchStoragePayload, dispatch: Dispatch) => {
 
     const { storageService } = services;
 
@@ -20,12 +20,12 @@ export const onFetchDataSplitSection = async (
     const newNamesFromSplit = storageService.getStoredEntitiesData(splitKey);
     dispatch(updateNamesFromSplit(newNamesFromSplit));
 
-    onFetchDataCloseSection(services, payload,dispatch);
+    onFetchDataCloseSection(services, payload, dispatch);
 
-  }
+};
 
 export const onSectionSplit = (dispatch: Dispatch, payload: NewSectionFromSplitPayload[]) => {
-    dispatch(persistToStorage(payload))
-}
+    dispatch(persistToStorage(payload));
+};
 
 

@@ -8,7 +8,7 @@ import { onEditModuleSections, onSetActionBar } from './actions';
 import { ModuleEntities, ResolvedRatio } from 'entities/types';
 import EntityConfigMapping from 'entities/config-map';
 import { selectNumItemsResolved, selectTotalProgress } from 'selectors/num-items-resolved';
-import { keys, prop } from 'ramda';
+import { keys } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'components/loader';
 import { useSummaryStyles } from './summary-styles';

@@ -3,10 +3,10 @@
 exports[`SearchBar mounts 1`] = `
 <div>
   <div
-    class="MuiPaper-root MuiPaper-elevation0 makeStyles-root-58 MuiPaper-rounded"
+    class="MuiPaper-root MuiPaper-elevation0 makeStyles-root-57 MuiPaper-rounded"
   >
     <div
-      class="MuiInputBase-root makeStyles-input-59"
+      class="MuiInputBase-root makeStyles-input-58"
     >
       <input
         class="MuiInputBase-input"
