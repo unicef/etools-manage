@@ -8,13 +8,11 @@ import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
 import { keys, isEmpty, prop, filter, compose, find, propEq, map, includes } from 'ramda';
 import EntityConfigMapping from 'entities/config-map';
 import { MergeSectionsPayload, ZippedEntityResults } from 'entities/types';
-import { ConfirmButton, BackToMainButton } from 'components/buttons';
-import { SectionBox } from 'components/section-box';
+import { ConfirmButton } from 'components/buttons';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectMergeSection, selectSections } from 'selectors';
+import { selectSections } from 'selectors';
 import EntityChangesTable from 'components/entity-changes';
 import { isArrayOfObjects } from 'utils/helpers';
-import { useReviewTableStyles } from 'components/styles';
 import SuccessBox from 'components/success-box';
 
 
@@ -25,7 +23,6 @@ const MergeSummaryPage: React.FC = () => {
         newName
     } = queryString.parse(location.search);
 
-    const styles = useReviewTableStyles();
 
     const {
         backendService: service,

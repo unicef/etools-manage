@@ -157,7 +157,6 @@ export interface ResolvedRatio {
 
 export type AllEntities = InterventionEntity | TPMActivityEntity | ActionPointEntity | TravelEntity | IndicatorEntity
 
-export type KeysOfUnion<T> = T extends any ? keyof T: never;
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 

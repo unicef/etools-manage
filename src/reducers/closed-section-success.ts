@@ -4,10 +4,10 @@ import { renderSectionsList } from 'actions/action-constants';
 const closedSectionSuccess = createSlice({
     initialState: false,
     reducers: {
-        onSuccessCloseSection: (state, action) => true
+        onSuccessCloseSection: () => true
     },
     extraReducers: {
-        [renderSectionsList.type]: (state, action) => false
+        [renderSectionsList.type]: () => false
     }
 });
 export const { onSuccessCloseSection } = closedSectionSuccess.actions;

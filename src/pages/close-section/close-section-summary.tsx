@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import Box from 'components/box';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCloseSectionPayload, selectCurrentActiveSectionName, selectSections } from 'selectors';
+import { selectCloseSectionPayload, selectCurrentActiveSectionName } from 'selectors';
 import { keys, prop } from 'ramda';
 import { ModuleEntities, IndicatorEntity, AllEntities } from 'entities/types';
 import EntityChangesTable from 'components/entity-changes';

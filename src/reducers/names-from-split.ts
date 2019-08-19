@@ -10,7 +10,7 @@ const sectionsFromSplit = createSlice({
         updateNamesFromSplit: (state, action) => action.payload
     },
     extraReducers: {
-        [renderSectionsList.type]: (state, action) => initialState
+        [renderSectionsList.type]: () => initialState
     }
 });
 

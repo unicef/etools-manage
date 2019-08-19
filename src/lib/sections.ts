@@ -1,5 +1,5 @@
 import { reduce, keys, always, map, T, isNil, cond, prop, propEq, includes, reject, allPass } from 'ramda';
-import { EntityWithSingleSection, ResolvedRatio, FetchStoragePayload, InProgressItem } from 'entities/types';
+import { EntityWithSingleSection, ResolvedRatio, FetchStoragePayload } from 'entities/types';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
 import { CLOSE_SECTION_PREFIX, SPLIT_SECTION_PREFIX, SPLIT_SECTION_PATH, CLOSE_SECTION_PATH } from 'global-constants';

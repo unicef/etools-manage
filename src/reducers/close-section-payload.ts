@@ -37,7 +37,7 @@ export const closeSectionPayload = createSlice({
         }
     },
     extraReducers: {
-        [renderSectionsList.type]: (state, action) => initialState
+        [renderSectionsList.type]: () => initialState
     }
 });
 
