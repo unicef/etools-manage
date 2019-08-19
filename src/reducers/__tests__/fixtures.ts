@@ -1,5 +1,5 @@
-import { FullStoreShape } from "contexts/app";
-import { ACTION_BAR_DISABLED_ACTIONS } from "pages/close-section/constants";
+import { FullStoreShape } from 'contexts/app';
+import { ACTION_BAR_DISABLED_ACTIONS } from 'pages/close-section/constants';
 
 export const intialRootState: FullStoreShape = {
     closeSectionPayload: {
@@ -25,5 +25,4 @@ export const intialRootState: FullStoreShape = {
     loading: false,
     user: null
 
-
-}
+};
