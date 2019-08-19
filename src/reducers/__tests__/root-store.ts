@@ -1,7 +1,7 @@
 import rootReducer from 'reducers';
 import { onGetSectionsSuccess } from 'reducers/sections';
-import { intialRootState } from './fixtures';
 import { AnyAction } from 'redux';
+import { intialRootState } from '../../../test/fixtures';
 
 describe('App store reducer', () => {
     let mockAction: AnyAction;
