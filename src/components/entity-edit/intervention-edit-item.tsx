@@ -172,6 +172,3 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 });
 
 
-// @ts-ignore
-InterventionEditItem.whyDidYouRender = true;
-

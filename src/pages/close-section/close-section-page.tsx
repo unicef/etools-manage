@@ -20,7 +20,7 @@ import ActionBarConnectedConfirm from './action-bar/connected-confirm';
 import ActionBarReviewReady from './action-bar/review-ready';
 import { selectCloseSectionActionBar, selectViewCloseSummary, deriveCloseSectionActionBar } from 'selectors/ui';
 import { CloseSectionActionsMap } from './types';
-import { selectSectionsFromSplit, selectNamesFromsplit } from 'selectors/split-section';
+import { selectNamesFromsplit } from 'selectors/split-section';
 
 
 export interface SummaryItemProps {
@@ -98,8 +98,6 @@ export const CloseSectionsPage: React.FC = () => {
     );
 };
 
-// @ts-ignore
-CloseSectionsPage.whyDidYouRender = true;
 
 export interface ModulesSummaryProps {
     modulesData: SummaryItemProps[] | undefined;
