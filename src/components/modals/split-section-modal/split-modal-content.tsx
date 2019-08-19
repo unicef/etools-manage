@@ -98,10 +98,12 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     const handleSubmit = (history: History) => () => {
         const splitUrl = getSplitSectionUrl(currentActiveSection);
-        onClose();
+
         const payload = [{ name, active: true }, { name: nameTwo, active: true }];
         onSectionSplit(dispatch, payload);
+
         history.push(splitUrl);
+        onClose();
     };
 
     const SubmitButton = withRouter(({ history }) => (

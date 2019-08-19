@@ -7,19 +7,30 @@ import { selectTravelsFromPayload } from './travels';
 import { selectActionPointsFromPayload } from './action-points';
 import { keys } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
+import { selectNamesFromsplit } from './split-section';
+import { Dictionary } from 'helpers';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
 export const getCloseSectionBackendPayload = createSelector<FullStoreShape, CloseSectionBackendPayload >(
-    [selectActionPointsFromPayload, selectInterventionsFromPayload, selectTPMFromPayload, selectTravelsFromPayload, selectCurrentActiveSection],
+    [selectActionPointsFromPayload,
+        selectInterventionsFromPayload,
+        selectTPMFromPayload,
+        selectTravelsFromPayload,
+        selectCurrentActiveSection,
+        selectNamesFromsplit],
     (actionPoints: Normalized<ActionPointEntity>,
         interventions: Normalized<InterventionEntity>,
         tpmActivities: Normalized<FormattedTPMActivityEntity>,
         travels: Normalized<TravelEntity>,
-        oldSection: number) => {
+        oldSection: number,
+        namesFromSplit: string[]) => {
 
         const payload: CloseSectionBackendPayload = {
             old_section: oldSection,
-            new_sections: {}
+            new_sections: namesFromSplit.reduce((obj: Dictionary<{}>, name) => {
+                obj[name] = {};
+                return obj;
+            }, {})
         };
 
         keys(actionPoints).forEach(
@@ -63,7 +74,6 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
                 persistToPayload(payload, section, 'travels', Number(id));
             }
         );
-
 
         return payload;
 

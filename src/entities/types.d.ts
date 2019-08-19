@@ -1,8 +1,5 @@
 import { EntityConfig } from 'entities';
 
-export interface EntitiesDataResponse<T, U>{
-    [field: string]: T | U;
-}
 
 export interface ZippedEntityResults {
     indicators: Normalized<IndicatorEntity>;

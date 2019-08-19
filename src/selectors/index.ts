@@ -3,7 +3,7 @@ import { ModuleEntities, SectionEntity } from 'entities/types';
 import { propEq, reject, map, prop, includes, without, filter, keys, concat, compose, sortBy } from 'ramda';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
-import { selectNamesFromSplit } from './split-section';
+import { selectSectionsFromSplit } from './split-section';
 
 
 export const selectCloseSectionPayload = createSelector<FullStoreShape, ModuleEntities>(
@@ -41,7 +41,7 @@ export const selectCurrentActiveSectionName = createSelector(
 );
 
 export const selectSectionsAsOptions = createSelector<FullStoreShape, OptionType[]>(
-    [selectSections, selectCurrentActiveSection, selectNamesFromSplit],
+    [selectSections, selectCurrentActiveSection, selectSectionsFromSplit],
     (sections, current, namesFromSplit) => {
         const sectionsWithoutCurrent = reject(propEq('id', current), sections);
         const sortedWithNamesFromSplit = sortBy(prop('name'), concat(sectionsWithoutCurrent, namesFromSplit));

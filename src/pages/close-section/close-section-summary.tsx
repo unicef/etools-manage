@@ -26,8 +26,8 @@ const CloseSectionSummary: React.FC = () => {
         <Box align="center">
             <Button
                 onClick={onCancel}
-                variant="outlined"
-                size="medium">Cancel</Button>
+                variant="contained"
+                size="medium">Back</Button>
 
             <Suspense fallback={<LoadingFallback/>}>
                 <ConnectedConfirmButton />

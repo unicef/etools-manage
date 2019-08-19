@@ -8,7 +8,7 @@ import ActionPointsEdit from 'components/entity-edit/action-points-edit';
 import TPMActivitiesEdit from 'components/entity-edit/tpm-edit';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectModuleEditingName, selectClosedSectionSuccess } from 'selectors';
-import {  onFetchDataSplitSection } from './actions';
+import { onFetchDataSplitSection } from './actions';
 import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';
 import { MatchParams } from 'global-types';
@@ -45,7 +45,7 @@ const SplitSectionPage: React.FC<RouteComponentProps<MatchParams>> = ({ match })
         }
     }, [id, user]);
 
-    return <CloseSectionRender id={id}/>
-}
+    return <CloseSectionRender />;
+};
 
 export default SplitSectionPage;

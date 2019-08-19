@@ -20,7 +20,7 @@ import ActionBarConnectedConfirm from './action-bar/connected-confirm';
 import ActionBarReviewReady from './action-bar/review-ready';
 import { selectCloseSectionActionBar, selectViewCloseSummary, deriveCloseSectionActionBar } from 'selectors/ui';
 import { CloseSectionActionsMap } from './types';
-import { selectNamesFromSplit } from 'selectors/split-section';
+import { selectSectionsFromSplit, selectNamesFromsplit } from 'selectors/split-section';
 
 
 export interface SummaryItemProps {
@@ -109,7 +109,8 @@ export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ modulesData }) =
     const progress = useSelector(selectTotalProgress);
     const closingSection = useSelector(selectCurrentActiveSectionName);
     const styles = useSummaryStyles();
-    const namesFromSplit = useSelector(selectNamesFromSplit);
+
+    const namesFromSplit = useSelector(selectNamesFromsplit);
 
     const hasData = Boolean(modulesData && modulesData.length);
 
@@ -145,7 +146,7 @@ export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ modulesData }) =
                             variant="body1"
                             color="inherit"
                         >
-                            <code>{namesFromSplit.map(prop('name')).join(' & ')}</code>
+                            <code>{namesFromSplit.join(' & ')}</code>
                         </Typography>
                     </Box> : null
                 }

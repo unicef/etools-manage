@@ -26,7 +26,7 @@ const reducer = combineReducers({
     closedSectionSuccess: closedSectionSuccessReducer,
     ui: uiReducer,
     user: userReducer,
-    namesFromSplit: namesFromSplitReducer,
+    sectionsFromSplit: namesFromSplitReducer,
     inProgressItems: inProgressItemsReducer
 });
 

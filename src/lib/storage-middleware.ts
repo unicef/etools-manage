@@ -36,8 +36,11 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
         }
 
         if (sectionJustClosed) {
-            const key = prefixWithClose(state);
-            service.removeItem(key);
+            const closeKey = prefixWithClose(state);
+            service.removeItem(closeKey);
+            const splitKey = prefixWithSplit(state);
+            service.removeItem(splitKey);
+
         }
 
         if (itemInProgressRemoved) {

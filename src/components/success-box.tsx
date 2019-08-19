@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Paper, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
-import { useSummaryStyles } from 'pages/close-section/summary-styles';
 import { BackToMainButton } from './buttons';
 import Box from './box';
 import clsx from 'clsx';
