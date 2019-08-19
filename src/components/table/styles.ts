@@ -3,13 +3,14 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core';
 
 export const useTableStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            width: '100%',
-            marginTop: theme.spacing(3)
+        toggleRow: {
+            marginTop: theme.spacing(3),
+            marginBottom: theme.spacing(1),
+            marginLeft: 0
         },
         paper: {
             width: '100%',
-            marginBottom: theme.spacing(2)
+            marginBottom: theme.spacing(4)
         },
         table: {
             minWidth: 750
@@ -29,15 +30,25 @@ export const useTableStyles = makeStyles((theme: Theme) =>
         },
         icon: {
             width: 40,
-            height: 40,
-            visibility: 'hidden',
+            height: 40
+        },
+        rightIcon: {
+            marginLeft: theme.spacing(1)
+        },
 
+        showOnHover: {
+            visibility: 'hidden',
             '.MuiTableRow-root.MuiTableRow-hover:hover &': {
                 visibility: 'visible'
             }
         },
         tuck: {
             paddingRight: 0
+        },
+        rowDisabled: {
+            opacity: 0.5,
+            cursor: 'default',
+            pointerEvents: 'none'
         }
     }),
 );

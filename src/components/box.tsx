@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 });
 
 interface BoxProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     column?: boolean;
     row?: boolean;
     align?: 'center' | 'start' | 'end' ;

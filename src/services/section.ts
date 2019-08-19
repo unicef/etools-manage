@@ -1,12 +1,12 @@
 import BaseService from 'services';
 import { SuccessResponse } from 'global-types';
-import { SectionEntity, CreateSectionPayload, MergeSectionsPayload, SectionServicePayload, NewSectionFromMerged } from 'entities/types';
+import { SectionEntity, CreateSectionPayload, MergeSectionsPayload, SectionServicePayload, NewSectionFromMerged, CloseSectionBackendPayload } from 'entities/types';
 
 export interface SectionsService {
     getSections(): Promise<SectionEntity[]>;
     createSection(data: CreateSectionPayload): Promise<SuccessResponse>;
     mergeSections(payload: MergeSectionsPayload): Promise<NewSectionFromMerged>;
-    // closeSection(id: number): Promise<Response>; // TODO: check response on close and create type
+    closeSection(payload: CloseSectionBackendPayload): Promise<Response>; // TODO: check response on close and create type
 }
 
 const getSectionsUrl = process.env.REACT_APP_SECTIONS_ENDPOINT as string;
@@ -39,6 +39,7 @@ export default class SectionsApiService extends BaseService implements SectionsS
             return response;
 
         } catch (err) {
+            console.log(err);
             throw new Error(err);
         }
     }
@@ -51,23 +52,20 @@ export default class SectionsApiService extends BaseService implements SectionsS
             );
             return response;
         } catch (err) {
-            throw new Error('Error merging sections');
+            throw err;
         }
     }
 
-    // public async closeSection(id: number): Promise<Response> {
-    //     try {
-    //         const response = await this._http.post<Response>(
-    //             process.env.SECTION_CLOSE_ENDPOINT,
-    //             {
-    //                 body: JSON.stringify({ id })
-    //             }
-    //         );
+    public async closeSection(payload: CloseSectionBackendPayload): Promise<Response> {
+        try {
+            const response = await this._http.post<Response>(
+                process.env.REACT_APP_SECTIONS_CLOSE_ENDPOINT as string,
+                this.bodyFromPayload(payload)
+            );
+            return response;
 
-    //         return response;
-
-    //     } catch (err) {
-    //         throw new Error(err);
-    //     }
-    // }
+        } catch (err) {
+            throw new Error(err);
+        }
+    }
 }

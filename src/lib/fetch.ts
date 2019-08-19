@@ -5,7 +5,7 @@ import { useSafeSetState } from 'utils/helpers';
 const BASE_URL = window.location.origin;
 
 
-export function checkStatus(response: Response, raw: boolean): Response {
+export async function checkStatus(response: Response, raw: boolean): Promise<Response> {
     if (raw) {
         return response;
     }
@@ -14,9 +14,17 @@ export function checkStatus(response: Response, raw: boolean): Response {
         return response;
     }
 
+    let message = response.statusText;
+
+    if (response.status === 400) {
+        message = await response.json();
+    }
+
+
     const error = new Error(JSON.stringify({
-        message: response.statusText,
-        code: response.status
+        message,
+        code: response.status,
+        ...response
     }));
 
     throw error;
@@ -33,10 +41,11 @@ const wrappedFetch = (url: string, {
     credentials: 'same-origin', // send cookies for etools auth
     ...opts })
     .then((response: Response) => checkStatus(response, raw))
-    .then((response): Response | Promise<any> => {
+    .then(async (response): Promise<Response |any> => {
         if (raw) {
             return response;
         }
+
 
         return json ? response.json() : response.text();
     })

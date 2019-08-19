@@ -1,14 +1,18 @@
 import { AppMiddleware } from 'global-types';
-import { onChangeInterventionSection, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections } from 'slices/root-store';
 import { includes } from 'ramda';
-import { prefixWithClose } from './sections';
+import { prefixWithClose, prefixWithSplit } from './sections';
 import StorageService, { Storage } from 'services/storage';
-import { ModuleEntities } from 'entities/types';
+import { onUpdateTravelSection, onChangeInterventionSection, onUpdateActionPointSection, onUpdateInterventionIndicatorsState, onUpdateTPMSections } from 'reducers/close-section-payload';
+import { onSuccessCloseSection } from 'reducers/closed-section-success';
+import { persistToStorage } from 'pages/split-section/actions';
+import { removeItemFromInProgress } from 'reducers/in-progress-items';
+
 
 const USER_SELECTION_ACTIONS = [
     onChangeInterventionSection.type,
     onUpdateTravelSection.type,
     onUpdateActionPointSection.type,
+    onUpdateInterventionIndicatorsState.type,
     onUpdateTPMSections.type
 ];
 
@@ -16,10 +20,31 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
     return ({ getState }) => dispatch => action => {
         dispatch(action);
 
+        const state = getState();
+
+        const sectionJustClosed = action.type === onSuccessCloseSection.type;
+        const itemInProgressRemoved = action.type === removeItemFromInProgress.type;
+
         if (includes(action.type, USER_SELECTION_ACTIONS)) {
-            const state = getState();
-            const key = prefixWithClose((state.currentActiveSection as number).toString());
-            service.storeEntitiesData(key, state.closeSectionPayload as ModuleEntities);
+            const key = prefixWithClose(state);
+            service.storeEntitiesData(key, state.closeSectionPayload);
+        }
+
+        if (action.type === persistToStorage.type) {
+            const key = prefixWithSplit(state);
+            service.storeEntitiesData(key, action.payload);
+        }
+
+        if (sectionJustClosed) {
+            const closeKey = prefixWithClose(state);
+            service.removeItem(closeKey);
+            const splitKey = prefixWithSplit(state);
+            service.removeItem(splitKey);
+
+        }
+
+        if (itemInProgressRemoved) {
+            service.removeItem(action.payload);
         }
 
     };

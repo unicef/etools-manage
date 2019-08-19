@@ -1,11 +1,11 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import { ModuleEntities, TPMActivityEntity, SectionEntity, Normalized, ResolvedRatio, FormattedTPMActivityEntity } from 'entities/types';
-import { Store } from 'slices/root-store';
+import { TPMActivityEntity, Normalized, ResolvedRatio, FormattedTPMActivityEntity } from 'entities/types';
 import { prop, map, reject, propEq, reduce, keys } from 'ramda';
+import { FullStoreShape } from 'contexts/app';
 
 
-export const selectTPMFromPayload = createSelector<Store, Normalized<FormattedTPMActivityEntity>>(
+export const selectTPMFromPayload = createSelector<FullStoreShape, Normalized<FormattedTPMActivityEntity>>(
     [selectCloseSectionPayload],
     prop('tpmActivities')
 );
@@ -20,10 +20,11 @@ export const tpmActivitiesWithoutCurrentSection = createSelector(
     (list: TPMActivityEntity[] = [], id: number) => {
         return map(
             (tpmActivity: TPMActivityEntity) => {
-                const withoutSection = reject(propEq('id', id), tpmActivity.sections);
+                const withoutCurrentSection = reject(propEq('id', id), tpmActivity.sections).map(prop('name'));
                 return ({
                     ...tpmActivity,
-                    sections: withoutSection
+                    sections: [],
+                    existingSections: withoutCurrentSection
                 });
             }, list
         );
@@ -36,7 +37,7 @@ export const getNumResolvedTPMActivities = createSelector(
 
         const resolved = reduce(
             (sum: number, key: string) => {
-                const { sections }: {sections: SectionEntity[]} = tpmActivities[key];
+                const { sections }: {sections: string[]} = tpmActivities[key];
                 if (sections.length) {
                     sum++;
                 }

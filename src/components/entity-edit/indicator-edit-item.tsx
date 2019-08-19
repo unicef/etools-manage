@@ -20,28 +20,34 @@ interface IndicatorsProps {
 const IndicatorEditItem: React.FC<IndicatorsProps> = memo(({ parentId, sectionOptions, onChange }) => {
     const styles = useEditItemStyles();
     const indicators = useSelector(selectInterventionsFromPayload)[parentId].indicators;
-    const getValue = (section: number | undefined) => {
+
+    const getValue = (section: string | undefined) => {
         const res = find(propEq('value', section), sectionOptions);
         return res === undefined ? null : res;
     };
+
     return <Box className={styles.indicatorItem} align="center">
         <div className={styles.spacer} />
         <Box column >
             { indicators.map(
                 ({ title, section }, idx) => (
-                    <Box key={`${title}${idx}`}
-                        align="center"
-                        justify="between"
-                        className={styles.indicator}>
-                        <Typography >{title}</Typography>
-                        <Box className={clsx(styles.dropdown, styles.indicatorDropdown)}>
-                            <Dropdown
-                                value={getValue(section)}
-                                onChange={onChange(idx)}
-                                options={sectionOptions}
-                            />
+                    <div key={`${title}${idx}`}>
+                        <Box
+                            align="center"
+                            justify="between"
+                            className={styles.indicator}>
+                            <Typography >{title}</Typography>
+                            <Box className={clsx(styles.dropdown, styles.indicatorDropdown)}>
+                                <Dropdown
+                                    isDisabled={sectionOptions.length === 0}
+                                    label={null}
+                                    value={getValue(section)}
+                                    onChange={onChange(idx)}
+                                    options={sectionOptions}
+                                />
+                            </Box>
                         </Box>
-                    </Box>
+                    </div>
                 )
             )}
         </Box>

@@ -1,7 +1,8 @@
 import React from 'react';
 import MergeIcon from '@material-ui/icons/MergeType';
+import clsx from 'clsx';
 import { History } from 'history';
-import { makeStyles, Theme, createStyles, Typography, InputLabel, Input, FormControl, FormHelperText, Button } from '@material-ui/core';
+import { makeStyles, createStyles, Typography, FormControl, FormHelperText, Button, Input } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import BaseModal, { ModalContentProps } from '..';
 import { setValueFromEvent } from 'utils';
@@ -10,10 +11,9 @@ import { useModalStyles } from '../styles';
 import Box from 'components/box';
 import { useMergeState } from '.';
 import { SectionBox, ReviewBox } from 'components/section-box';
-import { onToggleMergeModal } from 'slices/modals';
+import { onToggleMergeModal } from 'reducers/modals';
 
-
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             width: 440
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
-    const formStyles = useModalStyles({});
+    const styles = useModalStyles({});
 
     const {
         selectedSectionsFromCollection,
@@ -42,6 +42,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const [first, second] = selectedSectionsFromCollection;
 
     const mergeConfirmUrl = `/merge/?sections=${selectedForMerge.join(',')}&newName=${name}`;
+
     const handleSubmit = (history: History) => () => {
         onClose();
         history.push(mergeConfirmUrl);
@@ -50,7 +51,7 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const SubmitButton = withRouter(({ history }) => (
         <Button
             onClick={handleSubmit(history)}
-            className={formStyles.confirmBtn}
+            className={styles.confirmBtn}
             color="secondary"
             variant="contained"
             disabled={!name.length || Boolean(errorOnName.length)}
@@ -59,10 +60,10 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     return (
         <>
-            <Box className={formStyles.header} align="center">
-                <MergeIcon color="inherit" className={formStyles.icon}/>
+            <Box className={clsx(styles.header, styles.modalSection)} align="center">
+                <MergeIcon color="inherit"/>
                 <Typography
-                    className={formStyles.subtitle}
+                    className={styles.subtitle}
                     color="inherit"
                     variant="subtitle1">Merge Sections</Typography>
             </Box>
@@ -73,21 +74,11 @@ const MergeModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
             </ReviewBox>
 
             <FormControl
-                classes={{
-                    root: formStyles.formRoot
-                }}
                 error={Boolean(errorOnName.length)}>
-
-                <InputLabel
-                    className={formStyles.formLabel}
-                    shrink htmlFor="new-section-name">New section</InputLabel>
                 <Input
-                    className={formStyles.input}
                     classes={{
-                        input: formStyles.inputHeight,
-                        focused: formStyles.inputFocused
+                        input: styles.input
                     }}
-                    disableUnderline
                     id="new-section-name"
                     placeholder="Enter new section name"
                     value={name}

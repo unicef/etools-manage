@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-starter-kit';
-import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import { InterventionEntity, Normalized, ResolvedRatio } from 'entities/types';
-import { prop, map, without, keys } from 'ramda';
+import { selectCloseSectionPayload, selectCurrentActiveSection, selectSections } from 'selectors';
+import { InterventionEntity, Normalized, ResolvedRatio, SectionEntity } from 'entities/types';
+import { prop, map, without, keys, includes } from 'ramda';
 import { Store } from 'redux';
 
 import { normalize } from 'normalizr';
@@ -44,8 +44,8 @@ export const getNumResolvedInterventions = createSelector<Store, ResolvedRatio>(
 );
 
 export const interventionsWithoutCurrentSection = createSelector(
-    [selectCurrentActiveSection, selectInterventionsFromPayload],
-    (id: number, interventions: Normalized<InterventionEntity> = {}) => {
+    [selectCurrentActiveSection, selectInterventionsFromPayload, selectSections],
+    (id: number, interventions: Normalized<InterventionEntity>, sectionsList: SectionEntity[]) => {
 
         const newList = map(
             (key: number) => {
@@ -53,13 +53,21 @@ export const interventionsWithoutCurrentSection = createSelector(
                 const removedSectionIndicators = item.indicators.map(
                     indicator => ({
                         ...indicator,
-                        section: undefined
+                        section: ''
                     })
                 );
+
+                const existingSectionsIds = without([id], item.sections);
+
+                const existingSectionsNames: string[] = sectionsList
+                    .filter(({ id }) => includes(id, existingSectionsIds))
+                    .map(prop('name'));
+
                 const res: InterventionEntity = ({
                     ...item,
                     indicators: removedSectionIndicators,
-                    sections: without([id], item.sections) as number[]
+                    sections: [],
+                    existingSections: existingSectionsNames
                 });
 
                 return res;
@@ -71,5 +79,4 @@ export const interventionsWithoutCurrentSection = createSelector(
         return entities.interventions;
     }
 );
-
 

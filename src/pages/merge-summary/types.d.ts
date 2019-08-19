@@ -9,9 +9,9 @@ interface EntityTableHeadProps<T> {
     entityConfig: EntityConfig<T>;
 }
 
-export interface EntityTableProps<T> {
+export interface EntityChangesTableProps<T> {
     config: EntityConfig<T>;
-    list: T[];
-    selectedSections: number[];
-    newSectionName: string;
+    entity: Normalized<T>;
+    getOldSections: (item: T, sectionsProp: string) => string;
+    getNewSections: (item: T, sectionsProp: string) => string;
 }

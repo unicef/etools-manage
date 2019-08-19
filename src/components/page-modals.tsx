@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import MergeModal from './modals/merge-modal';
 import AddSectionModal from './modals/add-section-modal';
+import SplitSectionModal from './modals/split-section-modal';
 
 
 export default function PageModals() {
-    // this will preload after page is finished rendering
-    // useEffect(() => {
-    //  import('./modals/add-section-modal/add-modal-content');
-    // }, []);
     return (
         <>
+            <SplitSectionModal />
             <MergeModal />
             <AddSectionModal />
         </>

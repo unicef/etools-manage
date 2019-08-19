@@ -10,7 +10,7 @@ export default class IndicatorConfig implements Partial<EntityConfig<IndicatorEn
         }];
     }
     public get title() {
-        return 'Applied Indicators';
+        return 'PD/SSFA Indicators';
     }
     public get sectionsProp() {
         return 'section';

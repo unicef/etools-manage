@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import ErrorBoundary, { FallbackProps } from 'react-error-boundary';
 import { ProviderStore } from 'global-types';
-import UserProvider from '../contexts/user';
+// import UserProvider from '../contexts/user';
 import { AppStoreProvider } from 'contexts/app';
 import theme from '../lib/theme';
 import { Card, CardActionArea, CardMedia, CardContent, makeStyles, Typography, CardActions, Button, Container } from '@material-ui/core';
@@ -52,11 +52,11 @@ const AppProviders: React.FC<ProviderStore> = ({ children }) => {
     return (
         <ErrorBoundary FallbackComponent={ErrorCard}>
             <ThemeProvider theme={theme}>
-                <UserProvider >
-                    <AppStoreProvider >
+                <AppStoreProvider >
+                    {/* <UserProvider > */}
                         <>{children}</>
-                    </AppStoreProvider>
-                </UserProvider>
+                        {/* </UserProvider> */}
+                </AppStoreProvider>
             </ThemeProvider>
         </ErrorBoundary>);
 };

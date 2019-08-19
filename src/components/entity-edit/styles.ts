@@ -13,7 +13,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             borderRadius: theme.spacing(1),
             backgroundColor: theme.palette.grey[100]
         },
-        editWrapper: {
+        bottomMargin1: {
             marginBottom: theme.spacing(1)
         },
         travel: {
@@ -51,15 +51,18 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             paddingBottom: theme.spacing(2)
         },
         indicator: {
-            padding: '6px 24px 6px 16px'
+            padding: '6px 24px 6px 16px',
+            minHeight: theme.spacing(8)
         },
         spacer: {
             width: 0,
             paddingRight: 40
         },
         dropdown: {
-            margin: `0 ${theme.spacing(2)}px`,
             minWidth: 335
+        },
+        selectColumn: {
+            margin: `0 ${theme.spacing(2)}px 0`
         },
         indicatorDropdown: {
             maxHeight: 32,
@@ -74,6 +77,12 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
         },
         hideIcon: {
             visibility: 'hidden'
+        },
+        errorMsg: {
+            margin: `0 ${theme.spacing(1)}px`
+        },
+        secondaryHeading: {
+            fontSize: 12
         }
 
     })

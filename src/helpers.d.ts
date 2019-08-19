@@ -47,33 +47,3 @@ export type PropertyNames<T> = { [K in keyof T]: K }[keyof T];
 
 export type WrapTypeWith<T, K> = T extends T ? K<T> : never;
 
-
-export enum MaybeType {
-    JUST,
-    NOTHING
-}
-
-interface Just<T> {
-    type: MaybeType.JUST;
-    value: T;
-
-}interface Nothing {
-    type: MaybeType.NOTHING;
-}// Type constructors
-
-function Just<T>(val: T): Just<T> {
-    return {
-        type: MaybeType.JUST,
-        value: val
-    };
-}
-
-function Nothing(): Nothing {
-    return {
-        type: MaybeType.NOTHING
-    };
-}
-
-type Maybe<T> =
-  Just<T> |
-  Nothing;

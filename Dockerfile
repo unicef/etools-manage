@@ -22,7 +22,6 @@ RUN apk add --update bash
 
 WORKDIR /code
 RUN npm install serve --no-save
-COPY --from=builder /code/serve.js /code/serve.js
 COPY --from=builder /code/build /code/build
 
 EXPOSE 8080

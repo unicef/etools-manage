@@ -24,13 +24,3 @@ export default class TPMActivityConfig implements EntityConfig<TPMActivityEntity
     }
 
 }
-
-export const tpmRemoveSection = (list: TPMActivityEntity[], id: number) => map(
-    (tpmActivity: TPMActivityEntity) => {
-        const withoutSection = reject(propEq('id', id), tpmActivity.sections);
-        return ({
-            ...tpmActivity,
-            sections: withoutSection
-        });
-    }, list
-);

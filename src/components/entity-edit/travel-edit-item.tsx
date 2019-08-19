@@ -1,17 +1,17 @@
 import React from 'react';
-import { EditItemProps, ModuleEntities } from 'entities/types';
+import { EditItemProps } from 'entities/types';
 import Box from 'components/box';
 import { Typography } from '@material-ui/core';
-import { Store } from 'slices/root-store';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { Dropdown, OptionType } from 'components/dropdown';
 import { selectSectionsAsOptions } from 'selectors';
-import { propEq, prop } from 'ramda';
+import { prop } from 'ramda';
 import { ValueType } from 'react-select/src/types';
-import { onSelectTravelSection } from 'pages/close-summary/actions';
+import { onSelectTravelSection } from 'pages/close-section/actions';
 import { getSelectedSection } from 'lib/sections';
+import { FullStoreShape } from 'contexts/app';
 
 
 const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
@@ -25,25 +25,25 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
         traveler,
         purpose,
         section
-    } = useSelector((state: Store) => (state.closeSectionPayload as ModuleEntities).travels[id]);
+    } = useSelector((state: FullStoreShape) => state.closeSectionPayload.travels[id]);
 
     const selectedSection = getSelectedSection(sectionsAsOptions, section);
 
     const onChange = (value: ValueType<OptionType>) => {
-        let selectedSectionId = prop('value', value);
+        let selectedSectionName = prop('value', value);
 
-        if (section === selectedSectionId) {
-            selectedSectionId = null;
+        if (section === selectedSectionName) {
+            selectedSectionName = null;
         }
         const payload = {
-            section: selectedSectionId,
+            section: selectedSectionName,
             id
         };
         onSelectTravelSection(payload, dispatch);
     };
 
     return (
-        <div className={clsx(styles.editWrapper, styles.itemBorderWrap)}>
+        <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between">
                 <Box column >
                     <Box>

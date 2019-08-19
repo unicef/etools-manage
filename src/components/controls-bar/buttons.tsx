@@ -4,16 +4,16 @@ import MergeIcon from '@material-ui/icons/MergeType';
 import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
-// import { onToggleMergeModal, onToggleAddModal } from 'actions';
 import { ClickHandler } from 'global-types';
 import { useButtonStyles } from 'components/buttons';
-import { onToggleMergeModal, onToggleAddModal } from 'slices/modals';
+import { onToggleMergeModal, onToggleAddModal } from 'reducers/modals';
 
 
 export interface MergeButtonProps {
     onClick: ClickHandler;
     mergeActive: boolean;
 }
+
 export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
     const styles = useButtonStyles({});
     const btnText = mergeActive ? 'Cancel Merge' : 'Merge';

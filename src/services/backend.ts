@@ -6,7 +6,7 @@ import { normalize } from 'normalizr';
 import { interventionSchema, travelsSchema, tpmActivitiesSchema, actionPointsSchema } from 'entities/schemas';
 
 export interface BackendService {
-    getIndicators(interventions: Normalized<IndicatorEntity>): IndicatorEntity[];
+    getIndicators(interventions: Normalized<InterventionEntity>): IndicatorEntity[];
     getTravels(query: string): Promise<Normalized<TravelEntity>>;
     getTPMActivities(query: string): Promise<Normalized<TPMActivityEntity>>;
     getActionPoints(query: string): Promise<Normalized<ActionPointEntity>>;
@@ -54,7 +54,7 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public getIndicators(interventions: Normalized<IndicatorEntity>): IndicatorEntity[] {
+    public getIndicators(interventions: Normalized<InterventionEntity>): IndicatorEntity[] {
         const lookup = flip(prop);
         return flatten(keys(interventions).map(compose(prop('indicators'), lookup(interventions))).filter(notEmpty));
     }

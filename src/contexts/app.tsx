@@ -5,15 +5,15 @@ import BackendApiService from 'services/backend';
 import SectionsApiService from 'services/section';
 import { AppServices } from 'services';
 import StorageService from 'services/storage';
-import { initialState } from 'slices/root-store';
 import configureAppStore from 'lib/create-store';
 import { Provider } from 'react-redux';
-
+import rootReducer from 'reducers';
 
 const AppServiceContext = React.createContext<AppServices | undefined>(undefined);
 
-const store = configureAppStore(initialState);
+const store = configureAppStore();
 
+export type FullStoreShape = ReturnType<typeof rootReducer>;
 
 export function AppStoreProvider({ children }: ChildrenProps) {
     return (

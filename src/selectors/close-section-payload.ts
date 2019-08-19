@@ -1,76 +1,79 @@
 import { createSelector } from 'redux-starter-kit';
-import { selectCloseSectionPayload, selectSections, selectCurrentActiveSection } from 'selectors';
-import { CloseSectionBackendPayload, ModuleEntities, BackendEntityNames, SectionToEntity, ActionPointEntity, InterventionEntity, TPMActivityEntity, Normalized, TravelEntity, SectionEntity, FormattedTPMActivityEntity } from 'entities/types';
-import { Store } from 'slices/root-store';
+import { selectCurrentActiveSection } from 'selectors';
+import { CloseSectionBackendPayload, BackendEntityNames, ActionPointEntity, InterventionEntity, Normalized, TravelEntity, SectionEntity, FormattedTPMActivityEntity } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
 import { selectTravelsFromPayload } from './travels';
 import { selectActionPointsFromPayload } from './action-points';
-import { propEq, prop, keys } from 'ramda';
+import { keys } from 'ramda';
+import { FullStoreShape } from 'contexts/app';
+import { selectNamesFromsplit } from './split-section';
+import { Dictionary } from 'helpers';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
-export const getCloseSectionBackendPayload = createSelector<Store, CloseSectionBackendPayload >(
-    [selectActionPointsFromPayload, selectInterventionsFromPayload, selectTPMFromPayload, selectTravelsFromPayload, selectSections, selectCurrentActiveSection],
+export const getCloseSectionBackendPayload = createSelector<FullStoreShape, CloseSectionBackendPayload >(
+    [selectActionPointsFromPayload,
+        selectInterventionsFromPayload,
+        selectTPMFromPayload,
+        selectTravelsFromPayload,
+        selectCurrentActiveSection,
+        selectNamesFromsplit],
     (actionPoints: Normalized<ActionPointEntity>,
         interventions: Normalized<InterventionEntity>,
         tpmActivities: Normalized<FormattedTPMActivityEntity>,
         travels: Normalized<TravelEntity>,
-        sections: SectionEntity[],
-        oldSection: number) => {
-
+        oldSection: number,
+        namesFromSplit: string[]) => {
 
         const payload: CloseSectionBackendPayload = {
             old_section: oldSection,
-            new_sections: {}
+            new_sections: namesFromSplit.reduce((obj: Dictionary<{}>, name) => {
+                obj[name] = {};
+                return obj;
+            }, {})
         };
 
-        keys(actionPoints).map(
+        keys(actionPoints).forEach(
             (id: string) => {
                 const { section } = actionPoints[id];
-                const sectionName = prop('name', sections.find(propEq('id', section)));
-                persistToPayload(payload, sectionName, 'action_points', section);
+                persistToPayload(payload, section, 'action_points', Number(id));
             }
         );
 
-        keys(interventions).map(
+        keys(interventions).forEach(
             (id: string) => {
-                const { sections, indicators } = interventions[id];
-                sections.map(
-                    section => {
-                        const sectionName = prop('name', sections.find(propEq('id', section)));
-                        persistToPayload(payload, sectionName, 'interventions', section);
+                const { sections: selectedSections, indicators } = interventions[id];
+                selectedSections.forEach(
+                    (section: string) => {
+                        persistToPayload(payload, section, 'interventions', Number(id));
                     }
                 );
 
-                indicators.map(
-                    ({ section }) => {
-                        const sectionName = prop('name', sections.find(propEq('id', section)));
-                        persistToPayload(payload, sectionName, 'applied_indicators', section as number);
+                indicators.forEach(
+                    ({ section, pk }) => {
+                        persistToPayload(payload, section, 'applied_indicators', pk);
                     }
                 );
             }
         );
 
-        keys(tpmActivities).map(
+        keys(tpmActivities).forEach(
             (id: string) => {
-                const { sections } = tpmActivities[id];
-                sections.map(
-                    section => {
-                        const sectionName = prop('name', sections.find(propEq('id', section)));
-                        persistToPayload(payload, sectionName, 'tpm_activities', section);
+                const { sections: selectedSections } = tpmActivities[id];
+                selectedSections.forEach(
+                    (section: string) => {
+                        persistToPayload(payload, section, 'tpm_activities', Number(id));
                     }
                 );
             }
         );
 
-        keys(travels).map(
+        keys(travels).forEach(
             (id: string) => {
                 const { section } = travels[id];
-                const sectionName = prop('name', sections.find(propEq('id', section)));
-                persistToPayload(payload, sectionName, 'travels', section);
+                persistToPayload(payload, section, 'travels', Number(id));
             }
         );
-
 
         return payload;
 
@@ -79,14 +82,15 @@ export const getCloseSectionBackendPayload = createSelector<Store, CloseSectionB
             payload: CloseSectionBackendPayload,
             sectionName: string,
             entityName: BackendEntityNames,
-            value: number) {
+            id: number) {
 
             const existingSection = payload.new_sections[sectionName];
-            const entityValue = existingSection ? existingSection[entityName] : [];
+            const entityValue = existingSection ? existingSection[entityName] || [] : [];
             payload.new_sections[sectionName] = {
                 ...existingSection,
-                [entityName]: [...entityValue, value]
+                [entityName]: [...entityValue, id]
             };
         }
     }
 );
+

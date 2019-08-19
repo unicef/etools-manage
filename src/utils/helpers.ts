@@ -38,3 +38,7 @@ export function notEmpty(xs: unknown) {
 export function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
     return o[name];
 }
+
+export function isArrayOfObjects(xs: any[]) {
+    return typeof xs[0] === 'object';
+}
