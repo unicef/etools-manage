@@ -1,7 +1,6 @@
 import IndicatorConfig from './indicator-entity';
 import TPMActivityConfig from './tpmactivity-entity';
 import ActionPointConfig from './actionpoint-entity';
-import { EntityMap } from './types';
 import { InterventionConfig } from './intervention-entity';
 import TravelsConfig from './travel-entity';
 
