@@ -8,13 +8,13 @@ import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points-edit';
 import TPMActivitiesEdit from 'components/entity-edit/tpm-edit';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectModuleEditingName, selectClosedSectionSuccess } from 'selectors';
-import CloseSectionSuccess from './close-success';
+import { selectModuleEditingName, selectClosedSectionSuccess, selectCurrentActiveSectionName } from 'selectors';
 import { onResetCloseSectionPayload, onFetchDataCloseSection } from './actions';
 import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';
 import { MatchParams } from 'global-types';
 import { onCurrentActiveSection } from 'reducers/current-active-section';
+import SuccessBox from 'components/success-box';
 
 type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>;
 
@@ -58,20 +58,26 @@ const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({
         }
     }, [id, user]);
 
-    return <CloseSectionRender id={id}/>;
+    return <CloseSectionRender />;
 };
 
-export const CloseSectionRender: React.FC<MatchParams> = ({ id }) => {
+export const CloseSectionRender: React.FC = () => {
     const moduleEditingName = useSelector(selectModuleEditingName);
     const EditComponent = getEditComponent(moduleEditingName);
     const closedSectionSuccess = useSelector(selectClosedSectionSuccess);
+    const sectionName = useSelector(selectCurrentActiveSectionName);
+
+    const successProps = {
+        title: 'Success',
+        message: `Section ${sectionName} successfully closed.`
+    };
 
     return (
         <Box column align="center">
             {moduleEditingName && EditComponent ? (
                 <EditComponent />
             ) : closedSectionSuccess ? (
-                <CloseSectionSuccess />
+                <SuccessBox {...successProps}/>
             ) : (
                 <CloseSectionsPage />
             )}

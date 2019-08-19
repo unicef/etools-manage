@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import Box from 'components/box';
 import { useAppService } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
-import { keys, isEmpty, prop, filter, compose, find, propEq, map } from 'ramda';
+import { keys, isEmpty, prop, filter, compose, find, propEq, map, includes } from 'ramda';
 import EntityConfigMapping from 'entities/config-map';
 import { MergeSectionsPayload, ZippedEntityResults } from 'entities/types';
 import { ConfirmButton, BackToMainButton } from 'components/buttons';
@@ -15,6 +15,7 @@ import { selectMergeSection, selectSections } from 'selectors';
 import EntityChangesTable from 'components/entity-changes';
 import { isArrayOfObjects } from 'utils/helpers';
 import { useReviewTableStyles } from 'components/styles';
+import SuccessBox from 'components/success-box';
 
 
 // TODO: lazy load on route
@@ -24,16 +25,19 @@ const MergeSummaryPage: React.FC = () => {
         newName
     } = queryString.parse(location.search);
 
+    const styles = useReviewTableStyles();
+
     const {
         backendService: service,
         sectionsService
     } = useAppService();
 
     const dispatch = useDispatch();
-    const mergedSection = useSelector(selectMergeSection);
+    // const mergedSection = useSelector(selectMergeSection);
+    const mergedSection = { name: 'Fakse', id: 12331, active: true };
+
     const [summary, setSummary] = useState();
 
-    const styles = useReviewTableStyles();
 
     useEffect(() => {
         const fetchSummary = async () => {
@@ -44,8 +48,14 @@ const MergeSummaryPage: React.FC = () => {
     }, []);
 
     const showSummaryList = summary && !mergedSection;
+
     const selectedSectionsIds = (selected as string).split(',').map(Number);
     const sections = useSelector(selectSections);
+
+    const selectedSectionsNames = sections
+        .filter(s => includes(s.id, selectedSectionsIds))
+        .map(prop('name'))
+        .join(', ');
 
     const onConfirm = async () => {
 
@@ -60,15 +70,24 @@ const MergeSummaryPage: React.FC = () => {
 
     };
 
+    const successProps = {
+        title: 'Merge successful',
+        message: `${selectedSectionsNames} are now ${mergedSection.name}`
+    };
+
     const getOldSections = useCallback(
         (item, sectionsProp): string => {
             const sectionsOfEntity = prop(sectionsProp, item);
+
             if (Array.isArray(sectionsOfEntity) && isArrayOfObjects(sectionsOfEntity)) {
                 return map(prop('name'), sectionsOfEntity.filter(({ id }) => selectedSectionsIds.includes(id)));
             } else if (Array.isArray(sectionsOfEntity)) {
+
                 const idsOfSectionsChanging = filter((id: number) => selectedSectionsIds.includes(id), sectionsOfEntity);
                 return sections.filter(({ id }: {id: number}) => idsOfSectionsChanging.includes(id)).map(prop('name')).join(',');
+
             } else if (typeof sectionsOfEntity === 'object') {
+
                 return prop('name', sectionsOfEntity);
             }
             const sectionChangingName = compose(prop('name'), find(propEq('id', sectionsOfEntity)))(sections);
@@ -78,7 +97,6 @@ const MergeSummaryPage: React.FC = () => {
         [sections],
     );
 
-    // TODO: Aesthetic on these boxes
     const ConfirmBox = () => (
         <Box justify="between" align="center">
             <Typography variant="h6">
@@ -90,24 +108,11 @@ const MergeSummaryPage: React.FC = () => {
             </Box>
         </Box>);
 
-    const SuccessBox = () => (
-        <Box column>
-            <Typography variant="h6" gutterBottom>
-                     Merge successful.
-            </Typography>
-            <Box className={styles.container} column >
-                <Typography variant="body1" className={styles.subtitle}>Created section name:</Typography> {mergedSection && <SectionBox name={mergedSection.name} />}
-            </Box>
-            <Box className={styles.backBtn}>
-                <BackToMainButton>Back to Home</BackToMainButton>
-            </Box>
-        </Box>
-    );
 
     return (
         <Box column>
             { mergedSection ?
-                <SuccessBox /> :
+                <SuccessBox {...successProps} /> :
                 <ConfirmBox />
             }
             {showSummaryList && keys(summary).map(

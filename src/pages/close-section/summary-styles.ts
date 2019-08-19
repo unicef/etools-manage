@@ -1,7 +1,6 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 import { lighten } from '@material-ui/core/styles';
 
-
 export const useSummaryStyles = makeStyles((theme: Theme) =>
     createStyles({
         itemSpacing: {

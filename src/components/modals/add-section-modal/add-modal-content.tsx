@@ -1,20 +1,16 @@
 import React from 'react';
-import { Typography, InputLabel, Input, FormControl, FormHelperText, Button, CircularProgress, TextField } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { Typography, Input, FormControl, FormHelperText, Button, CircularProgress } from '@material-ui/core';
 import Box from 'components/box';
-
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import BaseModal, { ModalContentProps } from '..';
 import { onSubmitCreateSection } from 'actions';
-
 import { useModalStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
 import { useAppService } from 'contexts/app';
 import { useAddSection } from 'entities/section-entity';
 import { SectionEntity } from 'entities/types';
 import { onToggleAddModal } from 'reducers/modals';
-import { useDispatch, useSelector } from 'react-redux';
 import { selectLoading, selectCreatedSection } from 'selectors';
 import { onResetCreatedSection } from 'reducers/created-section';
 import clsx from 'clsx';
@@ -45,13 +41,15 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     const SubmitButton = () => {
         const btnContent = loading && <CircularProgress size={24} /> || 'Submit';
-        return (<Button
-            className={styles.confirmBtn}
-            color="secondary"
-            variant="contained"
-            onClick={handleSubmit}
-            disabled={!name.length || Boolean(errorOnName.length) || loading}
-        >{btnContent}</Button>);
+        return (
+            <Button
+                className={styles.confirmBtn}
+                color="secondary"
+                variant="contained"
+                onClick={handleSubmit}
+                disabled={!name.length || Boolean(errorOnName.length) || loading}
+            >{btnContent}</Button>
+        );
     };
 
     return (
@@ -65,9 +63,6 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                         <FormControl
                             error={Boolean(errorOnName.length)}>
 
-                            {/* <InputLabel
-                                className={styles.formLabel}
-                                shrink htmlFor="new-section-name">New section</InputLabel> */}
                             <Input
                                 id="new-section-name"
                                 classes={{
