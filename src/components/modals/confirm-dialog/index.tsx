@@ -29,6 +29,7 @@ export default function ConfirmDialog({ open, handleConfirm, handleClose, rowToD
             dispatch(onThrowError(err));
         }
         handleConfirm && handleConfirm();
+        handleClose();
     };
 
     return (

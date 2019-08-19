@@ -1,8 +1,9 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectSections, selectCurrentActiveSection } from 'selectors';
-import { parseKeyForId, parseKeyForAction } from 'lib/sections';
-import { map, propEq } from 'ramda';
+import { parseKeyForId, parseKeyForAction, isCurrentCountry } from 'lib/sections';
+import { map, propEq, compose, filter } from 'ramda';
 import { InProgressItem } from 'entities/types';
+import { selectCountryName } from './user';
 
 
 export const selectInProgress = createSelector(
@@ -10,8 +11,9 @@ export const selectInProgress = createSelector(
 );
 
 export const deriveRowsFromInProgress = createSelector(
-    [selectInProgress, selectSections],
-    (items, sections) => {
+    [selectInProgress, selectSections, selectCountryName],
+    (items, sections, countryName) => {
+
         if (!items.length || !sections.length) {
             return [];
         }

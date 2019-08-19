@@ -6,13 +6,14 @@ import { useTableStyles } from './table/styles';
 import { EnhancedTableToolbar } from './sections-table';
 import { useAppService } from 'contexts/app';
 import { useSelector, useDispatch } from 'react-redux';
-import { getInProgressItems, onRemoveItemInProgress } from 'actions';
+import { getInProgressItems } from 'actions';
 import { deriveRowsFromInProgress } from 'selectors/in-progress-items';
 import { InProgressItem } from 'entities/types';
 import { capitalize } from 'utils';
 import clsx from 'clsx';
 import ConfirmDeleteDialog from './modals/confirm-dialog';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { selectCountryName } from 'selectors/user';
 
 
 const ProgressTableHead: React.FC = () => {
@@ -42,6 +43,7 @@ const InProgressTable: React.FC<RouteComponentProps> = ({ history }) => {
     const [rowToDelete, setRowToDelete] = useState<InProgressItem | undefined>(undefined);
     const dispatch = useDispatch();
     const { storageService } = useAppService();
+    const countryName = useSelector(selectCountryName);
 
     const handleDelete = (row: InProgressItem) => () => {
         setDeleteDialogOpen(true);
@@ -53,7 +55,7 @@ const InProgressTable: React.FC<RouteComponentProps> = ({ history }) => {
     };
 
     useEffect(() => {
-        getInProgressItems(storageService, dispatch);
+        getInProgressItems(storageService, countryName, dispatch);
     }, []);
 
 

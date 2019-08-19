@@ -4,6 +4,7 @@ import { BackIconButton, ConfirmButton } from 'components/buttons';
 import { useSummaryStyles } from '../summary-styles';
 import { useDispatch } from 'react-redux';
 import { onSelectShowReview } from '../actions';
+import CancelSectionActionButton from './cancel-button';
 
 
 export default function ActionBarReviewReady() {
@@ -17,7 +18,9 @@ export default function ActionBarReviewReady() {
     return (
         <Box className={styles.section} justify="between" align="center">
             <BackIconButton />
-            <ConfirmButton onClick={onClick}>Review and Confirm</ConfirmButton>
+
+            <Box><CancelSectionActionButton />
+                <ConfirmButton onClick={onClick}>Review and Confirm</ConfirmButton></Box>
         </Box>
     );
 

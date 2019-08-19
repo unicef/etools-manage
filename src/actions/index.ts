@@ -4,7 +4,7 @@ import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService } from 'services/backend';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
 import { Dispatch } from 'global-types';
-import { isSectionsParamValid, filterDuplicateClose } from 'lib/sections';
+import { isSectionsParamValid, filterDuplicateClose, isCurrentCountry } from 'lib/sections';
 import { requestStarted, requestComplete } from 'reducers/loading';
 import { onGetSectionsSuccess } from 'reducers/sections';
 import { onSetMergedSection } from 'reducers/merged-section';
@@ -14,6 +14,7 @@ import wrappedFetch from 'lib/fetch';
 import { onUserProfileSuccess } from 'reducers/user';
 import StorageService from 'services/storage';
 import { getInProgressSuccess, removeItemFromInProgress } from 'reducers/in-progress-items';
+import { compose, filter } from 'ramda';
 
 
 export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
@@ -87,11 +88,11 @@ export const fetchUserProfile = async(dispatch: Dispatch) => {
 
 };
 
-export const getInProgressItems = (storageService: StorageService, dispatch: Dispatch) => {
+export const getInProgressItems = (storageService: StorageService, payload: string, dispatch: Dispatch) => {
     let actionKeys = storageService.getAllItems();
 
     if (actionKeys) {
-        actionKeys = filterDuplicateClose(actionKeys);
+        actionKeys = compose(filterDuplicateClose, filter(isCurrentCountry(payload)))(actionKeys);
     }
 
     dispatch(getInProgressSuccess(actionKeys));

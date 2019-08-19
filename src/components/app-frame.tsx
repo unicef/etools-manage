@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectLoading, selectError } from 'selectors';
 import { DRAWER_WIDTH } from 'global-constants';
 import { selectMenuItem } from 'selectors/ui';
-import { selectUserProfile } from 'selectors/user';
+import { selectUserProfile, selectCountryName } from 'selectors/user';
 
 const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
 
@@ -111,6 +111,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 
     const { storageService, sectionsService: service } = useAppService();
     const dispatch = useDispatch();
+    const countryName = useSelector(selectCountryName);
 
     if (error) {
         throw error;
@@ -119,8 +120,11 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     useEffect(() => {
         onGetSections(service, dispatch);
         fetchUserProfile(dispatch);
-        getInProgressItems(storageService, dispatch);
     }, []);
+
+    useEffect(() => {
+        getInProgressItems(storageService, countryName, dispatch);
+    }, [countryName]);
 
     function handleDrawerOpen() {
         setOpen(true);
