@@ -1,13 +1,6 @@
 import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
-import Box from 'components/box';
-import { KeyToEntityMap } from 'entities/types';
-import InterventionsEdit from 'components/entity-edit/interventions-edit';
-import TravelsEdit from 'components/entity-edit/travels-edit';
-import ActionPointsEdit from 'components/entity-edit/action-points-edit';
-import TPMActivitiesEdit from 'components/entity-edit/tpm-edit';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectModuleEditingName, selectClosedSectionSuccess } from 'selectors';
 import { onFetchDataSplitSection } from './actions';
 import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';

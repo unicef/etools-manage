@@ -1,7 +1,7 @@
 
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
-import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload, CloseSectionBackendPayload, FetchStoragePayload, NewSectionFromSplitPayload } from 'entities/types';
+import { ZippedEntityResults, GenericMultiSectionPayload, IndicatorsPayload, GenericSectionPayload, CloseSectionBackendPayload, FetchStoragePayload } from 'entities/types';
 import { Dispatch } from 'global-types';
 import { SectionsService } from 'services/section';
 import { updateCloseSectionPayload, onFetchForCloseSuccess, onFetchFromStorageSuccess, onChangeInterventionSection, onUpdateInterventionIndicatorsState, onUpdateTravelSection, onUpdateActionPointSection, onUpdateTPMSections } from 'reducers/close-section-payload';

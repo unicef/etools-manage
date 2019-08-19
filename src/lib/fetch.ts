@@ -41,7 +41,7 @@ const wrappedFetch = (url: string, {
     credentials: 'same-origin', // send cookies for etools auth
     ...opts })
     .then((response: Response) => checkStatus(response, raw))
-    .then(async (response): Promise<Response |any> => {
+    .then(async (response): Promise<Response | any> => {
         if (raw) {
             return response;
         }
