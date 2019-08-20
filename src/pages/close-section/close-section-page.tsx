@@ -172,7 +172,7 @@ export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ modulesData }) =
                         :
                         null
                 }
-                {dataFetched && <Typography className={styles.infoMsg} >No entities are affected by closing this section.</Typography>}
+                {dataFetched && !hasData &&  <Typography className={styles.infoMsg} >No entities are affected by closing this section.</Typography>}
             </Paper>
 
             {hasData && <ResolvedProgress progress={progress} />}
