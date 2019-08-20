@@ -43,7 +43,7 @@ export const useSummaryStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(3)
         },
         section: {
-            marginBottom: theme.spacing(3)
+            marginBottom: theme.spacing(1)
         },
         flex2: {
             flex: 2

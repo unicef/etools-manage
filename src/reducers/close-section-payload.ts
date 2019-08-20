@@ -2,7 +2,7 @@ import { createSlice } from 'redux-starter-kit';
 import { ModuleEntities } from 'entities/types';
 import { renderSectionsList } from 'actions/action-constants';
 
-const initialState: ModuleEntities = {
+export const initialState: ModuleEntities = {
     interventions: {},
     travels: {},
     actionPoints: {},

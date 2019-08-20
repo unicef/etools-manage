@@ -32,7 +32,6 @@ export const onFetchDataCloseSection = async (
     if (!dataFromStorage) {
 
         let dataFromServer: Partial<ZippedEntityResults>;
-
         dispatch(requestStarted());
         try {
             dataFromServer = await backendService.getEntitiesForClose(payload.id);

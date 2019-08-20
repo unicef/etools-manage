@@ -8,9 +8,8 @@ import { onEditModuleSections, onSetActionBar } from './actions';
 import { ModuleEntities, ResolvedRatio } from 'entities/types';
 import EntityConfigMapping from 'entities/config-map';
 import { selectNumItemsResolved, selectTotalProgress } from 'selectors/num-items-resolved';
-import { keys } from 'ramda';
+import { keys, isEmpty } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spinner } from 'components/loader';
 import { useSummaryStyles } from './summary-styles';
 import ResolvedProgress from 'components/resolved-progress-bar';
 import CloseSectionSummary from './close-section-summary';
@@ -21,6 +20,7 @@ import ActionBarReviewReady from './action-bar/review-ready';
 import { selectCloseSectionActionBar, selectViewCloseSummary, deriveCloseSectionActionBar } from 'selectors/ui';
 import { CloseSectionActionsMap } from './types';
 import { selectNamesFromsplit } from 'selectors/split-section';
+import { deriveCloseSectionFetched } from 'selectors/close-section-payload';
 
 
 export interface SummaryItemProps {
@@ -49,13 +49,15 @@ const useModulesSummary = () => {
     useEffect(() => {
         if (closeSectionPayload) {
             setModulesData(
-                keys(closeSectionPayload).map(
-                    (entityName: keyof ModuleEntities): SummaryItemProps => ({
-                        name: EntityConfigMapping[entityName].moduleName,
-                        itemsResolved: numResolvedByModule[entityName],
-                        onEdit: () => onEditModuleSections(entityName, dispatch)
-                    })
-                )
+                keys(closeSectionPayload)
+                    .filter((key: keyof ModuleEntities) => !isEmpty(closeSectionPayload[key]))
+                    .map(
+                        (entityName: keyof ModuleEntities): SummaryItemProps => ({
+                            name: EntityConfigMapping[entityName].moduleName,
+                            itemsResolved: numResolvedByModule[entityName],
+                            onEdit: () => onEditModuleSections(entityName, dispatch)
+                        })
+                    )
             );
         }
     }, [closeSectionPayload]);
@@ -107,11 +109,10 @@ export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ modulesData }) =
     const progress = useSelector(selectTotalProgress);
     const closingSection = useSelector(selectCurrentActiveSectionName);
     const styles = useSummaryStyles();
-
     const namesFromSplit = useSelector(selectNamesFromsplit);
 
     const hasData = Boolean(modulesData && modulesData.length);
-
+    const dataFetched = useSelector(deriveCloseSectionFetched);
     const isSplitSection = Boolean(namesFromSplit.length);
 
     const titleText = isSplitSection ? 'Split Section' : 'Close Section';
@@ -168,9 +169,9 @@ export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ modulesData }) =
                             )
                         )
                         :
-                        <Spinner/>
+                        null
                 }
-                {!hasData && <Typography className={styles.infoMsg} >No entities are affected by closing this section.</Typography>}
+                {dataFetched && !hasData &&  <Typography className={styles.infoMsg} >No entities are affected by closing this section.</Typography>}
             </Paper>
 
             {hasData && <ResolvedProgress progress={progress} />}
