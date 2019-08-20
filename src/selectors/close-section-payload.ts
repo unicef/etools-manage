@@ -1,14 +1,15 @@
 import { createSelector } from 'redux-starter-kit';
-import { selectCurrentActiveSection } from 'selectors';
-import { CloseSectionBackendPayload, BackendEntityNames, ActionPointEntity, InterventionEntity, Normalized, TravelEntity, FormattedTPMActivityEntity } from 'entities/types';
+import { selectCurrentActiveSection, selectCloseSectionPayload } from 'selectors';
+import { CloseSectionBackendPayload, BackendEntityNames, ActionPointEntity, InterventionEntity, Normalized, TravelEntity, FormattedTPMActivityEntity, ModuleEntities } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
 import { selectTravelsFromPayload } from './travels';
 import { selectActionPointsFromPayload } from './action-points';
-import { keys } from 'ramda';
+import { keys, equals } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { selectNamesFromsplit } from './split-section';
 import { Dictionary } from 'helpers';
+import { initialState } from 'reducers/close-section-payload';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
 export const getCloseSectionBackendPayload = createSelector<FullStoreShape, CloseSectionBackendPayload >(
@@ -94,3 +95,13 @@ export const getCloseSectionBackendPayload = createSelector<FullStoreShape, Clos
     }
 );
 
+export const deriveCloseSectionFetched = createSelector(
+    [selectCloseSectionPayload],
+    (payload: ModuleEntities) => {
+        if (!payload || equals(payload, initialState)) {
+            return false;
+        }
+        return true;
+    }
+)
+;
