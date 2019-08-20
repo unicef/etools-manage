@@ -9,15 +9,15 @@ import { onCreateSectionSuccess } from './created-section';
 export const loading = createSlice({
     initialState: false,
     reducers: {
-        requestStarted: (state, action) => true,
-        requestComplete: (state, action) => false
+        requestStarted: () => true,
+        requestComplete: () => false
     },
     extraReducers: {
-        [onFetchForCloseSuccess.type]: (state, action) => false,
-        [onSuccessCloseSection.type]: (state, action) => false,
-        [onSetMergedSection.type]: (state, action) => false,
-        [onCreateSectionSuccess.type]: (state, action) => false,
-        [onGetSectionsSuccess.type]: (state, action) => false
+        [onFetchForCloseSuccess.type]: () => false,
+        [onSuccessCloseSection.type]: () => false,
+        [onSetMergedSection.type]: () => false,
+        [onCreateSectionSuccess.type]: () => false,
+        [onGetSectionsSuccess.type]: () => false
     }
 });
 export const { requestStarted, requestComplete } = loading.actions;

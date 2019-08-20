@@ -12,11 +12,10 @@ import { useModalsDispatch } from 'contexts/page-modals';
 import { onToggleSplitModal } from 'reducers/modals';
 import { onCurrentActiveSection } from 'reducers/current-active-section';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserProfile, selectCountryName } from 'selectors/user';
+import { selectCountryName } from 'selectors/user';
 import { useAppService } from 'contexts/app';
 import { getCloseSectionUrl, getSplitSectionPrefixKey, getSplitSectionUrl } from 'lib/sections';
 import { deriveRowsFromInProgress } from 'selectors/in-progress-items';
-import { includes } from 'ramda';
 import { SectionAction } from 'entities/types';
 
 const useMenuStyles = makeStyles((theme: Theme) =>

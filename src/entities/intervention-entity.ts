@@ -1,6 +1,5 @@
 import { InterventionEntity, EntityDisplay } from './types';
 import { EntityConfig } from 'entities';
-import { without, map } from 'ramda';
 
 export class InterventionConfig implements EntityConfig<InterventionEntity> {
 

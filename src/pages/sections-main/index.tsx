@@ -11,20 +11,12 @@ import { onSelectForMerge } from 'reducers/modals';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSections, selectSectionsWithInactive } from 'selectors';
 import Switch from '@material-ui/core/Switch';
-import { Container, FormControlLabel, FormGroup, Typography } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 import { useTableStyles } from 'components/table/styles';
 import { renderSectionsList } from 'actions/action-constants';
 import InProgressTable from 'components/in-progress-table';
 import { selectInProgress } from 'selectors/in-progress-items';
 
-
-if (process.env.NODE_ENV !== 'production') {
-    const whyDidYouRender = require('@welldone-software/why-did-you-render');
-    whyDidYouRender(React, {
-        onlyLogs: true,
-        titleColor: 'teal'
-    });
-}
 
 const SectionsMainPage: React.FunctionComponent = () => {
 
@@ -95,7 +87,5 @@ const SectionsMainPage: React.FunctionComponent = () => {
     );
 };
 
-// @ts-ignore
-SectionsMainPage.whyDidYouRender = true;
 
 export default SectionsMainPage;

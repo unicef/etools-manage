@@ -40,8 +40,8 @@ const wrappedFetch = (url: string, {
 } = {}) => fetch(`${BASE_URL}/${url}`, {
     credentials: 'same-origin', // send cookies for etools auth
     ...opts })
-    .then((response: Response) => checkStatus(response, raw))
-    .then(async (response): Promise<Response |any> => {
+    .then((response: Response) => checkStatus(response, raw))        // eslint-disable-next-line
+    .then(async (response): Promise<Response | any> => {
         if (raw) {
             return response;
         }
@@ -56,6 +56,7 @@ const wrappedFetch = (url: string, {
 export interface FetchState {
     loaded: boolean;
     fetching: boolean;
+    // eslint-disable-next-line
     data: any;
     error: Error | null;
 }

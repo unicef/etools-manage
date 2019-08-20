@@ -1,17 +1,14 @@
 import React, { HTMLAttributes, CSSProperties, memo } from 'react';
-import clsx from 'clsx';
 import Select from 'react-select';
 import chroma from 'chroma-js';
 import { Omit } from '@material-ui/types';
 import { createStyles, emphasize, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
-import { Typography, MenuItem, Paper, Chip } from '@material-ui/core';
+import { Typography, MenuItem, Paper } from '@material-ui/core';
 import { ValueType } from 'react-select/src/types';
 import { ValueContainerProps } from 'react-select/src/components/containers';
 import { ControlProps } from 'react-select/src/components/Control';
 import { MenuProps, NoticeProps } from 'react-select/src/components/Menu';
-import { MultiValueProps } from 'react-select/src/components/MultiValue';
 import { OptionProps } from 'react-select/src/components/Option';
-import CancelIcon from '@material-ui/icons/Cancel';
 import { PlaceholderProps } from 'react-select/src/components/Placeholder';
 import { SingleValueProps } from 'react-select/src/components/SingleValue';
 import TextField, { BaseTextFieldProps } from '@material-ui/core/TextField';
@@ -160,20 +157,6 @@ function ValueContainer(props: ValueContainerProps<OptionType>) {
     return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
 }
 
-// If we want to use Chips instead of default
-function MultiValue(props: MultiValueProps<OptionType>) {
-    return (
-        <Chip
-            tabIndex={-1}
-            label={props.children}
-            className={clsx(props.selectProps.classes.chip, {
-                [props.selectProps.classes.chipFocused]: props.isFocused
-            })}
-            onDelete={props.removeProps.onClick}
-            deleteIcon={<CancelIcon {...props.removeProps} />}
-        />
-    );
-}
 
 function Menu(props: MenuProps<OptionType>) {
     return (
@@ -203,14 +186,14 @@ const useDropdown = () => {
     }
 
     const selectStyles = {
-        input: (base: CSSProperties, state: any) => ({
+        input: (base: CSSProperties) => ({
             ...base,
             color: theme.palette.text.primary,
             '& input': {
                 font: 'inherit'
             }
         }),
-
+        // eslint-disable-next-line
         container: (base: CSSProperties, state: any) => ({
             ...base,
             opacity: state.isDisabled ? 0.5 : 1
@@ -269,6 +252,7 @@ export interface DropdownProps {
     label?: string | null;
     value?: OptionType | OptionType[] | null;
     onChange: ((value: ValueType<OptionType>) => void);
+    // eslint-disable-next-line
     [prop: string]: any;
 }
 

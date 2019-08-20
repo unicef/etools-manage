@@ -123,12 +123,13 @@ export interface SectionTableProps {
 }
 type SectionOrderby = Omit<SectionEntity, 'active'>;
 
-const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onChangeSelected, showInactive }) => {
+const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onChangeSelected }) => {
     const styles = useTableStyles({});
     const [order, setOrder] = React.useState<Order>('asc');
 
     const [orderBy, setOrderBy] = React.useState<keyof SectionOrderby >('name');
     const [selected, setSelected] = React.useState<string[]>([]);
+
     const {
         page,
         rowsPerPage,

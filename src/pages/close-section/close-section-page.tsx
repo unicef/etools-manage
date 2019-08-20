@@ -8,7 +8,7 @@ import { onEditModuleSections, onSetActionBar } from './actions';
 import { ModuleEntities, ResolvedRatio } from 'entities/types';
 import EntityConfigMapping from 'entities/config-map';
 import { selectNumItemsResolved, selectTotalProgress } from 'selectors/num-items-resolved';
-import { keys, prop } from 'ramda';
+import { keys } from 'ramda';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from 'components/loader';
 import { useSummaryStyles } from './summary-styles';
@@ -20,7 +20,7 @@ import ActionBarConnectedConfirm from './action-bar/connected-confirm';
 import ActionBarReviewReady from './action-bar/review-ready';
 import { selectCloseSectionActionBar, selectViewCloseSummary, deriveCloseSectionActionBar } from 'selectors/ui';
 import { CloseSectionActionsMap } from './types';
-import { selectSectionsFromSplit, selectNamesFromsplit } from 'selectors/split-section';
+import { selectNamesFromsplit } from 'selectors/split-section';
 
 
 export interface SummaryItemProps {
@@ -98,8 +98,6 @@ export const CloseSectionsPage: React.FC = () => {
     );
 };
 
-// @ts-ignore
-CloseSectionsPage.whyDidYouRender = true;
 
 export interface ModulesSummaryProps {
     modulesData: SummaryItemProps[] | undefined;

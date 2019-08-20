@@ -1,6 +1,6 @@
 import { createSelector } from 'redux-starter-kit';
 import { ModuleEntities, SectionEntity } from 'entities/types';
-import { propEq, reject, map, prop, includes, without, filter, keys, concat, compose, sortBy } from 'ramda';
+import { propEq, reject, map, prop, includes, without, filter, keys, concat, sortBy } from 'ramda';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
 import { selectSectionsFromSplit } from './split-section';

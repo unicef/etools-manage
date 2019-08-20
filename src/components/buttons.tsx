@@ -6,7 +6,6 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import { withRouter } from 'react-router';
 import { useIconButtonStyles } from './table/styles';
 import { useDispatch } from 'react-redux';
-import { onSuccessCloseSection } from 'reducers/closed-section-success';
 import { refreshSectionsList } from 'actions/action-constants';
 
 
@@ -69,7 +68,6 @@ export const BackToMainButton = withRouter(({ history, children }) => {
 
     const handleClick = () => {
         dispatch(refreshSectionsList());
-        dispatch(onSuccessCloseSection(false));
         history.push('/');
     };
     return (

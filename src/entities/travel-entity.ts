@@ -1,7 +1,5 @@
 import { EntityConfig } from 'entities';
 import { TravelEntity, EntityDisplay } from './types';
-import { set, lensProp, map } from 'ramda';
-
 
 export default class TravelsConfig implements EntityConfig<TravelEntity> {
     public get displayProperties(): EntityDisplay<TravelEntity>[] {
@@ -27,12 +25,3 @@ export default class TravelsConfig implements EntityConfig<TravelEntity> {
         return 'Trip Management';
     }
 }
-
-
-
-// list.map(
-//     (travel: TravelEntity) => ({
-//         ...travel,
-//         section: undefined
-//     })
-// );

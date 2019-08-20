@@ -30,6 +30,7 @@ interface BoxProps {
     tagName?: string;
     auto?: boolean;
     wrap?: boolean;
+    // eslint-disable-next-line
     onRef?: () => any;
     onClick?: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
     className?: string | undefined;

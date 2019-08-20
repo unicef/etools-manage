@@ -7,4 +7,4 @@ export const selectUserProfile = createSelector(
 
 export const selectCountryName = createSelector(
     ['user.country.name']
-)
+);

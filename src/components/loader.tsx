@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from './box';
-import { makeStyles, createStyles, CircularProgress, Typography } from '@material-ui/core';
+import { makeStyles, createStyles, CircularProgress } from '@material-ui/core';
 
 
 const useStyles = makeStyles(() =>
