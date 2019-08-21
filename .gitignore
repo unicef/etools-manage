@@ -16,7 +16,7 @@
 
 # misc
 .DS_Store
-.env.production.local
+local.env
 
 npm-debug.log*
 yarn-debug.log*
