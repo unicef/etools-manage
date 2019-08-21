@@ -103,5 +103,4 @@ export const deriveCloseSectionFetched = createSelector(
         }
         return true;
     }
-)
-;
+);
