@@ -1,6 +1,5 @@
 import React, { HTMLAttributes, CSSProperties, memo } from 'react';
 import Select from 'react-select';
-import chroma from 'chroma-js';
 import { Omit } from '@material-ui/types';
 import { createStyles, emphasize, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import { Typography, MenuItem, Paper } from '@material-ui/core';
@@ -201,10 +200,9 @@ const useDropdown = () => {
 
 
         multiValue: (styles: CSSProperties) => {
-            const color = chroma(theme.palette.secondary.main);
             return {
                 ...styles,
-                backgroundColor: color.alpha(0.1).css()
+                backgroundColor: theme.palette.secondary.light
             };
         },
 
