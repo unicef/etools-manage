@@ -58,9 +58,10 @@ module.exports = function(webpackEnv) {
     // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
     // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
     const publicUrl = isEnvProduction
-        ? publicPath.slice(0, -1)
-        : isEnvDevelopment && process.env.PUBLIC_URL;
+    ? publicPath.slice(0, -1)
+    : isEnvDevelopment && process.env.PUBLIC_URL;
     // Get environment variables to inject into our app.
+    console.log("TCL: publicUrl", publicUrl)
     const env = getClientEnvironment(publicUrl);
     const devtool = isEnvProduction
     ? shouldUseSourceMap
