@@ -1,8 +1,8 @@
 FROM node:11.9.0-alpine as builder
-# RUN apk update
-# RUN apk add --update bash
+RUN apk update
+RUN apk add --update bash
 
-# RUN apk add git
+RUN apk add git
 
 WORKDIR /tmp
 ADD package.json /tmp/
@@ -17,12 +17,14 @@ RUN npm run build
 
 
 FROM node:11.9.0-alpine
-# RUN apk update
-# RUN apk add --update bash
+RUN apk update
+RUN apk add --update bash
 
 WORKDIR /code
-RUN npm install serve --no-save
+RUN npm install express --no-save
+COPY --from=builder /code/server.js /code/server.js
 COPY --from=builder /code/build /code/build
-
 EXPOSE 8080
-CMD ["./node_modules/.bin/serve", "-s", "build", "-p", "8080"]
+CMD ["node", "server.js"]
+
+
