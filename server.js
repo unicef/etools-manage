@@ -3,10 +3,13 @@ const path = require('path');
 const app = express();
 const port = 8080
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use('/manage/', (req,res,next)=> {
+  express.static(path.join(__dirname, 'build'))(req,res,next)
+});
 
-app.get('/manage/*', function(req, res) {
+app.use(function(req, res) {
   console.log('Da request!',req.url);
+  console.log('dirnbane!',__dirname);
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
