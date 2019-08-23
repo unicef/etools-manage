@@ -25,6 +25,7 @@ module.exports = {
         }
     },
     rules: {
-        'react/prop-types': "off" // No need since we use Typescript
+        'react/prop-types': "off", // No need since we use Typescript
+        'react/display-name': 'off' // Memo triggers false positive
     }
 };

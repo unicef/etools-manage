@@ -72,7 +72,6 @@ export const useAddSection = () => {
 
     const handleValidateSection = async () => {
         const isValid = await sectionInstance.isValidName(sections);
-        console.log('validate');
 
         if (!isValid) {
             setNameError('Section name already exists');

@@ -43,8 +43,7 @@ export default class SectionsApiService extends BaseService implements SectionsS
             );
             return response;
         } catch (err) {
-            console.log(err);
-            throw new Error(err);
+            throw err;
         }
     }
 
