@@ -8,8 +8,6 @@ app.use('/manage/', (req,res,next)=> {
 });
 
 app.use(function(req, res) {
-  console.log('Da request!',req.url);
-  console.log('dirnbane!',__dirname);
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
