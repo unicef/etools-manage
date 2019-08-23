@@ -16,7 +16,7 @@ module.exports = {
         '@typescript-eslint/camelcase': "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-var-requires": "off" // dev purposes
-    }, chore
+    },
     overrides: [
         {
             files: ['test/**/*.ts'],
