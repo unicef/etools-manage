@@ -12,4 +12,3 @@ const sections = createSlice({
 
 export const { onGetSectionsSuccess } = sections.actions;
 export const { reducer: sectionsReducer } = sections;
-

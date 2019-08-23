@@ -3,17 +3,14 @@ import { isEmpty } from 'ramda';
 import { SectionEntity } from 'entities/types';
 
 export function useSetState<T>(initialState: T) {
-    return useReducer(
-        (state, newState) => ({ ...state, ...newState }),
-        initialState,
-    );
+    return useReducer((state, newState) => ({ ...state, ...newState }), initialState);
 }
 
 export function useSafeSetState<T>(initialState: T) {
     const [state, setState] = useSetState(initialState);
 
     const mountedRef = useRef(false);
-    useEffect((): () => void => {
+    useEffect((): (() => void) => {
         mountedRef.current = true;
         return () => (mountedRef.current = false);
     }, []);
@@ -25,10 +22,10 @@ export function useSafeSetState<T>(initialState: T) {
 }
 
 export function sectionWithNumberId(section: SectionEntity): SectionEntity {
-    return ({
+    return {
         ...section,
         id: Number(section.id)
-    });
+    };
 }
 
 export function notEmpty(xs: unknown) {

@@ -9,7 +9,6 @@ export interface HttpClient {
 }
 
 export class ApiClient implements HttpClient {
-
     public async get<T>(url: string, config: any): Promise<T> {
         const response = await wrappedFetch(url, config);
         return response;
@@ -26,7 +25,6 @@ export class ApiClient implements HttpClient {
     }
 
     public async patch<T>(url: string, config: any): Promise<T> {
-
         const response = await wrappedFetch(url, {
             ...config,
             method: 'PATCH'

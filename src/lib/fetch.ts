@@ -4,7 +4,6 @@ import { useSafeSetState } from 'utils/helpers';
 
 const BASE_URL = window.location.origin;
 
-
 export async function checkStatus(response: Response, raw: boolean): Promise<Response> {
     if (raw) {
         return response;
@@ -20,38 +19,45 @@ export async function checkStatus(response: Response, raw: boolean): Promise<Res
         message = await response.json();
     }
 
-
-    const error = new Error(JSON.stringify({
-        message,
-        code: response.status,
-        ...response
-    }));
+    const error = new Error(
+        JSON.stringify({
+            message,
+            code: response.status,
+            ...response
+        })
+    );
 
     throw error;
 }
 
-type FetchOpts = RequestInit & {json: boolean; raw: boolean}
+type FetchOpts = RequestInit & { json: boolean; raw: boolean };
 
-const wrappedFetch = (url: string, {
-    json = true,
-    raw = false,
-    // For test environment Dependency Injection
-    ...opts
-} = {}) => fetch(`${BASE_URL}/${url}`, {
-    credentials: 'same-origin', // send cookies for etools auth
-    ...opts })
-    .then((response: Response) => checkStatus(response, raw))        // eslint-disable-next-line
-    .then(async (response): Promise<Response | any> => {
-        if (raw) {
-            return response;
-        }
-
-
-        return json ? response.json() : response.text();
+const wrappedFetch = (
+    url: string,
+    {
+        json = true,
+        raw = false,
+        // For test environment Dependency Injection
+        ...opts
+    } = {}
+) =>
+    fetch(`${BASE_URL}/${url}`, {
+        credentials: 'same-origin', // send cookies for etools auth
+        ...opts
     })
-    .catch(err => {
-        throw err;
-    });
+        .then((response: Response) => checkStatus(response, raw)) // eslint-disable-next-line
+        .then(
+            async (response): Promise<Response | any> => {
+                if (raw) {
+                    return response;
+                }
+
+                return json ? response.json() : response.text();
+            }
+        )
+        .catch(err => {
+            throw err;
+        });
 
 export interface FetchState {
     loaded: boolean;
@@ -84,16 +90,15 @@ export function useFetch(url: string, opts?: FetchOpts): FetchState {
                 setState({
                     error,
                     loaded: false,
-                    fetching: false });
+                    fetching: false
+                });
             }
         };
 
         fetchData();
-
     }, []);
 
     return state;
 }
 
 export default wrappedFetch;
-

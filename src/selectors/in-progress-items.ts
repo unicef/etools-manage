@@ -4,15 +4,11 @@ import { parseKeyForId, parseKeyForAction } from 'lib/sections';
 import { map, propEq } from 'ramda';
 import { InProgressItem } from 'entities/types';
 
-
-export const selectInProgress = createSelector(
-    ['inProgressItems']
-);
+export const selectInProgress = createSelector(['inProgressItems']);
 
 export const deriveRowsFromInProgress = createSelector(
     [selectInProgress, selectSections],
     (items, sections) => {
-
         if (!items.length || !sections.length) {
             return [];
         }
@@ -33,7 +29,6 @@ export const deriveRowsFromInProgress = createSelector(
         return rows;
     }
 );
-
 
 export const getStorageKeyFromCurrentActive = createSelector(
     [selectCurrentActiveSection, deriveRowsFromInProgress],

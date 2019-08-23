@@ -5,7 +5,6 @@ import { prop, keys } from 'ramda';
 import { clearCurrentSection, getNumResolved } from 'lib/sections';
 import { FullStoreShape } from 'contexts/app';
 
-
 export const selectActionPointsFromPayload = createSelector<FullStoreShape, ActionPointEntity[]>(
     [selectCloseSectionPayload],
     prop('actionPoints')

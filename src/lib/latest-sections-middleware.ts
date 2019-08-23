@@ -14,7 +14,6 @@ const fetchLatestSectionsMiddleware = (service: SectionsService): AppMiddleware 
         if (sectionJustCreated || sectionTableWasRendered) {
             onGetSections(service, dispatch);
         }
-
     };
 };
 

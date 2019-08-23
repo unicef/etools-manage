@@ -3,7 +3,9 @@ import { onFetchForCloseSuccess, updateCloseSectionPayload } from 'reducers/clos
 import { selectWithoutCurrentSection } from 'selectors/filter-sections';
 
 // removes the section to be closed from options
-export const filterCurrentSectionMiddleware: AppMiddleware = ({ getState }) => dispatch => action => {
+export const filterCurrentSectionMiddleware: AppMiddleware = ({
+    getState
+}) => dispatch => action => {
     dispatch(action);
 
     if (action.type === onFetchForCloseSuccess.type) {

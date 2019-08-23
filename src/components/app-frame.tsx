@@ -1,4 +1,4 @@
-import React, {ReactNode     , useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -97,7 +97,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export interface AppFrameProps{
+export interface AppFrameProps {
     children: ReactNode;
 }
 
@@ -137,7 +137,6 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const styles = useStyles();
     const theme = useTheme();
 
-
     return (
         <Modals>
             {loading ? <Loader /> : null}
@@ -151,7 +150,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                         [styles.appBarShift]: open
                     })}
                 >
-                    <Toolbar >
+                    <Toolbar>
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
@@ -164,8 +163,12 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                         <Typography
                             className={styles.appName}
                             color="textPrimary"
-                            variant="h6" noWrap>
-                            <Link color="inherit" href="/manage/">{PAGE_TITLE}</Link>
+                            variant="h6"
+                            noWrap
+                        >
+                            <Link color="inherit" href="/manage/">
+                                {PAGE_TITLE}
+                            </Link>
                         </Typography>
                         <Typography color="textPrimary">
                             {userData && userData.country.name}
@@ -190,12 +193,13 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                     <List>
                         {['Sections'].map((text, idx) => (
                             <ListItem selected={selectedIndex === idx} button key={text}>
-                                <ListItemIcon><DashboardIcon /></ListItemIcon>
+                                <ListItemIcon>
+                                    <DashboardIcon />
+                                </ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItem>
                         ))}
                     </List>
-
                 </Drawer>
                 <main
                     className={clsx(styles.content, {
@@ -211,4 +215,3 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 };
 
 export default AppFrame;
-

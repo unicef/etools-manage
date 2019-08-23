@@ -25,8 +25,8 @@ interface BoxProps {
     children?: React.ReactNode;
     column?: boolean;
     row?: boolean;
-    align?: 'center' | 'start' | 'end' ;
-    justify?: 'center'| 'start'| 'end'| 'between';
+    align?: 'center' | 'start' | 'end';
+    justify?: 'center' | 'start' | 'end' | 'between';
     tagName?: string;
     auto?: boolean;
     wrap?: boolean;
@@ -36,7 +36,19 @@ interface BoxProps {
     className?: string | undefined;
 }
 
-export default function Box({ children, column, row, align, justify, tagName = 'div', auto, className = '', wrap, onRef, ...props }: BoxProps) {
+export default function Box({
+    children,
+    column,
+    row,
+    align,
+    justify,
+    tagName = 'div',
+    auto,
+    className = '',
+    wrap,
+    onRef,
+    ...props
+}: BoxProps) {
     const styles = useStyles({});
     const classes = classnames({
         [styles.auto]: auto,
@@ -56,5 +68,3 @@ export default function Box({ children, column, row, align, justify, tagName = '
 
     return React.createElement(tagName, { className: classes, ref: onRef, ...props }, children);
 }
-
-

@@ -1,10 +1,7 @@
-
-
 import red from '@material-ui/core/colors/red';
 import amber from '@material-ui/core/colors/amber';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import { createMuiTheme } from '@material-ui/core/styles';
-
 
 // A custom theme for this app
 const theme = createMuiTheme({
@@ -56,7 +53,6 @@ const theme = createMuiTheme({
             }
         }
     }
-
 });
 
 export default theme;

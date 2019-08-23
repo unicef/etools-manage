@@ -1,6 +1,13 @@
 import BaseService from 'services';
 import { SuccessResponse } from 'global-types';
-import { SectionEntity, CreateSectionPayload, MergeSectionsPayload, SectionServicePayload, NewSectionFromMerged, CloseSectionBackendPayload } from 'entities/types';
+import {
+    SectionEntity,
+    CreateSectionPayload,
+    MergeSectionsPayload,
+    SectionServicePayload,
+    NewSectionFromMerged,
+    CloseSectionBackendPayload
+} from 'entities/types';
 
 export interface SectionsService {
     getSections(): Promise<SectionEntity[]>;
@@ -14,7 +21,6 @@ const createSectionUrl = process.env.REACT_APP_SECTIONS_CREATE_ENDPOINT as strin
 const mergeSectionUrl = process.env.REACT_APP_SECTIONS_MERGE_ENDPOINT as string;
 
 export default class SectionsApiService extends BaseService implements SectionsService {
-
     private bodyFromPayload(payload: SectionServicePayload) {
         return {
             body: JSON.stringify(payload)
@@ -24,7 +30,6 @@ export default class SectionsApiService extends BaseService implements SectionsS
         try {
             const response = await this._http.get<SectionEntity[]>(getSectionsUrl);
             return response;
-
         } catch (err) {
             throw new Error(err);
         }
@@ -37,7 +42,6 @@ export default class SectionsApiService extends BaseService implements SectionsS
                 this.bodyFromPayload(payload)
             );
             return response;
-
         } catch (err) {
             console.log(err);
             throw new Error(err);
@@ -63,7 +67,6 @@ export default class SectionsApiService extends BaseService implements SectionsS
                 this.bodyFromPayload(payload)
             );
             return response;
-
         } catch (err) {
             throw new Error(err);
         }

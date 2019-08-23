@@ -6,7 +6,6 @@ const ModalsStateContext = React.createContext<ModalsState | undefined>(undefine
 const ModalsDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 
 export function PageModalsProvider({ children }: ChildrenProps): JSX.Element {
-
     const [state, setModalsState] = useReducer(modalsReducer, initialStateModals);
     return (
         <ModalsStateContext.Provider value={state}>
@@ -17,9 +16,7 @@ export function PageModalsProvider({ children }: ChildrenProps): JSX.Element {
     );
 }
 
-
 export function useModalsState() {
-
     const context = useContext(ModalsStateContext);
     if (context === undefined) {
         throw new Error('useModalsState must be used within a PageModalsProvider');
@@ -36,10 +33,6 @@ export function useModalsDispatch() {
     return context;
 }
 
-
 export const Modals: React.FC<ChildrenProps> = ({ children }) => (
-    <PageModalsProvider>
-        {children}
-    </PageModalsProvider>
+    <PageModalsProvider>{children}</PageModalsProvider>
 );
-

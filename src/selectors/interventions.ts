@@ -7,10 +7,9 @@ import { Store } from 'redux';
 import { normalize } from 'normalizr';
 import { interventionSchema } from 'entities/schemas';
 
-
 export const selectInterventionsFromPayload = createSelector<Store, Normalized<InterventionEntity>>(
     [selectCloseSectionPayload],
-    prop('interventions'),
+    prop('interventions')
 );
 
 export const selectInterventionIds = createSelector(
@@ -28,14 +27,12 @@ export const getNumResolvedInterventions = createSelector<Store, ResolvedRatio>(
             if (intervention.sections.length > 0) {
                 resolved++;
             }
-            intervention.indicators.forEach(
-                indicator => {
-                    total++;
-                    if (indicator.section) {
-                        resolved++;
-                    }
+            intervention.indicators.forEach(indicator => {
+                total++;
+                if (indicator.section) {
+                    resolved++;
                 }
-            );
+            });
 
             return resolved;
         }, 0);
@@ -46,37 +43,30 @@ export const getNumResolvedInterventions = createSelector<Store, ResolvedRatio>(
 export const interventionsWithoutCurrentSection = createSelector(
     [selectCurrentActiveSection, selectInterventionsFromPayload, selectSections],
     (id: number, interventions: Normalized<InterventionEntity>, sectionsList: SectionEntity[]) => {
+        const newList = map((key: number) => {
+            const item: InterventionEntity = interventions[key];
+            const removedSectionIndicators = item.indicators.map(indicator => ({
+                ...indicator,
+                section: ''
+            }));
 
-        const newList = map(
-            (key: number) => {
-                const item: InterventionEntity = interventions[key];
-                const removedSectionIndicators = item.indicators.map(
-                    indicator => ({
-                        ...indicator,
-                        section: ''
-                    })
-                );
+            const existingSectionsIds = without([id], item.sections);
 
-                const existingSectionsIds = without([id], item.sections);
+            const existingSectionsNames: string[] = sectionsList
+                .filter(({ id }) => includes(id, existingSectionsIds))
+                .map(prop('name'));
 
-                const existingSectionsNames: string[] = sectionsList
-                    .filter(({ id }) => includes(id, existingSectionsIds))
-                    .map(prop('name'));
+            const res: InterventionEntity = {
+                ...item,
+                indicators: removedSectionIndicators,
+                sections: [],
+                existingSections: existingSectionsNames
+            };
 
-                const res: InterventionEntity = ({
-                    ...item,
-                    indicators: removedSectionIndicators,
-                    sections: [],
-                    existingSections: existingSectionsNames
-                });
-
-                return res;
-            },
-            keys(interventions)
-        );
+            return res;
+        }, keys(interventions));
 
         const { entities } = normalize(newList, [interventionSchema]);
         return entities.interventions;
     }
 );
-

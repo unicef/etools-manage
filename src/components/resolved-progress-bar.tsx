@@ -3,9 +3,8 @@ import Box from './box';
 import { LinearProgress, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
 import { lighten } from '@material-ui/core/styles';
 
-
-const useProgressStyles = makeStyles((theme: Theme) => createStyles(
-    {
+const useProgressStyles = makeStyles((theme: Theme) =>
+    createStyles({
         root: {
             height: 10,
             borderRadius: 8,
@@ -18,13 +17,13 @@ const useProgressStyles = makeStyles((theme: Theme) => createStyles(
         progressBar: {
             margin: `${theme.spacing(3)}px 0 ${theme.spacing(1)}px`
         }
-    }
-));
+    })
+);
 
-const ResolvedProgress: React.FC<{progress: number}> = memo(({ progress }) => {
+const ResolvedProgress: React.FC<{ progress: number }> = memo(({ progress }) => {
     const { progressBar, ...styles } = useProgressStyles();
     return (
-        <Box column >
+        <Box column>
             <LinearProgress
                 classes={{ ...styles }}
                 className={progressBar}
@@ -36,6 +35,5 @@ const ResolvedProgress: React.FC<{progress: number}> = memo(({ progress }) => {
         </Box>
     );
 });
-
 
 export default ResolvedProgress;

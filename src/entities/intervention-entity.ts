@@ -2,12 +2,8 @@ import { InterventionEntity, EntityDisplay } from './types';
 import { EntityConfig } from 'entities';
 
 export class InterventionConfig implements EntityConfig<InterventionEntity> {
-
     public get displayProperties(): EntityDisplay<InterventionEntity>[] {
-        return [
-            { label: 'Number', propName: 'number' },
-            { label: 'Title', propName: 'title' }
-        ];
+        return [{ label: 'Number', propName: 'number' }, { label: 'Title', propName: 'title' }];
     }
 
     public get title() {
@@ -20,7 +16,4 @@ export class InterventionConfig implements EntityConfig<InterventionEntity> {
     public get moduleName() {
         return 'PMP';
     }
-
 }
-
-

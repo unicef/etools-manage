@@ -8,7 +8,6 @@ import { useIconButtonStyles } from './table/styles';
 import { useDispatch } from 'react-redux';
 import { refreshSectionsList } from 'actions/action-constants';
 
-
 export const useButtonStyles = makeStyles((theme: Theme) =>
     createStyles({
         button: {
@@ -21,8 +20,8 @@ export const useButtonStyles = makeStyles((theme: Theme) =>
         icon: {
             marginLeft: theme.spacing(1)
         }
-    }));
-
+    })
+);
 
 export interface ConfirmBtnProps {
     onClick?: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
@@ -31,20 +30,26 @@ export interface ConfirmBtnProps {
     disabled?: boolean;
 }
 
-export const ConfirmButton: React.FC<ConfirmBtnProps> = ({ onClick, color = 'secondary', children, ...props }) => {
+export const ConfirmButton: React.FC<ConfirmBtnProps> = ({
+    onClick,
+    color = 'secondary',
+    children,
+    ...props
+}) => {
     const styles = useButtonStyles();
 
     return (
-        <Button onClick={onClick}
+        <Button
+            onClick={onClick}
             color={color}
             variant="contained"
             className={styles.button}
             {...props}
         >
             {children}
-        </Button>);
+        </Button>
+    );
 };
-
 
 export const BackIconButton = withRouter(({ history }) => {
     const iconStyles = useIconButtonStyles();
@@ -53,15 +58,11 @@ export const BackIconButton = withRouter(({ history }) => {
         history.push('/');
     };
     return (
-        <IconButton
-            className={iconStyles.icon}
-            size="medium"
-            onClick={handleClick}>
-            <BackIcon fontSize="large"/>
+        <IconButton className={iconStyles.icon} size="medium" onClick={handleClick}>
+            <BackIcon fontSize="large" />
         </IconButton>
     );
 });
-
 
 export const BackToMainButton = withRouter(({ history, children }) => {
     const dispatch = useDispatch();
@@ -71,13 +72,8 @@ export const BackToMainButton = withRouter(({ history, children }) => {
         history.push('/');
     };
     return (
-        <Button
-            variant="outlined"
-            size="medium"
-            onClick={handleClick}>
+        <Button variant="outlined" size="medium" onClick={handleClick}>
             {children}
         </Button>
     );
 });
-
-

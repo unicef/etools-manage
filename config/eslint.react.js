@@ -25,5 +25,6 @@ module.exports = {
         }
     },
     rules: {
+        'react/prop-types': "off" // No need since we use Typescript
     }
 };

@@ -33,8 +33,8 @@ const useMenuStyles = makeStyles((theme: Theme) =>
             minHeight: 32,
             padding: `6px ${theme.spacing(2)}px`
         }
-    }));
-
+    })
+);
 
 interface RowActionsProps {
     rowId: number;
@@ -56,10 +56,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
 
     const countryName = useSelector(selectCountryName);
 
-    const {
-        storageService
-    } = useAppService();
-
+    const { storageService } = useAppService();
 
     function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
         setAnchorEl(event.currentTarget);
@@ -90,7 +87,9 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     }
 
     function isDisabled(actionType: SectionAction) {
-        const isInprogressItem = inProgressItems.find(({ id }: {id: string}) => id === String(rowId));
+        const isInprogressItem = inProgressItems.find(
+            ({ id }: { id: string }) => id === String(rowId)
+        );
         if (isInprogressItem) {
             return isInprogressItem.action !== actionType;
         }
@@ -98,13 +97,14 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     }
 
     return (
-        <Box >
+        <Box>
             <IconButton
                 onClick={handleClick}
                 className={clsx(className, styles.icon, styles.showOnHover)}
                 size="small"
-                aria-label="More Actions">
-                <MoreVerticalIcon/>
+                aria-label="More Actions"
+            >
+                <MoreVerticalIcon />
             </IconButton>
 
             <Menu
@@ -112,8 +112,8 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                 classes={{ paper: menuStyles.root }}
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
-                onClose={handleClose}>
-
+                onClose={handleClose}
+            >
                 <MenuItem disabled={isDisabled('close')} classes={{ root: menuStyles.listItem }}>
                     <Link to={getCloseSectionUrl(String(rowId))}>
                         <Box>
@@ -122,7 +122,11 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                         </Box>
                     </Link>
                 </MenuItem>
-                <MenuItem disabled={isDisabled('split')} classes={{ root: menuStyles.listItem }} onClick={handleClickSplit}>
+                <MenuItem
+                    disabled={isDisabled('split')}
+                    classes={{ root: menuStyles.listItem }}
+                    onClick={handleClickSplit}
+                >
                     <SplitIcon className={menuStyles.icon} color="secondary" />
                     <Typography>Split section</Typography>
                 </MenuItem>

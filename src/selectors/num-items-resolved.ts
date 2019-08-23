@@ -14,12 +14,12 @@ export const selectNumItemsResolved = createSelector(
         getNumResolvedActionPoints,
         getNumResolvedTPMActivities
     ],
-    (interventions: ResolvedRatio,
+    (
+        interventions: ResolvedRatio,
         travels: ResolvedRatio,
         actionPoints: ResolvedRatio,
         tpmActivities: ResolvedRatio
     ) => ({ interventions, travels, actionPoints, tpmActivities })
-
 );
 
 export const selectTotalProgress = createSelector<FullStoreShape, number>(
@@ -38,5 +38,4 @@ export const selectTotalProgress = createSelector<FullStoreShape, number>(
         }
         return Math.round((resolvedTotal / sumTotal) * 100);
     }
-
 );

@@ -2,7 +2,6 @@ import React from 'react';
 import Box from './box';
 import { makeStyles, createStyles, CircularProgress } from '@material-ui/core';
 
-
 const useStyles = makeStyles(() =>
     createStyles({
         root: {
@@ -21,24 +20,23 @@ const useStyles = makeStyles(() =>
             fontSize: 18,
             marginTop: 10
         }
-
-    }));
-
+    })
+);
 
 export default function Loader() {
     const styles = useStyles({});
-    return <Box justify="center" align="center" className={styles.root}>
-        <Box column justify="center" align="center">
-            <CircularProgress color="secondary"/>
-            {/* <Typography className={styles.text}>Loading</Typography> */}
+    return (
+        <Box justify="center" align="center" className={styles.root}>
+            <Box column justify="center" align="center">
+                <CircularProgress color="secondary" />
+                {/* <Typography className={styles.text}>Loading</Typography> */}
+            </Box>
         </Box>
-    </Box>;
-
-
+    );
 }
 
 export const Spinner = () => (
     <Box column justify="center" align="center">
-        <CircularProgress color="secondary"/>
+        <CircularProgress color="secondary" />
     </Box>
 );
