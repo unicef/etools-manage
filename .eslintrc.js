@@ -16,15 +16,7 @@ module.exports = {
         '@typescript-eslint/camelcase': "off",
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-var-requires": "off" // dev purposes
-        // 'import/no-extraneous-dependencies': [
-        //     'error',
-        //     {
-        //         devDependencies: ['**/test/**/**', '**/__tests__/**/**'],
-        //         optionalDependencies: false,
-        //         peerDependencies: false
-        //     }
-        // ]
-    },
+    }, chore
     overrides: [
         {
             files: ['test/**/*.ts'],
