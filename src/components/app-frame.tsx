@@ -14,7 +14,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 import { UserProfile } from 'global-types';
-// import { UserContext } from '../contexts/user';
 import { useAppService } from 'contexts/app';
 import { onGetSections, fetchUserProfile, getInProgressItems } from 'actions';
 import { Modals } from 'contexts/page-modals';
@@ -22,11 +21,11 @@ import Loader from './loader';
 import { Link, IconButton, Drawer, useTheme, Divider, List } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLoading, selectError } from 'selectors';
-import { DRAWER_WIDTH } from 'global-constants';
+import { DRAWER_WIDTH, ETOOLS_ROOT_PATH } from 'global-constants';
 import { selectMenuItem } from 'selectors/ui';
 import { selectUserProfile, selectCountryName } from 'selectors/user';
-
-const PAGE_TITLE = process.env.REACT_APP_PAGE_TITLE;
+import { getHeaderBackground, getHeaderTitle } from 'utils/helpers';
+import logo from '../../public/etools-logo-color-white.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -38,13 +37,14 @@ const useStyles = makeStyles(theme => ({
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
-        })
+        }),
+        backgroundColor: getHeaderBackground()
     },
     appName: {
         flexGrow: 1
     },
     menuButton: {
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(0.75)
     },
     hide: {
         display: 'none'
@@ -86,7 +86,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
         padding: '0 8px',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        height: 64
     },
     contentShift: {
         transition: theme.transitions.create('margin', {
@@ -94,6 +95,10 @@ const useStyles = makeStyles(theme => ({
             duration: theme.transitions.duration.enteringScreen
         }),
         marginLeft: 0
+    },
+    etoolsLogo: {
+        height: 32,
+        marginRight: theme.spacing(2)
     }
 }));
 
@@ -136,7 +141,6 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 
     const styles = useStyles();
     const theme = useTheme();
-
     return (
         <Modals>
             {loading ? <Loader /> : null}
@@ -152,7 +156,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                 >
                     <Toolbar>
                         <IconButton
-                            color="inherit"
+                            color="primary"
                             aria-label="open drawer"
                             onClick={handleDrawerOpen}
                             edge="start"
@@ -160,19 +164,17 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography
-                            className={styles.appName}
-                            color="textPrimary"
-                            variant="h6"
-                            noWrap
-                        >
+
+                        <a href={ETOOLS_ROOT_PATH}>
+                            <img className={styles.etoolsLogo} src={logo} alt="UNICEF logo" />
+                        </a>
+
+                        <Typography className={styles.appName} color="primary" variant="h6" noWrap>
                             <Link color="inherit" href="/manage/">
-                                {PAGE_TITLE}
+                                {getHeaderTitle()}
                             </Link>
                         </Typography>
-                        <Typography color="textPrimary">
-                            {userData && userData.country.name}
-                        </Typography>
+                        <Typography color="primary">{userData && userData.country.name}</Typography>
                     </Toolbar>
                 </AppBar>
                 <Drawer
