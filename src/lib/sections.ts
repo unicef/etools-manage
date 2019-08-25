@@ -54,14 +54,14 @@ export const getNumResolved = (entity: EntityWithSingleSection = {}): ResolvedRa
     return { resolved, total: keysOfEntity.length };
 };
 
-// @ts-ignore
 export const prefixWithClose = (state: FullStoreShape) =>
+    // @ts-ignore
     `${CLOSE_SECTION_PREFIX}_${state.currentActiveSection}_${state.user.country.name}`;
 export const getCloseSectionPrefixKey = (payload: FetchStoragePayload) =>
     `${CLOSE_SECTION_PREFIX}_${payload.id}_${payload.countryName}`;
 
-// @ts-ignore
 export const prefixWithSplit = (state: FullStoreShape) =>
+    // @ts-ignore
     `${SPLIT_SECTION_PREFIX}_${state.currentActiveSection}_${state.user.country.name}`;
 export const getSplitSectionPrefixKey = (payload: FetchStoragePayload) =>
     `${SPLIT_SECTION_PREFIX}_${payload.id}_${payload.countryName}`;

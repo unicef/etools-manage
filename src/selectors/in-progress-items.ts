@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectSections, selectCurrentActiveSection } from 'selectors';
 import { parseKeyForId, parseKeyForAction } from 'lib/sections';
-import { map, propEq } from 'ramda';
+import { map, propEq, filter, compose } from 'ramda';
 import { InProgressItem } from 'entities/types';
 
 export const selectInProgress = createSelector(['inProgressItems']);
@@ -17,6 +17,10 @@ export const deriveRowsFromInProgress = createSelector(
             const id = parseKeyForId(key);
             const action = parseKeyForAction(key);
             const section = sections.find(propEq('id', Number(id)));
+
+            if (!section) {
+                return null;
+            }
             return {
                 name: section.name,
                 action,
@@ -25,7 +29,11 @@ export const deriveRowsFromInProgress = createSelector(
             };
         };
 
-        const rows = map(buildRowItem, items);
+        const rows = compose(
+            filter(Boolean),
+            map(buildRowItem)
+        )(items);
+
         return rows;
     }
 );

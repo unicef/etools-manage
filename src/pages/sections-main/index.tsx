@@ -17,9 +17,7 @@ import { renderSectionsList } from 'actions/action-constants';
 import InProgressTable from 'components/in-progress-table';
 import { selectInProgress } from 'selectors/in-progress-items';
 
-
 const SectionsMainPage: React.FunctionComponent = () => {
-
     const sections = useSelector(selectSections);
     const sectionsWithInactive = useSelector(selectSectionsWithInactive);
 
@@ -43,10 +41,19 @@ const SectionsMainPage: React.FunctionComponent = () => {
         }
     }
 
-    const handleSearch = useCallback((str: string) => {
-        const matching = filter(compose(includes(str.toLowerCase()), toLower, prop('name')));
-        setFilteredSections(matching(sections));
-    }, [sections]);
+    const handleSearch = useCallback(
+        (str: string) => {
+            const matching = filter(
+                compose(
+                    includes(str.toLowerCase()),
+                    toLower,
+                    prop('name')
+                )
+            );
+            setFilteredSections(matching(sections));
+        },
+        [sections]
+    );
 
     useEffect(() => {
         setFilteredSections(sections);
@@ -56,7 +63,10 @@ const SectionsMainPage: React.FunctionComponent = () => {
         dispatch(renderSectionsList());
     });
 
-    const onChangeSelected = useCallback((selected: string[]) => modalsDispatch(onSelectForMerge(selected)), []);
+    const onChangeSelected = useCallback(
+        (selected: string[]) => modalsDispatch(onSelectForMerge(selected)),
+        []
+    );
 
     const tableProps = {
         rows: filteredSections,
@@ -74,11 +84,15 @@ const SectionsMainPage: React.FunctionComponent = () => {
                 <ControlsBar mergeActive={mergeActive} setMergeActive={setMergeActive} />
             </Box>
             <Box className={tableStyles.toggleRow} align="center">
-                <Switch checked={showInactive} onChange={handleToggleInactive} aria-label="Show inactive switch" />
+                <Switch
+                    checked={showInactive}
+                    onChange={handleToggleInactive}
+                    aria-label="Show inactive switch"
+                />
                 <Typography>Show inactive</Typography>
             </Box>
 
-            <SectionsTable {...tableProps}/>
+            <SectionsTable {...tableProps} />
 
             {inProgress.length ? <InProgressTable /> : null}
 
@@ -86,6 +100,5 @@ const SectionsMainPage: React.FunctionComponent = () => {
         </Container>
     );
 };
-
 
 export default SectionsMainPage;

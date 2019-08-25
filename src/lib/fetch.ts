@@ -45,8 +45,9 @@ const wrappedFetch = (
         credentials: 'same-origin', // send cookies for etools auth
         ...opts
     })
-        .then((response: Response) => checkStatus(response, raw)) // eslint-disable-next-line
+        .then((response: Response) => checkStatus(response, raw))
         .then(
+            // eslint-disable-next-line
             async (response): Promise<Response | any> => {
                 if (raw) {
                     return response;

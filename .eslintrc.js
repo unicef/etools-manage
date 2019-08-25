@@ -4,7 +4,6 @@ module.exports = {
     extends: [
         'plugin:@typescript-eslint/recommended',
         './config/eslint.react.js',
-        'plugin:@typescript-eslint/recommended',
         'prettier',
         'prettier/@typescript-eslint'
     ],
@@ -15,7 +14,8 @@ module.exports = {
         'no-console': 'warn',
         '@typescript-eslint/camelcase': "off",
         "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/no-var-requires": "off" // dev purposes
+        "@typescript-eslint/no-var-requires": "off", // dev purposes
+        "@typescript-eslint/no-use-before-define": "off"
     },
     overrides: [
         {
