@@ -1,4 +1,3 @@
-
 import { createSlice } from 'redux-starter-kit';
 
 export interface ModalsState {

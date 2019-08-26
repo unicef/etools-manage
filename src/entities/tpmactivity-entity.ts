@@ -1,13 +1,9 @@
 import { EntityConfig } from 'entities';
 import { TPMActivityEntity, EntityDisplay } from './types';
 
-
 export default class TPMActivityConfig implements EntityConfig<TPMActivityEntity> {
-
     public get displayProperties(): EntityDisplay<TPMActivityEntity>[] {
-        return [
-            { label: 'Reference Number', propName: 'reference_number' }
-        ];
+        return [{ label: 'Reference Number', propName: 'reference_number' }];
     }
 
     public get title() {
@@ -17,9 +13,7 @@ export default class TPMActivityConfig implements EntityConfig<TPMActivityEntity
         return 'sections';
     }
 
-
     public get moduleName() {
         return 'Third Party Monitoring';
     }
-
 }

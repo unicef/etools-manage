@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme: Theme) =>
         boxItem: {
             marginBottom: theme.spacing(2)
         }
-
     })
 );
 
@@ -27,24 +26,24 @@ export interface SuccessBoxProps {
     title: string;
 }
 
-
 const SuccessBox: React.FC<SuccessBoxProps> = ({ message, title }) => {
     const styles = useStyles();
 
     return (
         <Container maxWidth="md">
             <Paper className={styles.paper}>
-                <Typography className={clsx(styles.title, styles.boxItem)} variant="h5" >{title}</Typography>
-
-                <Typography className={clsx(styles.msg, styles.boxItem)}>
-                    {message}
+                <Typography className={clsx(styles.title, styles.boxItem)} variant="h5">
+                    {title}
                 </Typography>
 
-                <Box justify="center" >
-                    <BackToMainButton >Close</BackToMainButton>
+                <Typography className={clsx(styles.msg, styles.boxItem)}>{message}</Typography>
+
+                <Box justify="center">
+                    <BackToMainButton>Close</BackToMainButton>
                 </Box>
             </Paper>
-        </Container>);
+        </Container>
+    );
 };
 
 export default SuccessBox;

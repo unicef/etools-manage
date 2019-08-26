@@ -1,10 +1,10 @@
-
-
 import red from '@material-ui/core/colors/red';
 import amber from '@material-ui/core/colors/amber';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import { createMuiTheme } from '@material-ui/core/styles';
 
+export const HEADER_BACKGROUND_PRODUCTION = '#233944';
+export const HEADER_BACKGROUND_DEV='#a94442'
 
 // A custom theme for this app
 const theme = createMuiTheme({
@@ -56,7 +56,6 @@ const theme = createMuiTheme({
             }
         }
     }
-
 });
 
 export default theme;

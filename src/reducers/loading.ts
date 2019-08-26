@@ -5,7 +5,6 @@ import { onGetSectionsSuccess } from './sections';
 import { onSetMergedSection } from './merged-section';
 import { onCreateSectionSuccess } from './created-section';
 
-
 export const loading = createSlice({
     initialState: false,
     reducers: {

@@ -19,4 +19,3 @@ export default class ActionPointConfig implements EntityConfig<ActionPointEntity
         return 'Action Points';
     }
 }
-

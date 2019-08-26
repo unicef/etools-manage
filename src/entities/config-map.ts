@@ -17,5 +17,4 @@ const EntityConfigMapping = {
     travels: new TravelsConfig()
 };
 
-
 export default EntityConfigMapping;

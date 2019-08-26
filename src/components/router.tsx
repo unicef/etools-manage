@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Location } from 'history';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -8,7 +7,16 @@ import CloseSummaryPage from 'pages/close-section';
 import SplitSectionPage from 'pages/split-section';
 import { CLOSE_SECTION_PATH, SPLIT_SECTION_PATH } from 'global-constants';
 
-// export type RouteProps = ReturnType<typeof Route>
+
+function NoMatch({ location }: { location: Location }) {
+    return (
+        <div>
+            <h3>
+                No match for <code>{location.pathname}</code>
+            </h3>
+        </div>
+    );
+}
 
 export default function AppRouter() {
     return (
@@ -16,7 +24,7 @@ export default function AppRouter() {
             <Switch>
                 <Route exact path="/" component={Main} />
                 <Route path="/merge/" component={MergeSummaryPage} />
-                <Route path={`${CLOSE_SECTION_PATH}:id?`}component={CloseSummaryPage} />
+                <Route path={`${CLOSE_SECTION_PATH}:id?`} component={CloseSummaryPage} />
                 <Route path={`${SPLIT_SECTION_PATH}:id?`} component={SplitSectionPage} />
 
                 <Route component={NoMatch} />
@@ -25,13 +33,3 @@ export default function AppRouter() {
     );
 }
 
-
-function NoMatch({ location }: {location: Location}) {
-    return (
-        <div>
-            <h3>
-          No match for <code>{location.pathname}</code>
-            </h3>
-        </div>
-    );
-}

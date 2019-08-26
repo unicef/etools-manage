@@ -1,17 +1,9 @@
 import { useState, useEffect } from 'react';
-import {
-    prop,
-    compose,
-    find,
-    equals,
-    toLower,
-    trim
-} from 'ramda';
+import { prop, compose, find, equals, toLower, trim } from 'ramda';
 import { EntityConfig } from 'entities';
 import { CreateSectionPayload, SectionEntity, EntityDisplay } from './types';
 import { useSelector } from 'react-redux';
 import { selectSections } from 'selectors';
-
 
 export class NewSection implements CreateSectionPayload {
     public new_section_name: string;
@@ -29,28 +21,33 @@ export class NewSection implements CreateSectionPayload {
         };
     }
 
-    private sectionValidator (name: string, sections: SectionEntity[]): Promise<boolean> {
-        const findSameName = find(compose(equals(toLower(trim(name))), toLower, prop('name')));
+    private sectionValidator(name: string, sections: SectionEntity[]): Promise<boolean> {
+        const findSameName = find(
+            compose(
+                equals(toLower(trim(name))),
+                toLower,
+                prop('name')
+            )
+        );
         const nameExists = findSameName(sections) !== undefined;
         return new Promise(resolve => resolve(!nameExists));
     }
 
-    public async isValidName(sectionsCollection: SectionEntity[], validator?: (name: string) => Promise<boolean>): Promise<boolean> {
-
-        this._validName = validator ? await validator(this.new_section_name) :
-            await this.sectionValidator(this.new_section_name, sectionsCollection);
+    public async isValidName(
+        sectionsCollection: SectionEntity[],
+        validator?: (name: string) => Promise<boolean>
+    ): Promise<boolean> {
+        this._validName = validator
+            ? await validator(this.new_section_name)
+            : await this.sectionValidator(this.new_section_name, sectionsCollection);
 
         return this._validName;
     }
 }
 
 export default class Section implements Partial<EntityConfig<SectionEntity>> {
-
     public get displayProperties(): EntityDisplay<SectionEntity>[] {
-        return [
-            { label: 'Name', propName: 'name' },
-            { label: 'Id', propName: 'id' }
-        ];
+        return [{ label: 'Name', propName: 'name' }, { label: 'Id', propName: 'id' }];
     }
 
     public get title() {
@@ -60,7 +57,6 @@ export default class Section implements Partial<EntityConfig<SectionEntity>> {
     public get sectionsProp() {
         return 'id';
     }
-
 }
 
 export const useAddSection = () => {
@@ -76,13 +72,11 @@ export const useAddSection = () => {
 
     const handleValidateSection = async () => {
         const isValid = await sectionInstance.isValidName(sections);
-        console.log('validate');
 
         if (!isValid) {
             setNameError('Section name already exists');
         }
     };
-
 
     return {
         errorOnName,
@@ -92,5 +86,4 @@ export const useAddSection = () => {
         setNameError,
         sectionInstance
     };
-
 };

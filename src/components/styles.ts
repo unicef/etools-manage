@@ -1,6 +1,5 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 
-
 export const useReviewTableStyles = makeStyles((theme: Theme) =>
     createStyles({
         container: {
@@ -12,7 +11,6 @@ export const useReviewTableStyles = makeStyles((theme: Theme) =>
         },
         cellStyle: {
             fontSize: '0.75rem'
-
         },
         wrapLong: {
             whiteSpace: 'normal',
@@ -30,6 +28,5 @@ export const useReviewTableStyles = makeStyles((theme: Theme) =>
         backBtn: {
             alignSelf: 'baseline'
         }
-
     })
 );

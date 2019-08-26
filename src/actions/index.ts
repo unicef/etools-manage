@@ -1,4 +1,3 @@
-
 import { SectionsService } from 'services/section';
 import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService } from 'services/backend';
@@ -16,7 +15,6 @@ import StorageService from 'services/storage';
 import { getInProgressSuccess, removeItemFromInProgress } from 'reducers/in-progress-items';
 import { compose, filter } from 'ramda';
 
-
 export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
     let sections;
     try {
@@ -30,7 +28,11 @@ export const onGetSections = async (service: SectionsService, dispatch: Dispatch
     dispatch(onGetSectionsSuccess(sections));
 };
 
-export const onSubmitMergeSections = async (service: SectionsService, payload: MergeSectionsPayload, dispatch: Dispatch) => {
+export const onSubmitMergeSections = async (
+    service: SectionsService,
+    payload: MergeSectionsPayload,
+    dispatch: Dispatch
+) => {
     dispatch(requestStarted());
 
     try {
@@ -39,10 +41,13 @@ export const onSubmitMergeSections = async (service: SectionsService, payload: M
     } catch (err) {
         dispatch(onThrowError(err));
     }
-
 };
 
-export const onSubmitCreateSection = async(service: SectionsService, payload: CreateSectionPayload, dispatch: Dispatch): Promise<Error | void> => {
+export const onSubmitCreateSection = async (
+    service: SectionsService,
+    payload: CreateSectionPayload,
+    dispatch: Dispatch
+): Promise<Error | void> => {
     dispatch(requestStarted());
     let newSection;
     try {
@@ -53,8 +58,11 @@ export const onSubmitCreateSection = async(service: SectionsService, payload: Cr
     dispatch(onCreateSectionSuccess(newSection));
 };
 
-export const onFetchMergeSummary = async(service: BackendService, payload: string, dispatch: Dispatch) => {
-
+export const onFetchMergeSummary = async (
+    service: BackendService,
+    payload: string,
+    dispatch: Dispatch
+) => {
     if (!isSectionsParamValid(payload)) {
         dispatch(onThrowError('Invalid sections provided for merge'));
         return;
@@ -68,31 +76,33 @@ export const onFetchMergeSummary = async(service: BackendService, payload: strin
         summary = await service.getEntitiesForMerge(payload);
         dispatch(requestComplete());
         return summary;
-
     } catch (err) {
         dispatch(onThrowError(err));
     }
-
 };
 
-
-export const fetchUserProfile = async(dispatch: Dispatch) => {
+export const fetchUserProfile = async (dispatch: Dispatch) => {
     dispatch(requestStarted());
     try {
         const data = await wrappedFetch(process.env.REACT_APP_USER_PROFILE_ENDPOINT as string);
         dispatch(onUserProfileSuccess(data));
-
     } catch (err) {
         dispatch(onThrowError(err));
     }
-
 };
 
-export const getInProgressItems = (storageService: StorageService, payload: string, dispatch: Dispatch) => {
+export const getInProgressItems = (
+    storageService: StorageService,
+    payload: string,
+    dispatch: Dispatch
+) => {
     let actionKeys = storageService.getAllItems();
 
     if (actionKeys) {
-        actionKeys = compose(filterDuplicateClose, filter(isCurrentCountry(payload)))(actionKeys);
+        actionKeys = compose(
+            filterDuplicateClose,
+            filter(isCurrentCountry(payload))
+        )(actionKeys);
     }
 
     dispatch(getInProgressSuccess(actionKeys));

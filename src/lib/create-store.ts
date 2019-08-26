@@ -1,5 +1,4 @@
 import { configureStore } from 'redux-starter-kit';
-import logger from 'redux-logger';
 import { errorMiddleware } from './error-middleware';
 import storageMiddleware from './storage-middleware';
 import fetchLatestSectionsMiddleware from './latest-sections-middleware';
@@ -10,13 +9,16 @@ const middleware = [
     fetchLatestSectionsMiddleware,
     filterCurrentSectionMiddleware,
     storageMiddleware,
-    errorMiddleware,
-    logger
+    errorMiddleware
 ];
 
+if (process.env.NODE_ENV === `development`) {
+    const { logger } = require(`redux-logger`);
+
+    middleware.push(logger);
+}
 
 export default function configureAppStore() {
-
     const store = configureStore({
         reducer,
         middleware,
@@ -30,4 +32,3 @@ export default function configureAppStore() {
     }
     return store;
 }
-

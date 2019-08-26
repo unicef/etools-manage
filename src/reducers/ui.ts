@@ -25,10 +25,5 @@ export const ui = createSlice({
         }
     }
 });
-export const {
-    onSelectMenuItem,
-    setCloseSectionActionBar,
-    onSetViewCloseSummary
-} = ui.actions;
+export const { onSelectMenuItem, setCloseSectionActionBar, onSetViewCloseSummary } = ui.actions;
 export const { reducer: uiReducer } = ui;
-

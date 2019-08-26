@@ -3,7 +3,6 @@ import { SectionsService } from './section';
 import { BackendService } from './backend';
 import StorageService from './storage';
 
-
 abstract class BaseService {
     protected _http: HttpClient;
 

@@ -21,7 +21,7 @@ export const closeSectionPayload = createSlice({
         },
         onUpdateInterventionIndicatorsState: (state, action) => {
             const { indicators, id } = action.payload;
-            (state).interventions[id].indicators = indicators;
+            state.interventions[id].indicators = indicators;
         },
         onUpdateTravelSection: (state, action) => {
             const { section, id } = action.payload;

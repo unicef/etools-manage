@@ -15,50 +15,42 @@ const TPMEdit: React.FC = memo(() => {
     const styles = useEditItemStyles();
     const ids = useSelector(selectTPMActivitiesIds);
     const { tpmActivities: numResolved } = useSelector(selectNumItemsResolved);
-    const {
-        page,
-        handleChangePage,
-        handleChangeRowsPerPage
-    } = usePagination();
+    const { page, handleChangePage, handleChangeRowsPerPage } = usePagination();
 
     const rowsPerPage = EDIT_ITEMS_ROWS_PER_PAGE;
-    console.log('Edit Parent');
     return (
-        <EditWrapper title="Third Party Monitoring" resolved={buildResolvedProgressString(numResolved)}>
-            <Typography className={styles.editItemHeading} variant="body2">(reference number, tpm partner)</Typography>
+        <EditWrapper
+            title="Third Party Monitoring"
+            resolved={buildResolvedProgressString(numResolved)}
+        >
+            <Typography className={styles.editItemHeading} variant="body2">
+                (reference number, tpm partner)
+            </Typography>
 
-            {ids
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(
-                    (id: string) => (
-                        <TPMActivityEditItem
-                            id={id}
-                            key={id} />
-                    )
+            {ids.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((id: string) => (
+                <TPMActivityEditItem id={id} key={id} />
+            ))}
 
-                )}
-
-            {ids.length > 10 && <TablePagination
-                rowsPerPageOptions={[]}
-                labelDisplayedRows={customLabel}
-                component="div"
-                count={ids.length}
-                rowsPerPage={10}
-                page={page}
-                backIconButtonProps={{
-                    'aria-label': 'Previous Page'
-                }}
-                nextIconButtonProps={{
-                    'aria-label': 'Next Page'
-                }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />}
+            {ids.length > 10 && (
+                <TablePagination
+                    rowsPerPageOptions={[]}
+                    labelDisplayedRows={customLabel}
+                    component="div"
+                    count={ids.length}
+                    rowsPerPage={10}
+                    page={page}
+                    backIconButtonProps={{
+                        'aria-label': 'Previous Page'
+                    }}
+                    nextIconButtonProps={{
+                        'aria-label': 'Next Page'
+                    }}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+            )}
         </EditWrapper>
-
     );
 });
 
-
 export default TPMEdit;
-

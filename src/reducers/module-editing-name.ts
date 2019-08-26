@@ -4,7 +4,6 @@ const moduleEditingName = createSlice({
     initialState: '',
     reducers: {
         onSetModuleEditingName: (state, action) => action.payload
-
     }
 });
 export const { onSetModuleEditingName } = moduleEditingName.actions;

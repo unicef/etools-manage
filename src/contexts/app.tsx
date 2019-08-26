@@ -18,12 +18,9 @@ export type FullStoreShape = ReturnType<typeof rootReducer>;
 export function AppStoreProvider({ children }: ChildrenProps) {
     return (
         <Provider store={store}>
-            <AppServicesProvider>
-                {children}
-            </AppServicesProvider>
+            <AppServicesProvider>{children}</AppServicesProvider>
         </Provider>
     );
-
 }
 
 export const AppServicesProvider = ({ children }: ChildrenProps): JSX.Element => {
@@ -32,13 +29,8 @@ export const AppServicesProvider = ({ children }: ChildrenProps): JSX.Element =>
         backendService: new BackendApiService(new ApiClient()),
         storageService: new StorageService(localStorage)
     };
-    return (
-        <AppServiceContext.Provider value={appServices}>
-            {children}
-        </AppServiceContext.Provider>
-    );
+    return <AppServiceContext.Provider value={appServices}>{children}</AppServiceContext.Provider>;
 };
-
 
 export function useAppService() {
     const context = useContext(AppServiceContext);

@@ -2,11 +2,16 @@ import { AppMiddleware } from 'global-types';
 import { includes } from 'ramda';
 import { prefixWithClose, prefixWithSplit } from './sections';
 import StorageService, { Storage } from 'services/storage';
-import { onUpdateTravelSection, onChangeInterventionSection, onUpdateActionPointSection, onUpdateInterventionIndicatorsState, onUpdateTPMSections } from 'reducers/close-section-payload';
+import {
+    onUpdateTravelSection,
+    onChangeInterventionSection,
+    onUpdateActionPointSection,
+    onUpdateInterventionIndicatorsState,
+    onUpdateTPMSections
+} from 'reducers/close-section-payload';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
 import { persistToStorage } from 'pages/split-section/actions';
 import { removeItemFromInProgress } from 'reducers/in-progress-items';
-
 
 const USER_SELECTION_ACTIONS = [
     onChangeInterventionSection.type,
@@ -40,13 +45,11 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
             service.removeItem(closeKey);
             const splitKey = prefixWithSplit(state);
             service.removeItem(splitKey);
-
         }
 
         if (itemInProgressRemoved) {
             service.removeItem(action.payload);
         }
-
     };
 };
 

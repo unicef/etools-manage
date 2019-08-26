@@ -5,7 +5,17 @@ import { ProviderStore } from 'global-types';
 // import UserProvider from '../contexts/user';
 import { AppStoreProvider } from 'contexts/app';
 import theme from '../lib/theme';
-import { Card, CardActionArea, CardMedia, CardContent, makeStyles, Typography, CardActions, Button, Container } from '@material-ui/core';
+import {
+    Card,
+    CardActionArea,
+    CardMedia,
+    CardContent,
+    makeStyles,
+    Typography,
+    CardActions,
+    Button,
+    Container
+} from '@material-ui/core';
 
 const useStyles = makeStyles({
     card: {
@@ -19,17 +29,17 @@ export function ErrorCard(errorProps: FallbackProps) {
     const classes = useStyles({});
     const { error } = errorProps;
     return (
-        <Container >
+        <Container>
             <Card className={classes.card}>
                 <CardActionArea>
                     <CardMedia
                         className={classes.media}
-        // image="/static/images/cards/contemplative-reptile.jpg"
+                        // image="/static/images/cards/contemplative-reptile.jpg"
                         title="Contemplative Reptile"
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                 An error occured
+                            An error occured
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             {error && error.toString()}
@@ -38,9 +48,8 @@ export function ErrorCard(errorProps: FallbackProps) {
                 </CardActionArea>
                 <CardActions>
                     <Button size="small" color="primary">
-                    Go Back
+                        Go Back
                     </Button>
-
                 </CardActions>
             </Card>
         </Container>
@@ -48,18 +57,15 @@ export function ErrorCard(errorProps: FallbackProps) {
 }
 
 const AppProviders: React.FC<ProviderStore> = ({ children }) => {
-    console.log(theme);
     return (
         <ErrorBoundary FallbackComponent={ErrorCard}>
             <ThemeProvider theme={theme}>
-                <AppStoreProvider >
-                    {/* <UserProvider > */}
-                        <>{children}</>
-                        {/* </UserProvider> */}
+                <AppStoreProvider>
+                    <>{children}</>
                 </AppStoreProvider>
             </ThemeProvider>
-        </ErrorBoundary>);
+        </ErrorBoundary>
+    );
 };
 
 export default AppProviders;
-

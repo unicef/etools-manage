@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { Theme, Typography } from '@material-ui/core';
@@ -11,7 +10,6 @@ const useStyles = makeStyles((theme: Theme) =>
             background: 'rgba(236,239,241,.38)',
             marginBottom: theme.spacing(2),
             padding: theme.spacing(1)
-
         },
         section: {
             lineHeight: 'inherit',
@@ -24,8 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
         sectionName: {
             color: theme.palette.primary.contrastText
         }
-
-    }),
+    })
 );
 
 interface SectionBoxProps {
@@ -33,7 +30,7 @@ interface SectionBoxProps {
     className?: string;
 }
 
-export const SectionBox: React.FC<SectionBoxProps> = ({ name, className='' }) => {
+export const SectionBox: React.FC<SectionBoxProps> = ({ name, className = '' }) => {
     const styles = useStyles({});
     const rootStyle = clsx({
         [className]: true,
@@ -42,7 +39,9 @@ export const SectionBox: React.FC<SectionBoxProps> = ({ name, className='' }) =>
 
     return (
         <Box column className={rootStyle}>
-            <Typography className={styles.sectionName} variant="h6">{name}</Typography>
+            <Typography className={styles.sectionName} variant="h6">
+                {name}
+            </Typography>
         </Box>
     );
 };

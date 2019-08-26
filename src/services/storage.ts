@@ -18,10 +18,10 @@ interface SplitData {
     };
 }
 
-export type StorageData = CloseData | SplitData
+export type StorageData = CloseData | SplitData;
 
 abstract class BaseStorage {
-    protected _storage: StorageClient
+    protected _storage: StorageClient;
     public constructor(client: StorageClient) {
         this._storage = client;
     }
@@ -34,9 +34,7 @@ export interface Storage {
     removeItem(key: string): void;
 }
 
-
 export default class StorageService extends BaseStorage implements Storage {
-
     public storeEntitiesData(key: string, data: ModuleEntities) {
         const json = JSON.stringify(data);
         this._storage.setItem(key, json);
@@ -56,10 +54,10 @@ export default class StorageService extends BaseStorage implements Storage {
 
     public getAllItems(): string[] | null {
         const relatedKeys = keys(this._storage).filter(
-            (key: string) => key.includes(CLOSE_SECTION_PREFIX) || key.includes(SPLIT_SECTION_PREFIX)
+            (key: string) =>
+                key.includes(CLOSE_SECTION_PREFIX) || key.includes(SPLIT_SECTION_PREFIX)
         );
 
         return relatedKeys;
-
     }
 }

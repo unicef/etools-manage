@@ -1,13 +1,14 @@
 import { EntityConfig } from 'entities';
 import { IndicatorEntity, EntityDisplay } from './types';
 
-
 export default class IndicatorConfig implements Partial<EntityConfig<IndicatorEntity>> {
     public get displayProperties(): EntityDisplay<IndicatorEntity>[] {
-        return [{
-            label: 'Title',
-            propName: 'title'
-        }];
+        return [
+            {
+                label: 'Title',
+                propName: 'title'
+            }
+        ];
     }
     public get title() {
         return 'PD/SSFA Indicators';
@@ -19,7 +20,4 @@ export default class IndicatorConfig implements Partial<EntityConfig<IndicatorEn
     public get moduleName() {
         return 'PMP';
     }
-
 }
-
-
