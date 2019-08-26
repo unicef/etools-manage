@@ -61,9 +61,7 @@ const AppProviders: React.FC<ProviderStore> = ({ children }) => {
         <ErrorBoundary FallbackComponent={ErrorCard}>
             <ThemeProvider theme={theme}>
                 <AppStoreProvider>
-                    {/* <UserProvider > */}
                     <>{children}</>
-                    {/* </UserProvider> */}
                 </AppStoreProvider>
             </ThemeProvider>
         </ErrorBoundary>
