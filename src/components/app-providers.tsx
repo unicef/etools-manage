@@ -57,7 +57,6 @@ export function ErrorCard(errorProps: FallbackProps) {
 }
 
 const AppProviders: React.FC<ProviderStore> = ({ children }) => {
-    console.log({theme});
     return (
         <ErrorBoundary FallbackComponent={ErrorCard}>
             <ThemeProvider theme={theme}>
