@@ -50,10 +50,15 @@ jobs:
                       docker push unicef/etools-manage:$TAG
 
     deploy:
-        image: jonaskello/rancher-cli-k8s:v2.0.4
-        script:
-            - rancher login $RANCHER2_SERVER_URL --token $RANCHER2_BEARER_TOKEN --context $RANCHER_CONTEXT
-            - rancher kubectl --namespace=etools-dev patch deployment manage-app -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
+        docker:
+            - image: jonaskello/rancher-cli-k8s:v2.0.4
+        steps:
+            - run:
+                  name: Rancher Login
+                  command: rancher login $RANCHER2_SERVER_URL --token $RANCHER2_BEARER_TOKEN --context $RANCHER_CONTEXT
+            - run:
+                  name: Patch Deploy
+                  command: rancher kubectl --namespace=etools-dev patch deployment manage-app -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
 
 workflows:
     version: 2
