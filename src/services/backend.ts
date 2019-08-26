@@ -1,6 +1,6 @@
 import { zipObj, filter, prop, flatten, keys, flip, compose } from 'ramda';
 import BaseService from 'services';
-import { notEmpty } from 'utils/helpers';
+import { notEmpty } from 'utils';
 import {
     InterventionEntity,
     TravelEntity,

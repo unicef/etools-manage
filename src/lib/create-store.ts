@@ -4,12 +4,14 @@ import storageMiddleware from './storage-middleware';
 import fetchLatestSectionsMiddleware from './latest-sections-middleware';
 import reducer from 'reducers';
 import { filterCurrentSectionMiddleware } from './filter-current-section-middleware';
+import { authMiddleware } from './auth-middleware';
 
 const middleware = [
     fetchLatestSectionsMiddleware,
     filterCurrentSectionMiddleware,
     storageMiddleware,
-    errorMiddleware
+    errorMiddleware,
+    authMiddleware
 ];
 
 if (process.env.NODE_ENV === `development`) {

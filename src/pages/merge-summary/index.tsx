@@ -12,29 +12,20 @@ import { ConfirmButton } from 'components/buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSections } from 'selectors';
 import EntityChangesTable from 'components/entity-changes';
-import { isArrayOfObjects } from 'utils/helpers';
+import { isArrayOfObjects } from 'utils';
 import SuccessBox from 'components/success-box';
-
 
 // TODO: lazy load on route
 const MergeSummaryPage: React.FC = () => {
-    const {
-        sections: selected,
-        newName
-    } = queryString.parse(location.search);
+    const { sections: selected, newName } = queryString.parse(location.search);
 
-
-    const {
-        backendService: service,
-        sectionsService
-    } = useAppService();
+    const { backendService: service, sectionsService } = useAppService();
 
     const dispatch = useDispatch();
     // const mergedSection = useSelector(selectMergeSection);
     const mergedSection = { name: 'Fakse', id: 12331, active: true };
 
     const [summary, setSummary] = useState();
-
 
     useEffect(() => {
         const fetchSummary = async () => {
@@ -55,7 +46,6 @@ const MergeSummaryPage: React.FC = () => {
         .join(', ');
 
     const onConfirm = async () => {
-
         const payload: MergeSectionsPayload = {
             /* eslint-disable-next-line */
             new_section_name: newName as string,
@@ -64,7 +54,6 @@ const MergeSummaryPage: React.FC = () => {
         };
 
         onSubmitMergeSections(sectionsService, payload, dispatch);
-
     };
 
     const successProps = {
@@ -77,43 +66,53 @@ const MergeSummaryPage: React.FC = () => {
             const sectionsOfEntity = prop(sectionsProp, item);
 
             if (Array.isArray(sectionsOfEntity) && isArrayOfObjects(sectionsOfEntity)) {
-                return map(prop('name'), sectionsOfEntity.filter(({ id }) => selectedSectionsIds.includes(id)));
+                return map(
+                    prop('name'),
+                    sectionsOfEntity.filter(({ id }) => selectedSectionsIds.includes(id))
+                );
             } else if (Array.isArray(sectionsOfEntity)) {
-
-                const idsOfSectionsChanging = filter((id: number) => selectedSectionsIds.includes(id), sectionsOfEntity);
-                return sections.filter(({ id }: {id: number}) => idsOfSectionsChanging.includes(id)).map(prop('name')).join(',');
-
+                const idsOfSectionsChanging = filter(
+                    (id: number) => selectedSectionsIds.includes(id),
+                    sectionsOfEntity
+                );
+                return sections
+                    .filter(({ id }: { id: number }) => idsOfSectionsChanging.includes(id))
+                    .map(prop('name'))
+                    .join(',');
             } else if (typeof sectionsOfEntity === 'object') {
-
                 return prop('name', sectionsOfEntity);
             }
-            const sectionChangingName = compose(prop('name'), find(propEq('id', sectionsOfEntity)))(sections);
+            const sectionChangingName = compose(
+                prop('name'),
+                find(propEq('id', sectionsOfEntity))
+            )(sections);
 
             return sectionChangingName;
         },
-        [sections],
+        [sections]
     );
 
     const ConfirmBox = () => (
         <Box justify="between" align="center">
             <Typography variant="h6">
-                {isEmpty(summary) ? 'Merge does not affect other entities. Confirm to complete merge.' : 'Confirm summary of changes'}
+                {isEmpty(summary)
+                    ? 'Merge does not affect other entities. Confirm to complete merge.'
+                    : 'Confirm summary of changes'}
             </Typography>
             <Box align="center">
-                <NavLink to="/" style={{ textDecoration: 'none' }}><Button variant="contained">Cancel</Button></NavLink>
-                <ConfirmButton onClick={onConfirm} >Confirm</ConfirmButton>
+                <NavLink to="/" style={{ textDecoration: 'none' }}>
+                    <Button variant="contained">Cancel</Button>
+                </NavLink>
+                <ConfirmButton onClick={onConfirm}>Confirm</ConfirmButton>
             </Box>
-        </Box>);
-
+        </Box>
+    );
 
     return (
         <Box column>
-            { mergedSection ?
-                <SuccessBox {...successProps} /> :
-                <ConfirmBox />
-            }
-            {showSummaryList && keys(summary).map(
-                (entity: keyof ZippedEntityResults) => {
+            {mergedSection ? <SuccessBox {...successProps} /> : <ConfirmBox />}
+            {showSummaryList &&
+                keys(summary).map((entity: keyof ZippedEntityResults) => {
                     return (
                         <EntityChangesTable
                             key={entity as string}
@@ -121,13 +120,12 @@ const MergeSummaryPage: React.FC = () => {
                             config={EntityConfigMapping[entity]} //TODO: fix this typing
                             getOldSections={getOldSections}
                             getNewSections={() => newName as string}
-                            entity={summary[entity]} />
+                            entity={summary[entity]}
+                        />
                     );
-                }
-            )}
+                })}
         </Box>
     );
 };
-
 
 export default MergeSummaryPage;
