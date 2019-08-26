@@ -17,7 +17,8 @@ import {
     EntityWithSingleSection,
     ResolvedRatio,
     FetchStoragePayload,
-    ModuleEntities
+    ModuleEntities,
+    SectionEntity
 } from 'entities/types';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
@@ -111,3 +112,10 @@ export const hasModulesData = (data: ModuleEntities) => {
         true
     );
 };
+
+export function sectionWithNumberId(section: SectionEntity): SectionEntity {
+    return {
+        ...section,
+        id: Number(section.id)
+    };
+}

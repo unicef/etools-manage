@@ -13,19 +13,15 @@ import { onSelectTravelSection } from 'pages/close-section/actions';
 import { getSelectedSection } from 'lib/sections';
 import { FullStoreShape } from 'contexts/app';
 
-
 const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();
     const dispatch = useDispatch();
 
     const sectionsAsOptions = useSelector(selectSectionsAsOptions);
 
-    const {
-        reference_number,
-        traveler,
-        purpose,
-        section
-    } = useSelector((state: FullStoreShape) => state.closeSectionPayload.travels[id]);
+    const { reference_number, traveler, purpose, section } = useSelector(
+        (state: FullStoreShape) => state.closeSectionPayload.travels[id]
+    );
 
     const selectedSection = getSelectedSection(sectionsAsOptions, section);
 
@@ -45,16 +41,26 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
     return (
         <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between">
-                <Box column >
+                <Box column>
                     <Box>
-                        <Typography variant="body2"><b>{traveler}</b></Typography>
-                        <Typography className={styles.refNum} variant="subtitle2">{reference_number}</Typography>
+                        <Typography variant="body2">
+                            <b>{traveler}</b>
+                        </Typography>
+                        <Typography className={styles.refNum} variant="subtitle2">
+                            {reference_number}
+                        </Typography>
                     </Box>
 
                     <Typography>{purpose}</Typography>
                 </Box>
 
-                <Box className={clsx(styles.dropdown, styles.indicatorDropdown, styles.travelDropdown)} >
+                <Box
+                    className={clsx(
+                        styles.dropdown,
+                        styles.indicatorDropdown,
+                        styles.travelDropdown
+                    )}
+                >
                     <Dropdown
                         value={selectedSection}
                         onChange={onChange}
@@ -64,7 +70,6 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
             </Box>
         </div>
     );
-
 };
 
 export default TravelEditItem;

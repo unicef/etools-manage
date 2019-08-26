@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import { useEffect } from 'react';
-import { useSafeSetState } from 'utils/helpers';
+import { useSafeSetState } from 'utils';
 
 const BASE_URL = window.location.origin;
 

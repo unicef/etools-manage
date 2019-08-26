@@ -1,9 +1,14 @@
+import { compose, filter } from 'ramda';
 import { SectionsService } from 'services/section';
-import { sectionWithNumberId } from 'utils/helpers';
 import { BackendService } from 'services/backend';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
 import { Dispatch } from 'global-types';
-import { isSectionsParamValid, filterDuplicateClose, isCurrentCountry } from 'lib/sections';
+import {
+    isSectionsParamValid,
+    filterDuplicateClose,
+    isCurrentCountry,
+    sectionWithNumberId
+} from 'lib/sections';
 import { requestStarted, requestComplete } from 'reducers/loading';
 import { onGetSectionsSuccess } from 'reducers/sections';
 import { onSetMergedSection } from 'reducers/merged-section';
@@ -13,7 +18,9 @@ import wrappedFetch from 'lib/fetch';
 import { onUserProfileSuccess } from 'reducers/user';
 import StorageService from 'services/storage';
 import { getInProgressSuccess, removeItemFromInProgress } from 'reducers/in-progress-items';
-import { compose, filter } from 'ramda';
+import { createAction } from 'redux-starter-kit';
+
+export const redirectToLogin = createAction('loginRedirect');
 
 export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
     let sections;
@@ -87,7 +94,7 @@ export const fetchUserProfile = async (dispatch: Dispatch) => {
         const data = await wrappedFetch(process.env.REACT_APP_USER_PROFILE_ENDPOINT as string);
         dispatch(onUserProfileSuccess(data));
     } catch (err) {
-        dispatch(onThrowError(err));
+        dispatch(redirectToLogin());
     }
 };
 

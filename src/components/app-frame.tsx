@@ -24,7 +24,7 @@ import { selectLoading, selectError } from 'selectors';
 import { DRAWER_WIDTH, ETOOLS_ROOT_PATH } from 'global-constants';
 import { selectMenuItem } from 'selectors/ui';
 import { selectUserProfile, selectCountryName } from 'selectors/user';
-import { getHeaderBackground, getHeaderTitle } from 'utils/helpers';
+import { getHeaderBackground, getHeaderTitle } from 'utils';
 import logo from '../../public/etools-logo-color-white.svg';
 
 const useStyles = makeStyles(theme => ({
@@ -141,77 +141,93 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
 
     const styles = useStyles();
     const theme = useTheme();
+    const isLoggedIn = Boolean(userData);
     return (
         <Modals>
             {loading ? <Loader /> : null}
 
-            <div className={styles.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    elevation={0}
-                    className={clsx(styles.appBar, {
-                        [styles.appBarShift]: open
-                    })}
-                >
-                    <Toolbar>
-                        <IconButton
-                            color="primary"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            className={clsx(styles.menuButton, open && styles.hide)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
+            {isLoggedIn ? (
+                <div className={styles.root}>
+                    <CssBaseline />
+                    <AppBar
+                        position="fixed"
+                        elevation={0}
+                        className={clsx(styles.appBar, {
+                            [styles.appBarShift]: open
+                        })}
+                    >
+                        <Toolbar>
+                            <IconButton
+                                color="primary"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                className={clsx(styles.menuButton, open && styles.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
 
-                        <a href={ETOOLS_ROOT_PATH}>
-                            <img className={styles.etoolsLogo} src={logo} alt="UNICEF logo" />
-                        </a>
+                            <a href={ETOOLS_ROOT_PATH}>
+                                <img className={styles.etoolsLogo} src={logo} alt="UNICEF logo" />
+                            </a>
 
-                        <Typography className={styles.appName} color="primary" variant="h6" noWrap>
-                            <Link color="inherit" href="/manage/">
-                                {getHeaderTitle()}
-                            </Link>
-                        </Typography>
-                        <Typography color="primary">{userData && userData.country.name}</Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    className={styles.drawer}
-                    variant="persistent"
-                    anchor="left"
-                    open={open}
-                    classes={{
-                        paper: styles.drawerPaper
-                    }}
-                >
-                    <div className={styles.drawerHeader}>
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <List>
-                        {['Sections'].map((text, idx) => (
-                            <ListItem selected={selectedIndex === idx} button key={text}>
-                                <ListItemIcon>
-                                    <DashboardIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Drawer>
-                <main
-                    className={clsx(styles.content, {
-                        [styles.contentShift]: open
-                    })}
-                >
-                    <div className={styles.drawerHeader} />
-                    {children}
-                </main>
-            </div>
+                            <Typography
+                                className={styles.appName}
+                                color="primary"
+                                variant="h6"
+                                noWrap
+                            >
+                                <Link color="inherit" href="/manage/">
+                                    {getHeaderTitle()}
+                                </Link>
+                            </Typography>
+                            <Typography color="primary">
+                                {userData && userData.country.name}
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        className={styles.drawer}
+                        variant="persistent"
+                        anchor="left"
+                        open={open}
+                        classes={{
+                            paper: styles.drawerPaper
+                        }}
+                    >
+                        <div className={styles.drawerHeader}>
+                            <IconButton onClick={handleDrawerClose}>
+                                {theme.direction === 'ltr' ? (
+                                    <ChevronLeftIcon />
+                                ) : (
+                                    <ChevronRightIcon />
+                                )}
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <List>
+                            {['Sections'].map((text, idx) => (
+                                <ListItem selected={selectedIndex === idx} button key={text}>
+                                    <ListItemIcon>
+                                        <DashboardIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Drawer>
+                    <main
+                        className={clsx(styles.content, {
+                            [styles.contentShift]: open
+                        })}
+                    >
+                        <div className={styles.drawerHeader} />
+                        {children}
+                    </main>
+                </div>
+            ) : (
+                <Loader />
+            )}
         </Modals>
     );
 };
