@@ -1,3 +1,4 @@
+/* eslint-disable */
 declare module 'ramda' {
     export function F(...rest: any[]): any;
     export function T(...rest: any[]): any;
@@ -254,3 +255,5 @@ declare module 'ramda' {
     export function zipWith(...rest: any[]): any;
     export function thunkify(...rest: any[]): any;
 }
+
+/* eslint-enable */
