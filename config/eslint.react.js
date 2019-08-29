@@ -1,9 +1,5 @@
-
 module.exports = {
     parser: '@typescript-eslint/parser',
-    plugins: [
-        'react'
-    ],
     env: {
         browser: true,
         commonjs: true,
@@ -11,7 +7,7 @@ module.exports = {
         jest: true,
         node: true
     },
-    extends: ['plugin:react/recommended'],
+    extends: ['react-app'],
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',
@@ -25,7 +21,7 @@ module.exports = {
         }
     },
     rules: {
-        'react/prop-types': "off", // No need since we use Typescript
+        'react/prop-types': 'off', // No need since we use Typescript
         'react/display-name': 'off' // Memo triggers false positive
     }
 };
