@@ -59,7 +59,7 @@ export default class BackendApiService extends BaseService implements BackendSer
             const response = await this._http.get<InterventionEntity>(url);
             const { entities } = normalize(response, [interventionSchema]);
             return entities.interventions;
-        } catch () {
+        } catch (err) {
             return {};
         }
     }
@@ -85,7 +85,7 @@ export default class BackendApiService extends BaseService implements BackendSer
             const { entities } = normalize(data, [travelsSchema]);
 
             return entities.travels;
-        } catch () {
+        } catch (err) {
             // We don't throw because some entities might not have a section as a FK, in which case an emtpy object will be filtered
             // out of the final summary results.
             return {};
@@ -100,7 +100,7 @@ export default class BackendApiService extends BaseService implements BackendSer
             const { entities } = normalize(response, [tpmActivitiesSchema]);
 
             return entities.tpmActivities;
-        } catch () {
+        } catch (err) {
             return {};
         }
     }
@@ -114,7 +114,7 @@ export default class BackendApiService extends BaseService implements BackendSer
 
             const { entities } = normalize(response, [actionPointsSchema]);
             return entities.actionPoints;
-        } catch () {
+        } catch (err) {
             return {};
         }
     }
