@@ -31,6 +31,7 @@ export async function checkStatus(response: Response, raw: boolean): Promise<Res
 }
 
 type FetchOpts = RequestInit & { json: boolean; raw: boolean };
+
 const getCsrfToken = () => {
     let csrfCookieName = 'csrftoken';
           let csrfToken = null;
@@ -47,6 +48,7 @@ const getCsrfToken = () => {
           }
           return csrfToken || '';
 }
+
 const wrappedFetch = (
     url: string,
     {
@@ -59,7 +61,7 @@ const wrappedFetch = (
     fetch(`${BASE_URL}/${url}`, {
         credentials: 'same-origin', // send cookies for etools auth
         headers: {
-            'x-csrftoken': getCsrfToken() // Django requires token in this header
+            'X-CSRFToken': getCsrfToken() // Django requires token in this header
         },
         ...opts
     })
