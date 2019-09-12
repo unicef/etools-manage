@@ -31,7 +31,22 @@ export async function checkStatus(response: Response, raw: boolean): Promise<Res
 }
 
 type FetchOpts = RequestInit & { json: boolean; raw: boolean };
-
+const getCsrfToken = () => {
+    let csrfCookieName = 'csrftoken';
+          let csrfToken = null;
+          if (document.cookie && document.cookie !== '') {
+            let cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+              let cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, csrfCookieName.length + 1) === (csrfCookieName + '=')) {
+                csrfToken = decodeURIComponent(cookie.substring(csrfCookieName.length + 1));
+                break;
+              }
+            }
+          }
+          return csrfToken || '';
+}
 const wrappedFetch = (
     url: string,
     {
@@ -43,6 +58,9 @@ const wrappedFetch = (
 ) =>
     fetch(`${BASE_URL}/${url}`, {
         credentials: 'same-origin', // send cookies for etools auth
+        headers: {
+            'x-csrftoken': getCsrfToken() // Django requires token in this header
+        },
         ...opts
     })
         .then((response: Response) => checkStatus(response, raw))
