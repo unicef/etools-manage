@@ -61,9 +61,10 @@ export default class BackendApiService extends BaseService implements BackendSer
             return entities.interventions;
         } catch (err) {
             const json = JSON.parse(err.message);
-            throw new Error(
+            console.log(
                 `An error occurred retreiving interventions for the requested sections: ${query}. Response code: ${json.code}`
             );
+            return {};
         }
     }
 
@@ -90,9 +91,12 @@ export default class BackendApiService extends BaseService implements BackendSer
             return entities.travels;
         } catch (err) {
             const json = JSON.parse(err.message);
-            throw new Error(
+            console.log(
                 `An error occurred retreiving travels for the requested sections: ${query}. Response code: ${json.code}`
             );
+            // We don't throw because some entities might not have a section as a FK, in which case an emtpy object will be filtered
+            // out of the final summary results.
+            return {};
         }
     }
 
@@ -106,9 +110,10 @@ export default class BackendApiService extends BaseService implements BackendSer
             return entities.tpmActivities;
         } catch (err) {
             const json = JSON.parse(err.message);
-            throw new Error(
+            console.log(
                 `An error occurred retreiving tpm activities for the requested sections: ${query}. Response code: ${json.code}`
             );
+            return {};
         }
     }
 
@@ -123,9 +128,10 @@ export default class BackendApiService extends BaseService implements BackendSer
             return entities.actionPoints;
         } catch (err) {
             const json = JSON.parse(err.message);
-            throw new Error(
+            console.log(
                 `An error occurred retreiving action points for the requested sections: ${query}. Response code: ${json.code}`
             );
+            return {};
         }
     }
 
