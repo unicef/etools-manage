@@ -59,11 +59,7 @@ export default class BackendApiService extends BaseService implements BackendSer
             const response = await this._http.get<InterventionEntity>(url);
             const { entities } = normalize(response, [interventionSchema]);
             return entities.interventions;
-        } catch (err) {
-            const json = JSON.parse(err.message);
-            console.log(
-                `An error occurred retreiving interventions for the requested sections: ${query}. Response code: ${json.code}`
-            );
+        } catch () {
             return {};
         }
     }
@@ -89,11 +85,7 @@ export default class BackendApiService extends BaseService implements BackendSer
             const { entities } = normalize(data, [travelsSchema]);
 
             return entities.travels;
-        } catch (err) {
-            const json = JSON.parse(err.message);
-            console.log(
-                `An error occurred retreiving travels for the requested sections: ${query}. Response code: ${json.code}`
-            );
+        } catch () {
             // We don't throw because some entities might not have a section as a FK, in which case an emtpy object will be filtered
             // out of the final summary results.
             return {};
@@ -108,11 +100,7 @@ export default class BackendApiService extends BaseService implements BackendSer
             const { entities } = normalize(response, [tpmActivitiesSchema]);
 
             return entities.tpmActivities;
-        } catch (err) {
-            const json = JSON.parse(err.message);
-            console.log(
-                `An error occurred retreiving tpm activities for the requested sections: ${query}. Response code: ${json.code}`
-            );
+        } catch () {
             return {};
         }
     }
@@ -126,11 +114,7 @@ export default class BackendApiService extends BaseService implements BackendSer
 
             const { entities } = normalize(response, [actionPointsSchema]);
             return entities.actionPoints;
-        } catch (err) {
-            const json = JSON.parse(err.message);
-            console.log(
-                `An error occurred retreiving action points for the requested sections: ${query}. Response code: ${json.code}`
-            );
+        } catch () {
             return {};
         }
     }
