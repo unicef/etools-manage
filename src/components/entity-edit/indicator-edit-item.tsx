@@ -19,7 +19,6 @@ const IndicatorEditItem: React.FC<IndicatorsProps> = memo(
     ({ parentId, sectionOptions, onChange }) => {
         const styles = useEditItemStyles();
         const indicators = useSelector(selectInterventionsFromPayload)[parentId].indicators;
-        console.log('TCL: indicators', indicators);
 
         const getValue = (section: string | undefined) => {
             const res = find(propEq('value', section), sectionOptions);

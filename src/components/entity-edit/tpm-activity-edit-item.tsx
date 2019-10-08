@@ -24,7 +24,6 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
     );
 
     const selectedSection = getSelectedSection(sectionsAsOptions, section);
-    console.log('TCL: selectedSection', selectedSection);
 
     const onChange = (value: ValueType<OptionType>) => {
         let selectedSectionName = prop('value', value);
@@ -37,7 +36,6 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
             section: selectedSectionName,
             id
         };
-        console.log('TCL: onChange -> payload', payload);
 
         onSelectTPMSections(payload, dispatch);
     };
