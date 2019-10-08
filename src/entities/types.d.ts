@@ -82,17 +82,16 @@ export interface InterventionEntity extends MultiSectionEntity {
     indicators: IndicatorEntity[];
 }
 
-export interface TPMActivityEntity extends MultiSectionEntity {
+export interface TPMActivityEntity {
     id: number;
     reference_number: string;
     status: string;
-    tpm_partner: {
-        name: string;
-    };
+    section: string;
+    tpm_partner_name: string;
 }
 
-export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'sections'> & {
-    sections: string[];
+export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'section'> & {
+    section: string[];
 };
 
 export interface SectionEntity {

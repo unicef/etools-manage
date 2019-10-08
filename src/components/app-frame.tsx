@@ -59,8 +59,7 @@ const useStyles = makeStyles(theme => ({
     content: {
         flexGrow: 1,
         maxWidth: 1200,
-        marginTop: theme.spacing(14),
-        padding: `0 ${theme.spacing(10)}px`,
+        padding: `${theme.spacing(14)}px ${theme.spacing(10)}px ${theme.spacing(5)}px`,
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
@@ -221,7 +220,6 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
                             [styles.contentShift]: open
                         })}
                     >
-                        <div className={styles.drawerHeader} />
                         {children}
                     </main>
                 </div>

@@ -7,8 +7,8 @@ import {
     InterventionEntity,
     Normalized,
     TravelEntity,
-    FormattedTPMActivityEntity,
-    ModuleEntities
+    ModuleEntities,
+    TPMActivityEntity
 } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
@@ -36,7 +36,7 @@ export const getCloseSectionBackendPayload = createSelector<
     (
         actionPoints: Normalized<ActionPointEntity>,
         interventions: Normalized<InterventionEntity>,
-        tpmActivities: Normalized<FormattedTPMActivityEntity>,
+        tpmActivities: Normalized<TPMActivityEntity>,
         travels: Normalized<TravelEntity>,
         oldSection: number,
         namesFromSplit: string[]
@@ -66,10 +66,8 @@ export const getCloseSectionBackendPayload = createSelector<
         });
 
         keys(tpmActivities).forEach((id: string) => {
-            const { sections: selectedSections } = tpmActivities[id];
-            selectedSections.forEach((section: string) => {
-                persistToPayload(payload, section, 'tpm_activities', Number(id));
-            });
+            const { section } = tpmActivities[id];
+            persistToPayload(payload, section, 'tpm_activities', Number(id));
         });
 
         keys(travels).forEach((id: string) => {

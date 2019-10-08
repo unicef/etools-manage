@@ -11,7 +11,6 @@ import { useDispatch } from 'react-redux';
 import { onRemoveItemInProgress } from 'actions';
 import { onThrowError } from 'reducers/error';
 
-
 export interface ConfirmDialogProps {
     open: boolean;
     handleClose: ClickHandler;
@@ -19,14 +18,22 @@ export interface ConfirmDialogProps {
     rowToDelete: InProgressItem | undefined;
 }
 
-export default function ConfirmDialog({ open, handleConfirm, handleClose, rowToDelete }: ConfirmDialogProps) {
+export default function ConfirmDialog({
+    open,
+    handleConfirm,
+    handleClose,
+    rowToDelete
+}: ConfirmDialogProps) {
     const dispatch = useDispatch();
 
     const onConfirm = () => {
-        try {
-            onRemoveItemInProgress(dispatch, (rowToDelete as InProgressItem).storageKey);
-        } catch (err) {
-            dispatch(onThrowError(err));
+        if (rowToDelete) {
+            // if we click cancel on close-sections page instead of from sections table
+            try {
+                onRemoveItemInProgress(dispatch, (rowToDelete as InProgressItem).storageKey);
+            } catch (err) {
+                dispatch(onThrowError(err));
+            }
         }
         handleConfirm && handleConfirm();
         handleClose();
@@ -42,15 +49,15 @@ export default function ConfirmDialog({ open, handleConfirm, handleClose, rowToD
             <DialogTitle id="alert-dialog-title">Delete progress</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to remove this work in progress?
+                    Are you sure you want to remove this work in progress?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="default">
-            Cancel
+                    Cancel
                 </Button>
                 <Button onClick={onConfirm} color="default" variant="contained" autoFocus>
-            Confirm
+                    Confirm
                 </Button>
             </DialogActions>
         </Dialog>
