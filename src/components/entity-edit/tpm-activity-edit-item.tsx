@@ -5,34 +5,35 @@ import { Typography } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
-import { OptionType, DropdownMulti } from 'components/dropdown';
-import { getSelectedOptions, getOptionsWithoutExisting, getExistingSectionsStr } from 'selectors';
+import { OptionType, Dropdown } from 'components/dropdown';
+import { selectSectionsAsOptions } from 'selectors';
 import { ValueType } from 'react-select/src/types';
-import { valueOrDefault } from 'lib/sections';
+import { getSelectedSection } from 'lib/sections';
 import { onSelectTPMSections } from 'pages/close-section/actions';
 import { FullStoreShape } from 'contexts/app';
-
+import { prop } from 'ramda';
 
 const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();
     const dispatch = useDispatch();
 
-    const {
-        reference_number,
-        tpm_partner,
-        sections,
-        existingSections
-    } = useSelector((state: FullStoreShape) => state.closeSectionPayload.tpmActivities[id]);
+    const sectionsAsOptions = useSelector(selectSectionsAsOptions);
 
-    const selectedSections = useSelector(getSelectedOptions(sections));
-    const optionsWithoutExisting = useSelector(getOptionsWithoutExisting(existingSections));
-    const existingSectionsStr = useSelector(getExistingSectionsStr(existingSections));
+    const { reference_number, tpm_partner_name, section } = useSelector(
+        (state: FullStoreShape) => state.closeSectionPayload.tpmActivities[id]
+    );
+
+    const selectedSection = getSelectedSection(sectionsAsOptions, section);
 
     const onChange = (value: ValueType<OptionType>) => {
-        const selectedSectionNames = valueOrDefault(value);
+        let selectedSectionName = prop('value', value);
+
+        if (section === selectedSectionName) {
+            selectedSectionName = null;
+        }
 
         const payload = {
-            sections: selectedSectionNames,
+            section: selectedSectionName,
             id
         };
 
@@ -42,30 +43,25 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
     return (
         <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between" align="center">
-                <Box column >
-                    <Typography className={styles.refNum} variant="subtitle2">{reference_number}</Typography>
-                    <Typography>{tpm_partner.name}</Typography>
+                <Box column>
+                    <Typography className={styles.refNum} variant="subtitle2">
+                        {reference_number}
+                    </Typography>
+                    <Typography>{tpm_partner_name}</Typography>
                 </Box>
 
                 <div className={clsx(styles.selectColumn)}>
-                    { existingSections.length ?
-                        <Typography className={clsx(styles.secondaryHeading, styles.bottomMargin1)}
-                            variant="body2">
-                            <i>Existing sections: {existingSectionsStr}</i>
-                        </Typography>
-                        : null
-                    }
-                    <Box className={clsx(styles.dropdown)} >
-                        <DropdownMulti
-                            value={selectedSections}
+                    <Box className={clsx(styles.dropdown)}>
+                        <Dropdown
+                            value={selectedSection}
                             onChange={onChange}
-                            options={optionsWithoutExisting}/>
+                            options={sectionsAsOptions}
+                        />
                     </Box>
                 </div>
             </Box>
         </div>
     );
-
 };
 
 export default TPMActivityEditItem;

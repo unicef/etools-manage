@@ -11,7 +11,7 @@ import {
 } from 'reducers/close-section-payload';
 import { onSuccessCloseSection } from 'reducers/closed-section-success';
 import { persistToStorage } from 'pages/split-section/actions';
-import { removeItemFromInProgress } from 'reducers/in-progress-items';
+import { removeItemFromInProgress, getInProgressSuccess } from 'reducers/in-progress-items';
 
 const USER_SELECTION_ACTIONS = [
     onChangeInterventionSection.type,
@@ -33,6 +33,7 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
         if (includes(action.type, USER_SELECTION_ACTIONS)) {
             const key = prefixWithClose(state);
             service.storeEntitiesData(key, state.closeSectionPayload);
+            dispatch(getInProgressSuccess([key]));
         }
 
         if (action.type === persistToStorage.type) {

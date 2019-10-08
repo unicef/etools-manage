@@ -32,8 +32,8 @@ export const closeSectionPayload = createSlice({
             state.actionPoints[id].section = section;
         },
         onUpdateTPMSections: (state, action) => {
-            const { sections, id } = action.payload;
-            state.tpmActivities[id].sections = sections;
+            const { section, id } = action.payload;
+            state.tpmActivities[id].section = section;
         }
     },
     extraReducers: {
