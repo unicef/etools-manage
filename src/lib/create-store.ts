@@ -24,7 +24,7 @@ export default function configureAppStore() {
     const store = configureStore({
         reducer,
         middleware,
-        devTools: process.env.NODE_ENV !== 'production'
+        devTools: true
     });
 
     // @ts-ignore
