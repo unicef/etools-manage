@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
         chipFocused: {
             backgroundColor: emphasize(
                 theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
-                0.08,
+                0.08
             )
         },
         noOptionsMessage: {
@@ -55,7 +55,6 @@ const useStyles = makeStyles((theme: Theme) =>
             left: 2,
             bottom: 6,
             color: theme.palette.text.primary
-
         },
         paper: {
             position: 'absolute',
@@ -70,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
         indicatorSeparator: {
             width: 0
         }
-    }),
+    })
 );
 
 function NoOptionsMessage(props: NoticeProps<OptionType>) {
@@ -85,7 +84,7 @@ function NoOptionsMessage(props: NoticeProps<OptionType>) {
     );
 }
 
-  type InputComponentProps = Pick<BaseTextFieldProps, 'inputRef'> & HTMLAttributes<HTMLDivElement>;
+type InputComponentProps = Pick<BaseTextFieldProps, 'inputRef'> & HTMLAttributes<HTMLDivElement>;
 
 function inputComponent({ inputRef, ...props }: InputComponentProps) {
     return <div ref={inputRef} {...props} />;
@@ -133,12 +132,16 @@ function Option(props: OptionProps<OptionType>) {
     );
 }
 
-  type MuiPlaceholderProps = Omit<PlaceholderProps<OptionType>, 'innerProps'> &
-  Partial<Pick<PlaceholderProps<OptionType>, 'innerProps'>>;
+type MuiPlaceholderProps = Omit<PlaceholderProps<OptionType>, 'innerProps'> &
+    Partial<Pick<PlaceholderProps<OptionType>, 'innerProps'>>;
 function Placeholder(props: MuiPlaceholderProps) {
     const { selectProps, innerProps = {}, children } = props;
     return (
-        <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
+        <Typography
+            color="textSecondary"
+            className={selectProps.classes.placeholder}
+            {...innerProps}
+        >
             {children}
         </Typography>
     );
@@ -155,7 +158,6 @@ function SingleValue(props: SingleValueProps<OptionType>) {
 function ValueContainer(props: ValueContainerProps<OptionType>) {
     return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
 }
-
 
 function Menu(props: MenuProps<OptionType>) {
     return (
@@ -175,7 +177,6 @@ const components = {
     ValueContainer
 };
 
-
 const useDropdown = () => {
     const [single, setSingle] = React.useState<ValueType<OptionType>>(null);
     const theme = useTheme();
@@ -188,6 +189,7 @@ const useDropdown = () => {
         input: (base: CSSProperties) => ({
             ...base,
             color: theme.palette.text.primary,
+            whiteSpace: 'normal',
             '& input': {
                 font: 'inherit'
             }
@@ -198,10 +200,11 @@ const useDropdown = () => {
             opacity: state.isDisabled ? 0.5 : 1
         }),
 
-
         multiValue: (styles: CSSProperties) => {
             return {
                 ...styles,
+                whiteSpace: 'normal',
+
                 backgroundColor: theme.palette.secondary.light
             };
         },
@@ -214,8 +217,6 @@ const useDropdown = () => {
             },
             cursor: 'pointer'
         })
-
-
     };
 
     const noSeparatorStyles = {
@@ -232,7 +233,6 @@ const useDropdown = () => {
             ...provided,
             padding: 4
         })
-
     };
 
     return {
@@ -244,52 +244,54 @@ const useDropdown = () => {
     };
 };
 
-
 export interface DropdownProps {
     options?: OptionType[];
     label?: string | null;
     value?: OptionType | OptionType[] | null;
-    onChange: ((value: ValueType<OptionType>) => void);
+    onChange: (value: ValueType<OptionType>) => void;
     // eslint-disable-next-line
     [prop: string]: any;
 }
 
+export const DropdownMulti: React.FC<DropdownProps> = memo(
+    ({ options, value, onChange, ...props }) => {
+        const { selectStyles } = useDropdown();
 
-export const DropdownMulti: React.FC<DropdownProps> = memo(({ options, value, onChange, ...props }) => {
-    const {
-        selectStyles
-    } = useDropdown();
+        const styles = useStyles();
+        return (
+            <div className={styles.root}>
+                <Select
+                    classes={styles}
+                    styles={selectStyles}
+                    inputId="react-select-multi"
+                    TextFieldProps={{
+                        label: 'Section',
+                        InputLabelProps: {
+                            htmlFor: 'react-select-multi',
+                            shrink: true
+                        }
+                    }}
+                    placeholder="Select section..."
+                    options={options}
+                    components={components}
+                    value={value}
+                    onChange={onChange}
+                    isMulti
+                    {...props}
+                />
+            </div>
+        );
+    }
+);
 
-    const styles = useStyles();
-    return (
-        <div className={styles.root}>
-            <Select
-                classes={styles}
-                styles={selectStyles}
-                inputId="react-select-multi"
-                TextFieldProps={{
-                    label: 'Section',
-                    InputLabelProps: {
-                        htmlFor: 'react-select-multi',
-                        shrink: true
-                    }
-                }}
-                placeholder="Select section..."
-                options={options}
-                components={components}
-                value={value}
-                onChange={onChange}
-                isMulti
-                {...props}
-            />
-        </div>);
-});
-
-export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, label = 'Section', ...otherProps }) => {
-    const {
-        noSeparatorStyles,
-        smallIndicatorStyles
-    } = useDropdown();
+export const Dropdown: React.FC<DropdownProps> = ({
+    options,
+    value,
+    onChange,
+    label = 'Section',
+    ...otherProps
+}) => {
+    const { noSeparatorStyles, smallIndicatorStyles } = useDropdown();
 
     const dropdownStyles = { ...noSeparatorStyles, ...smallIndicatorStyles };
 
@@ -306,8 +308,6 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, la
                         htmlFor: 'react-select-multi',
                         shrink: true
                     }
-
-
                 }}
                 placeholder="Select section..."
                 options={options}
@@ -316,5 +316,6 @@ export const Dropdown: React.FC<DropdownProps> = ({ options, value, onChange, la
                 onChange={onChange}
                 {...otherProps}
             />
-        </div>);
+        </div>
+    );
 };

@@ -16,7 +16,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(1)
         },
         description: {
-            flex: '1 0 54%'
+            flex: '1 1 50%%'
         },
         travel: {
             minHeight: 68,
@@ -75,6 +75,9 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             width: 32
         },
         refNum: {
+            marginRight: theme.spacing(1)
+        },
+        travelRef: {
             margin: `0 ${theme.spacing(1)}px`
         },
         hideIcon: {

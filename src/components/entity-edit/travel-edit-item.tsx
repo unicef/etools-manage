@@ -46,7 +46,7 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
                         <Typography variant="body2">
                             <b>{traveler}</b>
                         </Typography>
-                        <Typography className={styles.refNum} variant="subtitle2">
+                        <Typography className={styles.travelRef} variant="subtitle2">
                             {reference_number}
                         </Typography>
                     </Box>

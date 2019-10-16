@@ -69,10 +69,13 @@ export default function EntityChangesTable<T>({
                             const changingSections = getOldSections(item, config.sectionsProp);
                             return (
                                 <TableRow key={`entityRow${idx}`}>
-                                    {config.displayProperties.map(({ label, propName }) => (
+                                    {config.displayProperties.map(({ label, propName }, idx) => (
                                         <TableCell
                                             size="small"
-                                            className={clsx(styles.cellStyle, styles.wrapLong)}
+                                            className={clsx(
+                                                styles.cellStyle,
+                                                idx === 0 && styles.noWrap
+                                            )}
                                             key={label}
                                             align="left"
                                         >
@@ -82,7 +85,7 @@ export default function EntityChangesTable<T>({
                                     <TableCell
                                         align="right"
                                         classes={{
-                                            body: clsx(styles.cellStyle)
+                                            body: clsx(styles.cellStyle, styles.w20)
                                         }}
                                     >
                                         {changingSections}
@@ -90,7 +93,7 @@ export default function EntityChangesTable<T>({
                                     <TableCell
                                         align="right"
                                         classes={{
-                                            body: clsx(styles.cellStyle)
+                                            body: clsx(styles.cellStyle, styles.w20)
                                         }}
                                     >
                                         {getNewSections(item, config.sectionsProp)}

@@ -13,8 +13,13 @@ export const useReviewTableStyles = makeStyles((theme: Theme) =>
             fontSize: '0.75rem'
         },
         wrapLong: {
-            whiteSpace: 'normal',
+            whiteSpace: 'normal'
+        },
+        w45: {
             width: '45%'
+        },
+        w20: {
+            width: '20%'
         },
         noWrap: {
             whiteSpace: 'nowrap'
