@@ -35,8 +35,6 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
         (state: FullStoreShape) => (state.closeSectionPayload as ModuleEntities).interventions[id]
     );
 
-    // const allSections = useSelector(selectSections);
-
     const dispatch = useDispatch();
 
     const [interventionState, setInterventionState] = useState<InterventionEntity>(
@@ -45,7 +43,9 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 
     const [open, setOpen] = useState<boolean>(false);
 
-    const existingSectionsStr = getExistingSectionsStr(interventionState.existingSections);
+    const existingSectionsStr = useSelector(
+        getExistingSectionsStr(interventionState.existingSections)
+    );
 
     const existingSectionsAsOptions = useSelector(
         selectExistingAsOptions(interventionState.existingSections)
@@ -129,7 +129,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     return (
         <div className={styles.item}>
             <Box className={headingStyle} align="center" justify="between">
-                <Box column>
+                <Box column className={styles.description}>
                     <Typography variant="subtitle2">{number}</Typography>
                     <Typography>{title}</Typography>
                 </Box>
@@ -140,7 +140,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
                             className={clsx(styles.secondaryHeading, styles.bottomMargin1)}
                             variant="body2"
                         >
-                            <i>Existing sections: {existingSectionsStr}</i>
+                            Existing sections:<i> {existingSectionsStr}</i>
                         </Typography>
                     ) : null}
 

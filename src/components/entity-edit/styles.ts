@@ -1,4 +1,3 @@
-
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
 
@@ -15,6 +14,9 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
         },
         bottomMargin1: {
             marginBottom: theme.spacing(1)
+        },
+        description: {
+            flex: '1 0 54%'
         },
         travel: {
             minHeight: 68,
@@ -62,7 +64,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             minWidth: 335
         },
         selectColumn: {
-            margin: `0 ${theme.spacing(2)}px 0`
+            marginLeft: theme.spacing(2)
         },
         indicatorDropdown: {
             maxHeight: 32,
@@ -82,9 +84,8 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             margin: `0 ${theme.spacing(1)}px`
         },
         secondaryHeading: {
-            fontSize: 12
+            fontSize: 12,
+            width: '90%'
         }
-
     })
 );
-

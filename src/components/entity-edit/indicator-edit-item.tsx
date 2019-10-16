@@ -6,7 +6,7 @@ import { propEq, find } from 'ramda';
 import { Typography } from '@material-ui/core';
 import Box from 'components/box';
 import clsx from 'clsx';
-import { selectInterventionsFromPayload } from 'selectors/interventions';
+import { selectIndicators } from 'selectors/interventions';
 import { useSelector } from 'react-redux';
 
 interface IndicatorsProps {
@@ -18,7 +18,7 @@ interface IndicatorsProps {
 const IndicatorEditItem: React.FC<IndicatorsProps> = memo(
     ({ parentId, sectionOptions, onChange }) => {
         const styles = useEditItemStyles();
-        const indicators = useSelector(selectInterventionsFromPayload)[parentId].indicators;
+        const indicators = useSelector(selectIndicators(parentId));
 
         const getValue = (section: string | undefined) => {
             const res = find(propEq('value', section), sectionOptions);

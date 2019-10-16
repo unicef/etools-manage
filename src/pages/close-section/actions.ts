@@ -44,6 +44,7 @@ export const onFetchDataCloseSection = async (
     const key = getCloseSectionPrefixKey(payload);
 
     const dataFromStorage = storageService.getStoredEntitiesData(key);
+
     if (!dataFromStorage) {
         let dataFromServer: Partial<ZippedEntityResults>;
         dispatch(requestStarted());

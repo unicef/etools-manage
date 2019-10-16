@@ -61,7 +61,6 @@ module.exports = function(webpackEnv) {
     ? publicPath.slice(0, -1)
     : isEnvDevelopment && process.env.PUBLIC_URL;
     // Get environment variables to inject into our app.
-    console.log("TCL: publicUrl", publicUrl)
     const env = getClientEnvironment(publicUrl);
     const devtool = isEnvProduction
     ? shouldUseSourceMap

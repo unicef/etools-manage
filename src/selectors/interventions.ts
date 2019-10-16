@@ -1,7 +1,7 @@
 import { createSelector } from 'redux-starter-kit';
 import { selectCloseSectionPayload, selectCurrentActiveSection, selectSections } from 'selectors';
 import { InterventionEntity, Normalized, ResolvedRatio, SectionEntity } from 'entities/types';
-import { prop, map, without, keys, includes } from 'ramda';
+import { prop, map, without, keys, includes, reject, compose, lensProp, over, always } from 'ramda';
 import { Store } from 'redux';
 
 import { normalize } from 'normalizr';
@@ -16,6 +16,12 @@ export const selectInterventionIds = createSelector(
     [selectInterventionsFromPayload],
     keys
 );
+
+export const selectIndicators = (intervId: string) =>
+    createSelector(
+        [selectInterventionsFromPayload],
+        (interventions: Normalized<InterventionEntity>) => interventions[intervId].indicators
+    );
 
 export const getNumResolvedInterventions = createSelector<Store, ResolvedRatio>(
     [selectInterventionsFromPayload],
@@ -45,16 +51,20 @@ export const interventionsWithoutCurrentSection = createSelector(
     (id: number, interventions: Normalized<InterventionEntity>, sectionsList: SectionEntity[]) => {
         const newList = map((key: number) => {
             const item: InterventionEntity = interventions[key];
-            const removedSectionIndicators = item.indicators.map(indicator => ({
-                ...indicator,
-                section: ''
-            }));
 
             const existingSectionsIds = without([id], item.sections);
 
             const existingSectionsNames: string[] = sectionsList
                 .filter(({ id }) => includes(id, existingSectionsIds))
                 .map(prop('name'));
+
+            const fromExisting = ({ section }: { section: number }) =>
+                existingSectionsIds.includes(section);
+
+            const removedSectionIndicators = compose(
+                map(over(lensProp('section'), always(''))),
+                reject(fromExisting)
+            )(item.indicators);
 
             const res: InterventionEntity = {
                 ...item,

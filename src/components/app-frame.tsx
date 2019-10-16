@@ -12,7 +12,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-
 import { UserProfile } from 'global-types';
 import { useAppService } from 'contexts/app';
 import { onGetSections, fetchUserProfile, getInProgressItems } from 'actions';

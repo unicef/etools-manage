@@ -29,7 +29,6 @@ export default function Loader() {
         <Box justify="center" align="center" className={styles.root}>
             <Box column justify="center" align="center">
                 <CircularProgress color="secondary" />
-                {/* <Typography className={styles.text}>Loading</Typography> */}
             </Box>
         </Box>
     );
