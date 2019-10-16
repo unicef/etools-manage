@@ -75,7 +75,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             width: 32
         },
         refNum: {
-            marginRight: theme.spacing(1)
+            margin: `0 ${theme.spacing(1)}px`
         },
         hideIcon: {
             visibility: 'hidden'

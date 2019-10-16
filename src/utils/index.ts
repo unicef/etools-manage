@@ -91,5 +91,3 @@ export const firstKey = compose(
 );
 export const lookup = flip(prop);
 export const capitalize = replace(/^./, toUpper);
-
-export const propInList = (prop: string, list: any[]) => (item:any) => list.includes(item[prop]);
