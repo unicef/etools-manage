@@ -189,7 +189,6 @@ const useDropdown = () => {
         input: (base: CSSProperties) => ({
             ...base,
             color: theme.palette.text.primary,
-            whiteSpace: 'normal',
             '& input': {
                 font: 'inherit'
             }
@@ -203,8 +202,6 @@ const useDropdown = () => {
         multiValue: (styles: CSSProperties) => {
             return {
                 ...styles,
-                whiteSpace: 'normal',
-
                 backgroundColor: theme.palette.secondary.light
             };
         },
