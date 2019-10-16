@@ -58,9 +58,11 @@ export const interventionsWithoutCurrentSection = createSelector(
                 .filter(({ id }) => includes(id, existingSectionsIds))
                 .map(prop('name'));
 
+            // we dont want indicators from an existing section to be included
             const fromExisting = ({ section }: { section: number }) =>
                 existingSectionsIds.includes(section);
 
+            // filters indicators to remove unaffected items, then clears section prop on remaining
             const removedSectionIndicators = compose(
                 map(over(lensProp('section'), always(''))),
                 reject(fromExisting)
