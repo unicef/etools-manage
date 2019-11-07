@@ -29,12 +29,12 @@ export const deriveRowsFromInProgress = createSelector(
             };
         };
 
-        const rows = compose(
+        const buildRowsFrom = compose(
             filter(Boolean),
             map(buildRowItem)
-        )(items);
+        );
 
-        return rows;
+        return buildRowsFrom(items);
     }
 );
 
