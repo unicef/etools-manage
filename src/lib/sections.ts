@@ -58,18 +58,21 @@ export const getNumResolved = (entity: EntityWithSingleSection = {}): ResolvedRa
 export const prefixWithClose = (state: FullStoreShape) =>
     // @ts-ignore
     `${CLOSE_SECTION_PREFIX}_${state.currentActiveSection}_${state.user.country.name}`;
+
 export const getCloseSectionPrefixKey = (payload: FetchStoragePayload) =>
     `${CLOSE_SECTION_PREFIX}_${payload.id}_${payload.countryName}`;
 
 export const prefixWithSplit = (state: FullStoreShape) =>
     // @ts-ignore
     `${SPLIT_SECTION_PREFIX}_${state.currentActiveSection}_${state.user.country.name}`;
+
 export const getSplitSectionPrefixKey = (payload: FetchStoragePayload) =>
     `${SPLIT_SECTION_PREFIX}_${payload.id}_${payload.countryName}`;
 
 export const parseKeyForId = (key: string) => {
     return key.split('_')[1];
 };
+
 export const parseKeyForAction = (key: string) => key.split('_')[0];
 
 export const filterDuplicateClose = (keys: string[]) => {
@@ -104,6 +107,7 @@ export function isSectionsParamValid(str: string): boolean {
 }
 
 export const getSplitSectionUrl = (id: string) => `${SPLIT_SECTION_PATH}${id}`;
+
 export const getCloseSectionUrl = (id: string) => `${CLOSE_SECTION_PATH}${id}`;
 
 export const hasModulesData = (data: ModuleEntities) => {

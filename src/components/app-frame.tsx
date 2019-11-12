@@ -12,10 +12,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { UserProfile } from 'global-types';
+import { UserProfile, ChildrenProps } from 'global-types';
 import { useAppService } from 'contexts/app';
 import { onGetSections, fetchUserProfile, getInProgressItems } from 'actions';
-import { Modals } from 'contexts/page-modals';
+import { Modals as ModalsProvider } from 'contexts/page-modals';
 import Loader from './loader';
 import { Link, IconButton, Drawer, useTheme, Divider, List } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +25,7 @@ import { selectMenuItem } from 'selectors/ui';
 import { selectUserProfile, selectCountryName } from 'selectors/user';
 import { getHeaderBackground, getHeaderTitle } from 'utils';
 import logo from '../../public/etools-logo-color-white.svg';
+import { AppServices } from 'services';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -101,10 +102,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export interface AppFrameProps {
-    children: ReactNode;
+    children?: ReactNode;
+    storageService: AppServices['storageService'];
+    sectionsService: AppServices['sectionsService'];
 }
 
-const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
+export const AppFrame: React.FunctionComponent<AppFrameProps> = ({
+    storageService,
+    sectionsService: service,
+    children
+}) => {
     const userData: UserProfile = useSelector(selectUserProfile);
     const [open, setOpen] = React.useState<boolean>(false);
 
@@ -112,7 +119,6 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const loading = useSelector(selectLoading);
     const error = useSelector(selectError);
 
-    const { storageService, sectionsService: service } = useAppService();
     const dispatch = useDispatch();
     const countryName = useSelector(selectCountryName);
 
@@ -121,12 +127,12 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     }
 
     useEffect(() => {
-        onGetSections(service, dispatch);
-        fetchUserProfile(dispatch);
+        dispatch(onGetSections(service));
+        dispatch(fetchUserProfile);
     }, []);
 
     useEffect(() => {
-        getInProgressItems(storageService, countryName, dispatch);
+        dispatch(getInProgressItems(storageService, countryName));
     }, [countryName]);
 
     function handleDrawerOpen() {
@@ -141,7 +147,7 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
     const theme = useTheme();
     const isLoggedIn = Boolean(userData);
     return (
-        <Modals>
+        <ModalsProvider>
             {loading ? <Loader /> : null}
 
             {isLoggedIn ? (
@@ -225,8 +231,16 @@ const AppFrame: React.FunctionComponent<AppFrameProps> = ({ children }) => {
             ) : (
                 <Loader />
             )}
-        </Modals>
+        </ModalsProvider>
     );
 };
 
-export default AppFrame;
+const AppFrameWrapper: React.FC<ChildrenProps> = ({ children }) => {
+    const { storageService, sectionsService: service } = useAppService();
+    return (
+        <AppFrame storageService={storageService} sectionsService={service}>
+            {children}
+        </AppFrame>
+    );
+};
+export default AppFrameWrapper;

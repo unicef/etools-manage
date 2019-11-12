@@ -9,16 +9,11 @@ import { CloseSectionRender } from 'pages/close-section';
 import { onCurrentActiveSection } from 'reducers/current-active-section';
 import { onResetCloseSectionPayload } from 'pages/close-section/actions';
 
-
 const SplitSectionPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
-
     const { id } = match.params;
     const dispatch = useDispatch();
 
-    const {
-        backendService,
-        storageService
-    } = useAppService();
+    const { backendService, storageService } = useAppService();
 
     const user = useSelector(selectUserProfile);
 
@@ -30,10 +25,8 @@ const SplitSectionPage: React.FC<RouteComponentProps<MatchParams>> = ({ match })
 
             onResetCloseSectionPayload(dispatch);
 
-            onFetchDataSplitSection(
-                { backendService, storageService },
-                { id, countryName },
-                dispatch
+            dispatch(
+                onFetchDataSplitSection({ backendService, storageService }, { id, countryName })
             );
         }
     }, [id, user]);

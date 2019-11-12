@@ -8,7 +8,7 @@ import {
     CloseSectionBackendPayload,
     FetchStoragePayload
 } from 'entities/types';
-import { Dispatch } from 'global-types';
+import { Dispatch } from 'redux';
 import { SectionsService } from 'services/section';
 import {
     updateCloseSectionPayload,
@@ -33,11 +33,10 @@ export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
     dispatch(updateCloseSectionPayload(null));
 };
 
-export const onFetchDataCloseSection = async (
+export const onFetchDataCloseSection = (
     services: { backendService: BackendService; storageService: StorageService },
-    payload: FetchStoragePayload,
-    dispatch: Dispatch
-) => {
+    payload: FetchStoragePayload
+) => async (dispatch: Dispatch) => {
     dispatch(onCurrentActiveSection(Number(payload.id)));
 
     const { backendService, storageService } = services;

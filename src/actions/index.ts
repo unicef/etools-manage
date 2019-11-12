@@ -2,7 +2,7 @@ import { compose, filter } from 'ramda';
 import { SectionsService } from 'services/section';
 import { BackendService } from 'services/backend';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
-import { Dispatch } from 'global-types';
+import { Dispatch } from 'redux';
 import {
     isSectionsParamValid,
     filterDuplicateClose,
@@ -22,7 +22,7 @@ import { createAction } from 'redux-starter-kit';
 
 export const redirectToLogin = createAction('loginRedirect');
 
-export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
+export const onGetSections = (service: SectionsService) => async (dispatch: Dispatch) => {
     let sections;
     try {
         dispatch(requestStarted());
@@ -30,7 +30,6 @@ export const onGetSections = async (service: SectionsService, dispatch: Dispatch
     } catch (error) {
         throw error;
     }
-
     sections = sections.map(sectionWithNumberId);
     dispatch(onGetSectionsSuccess(sections));
 };
@@ -98,9 +97,7 @@ export const fetchUserProfile = async (dispatch: Dispatch) => {
     }
 };
 
-export const getInProgressItems = (
-    storageService: StorageService,
-    payload: string,
+export const getInProgressItems = (storageService: StorageService, payload: string) => (
     dispatch: Dispatch
 ) => {
     let actionKeys = storageService.getAllItems();

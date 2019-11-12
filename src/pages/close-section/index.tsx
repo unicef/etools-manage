@@ -8,7 +8,11 @@ import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points-edit';
 import TPMActivitiesEdit from 'components/entity-edit/tpm-edit';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectModuleEditingName, selectClosedSectionSuccess, selectCurrentActiveSectionName } from 'selectors';
+import {
+    selectModuleEditingName,
+    selectClosedSectionSuccess,
+    selectCurrentActiveSectionName
+} from 'selectors';
 import { onResetCloseSectionPayload, onFetchDataCloseSection } from './actions';
 import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';
@@ -34,9 +38,7 @@ function getEditComponent(name: keyof EditComponentMappings | null) {
     return null;
 }
 
-const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({
-    match
-}) => {
+const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
     const { id } = match.params;
     const dispatch = useDispatch();
 
@@ -50,10 +52,8 @@ const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({
             const { name: countryName } = user.country;
 
             onResetCloseSectionPayload(dispatch);
-            onFetchDataCloseSection(
-                { backendService, storageService },
-                { id, countryName },
-                dispatch
+            dispatch(
+                onFetchDataCloseSection({ backendService, storageService }, { id, countryName })
             );
         }
     }, [id, user]);
@@ -77,7 +77,7 @@ export const CloseSectionRender: React.FC = () => {
             {moduleEditingName && EditComponent ? (
                 <EditComponent />
             ) : closedSectionSuccess ? (
-                <SuccessBox {...successProps}/>
+                <SuccessBox {...successProps} />
             ) : (
                 <CloseSectionsPage />
             )}

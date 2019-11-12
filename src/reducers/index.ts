@@ -13,7 +13,7 @@ import { userReducer } from './user';
 import { namesFromSplitReducer } from './names-from-split';
 import { inProgressItemsReducer } from './in-progress-items';
 
-const reducer = combineReducers({
+const rootReducer = combineReducers({
     closeSectionPayload: closeSectionPayloadReducer,
     sections: sectionsReducer,
     createdSection: createdSectionReducer,
@@ -29,4 +29,4 @@ const reducer = combineReducers({
     inProgressItems: inProgressItemsReducer
 });
 
-export default reducer;
+export default rootReducer;

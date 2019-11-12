@@ -1,4 +1,5 @@
 import { configureStore } from 'redux-starter-kit';
+import thunk from 'redux-thunk';
 import { errorMiddleware } from './error-middleware';
 import storageMiddleware from './storage-middleware';
 import fetchLatestSectionsMiddleware from './latest-sections-middleware';
@@ -11,7 +12,8 @@ const middleware = [
     filterCurrentSectionMiddleware,
     storageMiddleware,
     errorMiddleware,
-    authMiddleware
+    authMiddleware,
+    thunk
 ];
 
 if (process.env.NODE_ENV === `development`) {

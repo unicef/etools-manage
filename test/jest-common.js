@@ -11,16 +11,12 @@ module.exports = {
     testEnvironment: 'jsdom',
     snapshotSerializers: ['jss-snapshot-serializer'],
     transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$'],
+    testPathIgnorePatterns: ['[/\\\\]fixtures[/\\\\].+\\.(js|jsx|ts|tsx)$'],
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
         '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '<rootDir>/config/jest/fileTransform.js'
     },
     modulePaths: ['<rootDir>/src/'],
-    // watchPlugins: [
-    //     '<rootDir>/node_modules/jest-watch-typeahead/filename.js',
-    //     '<rootDir>/node_modules/jest-watch-typeahead/testname.js',
-    //     'jest-watch-select-plugins'
-    // ]
     watchPlugins: [
         'jest-watch-typeahead/filename',
         'jest-watch-typeahead/testname',

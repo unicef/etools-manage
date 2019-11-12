@@ -82,7 +82,7 @@ export const getExistingSectionsStr = (existing: string[]) =>
                 .join(',')
     );
 
-export const selectLoading = createSelector(['loading']);
+export const selectLoading = (state: FullStoreShape) => state.loading;
 
 export const selectError = createSelector(['error']);
 
