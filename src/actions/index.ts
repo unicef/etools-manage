@@ -1,5 +1,5 @@
 import { compose, filter } from 'ramda';
-import { SectionsService } from 'services/section';
+import SectionsApiService, { SectionsService } from 'services/section';
 import { BackendService } from 'services/backend';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
 import { Dispatch } from 'redux';
@@ -19,13 +19,17 @@ import { onUserProfileSuccess } from 'reducers/user';
 import StorageService from 'services/storage';
 import { getInProgressSuccess, removeItemFromInProgress } from 'reducers/in-progress-items';
 import { createAction } from 'redux-starter-kit';
+import { ApiClient } from 'lib/http';
 
 export const redirectToLogin = createAction('loginRedirect');
 
-export const onGetSections = (service: SectionsService) => async (dispatch: Dispatch) => {
+export const onGetSections = (
+    service: SectionsService = new SectionsApiService(new ApiClient())
+) => async (dispatch: Dispatch) => {
     let sections;
     try {
         dispatch(requestStarted());
+
         sections = await service.getSections();
     } catch (error) {
         throw error;
@@ -49,11 +53,10 @@ export const onSubmitMergeSections = async (
     }
 };
 
-export const onSubmitCreateSection = async (
+export const onSubmitCreateSection = (
     service: SectionsService,
-    payload: CreateSectionPayload,
-    dispatch: Dispatch
-): Promise<Error | void> => {
+    payload: CreateSectionPayload
+) => async (dispatch: Dispatch) => {
     dispatch(requestStarted());
     let newSection;
     try {

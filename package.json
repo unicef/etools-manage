@@ -11,7 +11,7 @@
         "pretest:e2e:run": "npm run build",
         "test:e2e:run": "start-server-and-test start http://localhost:3000 cy:run",
         "test:e2e:dev": "start-server-and-test start http://localhost:3000 cy:open",
-        "test": "node scripts/test.js --config jest.config.js --coverage --watch",
+        "test": "node scripts/test.js --config jest.config.js --watch --verbose",
         "validate": "npm run build && npm run test && npm run test:e2e:run"
     },
     "dependencies": {
@@ -123,5 +123,13 @@
         ">0.2%",
         "not dead",
         "not ie <= 11"
-    ]
+    ],
+    "jest-runner-eslint": {
+        "cliOptions": {
+            "ext": [
+                ".tsx",
+                ".ts"
+            ]
+        }
+    }
 }
