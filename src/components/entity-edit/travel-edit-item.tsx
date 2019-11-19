@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { Dropdown, OptionType } from 'components/dropdown';
-import { selectSectionsAsOptions } from 'selectors';
+import { selectSectionsAsDropdownOptions } from 'selectors';
 import { prop } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { onSelectTravelSection } from 'pages/close-section/actions';
@@ -17,7 +17,7 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();
     const dispatch = useDispatch();
 
-    const sectionsAsOptions = useSelector(selectSectionsAsOptions);
+    const sectionsAsOptions = useSelector(selectSectionsAsDropdownOptions);
 
     const { reference_number, traveler, purpose, section } = useSelector(
         (state: FullStoreShape) => state.closeSectionPayload.travels[id]

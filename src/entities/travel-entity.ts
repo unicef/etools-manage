@@ -1,8 +1,8 @@
 import { EntityConfig } from 'entities';
-import { TravelEntity, EntityDisplay } from './types';
+import { Travel, EntityDisplay } from './types';
 
-export default class TravelsConfig implements EntityConfig<TravelEntity> {
-    public get displayProperties(): EntityDisplay<TravelEntity>[] {
+export default class TravelsConfig implements EntityConfig<Travel> {
+    public get displayProperties(): EntityDisplay<Travel>[] {
         return [
             {
                 label: 'Reference number',

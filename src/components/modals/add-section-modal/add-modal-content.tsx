@@ -16,7 +16,7 @@ import { useModalStyles } from '../styles';
 import { setValueFromEvent } from 'utils';
 import { useAppService } from 'contexts/app';
 import { useAddSection } from 'entities/section-entity';
-import { SectionEntity } from 'entities/types';
+import { Section } from 'entities/types';
 import { onToggleAddModal } from 'reducers/modals';
 import { selectLoading, selectCreatedSection } from 'selectors';
 import { onResetCreatedSection } from 'reducers/created-section';
@@ -93,7 +93,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 };
 
 interface SuccessContentProps {
-    section: SectionEntity;
+    section: Section;
     onClose(): void;
 }
 

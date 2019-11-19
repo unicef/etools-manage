@@ -14,7 +14,7 @@ export const intialRootState: FullStoreShape = {
     moduleEditingName: '',
     mergedSection: null,
     inProgressItems: [],
-    currentActiveSection: -1,
+    currentActiveSectionId: -1,
     createdSection: null,
     ui: {
         selectedMenuIdx: 0,
@@ -24,5 +24,4 @@ export const intialRootState: FullStoreShape = {
     error: '',
     loading: false,
     user: null
-
 };

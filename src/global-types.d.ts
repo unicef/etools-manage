@@ -62,7 +62,7 @@ export type AppMiddleware = ({
     getState
 }: {
     getState: () => FullStoreShape;
-}) => (dispatch: Dispatch) => (action: PayloadAction) => void;
+}) => (dispatch: Dispatch) => (action: PayloadAction<any>) => void;
 
 export interface MatchParams {
     id: string;

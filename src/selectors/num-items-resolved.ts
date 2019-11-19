@@ -22,7 +22,14 @@ export const selectNumItemsResolved = createSelector(
     ) => ({ interventions, travels, actionPoints, tpmActivities })
 );
 
-export const selectTotalProgress = createSelector<FullStoreShape, number>(
+export const selectTotalProgress = createSelector<
+    FullStoreShape,
+    ResolvedRatio,
+    ResolvedRatio,
+    ResolvedRatio,
+    ResolvedRatio,
+    number
+>(
     [
         getNumResolvedInterventions,
         getNumResolvedTravels,

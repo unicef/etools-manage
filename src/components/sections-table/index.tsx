@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import { Order, EnhancedTableHeadProps, TableToolbarProps, HeadRow } from '../table/table';
-import { SectionEntity } from 'entities/types';
+import { Section } from 'entities/types';
 import { usePagination } from 'components/table/use-paginator';
 import { stableSort, getSorting } from 'components/table/table-utils';
 import { useTableStyles } from 'components/table/styles';
@@ -116,12 +116,12 @@ export function EnhancedTableHead<SectionOrderby>(props: EnhancedTableHeadProps<
 }
 
 export interface SectionTableProps {
-    rows: SectionEntity[];
+    rows: Section[];
     mergeActive: boolean;
     showInactive: boolean;
     onChangeSelected: (selected: string[]) => void;
 }
-type SectionOrderby = Omit<SectionEntity, 'active'>;
+type SectionOrderby = Omit<Section, 'active'>;
 
 const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onChangeSelected }) => {
     const styles = useTableStyles({});

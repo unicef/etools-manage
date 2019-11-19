@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SectionEntity } from 'entities/types';
+import { Section } from 'entities/types';
 
-const initialState: SectionEntity[] = [];
+const initialState: Section[] = [];
 
 const sections = createSlice({
     name: 'sections',

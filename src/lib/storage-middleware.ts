@@ -21,6 +21,8 @@ const USER_SELECTION_ACTIONS = [
     onUpdateTPMSections.type
 ];
 
+// This is where localStorage work is done after certain actions in order
+// to save work-in-progress
 const storageMiddleware = (service: Storage): AppMiddleware => {
     return ({ getState }) => dispatch => action => {
         dispatch(action);

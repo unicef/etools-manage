@@ -83,7 +83,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     }
 
     if (redirect) {
-        return <Redirect push to={getSplitSectionUrl(String(rowId))} />;
+        return <Redirect push to={getSplitSectionUrl(rowId)} />;
     }
 
     function isDisabled(actionType: SectionAction) {
@@ -114,14 +114,17 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem disabled={isDisabled('close')} classes={{ root: menuStyles.listItem }}>
-                    <Link to={getCloseSectionUrl(String(rowId))}>
+                <Link to={getCloseSectionUrl(String(rowId))}>
+                    <MenuItem
+                        disabled={isDisabled('close')}
+                        classes={{ root: menuStyles.listItem }}
+                    >
                         <Box>
                             <DeleteIcon className={menuStyles.icon} color="secondary" />
                             <Typography variant="body1">Close section</Typography>
                         </Box>
-                    </Link>
-                </MenuItem>
+                    </MenuItem>
+                </Link>
                 <MenuItem
                     disabled={isDisabled('split')}
                     classes={{ root: menuStyles.listItem }}

@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { renderSectionsList } from 'actions/action-constants';
 
-const currentActiveSection = createSlice({
-    name: 'currentActiveSection',
+const currentActiveSectionId = createSlice({
+    name: 'currentActiveSectionId',
     initialState: -1,
     reducers: {
         onCurrentActiveSection: (state, action) => action.payload
@@ -11,5 +11,5 @@ const currentActiveSection = createSlice({
         [renderSectionsList.type]: () => -1
     }
 });
-export const { onCurrentActiveSection } = currentActiveSection.actions;
-export const { reducer: cuurentActiveSectionReducer } = currentActiveSection;
+export const { onCurrentActiveSection } = currentActiveSectionId.actions;
+export const { reducer: cuurentActiveSectionReducer } = currentActiveSectionId;

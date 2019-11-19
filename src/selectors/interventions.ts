@@ -1,13 +1,17 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { selectCloseSectionPayload, selectCurrentActiveSection, selectSections } from 'selectors';
-import { InterventionEntity, Normalized, ResolvedRatio, SectionEntity } from 'entities/types';
+import { Intervention, Normalized, ResolvedRatio, Section, ModuleEntities } from 'entities/types';
 import { prop, map, without, keys, includes, reject, compose, lensProp, over, always } from 'ramda';
-import { Store } from 'redux';
 
 import { normalize } from 'normalizr';
 import { interventionSchema } from 'entities/schemas';
+import { FullStoreShape } from 'contexts/app';
 
-export const selectInterventionsFromPayload = createSelector<Store, Normalized<InterventionEntity>>(
+export const selectInterventionsFromPayload = createSelector<
+    FullStoreShape,
+    ModuleEntities,
+    Normalized<Intervention>
+>(
     [selectCloseSectionPayload],
     prop('interventions')
 );
@@ -20,12 +24,16 @@ export const selectInterventionIds = createSelector(
 export const selectIndicators = (intervId: string) =>
     createSelector(
         [selectInterventionsFromPayload],
-        (interventions: Normalized<InterventionEntity>) => interventions[intervId].indicators
+        (interventions: Normalized<Intervention>) => interventions[intervId].indicators
     );
 
-export const getNumResolvedInterventions = createSelector<Store, ResolvedRatio>(
+export const getNumResolvedInterventions = createSelector<
+    FullStoreShape,
+    Normalized<Intervention>,
+    ResolvedRatio
+>(
     [selectInterventionsFromPayload],
-    (interventions: Normalized<InterventionEntity> = {}): ResolvedRatio => {
+    (interventions = {}) => {
         let total = 0;
         const resolved = keys(interventions).reduce((resolved: number, key: number) => {
             const intervention = interventions[key];
@@ -48,9 +56,9 @@ export const getNumResolvedInterventions = createSelector<Store, ResolvedRatio>(
 
 export const interventionsWithoutCurrentSection = createSelector(
     [selectCurrentActiveSection, selectInterventionsFromPayload, selectSections],
-    (id: number, interventions: Normalized<InterventionEntity>, sectionsList: SectionEntity[]) => {
+    (id: number, interventions: Normalized<Intervention>, sectionsList: Section[]) => {
         const newList = map((key: number) => {
-            const item: InterventionEntity = interventions[key];
+            const item: Intervention = interventions[key];
 
             const existingSectionsIds = without([id], item.sections);
 
@@ -68,7 +76,7 @@ export const interventionsWithoutCurrentSection = createSelector(
                 reject(fromExisting)
             )(item.indicators);
 
-            const res: InterventionEntity = {
+            const res: Intervention = {
                 ...item,
                 indicators: removedSectionIndicators,
                 sections: [],

@@ -8,7 +8,7 @@ import { onFetchDataCloseSection } from 'pages/close-section/actions';
 import { updateNamesFromSplit } from 'reducers/names-from-split';
 import { ThunkDispatch } from 'redux-thunk';
 
-export const persistToStorage = createAction('persistToStorage');
+export const persistToStorage = createAction<NewSectionFromSplitPayload[]>('persistToStorage');
 
 export const onFetchDataSplitSection = async (
     services: { backendService: BackendService; storageService: StorageService },
@@ -24,6 +24,6 @@ export const onFetchDataSplitSection = async (
     dispatch(onFetchDataCloseSection(services, payload));
 };
 
-export const onSectionSplit = (dispatch: Dispatch, payload: NewSectionFromSplitPayload[]) => {
+export const onSectionSplit = (payload: NewSectionFromSplitPayload[]) => (dispatch: Dispatch) => {
     dispatch(persistToStorage(payload));
 };

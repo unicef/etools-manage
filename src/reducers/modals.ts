@@ -15,7 +15,7 @@ export const initialStateModals: ModalsState = {
 };
 
 const modalsSlice = createSlice({
-    slice: 'modals',
+    name: 'modals',
     initialState: initialStateModals,
     reducers: {
         onToggleAddModal: state => {

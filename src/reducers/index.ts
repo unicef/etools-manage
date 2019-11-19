@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
     error: errorReducer,
     loading: loadingReducer,
     moduleEditingName: moduleEditingNameReducer,
-    currentActiveSection: cuurentActiveSectionReducer,
+    currentActiveSectionId: cuurentActiveSectionReducer,
     closedSectionSuccess: closedSectionSuccessReducer,
     ui: uiReducer,
     user: userReducer,

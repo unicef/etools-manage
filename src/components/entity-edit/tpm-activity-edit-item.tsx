@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { OptionType, Dropdown } from 'components/dropdown';
-import { selectSectionsAsOptions } from 'selectors';
+import { selectSectionsAsDropdownOptions } from 'selectors';
 import { ValueType } from 'react-select/src/types';
 import { getSelectedSection } from 'lib/sections';
 import { onSelectTPMSections } from 'pages/close-section/actions';
@@ -17,7 +17,7 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();
     const dispatch = useDispatch();
 
-    const sectionsAsOptions = useSelector(selectSectionsAsOptions);
+    const sectionsAsOptions = useSelector(selectSectionsAsDropdownOptions);
 
     const { reference_number, tpm_partner_name, section } = useSelector(
         (state: FullStoreShape) => state.closeSectionPayload.tpmActivities[id]

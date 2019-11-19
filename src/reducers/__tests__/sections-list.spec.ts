@@ -1,7 +1,7 @@
 import { onGetSectionsSuccess } from 'reducers/sections';
 import { testSectionsList } from './fixtures/sections';
 import configureAppStore from 'lib/create-store';
-import { selectSections, selectSectionsWithInactive } from 'selectors';
+import { selectSections, selectAllSections } from 'selectors';
 
 describe('Sections list ', () => {
     let store;
@@ -12,7 +12,7 @@ describe('Sections list ', () => {
 
     test('should add sections to store', async () => {
         await store.dispatch(onGetSectionsSuccess(testSectionsList));
-        const storeSections = selectSectionsWithInactive(store.getState());
+        const storeSections = selectAllSections(store.getState());
         expect(storeSections).toEqual(testSectionsList);
     });
 

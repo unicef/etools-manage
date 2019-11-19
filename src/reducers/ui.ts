@@ -1,8 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ACTION_BAR_DISABLED_ACTIONS } from 'pages/close-section/constants';
 import { onSuccessCloseSection } from './closed-section-success';
+import { ActionBarKeys } from 'pages/close-section/types';
 
-export const uiInitialState = {
+export const uiInitialState: {
+    selectedMenuIdx: number;
+    closeSectionActionBar: ActionBarKeys;
+    viewCloseSummary: boolean;
+} = {
     selectedMenuIdx: 0,
     closeSectionActionBar: ACTION_BAR_DISABLED_ACTIONS,
     viewCloseSummary: false

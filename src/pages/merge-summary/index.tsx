@@ -7,10 +7,10 @@ import { useAppService } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
 import { keys, isEmpty, prop, filter, compose, find, propEq, map, includes } from 'ramda';
 import EntityConfigMapping from 'entities/config-map';
-import { MergeSectionsPayload, ZippedEntityResults } from 'entities/types';
+import { MergeSectionsPayload, ZippedEntityResults, Section } from 'entities/types';
 import { ConfirmButton } from 'components/buttons';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectSections, selectMergeSection } from 'selectors';
+import { selectSections, selectMergedSection } from 'selectors';
 import EntityChangesTable from 'components/entity-changes';
 import { isArrayOfObjects } from 'utils';
 import SuccessBox from 'components/success-box';
@@ -22,7 +22,7 @@ const MergeSummaryPage: React.FC = () => {
     const { backendService: service, sectionsService } = useAppService();
 
     const dispatch = useDispatch();
-    const mergedSection = useSelector(selectMergeSection);
+    const mergedSection = useSelector(selectMergedSection) as Section;
 
     const [summary, setSummary] = useState();
 

@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { renderSectionsList } from 'actions/action-constants';
-import { SectionEntity } from 'entities/types';
+import { Section } from 'entities/types';
 
-const initialState: SectionEntity[] = [];
+const initialState: Section[] = [];
 
 const sectionsFromSplit = createSlice({
     name: 'sectionsFromSplit',

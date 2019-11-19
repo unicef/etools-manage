@@ -12,7 +12,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { UserProfile, ChildrenProps } from 'global-types';
+import { ChildrenProps } from 'global-types';
 import { useAppService } from 'contexts/app';
 import { onGetSections, fetchUserProfile, getInProgressItems } from 'actions';
 import { Modals as ModalsProvider } from 'contexts/page-modals';
@@ -21,7 +21,7 @@ import { Link, IconButton, Drawer, useTheme, Divider, List } from '@material-ui/
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLoading, selectError } from 'selectors';
 import { DRAWER_WIDTH, ETOOLS_ROOT_PATH } from 'global-constants';
-import { selectMenuItem } from 'selectors/ui';
+import { selectMenuItemIdx } from 'selectors/ui';
 import { selectUserProfile, selectCountryName } from 'selectors/user';
 import { getHeaderBackground, getHeaderTitle } from 'utils';
 import logo from '../../public/etools-logo-color-white.svg';
@@ -112,10 +112,10 @@ export const AppFrame: React.FunctionComponent<AppFrameProps> = ({
     sectionsService: service,
     children
 }) => {
-    const userData: UserProfile = useSelector(selectUserProfile);
+    const userData = useSelector(selectUserProfile);
     const [open, setOpen] = React.useState<boolean>(false);
 
-    const selectedIndex = useSelector(selectMenuItem);
+    const selectedIndex = useSelector(selectMenuItemIdx);
     const loading = useSelector(selectLoading);
     const error = useSelector(selectError);
 
@@ -132,7 +132,7 @@ export const AppFrame: React.FunctionComponent<AppFrameProps> = ({
     }, []);
 
     useEffect(() => {
-        dispatch(getInProgressItems(storageService, countryName));
+        dispatch(getInProgressItems(storageService, countryName || ''));
     }, [countryName]);
 
     function handleDrawerOpen() {

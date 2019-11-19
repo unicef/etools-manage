@@ -1,8 +1,8 @@
 import { EntityConfig } from 'entities';
-import { IndicatorEntity, EntityDisplay } from './types';
+import { Indicator, EntityDisplay } from './types';
 
-export default class IndicatorConfig implements Partial<EntityConfig<IndicatorEntity>> {
-    public get displayProperties(): EntityDisplay<IndicatorEntity>[] {
+export default class IndicatorConfig implements Partial<EntityConfig<Indicator>> {
+    public get displayProperties(): EntityDisplay<Indicator>[] {
         return [
             {
                 label: 'Title',

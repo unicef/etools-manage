@@ -31,7 +31,7 @@ const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     tpmActivities: TPMActivitiesEdit
 };
 
-function getEditComponent(name: keyof EditComponentMappings | null) {
+function getEditComponent(name: keyof EditComponentMappings | '') {
     if (name) {
         return EDIT_COMPONENT_MODULE_MAPPING[name];
     }

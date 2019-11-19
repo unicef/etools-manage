@@ -1,15 +1,15 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { selectCloseSectionPayload, selectCurrentActiveSection } from 'selectors';
-import {
-    TPMActivityEntity,
-    Normalized,
-    ResolvedRatio
-    // FormattedTPMActivityEntity
-} from 'entities/types';
-import { prop, map, reduce, keys } from 'ramda';
+import { selectCloseSectionPayload } from 'selectors';
+import { TPMActivity, Normalized, ResolvedRatio, ModuleEntities } from 'entities/types';
+import { prop, reduce, keys } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
+import { clearCurrentSection } from 'lib/sections';
 
-export const selectTPMFromPayload = createSelector<FullStoreShape, Normalized<TPMActivityEntity>>(
+export const selectTPMFromPayload = createSelector<
+    FullStoreShape,
+    ModuleEntities,
+    Normalized<TPMActivity>
+>(
     [selectCloseSectionPayload],
     prop('tpmActivities')
 );
@@ -20,31 +20,13 @@ export const selectTPMActivitiesIds = createSelector(
 );
 
 export const tpmActivitiesWithoutCurrentSection = createSelector(
-    [selectTPMFromPayload, selectCurrentActiveSection],
-    (list: TPMActivityEntity[] = []) => {
-        return map(
-            (tpm: TPMActivityEntity) => ({
-                ...tpm,
-                section: undefined
-            }),
-            //     (tpmActivity: TPMActivityEntity) => {
-            //     const withoutCurrentSection = reject(propEq('id', id), tpmActivity.sections).map(
-            //         prop('name')
-            //     );
-            //     return {
-            //         ...tpmActivity,
-            //         sections: [],
-            //         existingSections: withoutCurrentSection
-            //     };
-            // },
-            list
-        );
-    }
+    [selectTPMFromPayload],
+    clearCurrentSection
 );
 
 export const getNumResolvedTPMActivities = createSelector(
     [selectTPMFromPayload],
-    (tpmActivities: Normalized<TPMActivityEntity> = {}): ResolvedRatio => {
+    (tpmActivities: Normalized<TPMActivity> = {}): ResolvedRatio => {
         const resolved = reduce(
             (sum: number, key: string) => {
                 const { section }: { section: string } = tpmActivities[key];

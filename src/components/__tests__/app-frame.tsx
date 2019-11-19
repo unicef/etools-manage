@@ -25,7 +25,7 @@ import { requestStarted } from '../../reducers/loading';
 //     error: '',
 //     loading: true,
 //     moduleEditingName: '',
-//     currentActiveSection: -1,
+//     currentActiveSectionId: -1,
 //     closedSectionSuccess: false,
 //     ui: {
 //         selectedMenuIdx: 0,

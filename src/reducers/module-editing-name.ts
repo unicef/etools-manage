@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { EditComponentMappings } from 'pages/close-section';
 
+const initialState: keyof EditComponentMappings | '' = '';
 const moduleEditingName = createSlice({
     name: 'moduleEditingName',
-    initialState: '',
+    initialState,
     reducers: {
         onSetModuleEditingName: (state, action) => action.payload
     }
