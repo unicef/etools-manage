@@ -1,9 +1,10 @@
 import { UserProfile } from 'global-types';
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: UserProfile | null = null;
 
 const user = createSlice({
+    name: 'user',
     initialState,
     reducers: {
         onUserProfileSuccess: (state, action) => action.payload

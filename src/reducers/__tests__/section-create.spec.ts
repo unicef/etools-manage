@@ -28,7 +28,7 @@ describe('Create new section', () => {
         service = new SectionsApiService();
     });
 
-    test('calls api to create new section when form submitted', async () => {
+    test('calls create section api, middleware updates sections list', async () => {
         await store.dispatch(onSubmitCreateSection(service, testCreateSection));
         const state = store.getState();
         expect(mockGetSections.mock.calls.length).toBe(1);

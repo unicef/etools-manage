@@ -18,7 +18,7 @@ import wrappedFetch from 'lib/fetch';
 import { onUserProfileSuccess } from 'reducers/user';
 import StorageService from 'services/storage';
 import { getInProgressSuccess, removeItemFromInProgress } from 'reducers/in-progress-items';
-import { createAction } from 'redux-starter-kit';
+import { createAction } from '@reduxjs/toolkit';
 import { ApiClient } from 'lib/http';
 
 export const redirectToLogin = createAction('loginRedirect');

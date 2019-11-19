@@ -1,4 +1,4 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 import { ACTION_BAR_DISABLED_ACTIONS } from 'pages/close-section/constants';
 import { onSuccessCloseSection } from './closed-section-success';
 
@@ -8,6 +8,7 @@ export const uiInitialState = {
     viewCloseSummary: false
 };
 export const ui = createSlice({
+    name: 'ui',
     initialState: uiInitialState,
     reducers: {
         onSelectMenuItem: (state, action) => {

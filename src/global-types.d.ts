@@ -3,13 +3,13 @@ import { ReactNode } from 'react';
 import { Dispatch } from 'redux';
 // import { DispatchAction } from 'global-types';
 
-import { PayloadAction, PayloadActionCreator } from 'redux-starter-kit';
+import { PayloadAction, PayloadActionCreator } from '@reduxjs/toolkit';
 import { FullStoreShape } from 'contexts/app';
 // Store
 export type BaseStoreShape = Store<AppState>;
 
 export interface ProviderStore {
-    children: ReactNode;
+    children?: ReactNode;
 }
 
 export interface UIState {

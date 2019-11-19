@@ -1,4 +1,4 @@
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { selectCloseSectionPayload, selectCurrentActiveSection, selectSections } from 'selectors';
 import { InterventionEntity, Normalized, ResolvedRatio, SectionEntity } from 'entities/types';
 import { prop, map, without, keys, includes, reject, compose, lensProp, over, always } from 'ramda';

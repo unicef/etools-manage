@@ -1,7 +1,8 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 import { renderSectionsList } from 'actions/action-constants';
 
 const currentActiveSection = createSlice({
+    name: 'currentActiveSection',
     initialState: -1,
     reducers: {
         onCurrentActiveSection: (state, action) => action.payload

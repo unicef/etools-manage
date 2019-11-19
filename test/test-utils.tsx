@@ -1,12 +1,14 @@
-import { render } from '@testing-library/react';
+import React from 'react';
+import { render, RenderOptions } from '@testing-library/react';
 import AppProviders from '../src/components/app-providers';
 
-const AllTheProviders = ({ children }) => {
+const AllTheProviders: React.ComponentType = ({ children }: { children?: React.ReactNode }) => {
     // eslint-disable-next-line
     return <AppProviders>{children}</AppProviders>;
 };
 
-const connectedRender = (ui, options) => render(ui, { wrapper: AllTheProviders, ...options });
+const connectedRender = (ui: React.ReactElement, options?: Omit<RenderOptions, 'queries'>) =>
+    render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything
 export * from '@testing-library/react';

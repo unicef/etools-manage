@@ -1,23 +1,25 @@
-import { createSelector } from 'redux-starter-kit';
-import { ModuleEntities, SectionEntity } from 'entities/types';
+import { createSelector } from '@reduxjs/toolkit';
+import { ModuleEntities, SectionEntity, CloseSectionPayload } from 'entities/types';
 import { propEq, reject, map, prop, includes, without, filter, keys, concat, sortBy } from 'ramda';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
 import { selectSectionsFromSplit } from './split-section';
 
-export const selectCloseSectionPayload = createSelector<FullStoreShape, ModuleEntities>([
-    'closeSectionPayload'
-]);
+export const selectCloseSectionPayload: (state: FullStoreShape) => ModuleEntities = state =>
+    state.closeSectionPayload;
 
 export const selectCloseSectionPayloadKeys = createSelector(
-    ['closeSectionPayload'],
+    selectCloseSectionPayload,
     keys
 );
 
-export const selectModuleEditingName = createSelector(['moduleEditingName']);
+export const selectModuleEditingName: (state: FullStoreShape) => string = state =>
+    state.moduleEditingName;
+
+const getSections: (state: FullStoreShape) => SectionEntity[] = state => state.sections;
 
 export const selectSections = createSelector<FullStoreShape, SectionEntity[]>(
-    ['sections'],
+    [getSections],
     sections => {
         const activeSection = propEq('active', true);
         return filter(activeSection, sections);

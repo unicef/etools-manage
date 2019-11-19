@@ -1,4 +1,4 @@
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { selectCloseSectionPayload } from 'selectors';
 import { TravelEntity, Normalized, ResolvedRatio } from 'entities/types';
 import { prop, keys } from 'ramda';

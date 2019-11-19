@@ -1,4 +1,4 @@
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { selectSections, selectCurrentActiveSection } from 'selectors';
 import { parseKeyForId, parseKeyForAction } from 'lib/sections';
 import { map, propEq, filter, compose } from 'ramda';

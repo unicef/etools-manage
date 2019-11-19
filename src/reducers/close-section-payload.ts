@@ -1,4 +1,4 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 import { ModuleEntities } from 'entities/types';
 import { renderSectionsList } from 'actions/action-constants';
 
@@ -10,6 +10,7 @@ export const initialState: ModuleEntities = {
 };
 
 export const closeSectionPayload = createSlice({
+    name: 'closeSectionPayload',
     initialState,
     reducers: {
         onFetchFromStorageSuccess: (state, action) => action.payload,

@@ -4,7 +4,6 @@ import { onGetSections } from 'actions';
 import { onCreateSectionSuccess } from 'reducers/created-section';
 import { refreshSectionsList } from 'actions/action-constants';
 import { AnyAction } from 'redux';
-import { useAppService } from 'contexts/app';
 
 const fetchLatestSectionsMiddleware: AppMiddleware = () => (
     dispatch: ThunkDispatch<{}, {}, AnyAction>

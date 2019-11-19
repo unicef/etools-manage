@@ -1,4 +1,4 @@
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { FullStoreShape } from 'contexts/app';
 import { ActionBarKeys } from 'pages/close-section/types';
 import { selectCloseSectionPayload } from 'selectors';

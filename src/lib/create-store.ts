@@ -1,4 +1,4 @@
-import { configureStore } from 'redux-starter-kit';
+import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import { errorMiddleware } from './error-middleware';
 import storageMiddleware from './storage-middleware';

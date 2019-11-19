@@ -1,6 +1,7 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const moduleEditingName = createSlice({
+    name: 'moduleEditingName',
     initialState: '',
     reducers: {
         onSetModuleEditingName: (state, action) => action.payload

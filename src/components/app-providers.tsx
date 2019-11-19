@@ -2,7 +2,6 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import ErrorBoundary from 'react-error-boundary';
 import { ProviderStore } from 'global-types';
-// import UserProvider from '../contexts/user';
 import { AppStoreProvider } from 'contexts/app';
 import theme from '../lib/theme';
 import ErrorCard from './error-card';

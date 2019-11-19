@@ -1,4 +1,4 @@
-import { createAction } from 'redux-starter-kit';
+import { createAction } from '@reduxjs/toolkit';
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
 import { FetchStoragePayload, NewSectionFromSplitPayload } from 'entities/types';

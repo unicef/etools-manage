@@ -1,6 +1,7 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const createdSection = createSlice({
+    name: 'createdSection',
     initialState: null,
     reducers: {
         onCreateSectionSuccess: (state, action) => action.payload,
