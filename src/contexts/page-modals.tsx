@@ -1,6 +1,6 @@
 import React, { useContext, useReducer } from 'react';
 import { ChildrenProps, ContextDispatch } from 'global-types';
-import { ModalsState, initialStateModals, modalsReducer } from 'reducers/modals';
+import { ModalsState, initialStateModals, modalsReducer } from 'slices/modals';
 
 const ModalsStateContext = React.createContext<ModalsState | undefined>(undefined);
 const ModalsDispatchContext = React.createContext<ContextDispatch | undefined>(undefined);

@@ -6,8 +6,8 @@ import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';
 import { MatchParams } from 'global-types';
 import { CloseSectionRender } from 'pages/close-section';
-import { onCurrentActiveSection } from 'reducers/current-active-section';
-import { onResetCloseSectionPayload } from 'pages/close-section/actions';
+import { currentActiveSectionChanged } from 'slices/current-active-section';
+import { updateCloseSectionPayload } from 'slices/close-section-payload';
 
 const SplitSectionPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
     const { id } = match.params;
@@ -19,11 +19,11 @@ const SplitSectionPage: React.FC<RouteComponentProps<MatchParams>> = ({ match })
 
     useEffect(() => {
         if (user) {
-            dispatch(onCurrentActiveSection(Number(id)));
+            dispatch(currentActiveSectionChanged(Number(id)));
 
             const { name: countryName } = user.country;
 
-            onResetCloseSectionPayload(dispatch);
+            dispatch(updateCloseSectionPayload(null));
 
             dispatch(
                 onFetchDataSplitSection({ backendService, storageService }, { id, countryName })

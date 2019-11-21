@@ -6,7 +6,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
 import { ClickHandler } from 'global-types';
 import { useButtonStyles } from 'components/buttons';
-import { onToggleMergeModal, onToggleAddModal } from 'reducers/modals';
+import { onToggleMergeModal, onToggleAddModal } from 'slices/modals';
 
 
 export interface MergeButtonProps {

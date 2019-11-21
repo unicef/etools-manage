@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { AppMiddleware } from 'global-types';
 import { onGetSections } from 'actions';
-import { onCreateSectionSuccess } from 'reducers/created-section';
+import { onCreateSectionSuccess } from 'slices/created-section';
 import { refreshSectionsList } from 'actions/action-constants';
 import { AnyAction } from 'redux';
 

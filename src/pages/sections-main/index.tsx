@@ -7,7 +7,7 @@ import SearchBar from 'components/search-bar';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
 import { Section } from 'entities/types';
-import { onSelectForMerge } from 'reducers/modals';
+import { onSelectForMerge } from 'slices/modals';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSections, selectAllSections } from 'selectors';
 import Switch from '@material-ui/core/Switch';

@@ -22,5 +22,5 @@
         "src/utils/node_modules/makeReducer.ts",
         "src/utils/node_modules/helpers.ts"
     ],
-    "exclude": ["src/**/__tests__/"]
+    "exclude": ["src/**/__tests__/", "./test/"]
 }

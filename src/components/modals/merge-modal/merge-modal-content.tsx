@@ -11,7 +11,7 @@ import { useModalStyles } from '../styles';
 import Box from 'components/box';
 import { useMergeState } from '.';
 import { SectionBox, ReviewBox } from 'components/section-box';
-import { onToggleMergeModal } from 'reducers/modals';
+import { onToggleMergeModal } from 'slices/modals';
 
 const useStyles = makeStyles(() =>
     createStyles({

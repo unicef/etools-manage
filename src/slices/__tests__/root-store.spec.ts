@@ -1,12 +1,11 @@
-import rootReducer from 'reducers';
-import { onGetSectionsSuccess } from 'reducers/sections';
+import rootReducer from '../index';
+import { onGetSectionsSuccess } from '../sections';
 import { AnyAction } from 'redux';
 import { intialRootState } from '../../../test/fixtures';
 
 describe('App store reducer', () => {
     let mockAction: AnyAction;
     beforeEach(() => {
-
         mockAction = {
             type: '',
             payload: ['']
@@ -23,5 +22,4 @@ describe('App store reducer', () => {
         const state0 = rootReducer(intialRootState, onGetSectionsSuccess(mockPayload));
         expect(state0.sections).toEqual(mockPayload);
     });
-
 });

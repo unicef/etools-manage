@@ -9,7 +9,7 @@ import { ClickHandler } from 'global-types';
 import { InProgressItem } from 'entities/types';
 import { useDispatch } from 'react-redux';
 import { onRemoveItemInProgress } from 'actions';
-import { onThrowError } from 'reducers/error';
+import { onThrowError } from 'slices/error';
 
 export interface ConfirmDialogProps {
     open: boolean;

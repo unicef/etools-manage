@@ -5,7 +5,7 @@ import { FetchStoragePayload, NewSectionFromSplitPayload } from 'entities/types'
 import { Dispatch, AnyAction } from 'redux';
 import { getSplitSectionPrefixKey } from 'lib/sections';
 import { onFetchDataCloseSection } from 'pages/close-section/actions';
-import { updateNamesFromSplit } from 'reducers/names-from-split';
+import { updateNamesFromSplit } from 'slices/names-from-split';
 import { ThunkDispatch } from 'redux-thunk';
 
 export const persistToStorage = createAction<NewSectionFromSplitPayload[]>('persistToStorage');

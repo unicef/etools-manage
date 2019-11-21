@@ -18,7 +18,7 @@ import { keys, equals } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { selectNamesFromsplit } from './split-section';
 import { Dictionary } from 'helpers';
-import { initialState } from 'reducers/close-section-payload';
+import { initialState } from 'slices/close-section-payload';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
 export const getCloseSectionBackendPayload = createSelector<

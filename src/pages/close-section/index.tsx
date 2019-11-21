@@ -13,12 +13,13 @@ import {
     selectClosedSectionSuccess,
     selectCurrentActiveSectionName
 } from 'selectors';
-import { onResetCloseSectionPayload, onFetchDataCloseSection } from './actions';
+import { onFetchDataCloseSection } from './actions';
 import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';
 import { MatchParams } from 'global-types';
-import { onCurrentActiveSection } from 'reducers/current-active-section';
+import { currentActiveSectionChanged } from 'slices/current-active-section';
 import SuccessBox from 'components/success-box';
+import { updateCloseSectionPayload } from 'slices/close-section-payload';
 
 type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>;
 
@@ -47,11 +48,11 @@ const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({ match })
 
     useEffect(() => {
         if (user) {
-            dispatch(onCurrentActiveSection(Number(id)));
+            dispatch(currentActiveSectionChanged(Number(id)));
 
             const { name: countryName } = user.country;
 
-            onResetCloseSectionPayload(dispatch);
+            dispatch(updateCloseSectionPayload(null));
             dispatch(
                 onFetchDataCloseSection({ backendService, storageService }, { id, countryName })
             );

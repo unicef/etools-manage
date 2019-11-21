@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { errorMiddleware } from './error-middleware';
 import storageMiddleware from './storage-middleware';
 import fetchLatestSectionsMiddleware from './latest-sections-middleware';
-import reducer from 'reducers';
+import reducer from 'slices';
 import { filterCurrentSectionMiddleware } from './filter-current-section-middleware';
 import { authMiddleware } from './auth-middleware';
 
@@ -32,7 +32,7 @@ export default function configureAppStore() {
     // @ts-ignore
     if (process.env.NODE_ENV !== 'production' && module.hot) {
         // @ts-ignore
-        module.hot.accept('reducers', () => store.replaceReducer(reducer));
+        module.hot.accept('slices', () => store.replaceReducer(reducer));
     }
     return store;
 }

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { onFetchForCloseSuccess } from './close-section-payload';
+import { closeSectionDataReceived } from './close-section-payload';
 import { onSuccessCloseSection } from './closed-section-success';
 import { onGetSectionsSuccess } from './sections';
 import { onSetMergedSection } from './merged-section';
@@ -13,7 +13,7 @@ export const loading = createSlice({
         requestComplete: () => false
     },
     extraReducers: {
-        [onFetchForCloseSuccess.type]: () => false,
+        [closeSectionDataReceived.type]: () => false,
         [onSuccessCloseSection.type]: () => false,
         [onSetMergedSection.type]: () => false,
         [onCreateSectionSuccess.type]: () => false,

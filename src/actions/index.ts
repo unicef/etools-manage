@@ -9,15 +9,15 @@ import {
     isCurrentCountry,
     sectionWithNumberId
 } from 'lib/sections';
-import { requestStarted, requestComplete } from 'reducers/loading';
-import { onGetSectionsSuccess } from 'reducers/sections';
-import { onSetMergedSection } from 'reducers/merged-section';
-import { onThrowError } from 'reducers/error';
-import { onCreateSectionSuccess } from 'reducers/created-section';
+import { requestStarted, requestComplete } from 'slices/loading';
+import { onGetSectionsSuccess } from 'slices/sections';
+import { onSetMergedSection } from 'slices/merged-section';
+import { onThrowError } from 'slices/error';
+import { onCreateSectionSuccess } from 'slices/created-section';
 import wrappedFetch from 'lib/fetch';
-import { onUserProfileSuccess } from 'reducers/user';
+import { onUserProfileSuccess } from 'slices/user';
 import StorageService from 'services/storage';
-import { getInProgressSuccess, removeItemFromInProgress } from 'reducers/in-progress-items';
+import { getInProgressSuccess, removeItemFromInProgress } from 'slices/in-progress-items';
 import { createAction } from '@reduxjs/toolkit';
 import { ApiClient } from 'lib/http';
 

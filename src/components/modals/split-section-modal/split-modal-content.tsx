@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentActiveSection, selectCurrentActiveSectionName } from 'selectors';
 import { setValueFromEvent } from 'utils';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
-import { onToggleSplitModal } from 'reducers/modals';
+import { onToggleSplitModal } from 'slices/modals';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { SectionBox } from 'components/section-box';
 import clsx from 'clsx';

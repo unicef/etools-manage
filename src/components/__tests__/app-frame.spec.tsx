@@ -1,41 +1,13 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
-import { Provider } from 'react-redux';
-// import { initialState, reducer } from './reducer.js';
 import { AppFrame } from '../app-frame';
-import { getInProgressSuccess } from '../../reducers/in-progress-items';
+import { getInProgressSuccess } from '../../slices/in-progress-items';
 
 import { propEq } from 'ramda';
-import { onGetSectionsSuccess } from '../../reducers/sections';
-import { requestStarted } from '../../reducers/loading';
-
-// const initialState = {
-//     closeSectionPayload: {
-//         interventions: {},
-//         travels: {},
-//         actionPoints: {},
-//         tpmActivities: {}
-//     },
-//     sections: [],
-//     createdSection: null,
-//     mergedSection: null,
-//     error: '',
-//     loading: true,
-//     moduleEditingName: '',
-//     currentActiveSectionId: -1,
-//     closedSectionSuccess: false,
-//     ui: {
-//         selectedMenuIdx: 0,
-//         closeSectionActionBar: 'action-bar-disabled',
-//         viewCloseSummary: false
-//     },
-//     user: null,
-//     sectionsFromSplit: [],
-//     inProgressItems: []
-// };
+import { onGetSectionsSuccess } from '../../slices/sections';
+import { requestStarted } from '../../slices/loading';
+import { renderWithRedux } from '../../../test/test-utils';
 
 const mockStorageService = {
     _storage: {},
@@ -67,16 +39,6 @@ const mockSectionsService = {
     }
 };
 
-export function renderWithRedux(ui, { store }) {
-    return {
-        ...render(<Provider store={store}>{ui}</Provider>),
-        // adding `store` to the returned utilities to allow us
-        // to reference it in our tests (just try to avoid using
-        // this to test implementation details).
-        store
-    };
-}
-
 const findAction = (actionsList, actionToFind) =>
     actionsList.find(propEq('type', actionToFind.type));
 
@@ -88,7 +50,10 @@ describe('<AppFrame/>', () => {
                 name: 'Lebanon'
             }
         },
-        loading: true
+        loading: true,
+        ui: {
+            selectedMenuIdx: 0
+        }
     });
 
     let rendered;

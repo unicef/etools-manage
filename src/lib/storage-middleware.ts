@@ -8,10 +8,10 @@ import {
     onUpdateActionPointSection,
     onUpdateInterventionIndicatorsState,
     onUpdateTPMSections
-} from 'reducers/close-section-payload';
-import { onSuccessCloseSection } from 'reducers/closed-section-success';
+} from 'slices/close-section-payload';
+import { onSuccessCloseSection } from 'slices/closed-section-success';
 import { persistToStorage } from 'pages/split-section/actions';
-import { removeItemFromInProgress, getInProgressSuccess } from 'reducers/in-progress-items';
+import { removeItemFromInProgress, getInProgressSuccess } from 'slices/in-progress-items';
 
 const USER_SELECTION_ACTIONS = [
     onChangeInterventionSection.type,

@@ -9,8 +9,8 @@ import clsx from 'clsx';
 import { useTableStyles } from '../table/styles';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { useModalsDispatch } from 'contexts/page-modals';
-import { onToggleSplitModal } from 'reducers/modals';
-import { onCurrentActiveSection } from 'reducers/current-active-section';
+import { onToggleSplitModal } from 'slices/modals';
+import { currentActiveSectionChanged } from 'slices/current-active-section';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCountryName } from 'selectors/user';
 import { useAppService } from 'contexts/app';
@@ -76,7 +76,7 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     }
 
     function handleClickSplit() {
-        dispatch(onCurrentActiveSection(Number(rowId)));
+        dispatch(currentActiveSectionChanged(Number(rowId)));
         redirectIfSplitExists();
         modalsDispatch(onToggleSplitModal);
         handleClose();
