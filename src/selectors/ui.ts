@@ -1,25 +1,34 @@
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { FullStoreShape } from 'contexts/app';
 import { ActionBarKeys } from 'pages/close-section/types';
 import { selectCloseSectionPayload } from 'selectors';
 import { selectTotalProgress } from './num-items-resolved';
-import { isEmpty, keys, prop } from 'ramda';
+import { isEmpty, keys } from 'ramda';
 import {
     ACTION_BAR_DISABLED_ACTIONS,
     ACTION_BAR_CONNECTED,
     ACTION_BAR_REVIEW
 } from 'pages/close-section/constants';
 
-export const selectMenuItem = createSelector(['ui.selectedMenuIdx']);
+export const selectUi = (state: FullStoreShape) => state.ui;
 
-export const selectCloseSectionActionBar = createSelector<FullStoreShape, ActionBarKeys>(
-    ['ui'],
+export const selectMenuItemIdx = createSelector(
+    [selectUi],
+    ui => ui.selectedMenuIdx
+);
+
+export const selectCloseSectionActionBar = createSelector<
+    FullStoreShape,
+    FullStoreShape['ui'],
+    ActionBarKeys
+>(
+    [selectUi],
     ui => ui.closeSectionActionBar
 );
 
 export const selectViewCloseSummary = createSelector(
-    ['ui'],
-    prop('viewCloseSummary')
+    [selectUi],
+    ui => ui.viewCloseSummary
 );
 
 export const deriveCloseSectionActionBar = createSelector(

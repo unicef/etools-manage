@@ -1,7 +1,8 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 import { renderSectionsList } from 'actions/action-constants';
 
 const closedSectionSuccess = createSlice({
+    name: 'closedSectionSucces',
     initialState: false,
     reducers: {
         onSuccessCloseSection: () => true

@@ -26,7 +26,7 @@ const useStyles = makeStyles(() =>
 export default function Loader() {
     const styles = useStyles({});
     return (
-        <Box justify="center" align="center" className={styles.root}>
+        <Box justify="center" align="center" className={styles.root} data-testid="loader-full">
             <Box column justify="center" align="center">
                 <CircularProgress color="secondary" />
             </Box>

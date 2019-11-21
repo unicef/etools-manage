@@ -1,9 +1,10 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 import { without } from 'ramda';
 
 const initialState: string[] = [];
 
 const inProgressItems = createSlice({
+    name: 'inProgressItems',
     initialState,
     reducers: {
         getInProgressSuccess: (state, action) => action.payload,
@@ -17,6 +18,7 @@ const inProgressItems = createSlice({
         }
     }
 });
+
 export const {
     getInProgressSuccess,
     addItemToInProgress,

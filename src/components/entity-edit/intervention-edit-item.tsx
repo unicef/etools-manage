@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import {
-    InterventionEntity,
+    Intervention,
     GenericMultiSectionPayload,
     EditItemProps,
     ModuleEntities
@@ -37,7 +37,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 
     const dispatch = useDispatch();
 
-    const [interventionState, setInterventionState] = useState<InterventionEntity>(
+    const [interventionState, setInterventionState] = useState<Intervention>(
         initialInterventionState
     );
 
@@ -74,7 +74,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
         return [resolved, total];
     }, [interventionState])();
 
-    const onChange = (intervention: InterventionEntity) => {
+    const onChange = (intervention: Intervention) => {
         const storePayload: GenericMultiSectionPayload = {
             id,
             sections: intervention.sections

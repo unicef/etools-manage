@@ -2,7 +2,7 @@ import { getNumResolvedInterventions } from './interventions';
 import { getNumResolvedTPMActivities } from './tpm-activities';
 import { getNumResolvedActionPoints } from './action-points';
 import { getNumResolvedTravels } from './travels';
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { ResolvedRatio } from 'entities/types';
 import { sum, map, prop } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
@@ -22,7 +22,14 @@ export const selectNumItemsResolved = createSelector(
     ) => ({ interventions, travels, actionPoints, tpmActivities })
 );
 
-export const selectTotalProgress = createSelector<FullStoreShape, number>(
+export const selectTotalProgress = createSelector<
+    FullStoreShape,
+    ResolvedRatio,
+    ResolvedRatio,
+    ResolvedRatio,
+    ResolvedRatio,
+    number
+>(
     [
         getNumResolvedInterventions,
         getNumResolvedTravels,

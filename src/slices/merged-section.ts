@@ -1,7 +1,10 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
+import { Section } from 'entities/types';
 
+const initialState: Section | null = null;
 const mergedSection = createSlice({
-    initialState: null,
+    name: 'mergedSection',
+    initialState,
     reducers: {
         onSetMergedSection: (state, action) => action.payload
     }

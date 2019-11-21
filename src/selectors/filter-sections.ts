@@ -1,4 +1,4 @@
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { interventionsWithoutCurrentSection } from './interventions';
 import { travelsWithoutCurrentSection } from './travels';
 import { tpmActivitiesWithoutCurrentSection } from './tpm-activities';

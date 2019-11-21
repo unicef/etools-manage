@@ -1,26 +1,24 @@
 import { EntityConfig } from 'entities';
 
 export interface ZippedEntityResults {
-    indicators: Normalized<IndicatorEntity>;
-    tpmActivities: Normalized<TPMActivityEntity>;
-    actionPoints: Normalized<ActionPointEntity>;
-    interventions: Normalized<InterventionEntity>;
-    travels: Normalized<TravelEntity>;
+    indicators: Normalized<Indicator>;
+    tpmActivities: Normalized<TPMActivity>;
+    actionPoints: Normalized<ActionPoint>;
+    interventions: Normalized<Intervention>;
+    travels: Normalized<Travel>;
 }
 
 export type ModuleEntities = Omit<ZippedEntityResults, 'indicators'>;
 
 export interface KeyToEntityMap {
-    interventions: InterventionEntity;
-    tpmActivities: TPMActivityEntity;
-    actionPoints: ActionPointEntity;
-    travels: TravelEntity;
-    indicators: IndicatorEntity;
+    interventions: Intervention;
+    tpmActivities: TPMActivity;
+    actionPoints: ActionPoint;
+    travels: Travel;
+    indicators: Indicator;
 }
 
-export type EntityWithSingleSection = Normalized<
-    ActionPointEntity | TravelEntity | IndicatorEntity
->;
+export type EntityWithSingleSection = Normalized<ActionPoint | Travel | Indicator | TPMActivity>;
 
 export interface Normalized<T> {
     [id: string]: T;
@@ -56,16 +54,21 @@ export interface NewSectionFromSplitPayload {
 }
 
 export type SectionAction = 'close' | 'split';
-
-export interface ActionPointEntity {
+export interface ActionPointAsignee {
+    id: number;
+    name: string;
+    email: string;
+}
+export interface ActionPoint {
     id: number;
     reference_number: string;
     description: string;
     status: string;
     section: string;
+    assigned_to: ActionPointAsignee;
 }
 
-export interface IndicatorEntity {
+export interface Indicator {
     title: string;
     section: string;
     pk: number;
@@ -75,14 +78,14 @@ export interface MultiSectionEntity {
     sections: string[];
     existingSections: string[]; // we store sections that exist on the entity but cannot be removed at this property
 }
-export interface InterventionEntity extends MultiSectionEntity {
+export interface Intervention extends MultiSectionEntity {
     id: number;
     number: string;
     title: string;
-    indicators: IndicatorEntity[];
+    indicators: Indicator[];
 }
 
-export interface TPMActivityEntity {
+export interface TPMActivity {
     id: number;
     reference_number: string;
     status: string;
@@ -90,11 +93,11 @@ export interface TPMActivityEntity {
     tpm_partner_name: string;
 }
 
-export type FormattedTPMActivityEntity = Omit<TPMActivityEntity, 'section'> & {
+export type FormattedTPMActivityEntity = Omit<TPMActivity, 'section'> & {
     section: string[];
 };
 
-export interface SectionEntity {
+export interface Section {
     id: number;
     name: string;
     active: boolean;
@@ -108,7 +111,7 @@ export interface MergeSectionsPayload {
     new_section_name: string;
     sections_to_merge: number[];
 }
-export interface TravelEntity {
+export interface Travel {
     id: number;
     section: string;
     reference_number: string;
@@ -148,7 +151,7 @@ export interface InProgressItem {
 
 export interface IndicatorsPayload {
     id: string;
-    indicators: IndicatorEntity[];
+    indicators: Indicator[];
 }
 
 export interface FetchStoragePayload {
@@ -165,12 +168,7 @@ export interface ResolvedRatio {
     total: number;
 }
 
-export type AllEntities =
-    | InterventionEntity
-    | TPMActivityEntity
-    | ActionPointEntity
-    | TravelEntity
-    | IndicatorEntity;
+export type AllEntities = Intervention | TPMActivity | ActionPoint | Travel | Indicator;
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 

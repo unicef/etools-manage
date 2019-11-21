@@ -7,7 +7,7 @@ import { AppServices } from 'services';
 import StorageService from 'services/storage';
 import configureAppStore from 'lib/create-store';
 import { Provider } from 'react-redux';
-import rootReducer from 'reducers';
+import rootReducer from 'slices';
 
 const AppServiceContext = React.createContext<AppServices | undefined>(undefined);
 

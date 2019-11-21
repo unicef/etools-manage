@@ -1,4 +1,4 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 import { ModuleEntities } from 'entities/types';
 import { renderSectionsList } from 'actions/action-constants';
 
@@ -10,10 +10,11 @@ export const initialState: ModuleEntities = {
 };
 
 export const closeSectionPayload = createSlice({
+    name: 'closeSectionPayload',
     initialState,
     reducers: {
-        onFetchFromStorageSuccess: (state, action) => action.payload,
-        onFetchForCloseSuccess: (state, action) => action.payload,
+        dataFromStorageReceived: (state, action) => action.payload,
+        closeSectionDataReceived: (state, action) => action.payload,
         updateCloseSectionPayload: (state, action) => action.payload,
         onChangeInterventionSection: (state, action) => {
             const { id, sections } = action.payload;
@@ -42,9 +43,9 @@ export const closeSectionPayload = createSlice({
 });
 
 export const {
-    onFetchFromStorageSuccess,
+    dataFromStorageReceived,
     updateCloseSectionPayload,
-    onFetchForCloseSuccess,
+    closeSectionDataReceived,
     onUpdateTravelSection,
     onChangeInterventionSection,
     onUpdateActionPointSection,

@@ -38,7 +38,6 @@ const wrappedFetch = (
     {
         json = true,
         raw = false,
-        // For test environment Dependency Injection
         ...opts
     } = {}
 ) =>

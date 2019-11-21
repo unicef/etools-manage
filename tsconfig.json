@@ -1,11 +1,7 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
+        "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
@@ -17,9 +13,14 @@
         "baseUrl": "./src",
         "strict": true,
         "rootDir": "./",
-        "outDir": "./public",
+        "outDir": "./public"
     },
     "include": [
-        "./src", "test", "jest.config.js", "src/utils/node_modules/makeReducer.ts", "src/utils/node_modules/helpers.ts"
-    ]
+        "./src",
+        "test",
+        "jest.config.js",
+        "src/utils/node_modules/makeReducer.ts",
+        "src/utils/node_modules/helpers.ts"
+    ],
+    "exclude": ["src/**/__tests__/", "./test/"]
 }

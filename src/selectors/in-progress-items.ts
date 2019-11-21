@@ -1,12 +1,18 @@
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { selectSections, selectCurrentActiveSection } from 'selectors';
 import { parseKeyForId, parseKeyForAction } from 'lib/sections';
 import { map, propEq, filter, compose } from 'ramda';
-import { InProgressItem } from 'entities/types';
+import { InProgressItem, Section } from 'entities/types';
+import { FullStoreShape } from 'contexts/app';
 
-export const selectInProgress = createSelector(['inProgressItems']);
+export const selectInProgress = (state: FullStoreShape) => state.inProgressItems;
 
-export const deriveRowsFromInProgress = createSelector(
+export const deriveRowsFromInProgress = createSelector<
+    FullStoreShape,
+    string[],
+    Section[],
+    InProgressItem[]
+>(
     [selectInProgress, selectSections],
     (items, sections) => {
         if (!items.length || !sections.length) {
@@ -29,12 +35,12 @@ export const deriveRowsFromInProgress = createSelector(
             };
         };
 
-        const rows = compose(
+        const buildRowsFrom = compose(
             filter(Boolean),
             map(buildRowItem)
-        )(items);
+        );
 
-        return rows;
+        return buildRowsFrom(items);
     }
 );
 

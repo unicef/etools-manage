@@ -1,9 +1,10 @@
-import { createSlice } from 'redux-starter-kit';
-import { SectionEntity } from 'entities/types';
+import { createSlice } from '@reduxjs/toolkit';
+import { Section } from 'entities/types';
 
-const initialState: SectionEntity[] = [];
+const initialState: Section[] = [];
 
 const sections = createSlice({
+    name: 'sections',
     initialState,
     reducers: {
         onGetSectionsSuccess: (state, action) => action.payload

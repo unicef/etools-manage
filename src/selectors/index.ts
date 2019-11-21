@@ -1,41 +1,63 @@
-import { createSelector } from 'redux-starter-kit';
-import { ModuleEntities, SectionEntity } from 'entities/types';
+import { createSelector } from '@reduxjs/toolkit';
+import { ModuleEntities, Section } from 'entities/types';
 import { propEq, reject, map, prop, includes, without, filter, keys, concat, sortBy } from 'ramda';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
 import { selectSectionsFromSplit } from './split-section';
 
-export const selectCloseSectionPayload = createSelector<FullStoreShape, ModuleEntities>([
-    'closeSectionPayload'
-]);
+export const selectError: (state: FullStoreShape) => string = state => state.error;
+
+export const selectMergedSection: (state: FullStoreShape) => Section | null = state =>
+    state.mergedSection;
+
+export const selectCreatedSection: (state: FullStoreShape) => Section | null = state =>
+    state.createdSection;
+
+export const selectClosedSectionSuccess: (state: FullStoreShape) => boolean = state =>
+    state.closedSectionSuccess;
+
+export const selectCloseSectionPayload: (state: FullStoreShape) => ModuleEntities = state =>
+    state.closeSectionPayload;
+
+export const selectLoading: (state: FullStoreShape) => boolean = state => state.loading;
 
 export const selectCloseSectionPayloadKeys = createSelector(
-    ['closeSectionPayload'],
+    selectCloseSectionPayload,
     keys
 );
 
-export const selectModuleEditingName = createSelector(['moduleEditingName']);
+export const selectModuleEditingName = (state: FullStoreShape) => state.moduleEditingName;
 
-export const selectSections = createSelector<FullStoreShape, SectionEntity[]>(
-    ['sections'],
+export const selectAllSections: (state: FullStoreShape) => Section[] = state => state.sections;
+
+export const selectSections = createSelector<FullStoreShape, Section[], Section[]>(
+    [selectAllSections],
     sections => {
         const activeSection = propEq('active', true);
         return filter(activeSection, sections);
     }
 );
 
-export const selectSectionsWithInactive = createSelector<FullStoreShape, SectionEntity[]>([
-    'sections'
-]);
+export const selectCurrentActiveSection: (state: FullStoreShape) => number = state =>
+    state.currentActiveSectionId;
 
-export const selectCurrentActiveSection = createSelector(['currentActiveSection']);
-
-export const selectCurrentActiveSectionName = createSelector(
+export const selectCurrentActiveSectionName = createSelector<
+    FullStoreShape,
+    number,
+    Section[],
+    string
+>(
     [selectCurrentActiveSection, selectSections],
-    (id: number, sections: SectionEntity[]) => prop('name', sections.find(propEq('id', id)))
+    (id: number, sections: Section[]) => prop('name', sections.find(propEq('id', id)))
 );
 
-export const selectSectionsAsOptions = createSelector<FullStoreShape, OptionType[]>(
+export const selectSectionsAsDropdownOptions = createSelector<
+    FullStoreShape,
+    Section[],
+    number,
+    Section[],
+    OptionType[]
+>(
     [selectSections, selectCurrentActiveSection, selectSectionsFromSplit],
     (sections, current, namesFromSplit) => {
         const sectionsWithoutCurrent = reject(propEq('id', current), sections);
@@ -51,42 +73,40 @@ export const selectSectionsAsOptions = createSelector<FullStoreShape, OptionType
     }
 );
 
-// Note: higher order selectors will not memoize this way
-export const selectExistingAsOptions = (existing: string[]) =>
+// These higher order selectors will not memoize , only used for consistency here
+export const selectExistingAsOptions: (
+    existing: string[]
+) => (state: FullStoreShape) => OptionType[] = existing =>
     createSelector(
-        [selectSectionsAsOptions],
-        (sectionsAsOptions: OptionType[]) =>
-            sectionsAsOptions.filter(({ value }) => includes(value, existing))
+        [selectSectionsAsDropdownOptions],
+        sectionsAsOptions => sectionsAsOptions.filter(({ value }) => includes(value, existing))
     );
 
-export const getSelectedOptions = (sections: string[]) =>
+export const getSelectedOptions: (
+    sections: string[]
+) => (state: FullStoreShape) => OptionType[] = sections =>
     createSelector(
-        [selectSectionsAsOptions],
+        [selectSectionsAsDropdownOptions],
         sectionsAsOptions =>
             sectionsAsOptions.filter((option: OptionType) => includes(option.value, sections))
     );
 
-export const getOptionsWithoutExisting = (existing: string[]) =>
+export const getOptionsWithoutExisting: (
+    existing: string[]
+) => (state: FullStoreShape) => OptionType[] = existing =>
     createSelector(
-        [selectSectionsAsOptions, selectExistingAsOptions(existing)],
+        [selectSectionsAsDropdownOptions, selectExistingAsOptions(existing)],
         (sectionsAsOptions, existingAsOptions) => without(existingAsOptions, sectionsAsOptions)
     );
 
-export const getExistingSectionsStr = (existing: string[]) =>
+export const getExistingSectionsStr: (
+    existing: string[]
+) => (state: FullStoreShape) => string = existing =>
     createSelector(
         [selectSections],
-        (sections: SectionEntity[]) =>
+        sections =>
             sections
                 .filter(section => existing.includes(section.name))
                 .map(prop('name'))
                 .join(',')
     );
-
-export const selectLoading = createSelector(['loading']);
-
-export const selectError = createSelector(['error']);
-
-export const selectMergeSection = createSelector(['mergedSection']);
-
-export const selectCreatedSection = createSelector(['createdSection']);
-export const selectClosedSectionSuccess = createSelector(['closedSectionSuccess']);

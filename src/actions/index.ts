@@ -1,36 +1,39 @@
 import { compose, filter } from 'ramda';
-import { SectionsService } from 'services/section';
+import SectionsApiService, { SectionsService } from 'services/section';
 import { BackendService } from 'services/backend';
 import { CreateSectionPayload, MergeSectionsPayload, NonEmptyEntityResults } from 'entities/types';
-import { Dispatch } from 'global-types';
+import { Dispatch } from 'redux';
 import {
     isSectionsParamValid,
     filterDuplicateClose,
     isCurrentCountry,
     sectionWithNumberId
 } from 'lib/sections';
-import { requestStarted, requestComplete } from 'reducers/loading';
-import { onGetSectionsSuccess } from 'reducers/sections';
-import { onSetMergedSection } from 'reducers/merged-section';
-import { onThrowError } from 'reducers/error';
-import { onCreateSectionSuccess } from 'reducers/created-section';
+import { requestStarted, requestComplete } from 'slices/loading';
+import { onGetSectionsSuccess } from 'slices/sections';
+import { onSetMergedSection } from 'slices/merged-section';
+import { onThrowError } from 'slices/error';
+import { onCreateSectionSuccess } from 'slices/created-section';
 import wrappedFetch from 'lib/fetch';
-import { onUserProfileSuccess } from 'reducers/user';
+import { onUserProfileSuccess } from 'slices/user';
 import StorageService from 'services/storage';
-import { getInProgressSuccess, removeItemFromInProgress } from 'reducers/in-progress-items';
-import { createAction } from 'redux-starter-kit';
+import { getInProgressSuccess, removeItemFromInProgress } from 'slices/in-progress-items';
+import { createAction } from '@reduxjs/toolkit';
+import { ApiClient } from 'lib/http';
 
 export const redirectToLogin = createAction('loginRedirect');
 
-export const onGetSections = async (service: SectionsService, dispatch: Dispatch) => {
+export const onGetSections = (
+    service: SectionsService = new SectionsApiService(new ApiClient())
+) => async (dispatch: Dispatch) => {
     let sections;
     try {
         dispatch(requestStarted());
+
         sections = await service.getSections();
     } catch (error) {
         throw error;
     }
-
     sections = sections.map(sectionWithNumberId);
     dispatch(onGetSectionsSuccess(sections));
 };
@@ -50,11 +53,10 @@ export const onSubmitMergeSections = async (
     }
 };
 
-export const onSubmitCreateSection = async (
+export const onSubmitCreateSection = (
     service: SectionsService,
-    payload: CreateSectionPayload,
-    dispatch: Dispatch
-): Promise<Error | void> => {
+    payload: CreateSectionPayload
+) => async (dispatch: Dispatch) => {
     dispatch(requestStarted());
     let newSection;
     try {
@@ -98,9 +100,7 @@ export const fetchUserProfile = async (dispatch: Dispatch) => {
     }
 };
 
-export const getInProgressItems = (
-    storageService: StorageService,
-    payload: string,
+export const getInProgressItems = (storageService: StorageService, payload: string) => (
     dispatch: Dispatch
 ) => {
     let actionKeys = storageService.getAllItems();

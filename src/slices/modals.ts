@@ -1,4 +1,4 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface ModalsState {
     addModalOpen: boolean;
@@ -15,7 +15,7 @@ export const initialStateModals: ModalsState = {
 };
 
 const modalsSlice = createSlice({
-    slice: 'modals',
+    name: 'modals',
     initialState: initialStateModals,
     reducers: {
         onToggleAddModal: state => {

@@ -9,8 +9,8 @@ import clsx from 'clsx';
 import { useTableStyles } from '../table/styles';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { useModalsDispatch } from 'contexts/page-modals';
-import { onToggleSplitModal } from 'reducers/modals';
-import { onCurrentActiveSection } from 'reducers/current-active-section';
+import { onToggleSplitModal } from 'slices/modals';
+import { currentActiveSectionChanged } from 'slices/current-active-section';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCountryName } from 'selectors/user';
 import { useAppService } from 'contexts/app';
@@ -76,14 +76,14 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
     }
 
     function handleClickSplit() {
-        dispatch(onCurrentActiveSection(Number(rowId)));
+        dispatch(currentActiveSectionChanged(Number(rowId)));
         redirectIfSplitExists();
         modalsDispatch(onToggleSplitModal);
         handleClose();
     }
 
     if (redirect) {
-        return <Redirect push to={getSplitSectionUrl(String(rowId))} />;
+        return <Redirect push to={getSplitSectionUrl(rowId)} />;
     }
 
     function isDisabled(actionType: SectionAction) {
@@ -114,14 +114,17 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem disabled={isDisabled('close')} classes={{ root: menuStyles.listItem }}>
-                    <Link to={getCloseSectionUrl(String(rowId))}>
+                <Link to={getCloseSectionUrl(String(rowId))}>
+                    <MenuItem
+                        disabled={isDisabled('close')}
+                        classes={{ root: menuStyles.listItem }}
+                    >
                         <Box>
                             <DeleteIcon className={menuStyles.icon} color="secondary" />
                             <Typography variant="body1">Close section</Typography>
                         </Box>
-                    </Link>
-                </MenuItem>
+                    </MenuItem>
+                </Link>
                 <MenuItem
                     disabled={isDisabled('split')}
                     classes={{ root: menuStyles.listItem }}
