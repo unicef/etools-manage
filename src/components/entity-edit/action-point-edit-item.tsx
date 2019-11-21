@@ -19,7 +19,7 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
 
     const sectionsAsOptions = useSelector(selectSectionsAsDropdownOptions);
 
-    const { reference_number, description, section } = useSelector(
+    const { reference_number, description, section, assigned_to } = useSelector(
         (state: FullStoreShape) => state.closeSectionPayload.actionPoints[id]
     );
 
@@ -43,9 +43,14 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
         <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between">
                 <Box column>
-                    <Typography className={styles.refNum} variant="subtitle2">
-                        {reference_number}
-                    </Typography>
+                    <Box>
+                        <Typography className={styles.refNum} variant="subtitle2">
+                            {reference_number}
+                        </Typography>
+                        <Typography>
+                            - <i>{assigned_to.name}</i>
+                        </Typography>
+                    </Box>
                     <Typography>{description}</Typography>
                 </Box>
 

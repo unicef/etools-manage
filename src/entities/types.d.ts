@@ -54,13 +54,18 @@ export interface NewSectionFromSplitPayload {
 }
 
 export type SectionAction = 'close' | 'split';
-
+export interface ActionPointAsignee {
+    id: number;
+    name: string;
+    email: string;
+}
 export interface ActionPoint {
     id: number;
     reference_number: string;
     description: string;
     status: string;
     section: string;
+    assigned_to: ActionPointAsignee;
 }
 
 export interface Indicator {
