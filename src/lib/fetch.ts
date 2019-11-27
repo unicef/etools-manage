@@ -1,9 +1,10 @@
 import fetch from 'isomorphic-fetch';
 import { useEffect } from 'react';
-import { useSafeSetState } from 'utils/helpers';
+import { useSafeSetState } from 'utils';
 
+const BASE_URL = window.location.origin;
 
-export function checkStatus(response, raw): void {
+export async function checkStatus(response: Response, raw: boolean): Promise<Response> {
     if (raw) {
         return response;
     }
@@ -12,39 +13,63 @@ export function checkStatus(response, raw): void {
         return response;
     }
 
-    const error = new Error(JSON.stringify({
-        message: response.statusText,
-        code: response.status
-    }));
+    let message = response.statusText;
 
-    response.error = error;
+    if (response.status === 400) {
+        message = await response.json();
+    }
+
+    const error = new Error(
+        JSON.stringify({
+            message,
+            code: response.status,
+            ...response
+        })
+    );
+
     throw error;
 }
 
-const wrappedFetch = (url, {
-    json = true,
-    raw = false,
-    // For test environment Dependency Injection
-    ...opts
-} = {}) => {
-    return fetch(url, {
-        credentials: 'same-origin', // send cookies for etools auth
-        ...opts })
-        .then(response => checkStatus(response, raw))
-        .then(response => {
-            if (raw) {
-                return response;
-            }
+type FetchOpts = RequestInit & { json: boolean; raw: boolean };
 
-            return json ? response.json() : response.text();
-        })
+
+const wrappedFetch = (
+    url: string,
+    {
+        json = true,
+        raw = false,
+        ...opts
+    } = {}
+) =>
+    fetch(`${BASE_URL}/${url}`, {
+        credentials: 'same-origin', // send cookies for etools auth
+        ...opts
+    })
+        .then((response: Response) => checkStatus(response, raw))
+        .then(
+            // eslint-disable-next-line
+            async (response): Promise<Response | any> => {
+                if (raw) {
+                    return response;
+                }
+
+                return json ? response.json() : response.text();
+            }
+        )
         .catch(err => {
             throw err;
         });
-};
 
-export function useFetch(url) {
-    const [state, setState] = useSafeSetState({
+export interface FetchState {
+    loaded: boolean;
+    fetching: boolean;
+    // eslint-disable-next-line
+    data: any;
+    error: Error | null;
+}
+
+export function useFetch(url: string, opts?: FetchOpts): FetchState {
+    const [state, setState] = useSafeSetState<FetchState>({
         loaded: false,
         fetching: false,
         data: null,
@@ -56,7 +81,7 @@ export function useFetch(url) {
             setState({ fetching: true });
 
             try {
-                const res = await wrappedFetch(url);
+                const res = await wrappedFetch(url, opts);
                 setState({
                     data: res,
                     fetching: false,
@@ -66,16 +91,15 @@ export function useFetch(url) {
                 setState({
                     error,
                     loaded: false,
-                    fetching: false });
+                    fetching: false
+                });
             }
         };
 
         fetchData();
-
     }, []);
 
     return state;
 }
 
 export default wrappedFetch;
-

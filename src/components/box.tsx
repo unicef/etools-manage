@@ -22,20 +22,34 @@ const useStyles = makeStyles({
 });
 
 interface BoxProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     column?: boolean;
     row?: boolean;
-    align?: 'center' | 'start' | 'end' ;
-    justify?: 'center'| 'start'| 'end'| 'between';
+    align?: 'center' | 'start' | 'end';
+    justify?: 'center' | 'start' | 'end' | 'between';
     tagName?: string;
     auto?: boolean;
     wrap?: boolean;
+    // eslint-disable-next-line
     onRef?: () => any;
+    onClick?: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
     className?: string | undefined;
 }
 
-export default function Box({ children, column, row, align, justify, tagName = 'div', auto, className = '', wrap, onRef, ...props }: BoxProps) {
-    const styles = useStyles();
+export default function Box({
+    children,
+    column,
+    row,
+    align,
+    justify,
+    tagName = 'div',
+    auto,
+    className = '',
+    wrap,
+    onRef,
+    ...props
+}: BoxProps) {
+    const styles = useStyles({});
     const classes = classnames({
         [styles.auto]: auto,
         [styles.column]: column,
@@ -54,5 +68,3 @@ export default function Box({ children, column, row, align, justify, tagName = '
 
     return React.createElement(tagName, { className: classes, ref: onRef, ...props }, children);
 }
-
-

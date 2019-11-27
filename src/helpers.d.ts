@@ -43,3 +43,7 @@ type Maybe<T> = T | undefined
  */
 interface Dictionary<T> { [key: string]: T }
 export type PublicPart<T> = {[K in keyof T]: T[K]}
+export type PropertyNames<T> = { [K in keyof T]: K }[keyof T];
+
+export type WrapTypeWith<T, K> = T extends T ? K<T> : never;
+

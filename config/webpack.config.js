@@ -58,22 +58,21 @@ module.exports = function(webpackEnv) {
     // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
     // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
     const publicUrl = isEnvProduction
-        ? publicPath.slice(0, -1)
-        : isEnvDevelopment && process.env.PUBLIC_URL;
+    ? publicPath.slice(0, -1)
+    : isEnvDevelopment && process.env.PUBLIC_URL;
     // Get environment variables to inject into our app.
-
     const env = getClientEnvironment(publicUrl);
-
+    const devtool = isEnvProduction
+    ? shouldUseSourceMap
+    ? 'source-map'
+    : false
+    : isEnvDevelopment && 'cheap-module-source-map';
 
     return {
         mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
         // Stop compilation early in production
         bail: isEnvProduction,
-        devtool: isEnvProduction
-            ? shouldUseSourceMap
-                ? 'source-map'
-                : false
-            : isEnvDevelopment && 'cheap-module-source-map',
+        devtool: devtool,
         // These are the "entry points" to our application.
         // This means they will be the "root" imports that are included in JS bundle.
         entry: [
@@ -85,10 +84,12 @@ module.exports = function(webpackEnv) {
             // Note: instead of the default WebpackDevServer client, we use a custom one
             // to bring better experience for Create React App users. You can replace
             // the line below with these two lines if you prefer the stock client:
-            // require.resolve('webpack-dev-server/client') + '?/',
+            // require.resolve('webpack-dev-server/client') + '?http://localhost:8082/manage/',
             // require.resolve('webpack/hot/dev-server'),
-            isEnvDevelopment &&
-        require.resolve('react-dev-utils/webpackHotDevClient'),
+
+            // isEnvDevelopment &&
+        // require.resolve('react-dev-utils/webpackHotDevClient'),
+
             // Finally, this is your app's code:
             paths.appIndexJs
             // We include the app code last so that if there is a runtime error during
@@ -203,7 +204,8 @@ module.exports = function(webpackEnv) {
             alias: {
                 // Support React Native Web
                 // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-                'react-native': 'react-native-web'
+                'react-native': 'react-native-web',
+                'react-dom': '@hot-loader/react-dom'
             },
             plugins: [
                 // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -232,21 +234,22 @@ module.exports = function(webpackEnv) {
 
                 // First, run the linter.
                 // It's important to do this before Babel processes the JS.
-                // {
-                //     test: /\.(js|mjs|jsx)$/,
-                //     enforce: 'pre',
-                //     use: [
-                //         {
-                //             options: {
-                //                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
-                //                 eslintPath: require.resolve('eslint')
+               {
+                    test: /\.(|ts|tsx)$/,
+                    enforce: 'pre',
+                    use: [
+                        {
+                            options: {
+                                formatter: require.resolve('react-dev-utils/eslintFormatter'),
+                                eslintPath: require.resolve('eslint'),
+                                fix: true
 
-                //             },
-                //             loader: require.resolve('eslint-loader')
-                //         }
-                //     ],
-                //     include: paths.appSrc
-                // },
+                            },
+                            loader: require.resolve('eslint-loader')
+                        }
+                    ],
+                    include: paths.appSrc
+                },
                 {
                     // "oneOf" will traverse all following loaders until one will
                     // match the requirements. When no loader matches it will fall
@@ -286,6 +289,7 @@ module.exports = function(webpackEnv) {
                                             }
                                         }
                                     ],
+                                    "react-hot-loader/babel"
 
 
                                 ],

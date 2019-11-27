@@ -1,32 +1,12 @@
 import React, { useContext, useReducer } from 'react';
-import PageModals from 'components/page-modals';
-import { onToggleAddModal, onToggleSplitModal } from 'actions';
-import { modalsReducer } from 'reducers/modals';
-import { ProviderProps } from 'global-types';
+import { ChildrenProps, ContextDispatch } from 'global-types';
+import { ModalsState, initialStateModals, modalsReducer } from 'slices/modals';
 
-// TODO: Clean this file up
-interface State {
-    addModalOpen: boolean;
-    splitModalOpen: boolean;
-}
+const ModalsStateContext = React.createContext<ModalsState | undefined>(undefined);
+const ModalsDispatchContext = React.createContext<ContextDispatch | undefined>(undefined);
 
-
-type ModalAction = typeof onToggleAddModal | typeof onToggleSplitModal
-
-type Dispatch = (action: ModalAction) => void
-
-
-const ModalsStateContext = React.createContext<State | undefined>(undefined);
-const ModalsDispatchContext = React.createContext<Dispatch | undefined>(undefined);
-
-const initialState: State = {
-    addModalOpen: false,
-    splitModalOpen: false
-};
-
-
-export function PageModalsProvider({ children }: ProviderProps) {
-    const [state, setModalsState] = useReducer(modalsReducer, initialState);
+export function PageModalsProvider({ children }: ChildrenProps): JSX.Element {
+    const [state, setModalsState] = useReducer(modalsReducer, initialStateModals);
     return (
         <ModalsStateContext.Provider value={state}>
             <ModalsDispatchContext.Provider value={setModalsState}>
@@ -36,9 +16,7 @@ export function PageModalsProvider({ children }: ProviderProps) {
     );
 }
 
-
 export function useModalsState() {
-
     const context = useContext(ModalsStateContext);
     if (context === undefined) {
         throw new Error('useModalsState must be used within a PageModalsProvider');
@@ -49,17 +27,12 @@ export function useModalsState() {
 export function useModalsDispatch() {
     const context = useContext(ModalsDispatchContext);
     if (context === undefined) {
-        throw new Error('useCountDispatch must be used within a PageModalsProvider');
+        throw new Error('useModalsDispatch must be used within a PageModalsProvider');
     }
 
     return context;
 }
 
-export function Modals({ children }) {
-    return (
-        <PageModalsProvider>
-            <PageModals />
-            {children}
-        </PageModalsProvider>
-    );
-}
+export const Modals: React.FC<ChildrenProps> = ({ children }) => (
+    <PageModalsProvider>{children}</PageModalsProvider>
+);

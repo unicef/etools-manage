@@ -1,40 +1,21 @@
 import React from 'react';
-import ErrorBoundary from 'react-error-boundary';
-
-// import CustomContextProvider from './context-provider';
-import UserProvider from '../contexts/user';
-import { ProviderStore } from 'global-types';
 import { ThemeProvider } from '@material-ui/styles';
-import theme from '../lib/theme';
+import ErrorBoundary from 'react-error-boundary';
+import { ProviderStore } from 'global-types';
 import { AppStoreProvider } from 'contexts/app';
-
-interface FallbackProps {
-    error?: Error;
-    message?: string;
-}
-
-
-function CustomFallbackComponent({ error, message }: FallbackProps) {
-    return (
-        <div>
-            {`An error was thrown: "${error}". ${message}`}
-        </div>
-    );
-}
+import theme from '../lib/theme';
+import ErrorCard from './error-card';
 
 const AppProviders: React.FC<ProviderStore> = ({ children }) => {
-    console.log(theme);
     return (
-        <ErrorBoundary FallbackComponent={CustomFallbackComponent}>
+        <ErrorBoundary FallbackComponent={ErrorCard}>
             <ThemeProvider theme={theme}>
-                <UserProvider username="marko911">
-                    <AppStoreProvider >
-                        <>{children}</>
-                    </AppStoreProvider>
-                </UserProvider>
+                <AppStoreProvider>
+                    <>{children}</>
+                </AppStoreProvider>
             </ThemeProvider>
-        </ErrorBoundary>);
+        </ErrorBoundary>
+    );
 };
 
 export default AppProviders;
-

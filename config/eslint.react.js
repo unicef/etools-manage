@@ -6,8 +6,10 @@ module.exports = {
     ],
     env: {
         browser: true,
-        node: true,
-        mocha: true
+        commonjs: true,
+        es6: true,
+        jest: true,
+        node: true
     },
     extends: ['plugin:react/recommended'],
     parserOptions: {
@@ -22,5 +24,8 @@ module.exports = {
             version: '16.8'
         }
     },
-    rules: {}
+    rules: {
+        'react/prop-types': "off", // No need since we use Typescript
+        'react/display-name': 'off' // Memo triggers false positive
+    }
 };

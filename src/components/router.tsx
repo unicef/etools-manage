@@ -1,13 +1,35 @@
-
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Main from 'pages/one';
+import { Location } from 'history';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Main from 'pages/sections-main';
+import MergeSummaryPage from 'pages/merge-summary';
+import CloseSummaryPage from 'pages/close-section';
+import SplitSectionPage from 'pages/split-section';
+import { CLOSE_SECTION_PATH, SPLIT_SECTION_PATH } from 'global-constants';
 
+
+function NoMatch({ location }: { location: Location }) {
+    return (
+        <div>
+            <h3>
+                No match for <code>{location.pathname}</code>
+            </h3>
+        </div>
+    );
+}
 
 export default function AppRouter() {
     return (
-        <Router>
-            <Route exact path="/" component={Main} />
+        <Router basename={process.env.PUBLIC_URL}>
+            <Switch>
+                <Route exact path="/" component={Main} />
+                <Route path="/merge/" component={MergeSummaryPage} />
+                <Route path={`${CLOSE_SECTION_PATH}:id?`} component={CloseSummaryPage} />
+                <Route path={`${SPLIT_SECTION_PATH}:id?`} component={SplitSectionPage} />
+
+                <Route component={NoMatch} />
+            </Switch>
         </Router>
     );
 }
+

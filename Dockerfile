@@ -21,9 +21,10 @@ RUN apk update
 RUN apk add --update bash
 
 WORKDIR /code
-RUN npm install serve --no-save
-COPY --from=builder /code/serve.js /code/serve.js
+RUN npm install express --no-save
+COPY --from=builder /code/server.js /code/server.js
 COPY --from=builder /code/build /code/build
-
 EXPOSE 8080
-CMD ["serve", "-s", "build"]
+CMD ["node", "server.js"]
+
+
