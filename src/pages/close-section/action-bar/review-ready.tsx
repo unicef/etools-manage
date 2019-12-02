@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { onSelectShowReview } from '../actions';
 import CancelSectionActionButton from './cancel-button';
 
-
 export default function ActionBarReviewReady() {
     const dispatch = useDispatch();
     const styles = useSummaryStyles();
@@ -16,12 +15,18 @@ export default function ActionBarReviewReady() {
     };
 
     return (
-        <Box className={styles.section} justify="between" align="center">
+        <Box
+            className={styles.section}
+            justify="between"
+            align="center"
+            data-testid="actionbar-review"
+        >
             <BackIconButton />
 
-            <Box><CancelSectionActionButton />
-                <ConfirmButton onClick={onClick}>Review and Confirm</ConfirmButton></Box>
+            <Box>
+                <CancelSectionActionButton />
+                <ConfirmButton onClick={onClick}>Review and Confirm</ConfirmButton>
+            </Box>
         </Box>
     );
-
 }

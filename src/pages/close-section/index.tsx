@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Box from 'components/box';
 import { KeyToEntityMap } from 'entities/types';
-import { CloseSectionsPage } from './close-section-page';
+import { CloseSectionPage } from './close-section-page';
 import InterventionsEdit from 'components/entity-edit/interventions-edit';
 import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points-edit';
@@ -80,7 +80,7 @@ export const CloseSectionRender: React.FC = () => {
             ) : closedSectionSuccess ? (
                 <SuccessBox {...successProps} />
             ) : (
-                <CloseSectionsPage />
+                <CloseSectionPage />
             )}
         </Box>
     );

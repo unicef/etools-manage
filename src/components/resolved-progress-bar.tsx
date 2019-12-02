@@ -31,7 +31,9 @@ const ResolvedProgress: React.FC<{ progress: number }> = memo(({ progress }) => 
                 color="secondary"
                 value={progress}
             />
-            <Typography align="center">Resolved items progress {progress}%</Typography>
+            <Typography align="center" data-testid="resolved-items-progress">
+                Resolved items progress {progress}%
+            </Typography>
         </Box>
     );
 });
