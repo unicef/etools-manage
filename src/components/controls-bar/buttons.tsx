@@ -8,13 +8,12 @@ import { ClickHandler } from 'global-types';
 import { useButtonStyles } from 'components/buttons';
 import { onToggleMergeModal, onToggleAddModal } from 'slices/modals';
 
-
 export interface MergeButtonProps {
     onClick: ClickHandler;
     mergeActive: boolean;
 }
 
-export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
+export const MergeButton = ({ onClick, mergeActive, ...props }: MergeButtonProps) => {
     const styles = useButtonStyles({});
     const btnText = mergeActive ? 'Cancel Merge' : 'Merge';
     return (
@@ -23,12 +22,15 @@ export const MergeButton = ({ onClick, mergeActive }: MergeButtonProps) => {
             variant="contained"
             color="secondary"
             className={styles.button}
-            aria-label="Merge">
-            { btnText }
-            {
-                mergeActive ? <CancelIcon className={styles.icon} />
-                    : <MergeIcon className={styles.icon} />
-            }
+            aria-label="Merge"
+            {...props}
+        >
+            {btnText}
+            {mergeActive ? (
+                <CancelIcon className={styles.icon} />
+            ) : (
+                <MergeIcon className={styles.icon} />
+            )}
         </Button>
     );
 };
@@ -40,14 +42,15 @@ export const ConfirmMergeButton = () => {
 
     return (
         <Button
-            onClick={() => dispatch(onToggleMergeModal) }
+            onClick={() => dispatch(onToggleMergeModal)}
             color="secondary"
             variant="contained"
             className={styles.button}
             disabled={selectedForMerge.length !== 2}
-            aria-label="Merge">
-                Create Merge
-            <MergeIcon className={styles.icon}/>
+            aria-label="Merge"
+        >
+            Create Merge
+            <MergeIcon className={styles.icon} />
         </Button>
     );
 };
@@ -59,14 +62,9 @@ export const AddSectionButton = () => {
         dispatch(onToggleAddModal);
     };
     return (
-        <Button
-            onClick={onClick }
-            color="secondary"
-            className={styles.button}
-            variant="contained">
+        <Button onClick={onClick} color="secondary" className={styles.button} variant="contained">
             Add Section
-            <AddIcon className={styles.icon}/>
+            <AddIcon className={styles.icon} />
         </Button>
     );
 };
-

@@ -14,14 +14,15 @@ import configureAppStore from '../../../lib/create-store';
 import 'jest-dom/extend-expect';
 
 import { selectCloseSectionPayload } from '../../../selectors';
-import { selectTotalProgress } from '../../../selectors/num-items-resolved';
 import {
     mockDataCloseSectionPayloadState,
     mockDataUserProfile,
     mockDataCloseSectionAllResolvedState,
     mockDataHalfResolvedCloseSectionPayload
 } from './fixtures/state-fixture';
+
 import { CloseSectionPage } from '../close-section-page';
+
 describe('Close Section Page', () => {
     const mockStore = configureStore([thunk]);
 
@@ -168,7 +169,7 @@ describe('Close Section Page', () => {
         });
 
         describe('progress bar', () => {
-            test.only('calculates and displays progress for each type of entity correctly', async () => {
+            test('calculates and displays progress for each type of entity correctly', async () => {
                 // we use mockStore instead of real store because dispatching `closeSectionDataReceived`
                 // will remove all sections on each entity via middleware. This way lets us test a pre-set store state
                 // with some progress

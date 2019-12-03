@@ -5,6 +5,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import { render, RenderOptions } from '@testing-library/react';
 import { AppServicesProvider } from '../src/contexts/app';
+import { Modals as ModalsProvider } from '../src/contexts/page-modals';
+import { ThemeProvider } from '@material-ui/styles';
+import theme from '../src/lib/theme';
 
 const connectedRender = (ui: React.ReactElement, options?: Omit<RenderOptions, 'queries'>) =>
     render(ui, options);
@@ -15,12 +18,20 @@ export * from '@testing-library/react';
 // override render method
 export { connectedRender };
 
+const Contexts = ({ children }) => (
+    <ThemeProvider theme={theme}>
+        <ModalsProvider>{children}</ModalsProvider>
+    </ThemeProvider>
+);
+
 export function renderWithRedux(ui, { store }) {
     return {
         ...render(
             <Provider store={store}>
                 <AppServicesProvider>
-                    <Router>{ui}</Router>
+                    <Router>
+                        <Contexts>{ui}</Contexts>
+                    </Router>
                 </AppServicesProvider>
             </Provider>
         ),

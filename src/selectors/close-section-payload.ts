@@ -8,7 +8,8 @@ import {
     Normalized,
     Travel,
     ModuleEntities,
-    TPMActivity
+    TPMActivity,
+    SectionToEntity
 } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
@@ -17,7 +18,6 @@ import { selectActionPointsFromPayload } from './action-points';
 import { keys, equals } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { selectNamesFromsplit } from './split-section';
-import { Dictionary } from 'helpers';
 import { initialState } from 'slices/close-section-payload';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
@@ -42,7 +42,7 @@ export const getCloseSectionBackendPayload = createSelector<
     (actionPoints, interventions, tpmActivities, travels, oldSection, namesFromSplit: string[]) => {
         const payload: CloseSectionBackendPayload = {
             old_section: oldSection,
-            new_sections: namesFromSplit.reduce((obj: Dictionary<{}>, name) => {
+            new_sections: namesFromSplit.reduce((obj: SectionToEntity, name) => {
                 obj[name] = {};
                 return obj;
             }, {})
