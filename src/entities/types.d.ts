@@ -32,7 +32,7 @@ export interface CloseSectionPayload {
 
 export interface SectionToEntity {
     [name: string]: {
-        [key in BackendEntityNames]: number[];
+        [key in BackendEntityNames]?: number[];
     };
 }
 

@@ -73,7 +73,7 @@ const useModulesSummary = () => {
     };
 };
 
-export const CloseSectionsPage: React.FC = () => {
+export const CloseSectionPage: React.FC = () => {
     const { modulesData } = useModulesSummary();
 
     const actionBar = useSelector(selectCloseSectionActionBar);
@@ -161,7 +161,13 @@ export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ modulesData }) =
                     </Typography>
                 </Box>
                 {modulesData
-                    ? modulesData.map(module => <ModuleSummaryItem key={module.name} {...module} />)
+                    ? modulesData.map(module => (
+                          <ModuleSummaryItem
+                              data-testid={module.name}
+                              key={module.name}
+                              {...module}
+                          />
+                      ))
                     : null}
                 {dataFetched && !hasData && (
                     <Typography className={styles.infoMsg}>
@@ -176,7 +182,7 @@ export const ModulesSummary: React.FC<ModulesSummaryProps> = ({ modulesData }) =
 };
 
 export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(
-    ({ name, itemsResolved, onEdit }) => {
+    ({ name, itemsResolved, onEdit, ...props }) => {
         const styles = useSummaryStyles();
 
         return (
@@ -184,6 +190,7 @@ export const ModuleSummaryItem: React.FC<SummaryItemProps> = memo(
                 className={clsx(styles.itemRoot, styles.itemSpacing)}
                 align="center"
                 justify="between"
+                {...props}
             >
                 <Typography color="inherit" className={styles.moduleCell} variant="body2">
                     {name}

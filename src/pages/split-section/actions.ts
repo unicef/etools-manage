@@ -10,10 +10,10 @@ import { ThunkDispatch } from 'redux-thunk';
 
 export const persistToStorage = createAction<NewSectionFromSplitPayload[]>('persistToStorage');
 
-export const onFetchDataSplitSection = async (
+export const onFetchDataSplitSection = (
     services: { backendService: BackendService; storageService: StorageService },
     payload: FetchStoragePayload
-) => (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+) => async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     const { storageService } = services;
 
     const splitKey = getSplitSectionPrefixKey(payload);

@@ -36,6 +36,7 @@ export function notEmpty(xs: unknown) {
 export function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
     return o[name];
 }
+
 // eslint-disable-next-line
 export function isArrayOfObjects(xs: any[]) {
     return typeof xs[0] === 'object';
@@ -81,13 +82,17 @@ export const setValueFromEvent: (
     setter: StateSetter
 ) => (event: React.ChangeEvent<HTMLInputElement>) => void = setter => ({ target: { value } }) =>
     setter(value);
+
 export const firstValue = compose(
     head,
     values
 );
+
 export const firstKey = compose(
     head,
     keys
 );
+
 export const lookup = flip(prop);
+
 export const capitalize = replace(/^./, toUpper);

@@ -11,7 +11,7 @@ const ConnectedConfirmButton: React.FC = () => {
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        onSubmitCloseSection(sectionsService, backendPayload, dispatch);
+        dispatch(onSubmitCloseSection(sectionsService, backendPayload));
     };
 
     return <ConfirmButton onClick={handleSubmit}>Submit</ConfirmButton>;

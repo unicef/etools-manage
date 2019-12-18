@@ -59,14 +59,13 @@ export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
     dispatch(onSetModuleEditingName(payload));
 };
 
-export const onSelectInterventionSection = (
-    payload: GenericMultiSectionPayload,
+export const onSelectInterventionSection = (payload: GenericMultiSectionPayload) => (
     dispatch: Dispatch
 ) => {
     dispatch(onChangeInterventionSection(payload));
 };
 
-export const onSelectIndicatorSection = (payload: IndicatorsPayload, dispatch: Dispatch) => {
+export const onSelectIndicatorSection = (payload: IndicatorsPayload) => (dispatch: Dispatch) => {
     dispatch(onUpdateInterventionIndicatorsState(payload));
 };
 
@@ -82,11 +81,10 @@ export const onSelectTPMSections = (payload: GenericSectionPayload, dispatch: Di
     dispatch(onUpdateTPMSections(payload));
 };
 
-export const onSubmitCloseSection = async (
+export const onSubmitCloseSection = (
     service: SectionsService,
-    payload: CloseSectionBackendPayload,
-    dispatch: Dispatch
-) => {
+    payload: CloseSectionBackendPayload
+) => async (dispatch: Dispatch) => {
     try {
         dispatch(requestStarted());
         await service.closeSection(payload);

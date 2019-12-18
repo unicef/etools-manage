@@ -8,7 +8,7 @@ import { History } from 'history';
 
 import { withRouter } from 'react-router';
 import { useAddSection } from 'entities/section-entity';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentActiveSection, selectCurrentActiveSectionName } from 'selectors';
 import { setValueFromEvent } from 'utils';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
@@ -16,7 +16,7 @@ import { onToggleSplitModal } from 'slices/modals';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { SectionBox } from 'components/section-box';
 import clsx from 'clsx';
-import { onSectionSplit } from 'pages/split-section/actions';
+import { persistToStorage } from 'pages/split-section/actions';
 import { getSplitSectionUrl } from 'lib/sections';
 
 const useSplitStyles = makeStyles((theme: Theme) =>
@@ -64,7 +64,7 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const splitStyles = useSplitStyles();
     const currentSectionName = useSelector(selectCurrentActiveSectionName);
     const currentActiveSectionId = useSelector(selectCurrentActiveSection);
-
+    const dispatch = useDispatch();
     const { errorOnName, setNameError, handleValidateSection, name, setName } = useAddSection();
 
     const {
@@ -79,27 +79,30 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
         const splitUrl = getSplitSectionUrl(currentActiveSectionId);
 
         const payload = [{ name, active: true }, { name: nameTwo, active: true }];
-        onSectionSplit(payload);
+        dispatch(persistToStorage(payload));
 
         history.push(splitUrl);
         onClose();
     };
 
-    const SubmitButton = withRouter(({ history }) => (
-        <Button
-            onClick={handleSubmit(history)}
-            className={styles.confirmBtn}
-            color="secondary"
-            variant="contained"
-            disabled={
-                (!name.length && !nameTwo.length) ||
-                Boolean(errorOnName.length) ||
-                Boolean(errorOnNameTwo.length)
-            }
-        >
-            Continue
-        </Button>
-    ));
+    const SubmitButton = withRouter(({ history }) => {
+        const isDisabled =
+            !name.length ||
+            !nameTwo.length ||
+            Boolean(errorOnName.length) ||
+            Boolean(errorOnNameTwo.length);
+        return (
+            <Button
+                onClick={handleSubmit(history)}
+                className={styles.confirmBtn}
+                color="secondary"
+                variant="contained"
+                disabled={isDisabled}
+            >
+                Continue
+            </Button>
+        );
+    });
 
     return (
         <Box column>

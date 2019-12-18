@@ -16,7 +16,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(1)
         },
         description: {
-            flex: '1 1 50%%'
+            flex: '1 0 40%'
         },
         travel: {
             minHeight: 68,
@@ -61,7 +61,8 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             paddingRight: 40
         },
         dropdown: {
-            minWidth: 335
+            minWidth: 335,
+            flex: 1
         },
         selectColumn: {
             marginLeft: theme.spacing(2)
