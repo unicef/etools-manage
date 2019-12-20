@@ -11,7 +11,7 @@ import {
 import { HEADER_BACKGROUND_PRODUCTION, HEADER_BACKGROUND_DEV } from 'lib/theme';
 
 export function useSetState<T>(initialState: T) {
-    return useReducer((state: T, newState: T) => ({ ...state, ...newState }), initialState);
+    return useReducer((state, newState) => ({ ...state, ...newState }), initialState);
 }
 
 export function useSafeSetState<T>(initialState: T) {
