@@ -181,6 +181,66 @@ export const travels = {
         supervisor_name: 'Teresa De La Torre'
     }
 };
+export const engagements = {
+    '12': {
+        agreement: {
+            contract_end_date: '2018-06-01',
+            order_number: '0043229117',
+            items: [],
+            contract_start_date: '2017-07-17',
+            auditor_firm: {
+                email: '',
+                street_address: '',
+                vendor_number: '2300080456',
+                name: 'PRICEWATERHOUSECOOPERS JORDAN',
+                unicef_users_allowed: false,
+                phone_number: '',
+                postal_code: '',
+                country: 'Jordan',
+                city: '',
+                id: 3
+            },
+            id: 2
+        },
+        po_item: null,
+        engagement_type: 'ma',
+        total_value: '0.00',
+        sections: ['Education'],
+        offices: [],
+        partner: {
+            street_address: '',
+            last_assessment_date: '2017-12-17',
+            address: 'AL ARASAT AL HINDYA 929',
+            city: 'BAGHDAD',
+            postal_code: '',
+            country: '213',
+            id: 286,
+            vendor_number: '2500235286',
+            deleted_flag: false,
+            blocked: false,
+            name: 'JUSTICE GATE ORGANIZATION',
+            short_name: '',
+            partner_type: 'Civil Society Organization',
+            cso_type: 'National',
+            rating: 'Medium',
+            shared_with: null,
+            email: 'FIRAS_LAIK@YAHOO.COM',
+            phone_number: '7707171284',
+            total_ct_cp: '1497234.98',
+            total_ct_cy: '731810.00',
+            net_ct_cy: '838110.00',
+            reported_cy: '568285.00',
+            total_ct_ytd: '508450.00',
+            hidden: false,
+            basis_for_risk_rating: ''
+        },
+        unique_id: 'IRQ/JUSTI/MA/2018/12',
+        status: 'report_submitted',
+        status_date: '2018-06-21',
+        id: 12,
+        existingSections: ['Drivers', 'Health and Nutrition']
+    }
+};
 
 export const travelsSplit = {
     '5': {

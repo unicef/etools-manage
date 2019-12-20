@@ -4,6 +4,7 @@ import {
     interventions,
     tpmActivities,
     travels,
+    engagements,
     travelsSplit
 } from './fixtures/selector-state-fixtures';
 import { selectActionPointsFromPayload } from '../action-points';
@@ -56,6 +57,7 @@ describe('Selectors: Close section payload', () => {
                 interventions,
                 tpmActivities,
                 travels,
+                engagements,
                 4,
                 []
             )
@@ -65,7 +67,8 @@ describe('Selectors: Close section payload', () => {
                     interventions: [1]
                 },
                 Education: {
-                    interventions: [2]
+                    interventions: [2],
+                    engagements: [12]
                 },
                 Health: {
                     applied_indicators: [770],
@@ -98,6 +101,7 @@ describe('Selectors: Close section payload', () => {
                 interventions,
                 tpmActivities,
                 travelsSplit,
+                engagements,
                 4,
                 ['Split_1', 'Split_2']
             )
@@ -108,7 +112,8 @@ describe('Selectors: Close section payload', () => {
                 },
                 Education: {
                     interventions: [2],
-                    travels: [6]
+                    travels: [6],
+                    engagements: [12]
                 },
                 Health: {
                     applied_indicators: [770],
