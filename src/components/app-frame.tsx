@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         flexGrow: 1,
-        maxWidth: 1200,
+        maxWidth: 1450,
         padding: `${theme.spacing(14)}px ${theme.spacing(10)}px ${theme.spacing(5)}px`,
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,

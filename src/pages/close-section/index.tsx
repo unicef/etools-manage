@@ -19,7 +19,7 @@ import { selectUserProfile } from 'selectors/user';
 import { MatchParams } from 'global-types';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
 import SuccessBox from 'components/success-box';
-import { updateCloseSectionPayload } from 'slices/close-section-payload';
+import EngagementEdit from 'components/entity-edit/engagement-edit';
 
 type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>;
 
@@ -29,7 +29,8 @@ const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     interventions: InterventionsEdit,
     travels: TravelsEdit,
     actionPoints: ActionPointsEdit,
-    tpmActivities: TPMActivitiesEdit
+    tpmActivities: TPMActivitiesEdit,
+    engagements: EngagementEdit
 };
 
 function getEditComponent(name: keyof EditComponentMappings | '') {
@@ -51,8 +52,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({ match })
             dispatch(currentActiveSectionChanged(Number(id)));
 
             const { name: countryName } = user.country;
-
-            dispatch(updateCloseSectionPayload(null));
             dispatch(
                 onFetchDataCloseSection({ backendService, storageService }, { id, countryName })
             );

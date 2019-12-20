@@ -1,7 +1,15 @@
 import React, { useEffect } from 'react';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Box from 'components/box';
-import { IconButton, makeStyles, createStyles, Theme, Paper, Typography, Container } from '@material-ui/core';
+import {
+    IconButton,
+    makeStyles,
+    createStyles,
+    Theme,
+    Paper,
+    Typography,
+    Container
+} from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useIconButtonStyles } from 'components/table/styles';
 import { onSetModuleEditingName } from 'slices/module-editing-name';
@@ -20,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
         section: {
             marginBottom: theme.spacing(2)
         }
-
     })
 );
 
@@ -28,9 +35,17 @@ interface WrapperProps {
     children: React.ReactNode;
     title: string;
     resolved: string;
+    maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 }
 
-const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
+const DEFAULT_WRAPPER_MAX_WIDTH = 'md';
+
+const EditWrapper: React.FC<WrapperProps> = ({
+    children,
+    title,
+    resolved,
+    maxWidth = DEFAULT_WRAPPER_MAX_WIDTH
+}) => {
     const dispatch = useDispatch();
     const styles = useStyles();
     const iconStyles = useIconButtonStyles();
@@ -40,22 +55,24 @@ const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
     useEffect(
         () => () => {
             dispatch(onSetModuleEditingName(null));
-        }, []
+        },
+        []
     );
     return (
-        <Container maxWidth="lg" >
+        <Container maxWidth={maxWidth}>
             <Box className={styles.section}>
-                <IconButton
-                    className={iconStyles.icon}
-                    size="medium"
-                    onClick={onClick}>
-                    <BackIcon fontSize="large"/>
-                </IconButton></Box>
-            <Paper >
+                <IconButton className={iconStyles.icon} size="medium" onClick={onClick}>
+                    <BackIcon fontSize="large" />
+                </IconButton>
+            </Box>
+            <Paper>
                 <Box className={styles.content} justify="between">
-                    <Typography className={styles.title} variant="subtitle1">{title} </Typography>
-                    <Typography color="textPrimary" variant="body2">Items resolved: {resolved}</Typography>
-
+                    <Typography className={styles.title} variant="subtitle1">
+                        {title}{' '}
+                    </Typography>
+                    <Typography color="textPrimary" variant="body2">
+                        Items resolved: {resolved}
+                    </Typography>
                 </Box>
 
                 <Box column className={styles.content}>
@@ -65,6 +82,5 @@ const EditWrapper: React.FC<WrapperProps> = ({ children, title, resolved }) => {
         </Container>
     );
 };
-
 
 export default EditWrapper;

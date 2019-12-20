@@ -13,7 +13,9 @@ export const selectInterventionsFromPayload = createSelector<
     Normalized<Intervention>
 >(
     [selectCloseSectionPayload],
-    prop('interventions')
+    payload => {
+        return payload.interventions;
+    }
 );
 
 export const selectInterventionIds = createSelector(

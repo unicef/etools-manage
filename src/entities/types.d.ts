@@ -6,6 +6,7 @@ export interface ZippedEntityResults {
     actionPoints: Normalized<ActionPoint>;
     interventions: Normalized<Intervention>;
     travels: Normalized<Travel>;
+    engagements: Normalized<Engagement>;
 }
 
 export type ModuleEntities = Omit<ZippedEntityResults, 'indicators'>;
@@ -16,6 +17,7 @@ export interface KeyToEntityMap {
     actionPoints: ActionPoint;
     travels: Travel;
     indicators: Indicator;
+    engagements: Engagement;
 }
 
 export type EntityWithSingleSection = Normalized<ActionPoint | Travel | Indicator | TPMActivity>;
@@ -41,6 +43,7 @@ export type BackendEntityNames =
     | 'applied_indicators'
     | 'travels'
     | 'tpm_activities'
+    | 'engagements'
     | 'action_points';
 
 export interface CloseSectionBackendPayload {
@@ -72,6 +75,21 @@ export interface Indicator {
     title: string;
     section: string;
     pk: number;
+}
+export type EngagementType = 'ma' | 'sa' | 'sc' | 'audit';
+export interface Engagement extends MultiSectionEntity {
+    id: number;
+    unique_id: string;
+    status: 'partner_contacted' | 'report_submitted';
+    agreement: {
+        auditor_firm: {
+            name: string;
+        };
+    };
+    partner: {
+        name: string;
+    };
+    engagement_type: EngagementType;
 }
 
 export interface MultiSectionEntity {
@@ -160,7 +178,7 @@ export interface FetchStoragePayload {
 }
 export interface EntityDisplay<T> {
     label: string;
-    propName: keyof T;
+    display(T): string;
 }
 
 export interface ResolvedRatio {
@@ -168,7 +186,13 @@ export interface ResolvedRatio {
     total: number;
 }
 
-export type AllEntities = Intervention | TPMActivity | ActionPoint | Travel | Indicator;
+export type AllEntities =
+    | Intervention
+    | TPMActivity
+    | ActionPoint
+    | Travel
+    | Indicator
+    | Engagement;
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 

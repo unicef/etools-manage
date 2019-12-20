@@ -9,7 +9,8 @@ import {
     Travel,
     ModuleEntities,
     TPMActivity,
-    SectionToEntity
+    SectionToEntity,
+    Engagement
 } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
@@ -19,6 +20,7 @@ import { keys, equals } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { selectNamesFromsplit } from './split-section';
 import { initialState } from 'slices/close-section-payload';
+import { selectEngagementsFromPayload } from './engagements';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
 export const getCloseSectionBackendPayload = createSelector<
@@ -27,6 +29,7 @@ export const getCloseSectionBackendPayload = createSelector<
     Normalized<Intervention>,
     Normalized<TPMActivity>,
     Normalized<Travel>,
+    Normalized<Engagement>,
     number,
     string[],
     CloseSectionBackendPayload
@@ -36,10 +39,19 @@ export const getCloseSectionBackendPayload = createSelector<
         selectInterventionsFromPayload,
         selectTPMFromPayload,
         selectTravelsFromPayload,
+        selectEngagementsFromPayload,
         selectCurrentActiveSection,
         selectNamesFromsplit
     ],
-    (actionPoints, interventions, tpmActivities, travels, oldSection, namesFromSplit: string[]) => {
+    (
+        actionPoints,
+        interventions,
+        tpmActivities,
+        travels,
+        engagements,
+        oldSection,
+        namesFromSplit: string[]
+    ) => {
         const payload: CloseSectionBackendPayload = {
             old_section: oldSection,
             new_sections: namesFromSplit.reduce((obj: SectionToEntity, name) => {
@@ -72,6 +84,13 @@ export const getCloseSectionBackendPayload = createSelector<
         keys(travels).forEach((id: string) => {
             const { section } = travels[id];
             persistToPayload(payload, section, 'travels', Number(id));
+        });
+
+        keys(engagements).forEach((id: string) => {
+            const { sections } = engagements[id];
+            sections.forEach((section: string) => {
+                persistToPayload(payload, section, 'engagements', Number(id));
+            });
         });
 
         return payload;

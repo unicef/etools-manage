@@ -69,7 +69,7 @@ export default function EntityChangesTable<T>({
                             const changingSections = getOldSections(item, config.sectionsProp);
                             return (
                                 <TableRow key={`entityRow${idx}`}>
-                                    {config.displayProperties.map(({ label, propName }, idx) => (
+                                    {config.displayProperties.map(({ label, display }, idx) => (
                                         <TableCell
                                             size="small"
                                             className={clsx(
@@ -79,7 +79,7 @@ export default function EntityChangesTable<T>({
                                             key={label}
                                             align="left"
                                         >
-                                            {item[propName]}
+                                            {display(item)}
                                         </TableCell>
                                     ))}
                                     <TableCell

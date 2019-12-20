@@ -30,7 +30,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(1)
         },
         containerPad: {
-            padding: `${theme.spacing(1.5)}px ${theme.spacing(3)}px`
+            padding: `${theme.spacing(1.5)}px ${theme.spacing(2)}px`
         },
         collapsableHeading: {
             '&:hover': {
@@ -90,6 +90,14 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
         secondaryHeading: {
             fontSize: 12,
             width: '90%'
+        },
+        engagementHeadings: {
+            '&>span': {
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                marginRight: theme.spacing(1)
+            }
         }
     })
 );

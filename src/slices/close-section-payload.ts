@@ -6,7 +6,8 @@ export const initialState: ModuleEntities = {
     interventions: {},
     travels: {},
     actionPoints: {},
-    tpmActivities: {}
+    tpmActivities: {},
+    engagements: {}
 };
 
 export const closeSectionPayload = createSlice({
@@ -19,6 +20,10 @@ export const closeSectionPayload = createSlice({
         onChangeInterventionSection: (state, action) => {
             const { id, sections } = action.payload;
             state.interventions[id].sections = sections;
+        },
+        engagementSectionSelected: (state, action) => {
+            const { id, sections } = action.payload;
+            state.engagements[id].sections = sections;
         },
         onUpdateInterventionIndicatorsState: (state, action) => {
             const { indicators, id } = action.payload;
@@ -48,6 +53,7 @@ export const {
     closeSectionDataReceived,
     onUpdateTravelSection,
     onChangeInterventionSection,
+    engagementSectionSelected,
     onUpdateActionPointSection,
     onUpdateTPMSections,
     onUpdateInterventionIndicatorsState

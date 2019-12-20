@@ -9,14 +9,16 @@ import {
     Indicator,
     NonEmptyEntityResults,
     Normalized,
-    AllEntities
+    AllEntities,
+    Engagement
 } from 'entities/types';
 import { normalize } from 'normalizr';
 import {
     interventionSchema,
     travelsSchema,
     tpmActivitiesSchema,
-    actionPointsSchema
+    actionPointsSchema,
+    engagementsSchema
 } from 'entities/schemas';
 
 export interface BackendService {
@@ -44,13 +46,13 @@ export interface AllAffectedEntities {
     [key: string]: (query: string) => Promise<Normalized<AllEntities>>;
 }
 
-// TODO: Add type guards on all api responses
 export default class BackendApiService extends BaseService implements BackendService {
     private entityApiMap: AllAffectedEntities = {
         tpmActivities: this.getTPMActivities.bind(this),
         actionPoints: this.getActionPoints.bind(this),
         interventions: this.getInterventions.bind(this),
-        travels: this.getTravels.bind(this)
+        travels: this.getTravels.bind(this),
+        engagements: this.getEngagements.bind(this)
     };
 
     public async getInterventions(query: string): Promise<Normalized<Intervention>> {
@@ -112,6 +114,18 @@ export default class BackendApiService extends BaseService implements BackendSer
 
             const { entities } = normalize(response, [actionPointsSchema]);
             return entities.actionPoints;
+        } catch (err) {
+            return {};
+        }
+    }
+
+    public async getEngagements(query: string): Promise<Normalized<Engagement>> {
+        try {
+            const url = `${process.env.REACT_APP_ENGAGEMENTS_ENDPOINT}${query}`;
+            const { results: response } = await this._http.get<BackendResponse<Engagement>>(url);
+
+            const { entities } = normalize(response, [engagementsSchema]);
+            return entities.engagements;
         } catch (err) {
             return {};
         }

@@ -48,7 +48,6 @@ export const onFetchDataCloseSection = (
             dispatch(onThrowError(err.message));
             return;
         }
-
         dispatch(closeSectionDataReceived(dataFromServer));
     } else {
         dispatch(dataFromStorageReceived(dataFromStorage));

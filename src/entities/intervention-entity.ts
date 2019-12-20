@@ -1,9 +1,13 @@
 import { Intervention, EntityDisplay } from './types';
 import { EntityConfig } from 'entities';
+import { prop } from 'ramda';
 
 export class InterventionConfig implements EntityConfig<Intervention> {
     public get displayProperties(): EntityDisplay<Intervention>[] {
-        return [{ label: 'Number', propName: 'number' }, { label: 'Title', propName: 'title' }];
+        return [
+            { label: 'Number', display: prop('number') },
+            { label: 'Title', display: prop('title') }
+        ];
     }
 
     public get title() {
