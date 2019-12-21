@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useRef } from 'react';
+// import { useReducer, useEffect, useRef } from 'react';
 import { StateSetter } from 'global-types';
 import { values, head, compose, keys, flip, prop, replace, toUpper, isEmpty } from 'ramda';
 import {
@@ -10,24 +10,24 @@ import {
 } from 'global-constants';
 import { HEADER_BACKGROUND_PRODUCTION, HEADER_BACKGROUND_DEV } from 'lib/theme';
 
-export function useSetState<T>(initialState: T) {
-    return useReducer((state, newState) => ({ ...state, ...newState }), initialState);
-}
+// export function useSetState<T>(initialState: T) {
+//     return useReducer((state, newState) => ({ ...state, ...newState }), initialState);
+// }
 
-export function useSafeSetState<T>(initialState: T) {
-    const [state, setState] = useSetState(initialState);
+// export function useSafeSetState<T>(initialState: T) {
+//     const [state, setState] = useSetState(initialState);
 
-    const mountedRef = useRef(false);
-    useEffect((): (() => void) => {
-        mountedRef.current = true;
-        return () => (mountedRef.current = false);
-    }, []);
-    // @ts-ignore
+//     const mountedRef = useRef(false);
+//     useEffect((): (() => void) => {
+//         mountedRef.current = true;
+//         return () => (mountedRef.current = false);
+//     }, []);
+//     // @ts-ignore
 
-    const safeSetState = (...args) => mountedRef.current && setState(...args);
+//     const safeSetState = (...args) => mountedRef.current && setState(...args);
 
-    return [state, safeSetState];
-}
+//     return [state, safeSetState];
+// }
 
 export function notEmpty(xs: unknown) {
     return !isEmpty(xs) && xs !== undefined;
