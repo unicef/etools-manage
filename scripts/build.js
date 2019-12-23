@@ -1,5 +1,3 @@
-
-
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'production';
 process.env.NODE_ENV = 'production';
@@ -14,7 +12,6 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 
-
 const path = require('path');
 const chalk = require('react-dev-utils/chalk');
 const fs = require('fs-extra');
@@ -28,8 +25,7 @@ const printHostingInstructions = require('react-dev-utils/printHostingInstructio
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
 
-const measureFileSizesBeforeBuild =
-  FileSizeReporter.measureFileSizesBeforeBuild;
+const measureFileSizesBeforeBuild = FileSizeReporter.measureFileSizesBeforeBuild;
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
 const useYarn = fs.existsSync(paths.yarnLockFile);
 
@@ -56,13 +52,13 @@ const config = configFactory('production');
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
 checkBrowsers(paths.appPath, isInteractive)
     .then(() => {
-    // First, read the current file sizes in build directory.
-    // This lets us display how much they changed later.
+        // First, read the current file sizes in build directory.
+        // This lets us display how much they changed later.
         return measureFileSizesBeforeBuild(paths.appBuild);
     })
     .then(previousFileSizes => {
-    // Remove all content but keep the directory so that
-    // if you're in it, you don't end up in Trash
+        // Remove all content but keep the directory so that
+        // if you're in it, you don't end up in Trash
         fs.emptyDirSync(paths.appBuild);
         // Merge with the public folder
         copyPublicFolder();
@@ -76,19 +72,18 @@ checkBrowsers(paths.appPath, isInteractive)
                 console.log(warnings.join('\n\n'));
                 console.log(
                     '\nSearch for the ' +
-            chalk.underline(chalk.yellow('keywords')) +
-            ' to learn more about each warning.'
+                        chalk.underline(chalk.yellow('keywords')) +
+                        ' to learn more about each warning.'
                 );
                 console.log(
                     'To ignore, add ' +
-            chalk.cyan('// eslint-disable-next-line') +
-            ' to the line before.\n'
+                        chalk.cyan('// eslint-disable-next-line') +
+                        ' to the line before.\n'
                 );
             } else {
                 console.log(chalk.green('Compiled successfully.\n'));
             }
 
-            console.log('File sizes after gzip:\n');
             printFileSizesAfterBuild(
                 stats,
                 previousFileSizes,
@@ -96,19 +91,12 @@ checkBrowsers(paths.appPath, isInteractive)
                 WARN_AFTER_BUNDLE_GZIP_SIZE,
                 WARN_AFTER_CHUNK_GZIP_SIZE
             );
-            console.log();
 
             const appPackage = require(paths.appPackageJson);
             const publicUrl = paths.publicUrl;
             const publicPath = config.output.publicPath;
             const buildFolder = path.relative(process.cwd(), paths.appBuild);
-            printHostingInstructions(
-                appPackage,
-                publicUrl,
-                publicPath,
-                buildFolder,
-                useYarn
-            );
+            printHostingInstructions(appPackage, publicUrl, publicPath, buildFolder, useYarn);
         },
         err => {
             console.log(chalk.red('Failed to compile.\n'));
@@ -154,14 +142,13 @@ function build(previousFileSizes) {
             }
             if (
                 process.env.CI &&
-        (typeof process.env.CI !== 'string' ||
-          process.env.CI.toLowerCase() !== 'false') &&
-        messages.warnings.length
+                (typeof process.env.CI !== 'string' || process.env.CI.toLowerCase() !== 'false') &&
+                messages.warnings.length
             ) {
                 console.log(
                     chalk.yellow(
                         '\nTreating warnings as errors because process.env.CI = true.\n' +
-              'Most CI servers set it automatically.\n'
+                            'Most CI servers set it automatically.\n'
                     )
                 );
                 return reject(new Error(messages.warnings.join('\n\n')));

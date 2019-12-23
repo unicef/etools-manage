@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { prop, compose, find, equals, toLower, trim } from 'ramda';
-import { EntityConfig } from 'entities';
-import { CreateSectionPayload, SectionEntity, EntityDisplay } from './types';
+import { CreateSectionPayload, Section } from './types';
 import { useSelector } from 'react-redux';
 import { selectSections } from 'selectors';
 
@@ -21,7 +20,7 @@ export class NewSection implements CreateSectionPayload {
         };
     }
 
-    private sectionValidator(name: string, sections: SectionEntity[]): Promise<boolean> {
+    private sectionValidator(name: string, sections: Section[]): Promise<boolean> {
         const findSameName = find(
             compose(
                 equals(toLower(trim(name))),
@@ -34,7 +33,7 @@ export class NewSection implements CreateSectionPayload {
     }
 
     public async isValidName(
-        sectionsCollection: SectionEntity[],
+        sectionsCollection: Section[],
         validator?: (name: string) => Promise<boolean>
     ): Promise<boolean> {
         this._validName = validator
@@ -42,20 +41,6 @@ export class NewSection implements CreateSectionPayload {
             : await this.sectionValidator(this.new_section_name, sectionsCollection);
 
         return this._validName;
-    }
-}
-
-export default class Section implements Partial<EntityConfig<SectionEntity>> {
-    public get displayProperties(): EntityDisplay<SectionEntity>[] {
-        return [{ label: 'Name', propName: 'name' }, { label: 'Id', propName: 'id' }];
-    }
-
-    public get title() {
-        return 'Sections';
-    }
-
-    public get sectionsProp() {
-        return 'id';
     }
 }
 

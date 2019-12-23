@@ -256,7 +256,7 @@ export const DropdownMulti: React.FC<DropdownProps> = memo(
 
         const styles = useStyles();
         return (
-            <div className={styles.root}>
+            <div className={styles.root} data-testid="dropdown-multi">
                 <Select
                     classes={styles}
                     styles={selectStyles}

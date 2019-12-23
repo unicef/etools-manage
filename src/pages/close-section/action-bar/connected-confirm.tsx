@@ -10,12 +10,17 @@ export default function ActionBarConnectedConfirm() {
     const styles = useSummaryStyles();
 
     return (
-        <Box className={styles.section} justify="between" align="center">
+        <Box
+            className={styles.section}
+            justify="between"
+            align="center"
+            data-testid="actionbar-confirm"
+        >
             <BackIconButton />
             <Box>
                 <CancelSectionActionButton />
 
-                <Suspense fallback={<LoadingFallback/>}>
+                <Suspense fallback={<LoadingFallback />}>
                     <ConnectedConfirmButton />
                 </Suspense>
             </Box>

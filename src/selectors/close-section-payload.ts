@@ -1,14 +1,16 @@
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 import { selectCurrentActiveSection, selectCloseSectionPayload } from 'selectors';
 import {
     CloseSectionBackendPayload,
     BackendEntityNames,
-    ActionPointEntity,
-    InterventionEntity,
+    ActionPoint,
+    Intervention,
     Normalized,
-    TravelEntity,
+    Travel,
     ModuleEntities,
-    TPMActivityEntity
+    TPMActivity,
+    SectionToEntity,
+    Engagement
 } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
@@ -17,12 +19,19 @@ import { selectActionPointsFromPayload } from './action-points';
 import { keys, equals } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { selectNamesFromsplit } from './split-section';
-import { Dictionary } from 'helpers';
-import { initialState } from 'reducers/close-section-payload';
+import { initialState } from 'slices/close-section-payload';
+import { selectEngagementsFromPayload } from './engagements';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
 export const getCloseSectionBackendPayload = createSelector<
     FullStoreShape,
+    Normalized<ActionPoint>,
+    Normalized<Intervention>,
+    Normalized<TPMActivity>,
+    Normalized<Travel>,
+    Normalized<Engagement>,
+    number,
+    string[],
     CloseSectionBackendPayload
 >(
     [
@@ -30,20 +39,22 @@ export const getCloseSectionBackendPayload = createSelector<
         selectInterventionsFromPayload,
         selectTPMFromPayload,
         selectTravelsFromPayload,
+        selectEngagementsFromPayload,
         selectCurrentActiveSection,
         selectNamesFromsplit
     ],
     (
-        actionPoints: Normalized<ActionPointEntity>,
-        interventions: Normalized<InterventionEntity>,
-        tpmActivities: Normalized<TPMActivityEntity>,
-        travels: Normalized<TravelEntity>,
-        oldSection: number,
+        actionPoints,
+        interventions,
+        tpmActivities,
+        travels,
+        engagements,
+        oldSection,
         namesFromSplit: string[]
     ) => {
         const payload: CloseSectionBackendPayload = {
             old_section: oldSection,
-            new_sections: namesFromSplit.reduce((obj: Dictionary<{}>, name) => {
+            new_sections: namesFromSplit.reduce((obj: SectionToEntity, name) => {
                 obj[name] = {};
                 return obj;
             }, {})
@@ -73,6 +84,13 @@ export const getCloseSectionBackendPayload = createSelector<
         keys(travels).forEach((id: string) => {
             const { section } = travels[id];
             persistToPayload(payload, section, 'travels', Number(id));
+        });
+
+        keys(engagements).forEach((id: string) => {
+            const { sections } = engagements[id];
+            sections.forEach((section: string) => {
+                persistToPayload(payload, section, 'engagements', Number(id));
+            });
         });
 
         return payload;

@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
-import { useEffect } from 'react';
-import { useSafeSetState } from 'utils';
+// import { useEffect } from 'react';
+// import { useSafeSetState } from 'utils';
 
 const BASE_URL = window.location.origin;
 
@@ -32,16 +32,7 @@ export async function checkStatus(response: Response, raw: boolean): Promise<Res
 
 type FetchOpts = RequestInit & { json: boolean; raw: boolean };
 
-
-const wrappedFetch = (
-    url: string,
-    {
-        json = true,
-        raw = false,
-        // For test environment Dependency Injection
-        ...opts
-    } = {}
-) =>
+const wrappedFetch = (url: string, { json = true, raw = false, ...opts } = {}) =>
     fetch(`${BASE_URL}/${url}`, {
         credentials: 'same-origin', // send cookies for etools auth
         ...opts
@@ -69,38 +60,38 @@ export interface FetchState {
     error: Error | null;
 }
 
-export function useFetch(url: string, opts?: FetchOpts): FetchState {
-    const [state, setState] = useSafeSetState<FetchState>({
-        loaded: false,
-        fetching: false,
-        data: null,
-        error: null
-    });
+// export function useFetch(url: string, opts?: FetchOpts): FetchState {
+//     const [state, setState] = useSafeSetState<FetchState>({
+//         loaded: false,
+//         fetching: false,
+//         data: null,
+//         error: null
+//     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setState({ fetching: true });
+//     useEffect(() => {
+//         const fetchData = async () => {
+//             setState({ fetching: true });
 
-            try {
-                const res = await wrappedFetch(url, opts);
-                setState({
-                    data: res,
-                    fetching: false,
-                    loaded: true
-                });
-            } catch (error) {
-                setState({
-                    error,
-                    loaded: false,
-                    fetching: false
-                });
-            }
-        };
+//             try {
+//                 const res = await wrappedFetch(url, opts);
+//                 setState({
+//                     data: res,
+//                     fetching: false,
+//                     loaded: true
+//                 });
+//             } catch (error) {
+//                 setState({
+//                     error,
+//                     loaded: false,
+//                     fetching: false
+//                 });
+//             }
+//         };
 
-        fetchData();
-    }, []);
+//         fetchData();
+//     }, []);
 
-    return state;
-}
+//     return state;
+// }
 
 export default wrappedFetch;

@@ -15,7 +15,12 @@ export default function ActionBarReviewReady() {
     };
 
     return (
-        <Box className={styles.section} justify="between" align="center">
+        <Box
+            className={styles.section}
+            justify="between"
+            align="center"
+            data-testid="actionbar-review"
+        >
             <BackIconButton />
 
             <Box>

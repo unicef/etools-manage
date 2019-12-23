@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import {
-    InterventionEntity,
+    Intervention,
     GenericMultiSectionPayload,
     EditItemProps,
     ModuleEntities
@@ -37,7 +37,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 
     const dispatch = useDispatch();
 
-    const [interventionState, setInterventionState] = useState<InterventionEntity>(
+    const [interventionState, setInterventionState] = useState<Intervention>(
         initialInterventionState
     );
 
@@ -74,12 +74,12 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
         return [resolved, total];
     }, [interventionState])();
 
-    const onChange = (intervention: InterventionEntity) => {
+    const onChange = (intervention: Intervention) => {
         const storePayload: GenericMultiSectionPayload = {
             id,
             sections: intervention.sections
         };
-        onSelectInterventionSection(storePayload, dispatch);
+        dispatch(onSelectInterventionSection(storePayload));
     };
 
     useEffect(() => {
@@ -112,7 +112,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
 
         const newState = over(sectionLens, always(newSectionName), interventionState);
         const { indicators } = newState;
-        onSelectIndicatorSection({ indicators, id }, dispatch);
+        dispatch(onSelectIndicatorSection({ indicators, id }));
         setInterventionState(newState);
     };
 
@@ -134,7 +134,7 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
                     <Typography>{title}</Typography>
                 </Box>
 
-                <div className={clsx(styles.selectColumn)}>
+                <div className={clsx(styles.selectColumn, styles.description)}>
                     {interventionState.existingSections.length ? (
                         <Typography
                             className={clsx(styles.secondaryHeading, styles.bottomMargin1)}
@@ -165,7 +165,11 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
                             )}
                             align="center"
                         >
-                            {open ? <ExpandLess /> : <ExpandMore />}
+                            {open ? (
+                                <ExpandLess data-testid="dropdown-caret-up" />
+                            ) : (
+                                <ExpandMore data-testid="dropdown-caret-down" />
+                            )}
                         </Box>
                     </Box>
                 </div>

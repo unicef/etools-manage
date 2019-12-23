@@ -1,13 +1,6 @@
 import React from 'react';
 import SplitIcon from '@material-ui/icons/CallSplit';
-import {
-    Typography,
-    FormControl,
-    Input,
-    FormHelperText,
-    Button,
-    Theme
-} from '@material-ui/core';
+import { Typography, FormControl, Input, FormHelperText, Button, Theme } from '@material-ui/core';
 import BaseModal, { ModalContentProps } from '..';
 import { useModalStyles } from '../styles';
 import Box from 'components/box';
@@ -16,17 +9,14 @@ import { History } from 'history';
 import { withRouter } from 'react-router';
 import { useAddSection } from 'entities/section-entity';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-    selectCurrentActiveSection,
-    selectCurrentActiveSectionName
-} from 'selectors';
+import { selectCurrentActiveSection, selectCurrentActiveSectionName } from 'selectors';
 import { setValueFromEvent } from 'utils';
 import { useModalsDispatch, useModalsState } from 'contexts/page-modals';
-import { onToggleSplitModal } from 'reducers/modals';
+import { onToggleSplitModal } from 'slices/modals';
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { SectionBox } from 'components/section-box';
 import clsx from 'clsx';
-import { onSectionSplit } from 'pages/split-section/actions';
+import { persistToStorage } from 'pages/split-section/actions';
 import { getSplitSectionUrl } from 'lib/sections';
 
 const useSplitStyles = makeStyles((theme: Theme) =>
@@ -63,10 +53,7 @@ export default function SplitModal() {
     const handleClose = () => dispatch(onToggleSplitModal);
 
     return (
-        <BaseModal
-            open={splitModalOpen}
-            onClose={handleClose}
-            className={styles.root}>
+        <BaseModal open={splitModalOpen} onClose={handleClose} className={styles.root}>
             <SplitModalContent onClose={handleClose} />
         </BaseModal>
     );
@@ -76,17 +63,9 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     const styles = useModalStyles();
     const splitStyles = useSplitStyles();
     const currentSectionName = useSelector(selectCurrentActiveSectionName);
-    const currentActiveSection = useSelector(selectCurrentActiveSection);
-
+    const currentActiveSectionId = useSelector(selectCurrentActiveSection);
     const dispatch = useDispatch();
-
-    const {
-        errorOnName,
-        setNameError,
-        handleValidateSection,
-        name,
-        setName
-    } = useAddSection();
+    const { errorOnName, setNameError, handleValidateSection, name, setName } = useAddSection();
 
     const {
         errorOnName: errorOnNameTwo,
@@ -97,38 +76,39 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
     } = useAddSection();
 
     const handleSubmit = (history: History) => () => {
-        const splitUrl = getSplitSectionUrl(currentActiveSection);
+        const splitUrl = getSplitSectionUrl(currentActiveSectionId);
 
         const payload = [{ name, active: true }, { name: nameTwo, active: true }];
-        onSectionSplit(dispatch, payload);
+        dispatch(persistToStorage(payload));
 
         history.push(splitUrl);
         onClose();
     };
 
-    const SubmitButton = withRouter(({ history }) => (
-        <Button
-            onClick={handleSubmit(history)}
-            className={styles.confirmBtn}
-            color="secondary"
-            variant="contained"
-            disabled={
-                (!name.length && !nameTwo.length) ||
-        Boolean(errorOnName.length) ||
-        Boolean(errorOnNameTwo.length)
-            }>
-      Continue
-        </Button>
-    ));
+    const SubmitButton = withRouter(({ history }) => {
+        const isDisabled =
+            !name.length ||
+            !nameTwo.length ||
+            Boolean(errorOnName.length) ||
+            Boolean(errorOnNameTwo.length);
+        return (
+            <Button
+                onClick={handleSubmit(history)}
+                className={styles.confirmBtn}
+                color="secondary"
+                variant="contained"
+                disabled={isDisabled}
+            >
+                Continue
+            </Button>
+        );
+    });
 
     return (
         <Box column>
             <Box className={clsx(styles.header, styles.modalSection)} align="center">
-                <Typography
-                    className={styles.subtitle}
-                    color="inherit"
-                    variant="subtitle1">
-          Split Section
+                <Typography className={styles.subtitle} color="inherit" variant="subtitle1">
+                    Split Section
                 </Typography>
             </Box>
 
@@ -137,9 +117,7 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                 <SplitIcon fontSize="large" className={splitStyles.flipIcon} />
             </Box>
             <Box className={styles.modalSection} justify="center">
-                <FormControl
-                    className={splitStyles.formRoot}
-                    error={Boolean(errorOnName.length)}>
+                <FormControl className={splitStyles.formRoot} error={Boolean(errorOnName.length)}>
                     <Input
                         classes={{
                             input: splitStyles.input
@@ -151,14 +129,13 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                         onBlur={handleValidateSection}
                         onFocus={() => setNameError('')}
                     />
-                    <FormHelperText id="component-error-text">
-                        {errorOnName}
-                    </FormHelperText>
+                    <FormHelperText id="component-error-text">{errorOnName}</FormHelperText>
                 </FormControl>
 
                 <FormControl
                     className={splitStyles.formRoot}
-                    error={Boolean(errorOnNameTwo.length)}>
+                    error={Boolean(errorOnNameTwo.length)}
+                >
                     <Input
                         classes={{
                             input: splitStyles.input
@@ -170,9 +147,7 @@ const SplitModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
                         onBlur={handleValidateSectionTwo}
                         onFocus={() => setNameErrorTwo('')}
                     />
-                    <FormHelperText id="component-error-text">
-                        {errorOnNameTwo}
-                    </FormHelperText>
+                    <FormHelperText id="component-error-text">{errorOnNameTwo}</FormHelperText>
                 </FormControl>
             </Box>
 

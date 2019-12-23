@@ -2,19 +2,24 @@ import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Box from 'components/box';
 import { KeyToEntityMap } from 'entities/types';
-import { CloseSectionsPage } from './close-section-page';
+import { CloseSectionPage } from './close-section-page';
 import InterventionsEdit from 'components/entity-edit/interventions-edit';
 import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points-edit';
 import TPMActivitiesEdit from 'components/entity-edit/tpm-edit';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectModuleEditingName, selectClosedSectionSuccess, selectCurrentActiveSectionName } from 'selectors';
-import { onResetCloseSectionPayload, onFetchDataCloseSection } from './actions';
+import {
+    selectModuleEditingName,
+    selectClosedSectionSuccess,
+    selectCurrentActiveSectionName
+} from 'selectors';
+import { onFetchDataCloseSection } from './actions';
 import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';
 import { MatchParams } from 'global-types';
-import { onCurrentActiveSection } from 'reducers/current-active-section';
+import { currentActiveSectionChanged } from 'slices/current-active-section';
 import SuccessBox from 'components/success-box';
+import EngagementEdit from 'components/entity-edit/engagement-edit';
 
 type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>;
 
@@ -24,19 +29,18 @@ const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     interventions: InterventionsEdit,
     travels: TravelsEdit,
     actionPoints: ActionPointsEdit,
-    tpmActivities: TPMActivitiesEdit
+    tpmActivities: TPMActivitiesEdit,
+    engagements: EngagementEdit
 };
 
-function getEditComponent(name: keyof EditComponentMappings | null) {
+function getEditComponent(name: keyof EditComponentMappings | '') {
     if (name) {
         return EDIT_COMPONENT_MODULE_MAPPING[name];
     }
     return null;
 }
 
-const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({
-    match
-}) => {
+const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
     const { id } = match.params;
     const dispatch = useDispatch();
 
@@ -45,15 +49,11 @@ const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({
 
     useEffect(() => {
         if (user) {
-            dispatch(onCurrentActiveSection(Number(id)));
+            dispatch(currentActiveSectionChanged(Number(id)));
 
             const { name: countryName } = user.country;
-
-            onResetCloseSectionPayload(dispatch);
-            onFetchDataCloseSection(
-                { backendService, storageService },
-                { id, countryName },
-                dispatch
+            dispatch(
+                onFetchDataCloseSection({ backendService, storageService }, { id, countryName })
             );
         }
     }, [id, user]);
@@ -77,9 +77,9 @@ export const CloseSectionRender: React.FC = () => {
             {moduleEditingName && EditComponent ? (
                 <EditComponent />
             ) : closedSectionSuccess ? (
-                <SuccessBox {...successProps}/>
+                <SuccessBox {...successProps} />
             ) : (
-                <CloseSectionsPage />
+                <CloseSectionPage />
             )}
         </Box>
     );

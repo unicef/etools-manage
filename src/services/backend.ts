@@ -2,32 +2,34 @@ import { zipObj, filter, prop, flatten, keys, flip, compose } from 'ramda';
 import BaseService from 'services';
 import { notEmpty } from 'utils';
 import {
-    InterventionEntity,
-    TravelEntity,
-    ActionPointEntity,
-    TPMActivityEntity,
-    IndicatorEntity,
+    Intervention,
+    Travel,
+    ActionPoint,
+    TPMActivity,
+    Indicator,
     NonEmptyEntityResults,
     Normalized,
-    AllEntities
+    AllEntities,
+    Engagement
 } from 'entities/types';
 import { normalize } from 'normalizr';
 import {
     interventionSchema,
     travelsSchema,
     tpmActivitiesSchema,
-    actionPointsSchema
+    actionPointsSchema,
+    engagementsSchema
 } from 'entities/schemas';
 
 export interface BackendService {
-    getIndicators(interventions: Normalized<InterventionEntity>): IndicatorEntity[];
-    getTravels(query: string): Promise<Normalized<TravelEntity>>;
-    getTPMActivities(query: string): Promise<Normalized<TPMActivityEntity>>;
-    getActionPoints(query: string): Promise<Normalized<ActionPointEntity>>;
+    getIndicators(interventions: Normalized<Intervention>): Indicator[];
+    getTravels(query: string): Promise<Normalized<Travel>>;
+    getTPMActivities(query: string): Promise<Normalized<TPMActivity>>;
+    getActionPoints(query: string): Promise<Normalized<ActionPoint>>;
     getEntitiesForMerge(query: string): Promise<NonEmptyEntityResults>;
     getZippedEntities(query: string): Promise<NonEmptyEntityResults>;
     getEntitiesForClose(query: string): Promise<NonEmptyEntityResults>;
-    getInterventions(query: string): Promise<Normalized<InterventionEntity>>;
+    getInterventions(query: string): Promise<Normalized<Intervention>>;
 }
 
 export interface BackendResponse<T> {
@@ -37,26 +39,26 @@ export interface BackendResponse<T> {
 }
 
 export interface TravelsResponse {
-    data: TravelEntity[];
+    data: Travel[];
 }
 
 export interface AllAffectedEntities {
     [key: string]: (query: string) => Promise<Normalized<AllEntities>>;
 }
 
-// TODO: Add type guards on all api responses
 export default class BackendApiService extends BaseService implements BackendService {
     private entityApiMap: AllAffectedEntities = {
         tpmActivities: this.getTPMActivities.bind(this),
         actionPoints: this.getActionPoints.bind(this),
         interventions: this.getInterventions.bind(this),
-        travels: this.getTravels.bind(this)
+        travels: this.getTravels.bind(this),
+        engagements: this.getEngagements.bind(this)
     };
 
-    public async getInterventions(query: string): Promise<Normalized<InterventionEntity>> {
+    public async getInterventions(query: string): Promise<Normalized<Intervention>> {
         try {
             const url = `${process.env.REACT_APP_INTERVENTIONS_APPLIED_INDICATORS_ENDPOINT}${query}`;
-            const response = await this._http.get<InterventionEntity>(url);
+            const response = await this._http.get<Intervention>(url);
             const { entities } = normalize(response, [interventionSchema]);
             return entities.interventions;
         } catch (err) {
@@ -64,7 +66,7 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public getIndicators(interventions: Normalized<InterventionEntity>): IndicatorEntity[] {
+    public getIndicators(interventions: Normalized<Intervention>): Indicator[] {
         const lookup = flip(prop);
         return flatten(
             keys(interventions)
@@ -78,7 +80,7 @@ export default class BackendApiService extends BaseService implements BackendSer
         );
     }
 
-    public async getTravels(query: string): Promise<Normalized<TravelEntity>> {
+    public async getTravels(query: string): Promise<Normalized<Travel>> {
         try {
             const url = `${process.env.REACT_APP_TAVELS_ENDPOINT}${query}`;
             const { data } = await this._http.get<TravelsResponse>(url);
@@ -92,10 +94,10 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public async getTPMActivities(query: string): Promise<Normalized<TPMActivityEntity>> {
+    public async getTPMActivities(query: string): Promise<Normalized<TPMActivity>> {
         try {
             const url = `${process.env.REACT_APP_TPM_ACTIVITIES_ENDPOINT}${query}`;
-            const response = await this._http.get<TPMActivityEntity>(url);
+            const response = await this._http.get<TPMActivity>(url);
 
             const { entities } = normalize(response, [tpmActivitiesSchema]);
 
@@ -105,15 +107,25 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public async getActionPoints(query: string): Promise<Normalized<ActionPointEntity>> {
+    public async getActionPoints(query: string): Promise<Normalized<ActionPoint>> {
         try {
             const url = `${process.env.REACT_APP_ACTION_POINTS_ENDPOINT}${query}`;
-            const { results: response } = await this._http.get<BackendResponse<ActionPointEntity>>(
-                url
-            );
+            const { results: response } = await this._http.get<BackendResponse<ActionPoint>>(url);
 
             const { entities } = normalize(response, [actionPointsSchema]);
             return entities.actionPoints;
+        } catch (err) {
+            return {};
+        }
+    }
+
+    public async getEngagements(query: string): Promise<Normalized<Engagement>> {
+        try {
+            const url = `${process.env.REACT_APP_ENGAGEMENTS_ENDPOINT}${query}`;
+            const { results: response } = await this._http.get<BackendResponse<Engagement>>(url);
+
+            const { entities } = normalize(response, [engagementsSchema]);
+            return entities.engagements;
         } catch (err) {
             return {};
         }
@@ -125,9 +137,7 @@ export default class BackendApiService extends BaseService implements BackendSer
         if ('interventions' in zipped) {
             withIndicators = {
                 ...zipped,
-                indicators: this.getIndicators(zipped.interventions as Normalized<
-                    InterventionEntity
-                >)
+                indicators: this.getIndicators(zipped.interventions as Normalized<Intervention>)
             };
         }
         return filter(notEmpty, withIndicators);

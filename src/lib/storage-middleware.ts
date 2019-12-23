@@ -7,20 +7,24 @@ import {
     onChangeInterventionSection,
     onUpdateActionPointSection,
     onUpdateInterventionIndicatorsState,
-    onUpdateTPMSections
-} from 'reducers/close-section-payload';
-import { onSuccessCloseSection } from 'reducers/closed-section-success';
+    onUpdateTPMSections,
+    engagementSectionSelected
+} from 'slices/close-section-payload';
+import { onSuccessCloseSection } from 'slices/closed-section-success';
 import { persistToStorage } from 'pages/split-section/actions';
-import { removeItemFromInProgress, getInProgressSuccess } from 'reducers/in-progress-items';
+import { removeItemFromInProgress, getInProgressSuccess } from 'slices/in-progress-items';
 
-const USER_SELECTION_ACTIONS = [
+const SECTION_SELECTED_ACTIONS = [
     onChangeInterventionSection.type,
     onUpdateTravelSection.type,
     onUpdateActionPointSection.type,
     onUpdateInterventionIndicatorsState.type,
-    onUpdateTPMSections.type
+    onUpdateTPMSections.type,
+    engagementSectionSelected.type
 ];
 
+// This is where localStorage work is done after certain actions in order
+// to save work-in-progress
 const storageMiddleware = (service: Storage): AppMiddleware => {
     return ({ getState }) => dispatch => action => {
         dispatch(action);
@@ -30,7 +34,7 @@ const storageMiddleware = (service: Storage): AppMiddleware => {
         const sectionJustClosed = action.type === onSuccessCloseSection.type;
         const itemInProgressRemoved = action.type === removeItemFromInProgress.type;
 
-        if (includes(action.type, USER_SELECTION_ACTIONS)) {
+        if (includes(action.type, SECTION_SELECTED_ACTIONS)) {
             const key = prefixWithClose(state);
             service.storeEntitiesData(key, state.closeSectionPayload);
             dispatch(getInProgressSuccess([key]));

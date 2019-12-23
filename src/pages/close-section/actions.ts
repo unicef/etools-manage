@@ -8,37 +8,31 @@ import {
     CloseSectionBackendPayload,
     FetchStoragePayload
 } from 'entities/types';
-import { Dispatch } from 'global-types';
+import { Dispatch } from 'redux';
 import { SectionsService } from 'services/section';
 import {
-    updateCloseSectionPayload,
-    onFetchForCloseSuccess,
-    onFetchFromStorageSuccess,
+    closeSectionDataReceived,
+    dataFromStorageReceived,
     onChangeInterventionSection,
     onUpdateInterventionIndicatorsState,
     onUpdateTravelSection,
     onUpdateActionPointSection,
     onUpdateTPMSections
-} from 'reducers/close-section-payload';
-import { onCurrentActiveSection } from 'reducers/current-active-section';
-import { requestStarted } from 'reducers/loading';
-import { onThrowError } from 'reducers/error';
-import { onSetModuleEditingName } from 'reducers/module-editing-name';
-import { onSuccessCloseSection } from 'reducers/closed-section-success';
+} from 'slices/close-section-payload';
+import { currentActiveSectionChanged } from 'slices/current-active-section';
+import { requestStarted } from 'slices/loading';
+import { onThrowError } from 'slices/error';
+import { onSetModuleEditingName } from 'slices/module-editing-name';
+import { onSuccessCloseSection } from 'slices/closed-section-success';
 import { getCloseSectionPrefixKey } from 'lib/sections';
 import { ActionBarKeys } from './types';
-import { setCloseSectionActionBar, onSetViewCloseSummary } from 'reducers/ui';
+import { setCloseSectionActionBar, onSetViewCloseSummary } from 'slices/ui';
 
-export const onResetCloseSectionPayload = (dispatch: Dispatch) => {
-    dispatch(updateCloseSectionPayload(null));
-};
-
-export const onFetchDataCloseSection = async (
+export const onFetchDataCloseSection = (
     services: { backendService: BackendService; storageService: StorageService },
-    payload: FetchStoragePayload,
-    dispatch: Dispatch
-) => {
-    dispatch(onCurrentActiveSection(Number(payload.id)));
+    payload: FetchStoragePayload
+) => async (dispatch: Dispatch) => {
+    dispatch(currentActiveSectionChanged(Number(payload.id)));
 
     const { backendService, storageService } = services;
     const key = getCloseSectionPrefixKey(payload);
@@ -54,10 +48,9 @@ export const onFetchDataCloseSection = async (
             dispatch(onThrowError(err.message));
             return;
         }
-
-        dispatch(onFetchForCloseSuccess(dataFromServer));
+        dispatch(closeSectionDataReceived(dataFromServer));
     } else {
-        dispatch(onFetchFromStorageSuccess(dataFromStorage));
+        dispatch(dataFromStorageReceived(dataFromStorage));
     }
 };
 
@@ -65,14 +58,13 @@ export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
     dispatch(onSetModuleEditingName(payload));
 };
 
-export const onSelectInterventionSection = (
-    payload: GenericMultiSectionPayload,
+export const onSelectInterventionSection = (payload: GenericMultiSectionPayload) => (
     dispatch: Dispatch
 ) => {
     dispatch(onChangeInterventionSection(payload));
 };
 
-export const onSelectIndicatorSection = (payload: IndicatorsPayload, dispatch: Dispatch) => {
+export const onSelectIndicatorSection = (payload: IndicatorsPayload) => (dispatch: Dispatch) => {
     dispatch(onUpdateInterventionIndicatorsState(payload));
 };
 
@@ -88,11 +80,10 @@ export const onSelectTPMSections = (payload: GenericSectionPayload, dispatch: Di
     dispatch(onUpdateTPMSections(payload));
 };
 
-export const onSubmitCloseSection = async (
+export const onSubmitCloseSection = (
     service: SectionsService,
-    payload: CloseSectionBackendPayload,
-    dispatch: Dispatch
-) => {
+    payload: CloseSectionBackendPayload
+) => async (dispatch: Dispatch) => {
     try {
         dispatch(requestStarted());
         await service.closeSection(payload);

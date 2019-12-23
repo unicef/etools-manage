@@ -1,9 +1,9 @@
 import React, { useContext, useReducer } from 'react';
-import { ChildrenProps, Dispatch } from 'global-types';
-import { ModalsState, initialStateModals, modalsReducer } from 'reducers/modals';
+import { ChildrenProps, ContextDispatch } from 'global-types';
+import { ModalsState, initialStateModals, modalsReducer } from 'slices/modals';
 
 const ModalsStateContext = React.createContext<ModalsState | undefined>(undefined);
-const ModalsDispatchContext = React.createContext<Dispatch | undefined>(undefined);
+const ModalsDispatchContext = React.createContext<ContextDispatch | undefined>(undefined);
 
 export function PageModalsProvider({ children }: ChildrenProps): JSX.Element {
     const [state, setModalsState] = useReducer(modalsReducer, initialStateModals);

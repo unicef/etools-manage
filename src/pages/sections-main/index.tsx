@@ -6,10 +6,10 @@ import SectionsTable from 'components/sections-table';
 import SearchBar from 'components/search-bar';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
-import { SectionEntity } from 'entities/types';
-import { onSelectForMerge } from 'reducers/modals';
+import { Section } from 'entities/types';
+import { onSelectForMerge } from 'slices/modals';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectSections, selectSectionsWithInactive } from 'selectors';
+import { selectSections, selectAllSections } from 'selectors';
 import Switch from '@material-ui/core/Switch';
 import { Container, Typography } from '@material-ui/core';
 import { useTableStyles } from 'components/table/styles';
@@ -19,9 +19,9 @@ import { selectInProgress } from 'selectors/in-progress-items';
 
 const SectionsMainPage: React.FunctionComponent = () => {
     const sections = useSelector(selectSections);
-    const sectionsWithInactive = useSelector(selectSectionsWithInactive);
+    const sectionsWithInactive = useSelector(selectAllSections);
 
-    const [filteredSections, setFilteredSections] = useState([] as SectionEntity[]);
+    const [filteredSections, setFilteredSections] = useState([] as Section[]);
     const [mergeActive, setMergeActive] = useState<boolean>(false);
     const [showInactive, setShowInactive] = useState<boolean>(false);
 

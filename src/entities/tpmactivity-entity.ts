@@ -1,9 +1,10 @@
 import { EntityConfig } from 'entities';
-import { TPMActivityEntity, EntityDisplay } from './types';
+import { TPMActivity, EntityDisplay } from './types';
+import { prop } from 'ramda';
 
-export default class TPMActivityConfig implements EntityConfig<TPMActivityEntity> {
-    public get displayProperties(): EntityDisplay<TPMActivityEntity>[] {
-        return [{ label: 'Reference Number', propName: 'reference_number' }];
+export default class TPMActivityConfig implements EntityConfig<TPMActivity> {
+    public get displayProperties(): EntityDisplay<TPMActivity>[] {
+        return [{ label: 'Reference Number', display: prop('reference_number') }];
     }
 
     public get title() {

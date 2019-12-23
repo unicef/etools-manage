@@ -1,7 +1,7 @@
 import BaseService from 'services';
 import { SuccessResponse } from 'global-types';
 import {
-    SectionEntity,
+    Section,
     CreateSectionPayload,
     MergeSectionsPayload,
     SectionServicePayload,
@@ -10,7 +10,7 @@ import {
 } from 'entities/types';
 
 export interface SectionsService {
-    getSections(): Promise<SectionEntity[]>;
+    getSections(): Promise<Section[]>;
     createSection(data: CreateSectionPayload): Promise<SuccessResponse>;
     mergeSections(payload: MergeSectionsPayload): Promise<NewSectionFromMerged>;
     closeSection(payload: CloseSectionBackendPayload): Promise<Response>; // TODO: check response on close and create type
@@ -26,9 +26,9 @@ export default class SectionsApiService extends BaseService implements SectionsS
             body: JSON.stringify(payload)
         };
     }
-    public async getSections(): Promise<SectionEntity[]> {
+    public async getSections(): Promise<Section[]> {
         try {
-            const response = await this._http.get<SectionEntity[]>(getSectionsUrl);
+            const response = await this._http.get<Section[]>(getSectionsUrl);
             return response;
         } catch (err) {
             throw new Error(err);

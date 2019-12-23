@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { Dropdown, OptionType } from 'components/dropdown';
-import { selectSectionsAsOptions } from 'selectors';
+import { selectSectionsAsDropdownOptions } from 'selectors';
 import { prop } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { onSelectActionPointSection } from 'pages/close-section/actions';
@@ -17,13 +17,11 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();
     const dispatch = useDispatch();
 
-    const sectionsAsOptions = useSelector(selectSectionsAsOptions);
+    const sectionsAsOptions = useSelector(selectSectionsAsDropdownOptions);
 
-    const {
-        reference_number,
-        description,
-        section
-    } = useSelector((state: FullStoreShape) => state.closeSectionPayload.actionPoints[id]);
+    const { reference_number, description, section, assigned_to } = useSelector(
+        (state: FullStoreShape) => state.closeSectionPayload.actionPoints[id]
+    );
 
     const selectedSection = getSelectedSection(sectionsAsOptions, section);
 
@@ -44,12 +42,25 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
     return (
         <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between">
-                <Box column >
-                    <Typography className={styles.refNum} variant="subtitle2">{reference_number}</Typography>
+                <Box className={styles.description} column>
+                    <Box>
+                        <Typography className={styles.refNum} variant="subtitle2">
+                            {reference_number}
+                        </Typography>
+                        <Typography>
+                            - <i>{assigned_to.name}</i>
+                        </Typography>
+                    </Box>
                     <Typography>{description}</Typography>
                 </Box>
 
-                <Box className={clsx(styles.dropdown, styles.indicatorDropdown, styles.travelDropdown)} >
+                <Box
+                    className={clsx(
+                        styles.dropdown,
+                        styles.indicatorDropdown,
+                        styles.travelDropdown
+                    )}
+                >
                     <Dropdown
                         value={selectedSection}
                         onChange={onChange}
@@ -59,7 +70,6 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
             </Box>
         </div>
     );
-
 };
 
 export default ActionPointEditItem;

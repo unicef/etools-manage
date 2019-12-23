@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import { Order, EnhancedTableHeadProps, TableToolbarProps, HeadRow } from '../table/table';
-import { SectionEntity } from 'entities/types';
+import { Section } from 'entities/types';
 import { usePagination } from 'components/table/use-paginator';
 import { stableSort, getSorting } from 'components/table/table-utils';
 import { useTableStyles } from 'components/table/styles';
@@ -29,15 +29,15 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
             paddingRight: theme.spacing(1)
         },
         highlight:
-      theme.palette.type === 'light'
-          ? {
-              color: theme.palette.secondary.main,
-              backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-          }
-          : {
-              color: theme.palette.text.primary,
-              backgroundColor: theme.palette.secondary.dark
-          },
+            theme.palette.type === 'light'
+                ? {
+                      color: theme.palette.secondary.main,
+                      backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+                  }
+                : {
+                      color: theme.palette.text.primary,
+                      backgroundColor: theme.palette.secondary.dark
+                  },
         spacer: {
             flex: '1 1 100%'
         },
@@ -47,32 +47,24 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
         title: {
             flex: '0 0 auto'
         }
-
-
-    }),
+    })
 );
 
 export const EnhancedTableToolbar = ({ title, children, className }: TableToolbarProps) => {
     const styles = useToolbarStyles({});
 
     return (
-        <Toolbar
-            className={clsx(styles.root, className)}
-        >
+        <Toolbar className={clsx(styles.root, className)}>
             <div className={styles.title}>
                 <Typography variant="h6" id="tableTitle">
                     {title}
                 </Typography>
-
             </div>
             <div className={styles.spacer} />
-            <div className={styles.actions}>
-                {children}
-            </div>
+            <div className={styles.actions}>{children}</div>
         </Toolbar>
     );
 };
-
 
 const headRows: HeadRow<SectionOrderby>[] = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Name' }
@@ -80,7 +72,9 @@ const headRows: HeadRow<SectionOrderby>[] = [
 
 export function EnhancedTableHead<SectionOrderby>(props: EnhancedTableHeadProps<SectionOrderby>) {
     const { order, orderBy, onRequestSort } = props;
-    const createSortHandler = (property: keyof SectionOrderby) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: keyof SectionOrderby) => (
+        event: React.MouseEvent<unknown>
+    ) => {
         onRequestSort(event, property);
     };
     const styles = useTableStyles({});
@@ -107,7 +101,7 @@ export function EnhancedTableHead<SectionOrderby>(props: EnhancedTableHeadProps<
                         </TableSortLabel>
                     </TableCell>
                 ))}
-                <TableCell align="right" classes={{ root: styles.actionCell }} >
+                <TableCell align="right" classes={{ root: styles.actionCell }}>
                     <MoreActionsMenu rowId={2001} />
                 </TableCell>
             </TableRow>
@@ -116,105 +110,108 @@ export function EnhancedTableHead<SectionOrderby>(props: EnhancedTableHeadProps<
 }
 
 export interface SectionTableProps {
-    rows: SectionEntity[];
+    rows: Section[];
     mergeActive: boolean;
     showInactive: boolean;
     onChangeSelected: (selected: string[]) => void;
 }
-type SectionOrderby = Omit<SectionEntity, 'active'>;
+type SectionOrderby = Omit<Section, 'active'>;
 
-const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onChangeSelected }) => {
-    const styles = useTableStyles({});
-    const [order, setOrder] = React.useState<Order>('asc');
+const SectionTable: React.FC<SectionTableProps> = memo(
+    ({ rows, mergeActive, onChangeSelected }) => {
+        const styles = useTableStyles({});
+        const [order, setOrder] = React.useState<Order>('asc');
 
-    const [orderBy, setOrderBy] = React.useState<keyof SectionOrderby >('name');
-    const [selected, setSelected] = React.useState<string[]>([]);
+        const [orderBy, setOrderBy] = React.useState<keyof SectionOrderby>('name');
+        const [selected, setSelected] = React.useState<string[]>([]);
 
-    const {
-        page,
-        rowsPerPage,
-        handleChangePage,
-        handleChangeRowsPerPage,
-        rowsPerPageOptions,
-        maybeResetPage
-    } = usePagination(10);
+        const {
+            page,
+            rowsPerPage,
+            handleChangePage,
+            handleChangeRowsPerPage,
+            rowsPerPageOptions,
+            maybeResetPage
+        } = usePagination(10);
 
-    const inProgressItems = useSelector(deriveRowsFromInProgress);
+        const inProgressItems = useSelector(deriveRowsFromInProgress);
 
+        maybeResetPage(rows);
 
-    maybeResetPage(rows);
-
-
-    function handleRequestSort(event: React.MouseEvent<unknown>, property: keyof SectionOrderby) {
-        const isDesc = orderBy === property && order === 'desc';
-        setOrder(isDesc ? 'asc' : 'desc');
-        setOrderBy(property);
-    }
-
-    useEffect(() => {
-        if (!mergeActive) {
-            setSelected([]);
-            onChangeSelected([]);
+        function handleRequestSort(
+            event: React.MouseEvent<unknown>,
+            property: keyof SectionOrderby
+        ) {
+            const isDesc = orderBy === property && order === 'desc';
+            setOrder(isDesc ? 'asc' : 'desc');
+            setOrderBy(property);
         }
-    }, [mergeActive]);
 
-    function handleClick(name: string) {
-        return () => {
+        useEffect(() => {
             if (!mergeActive) {
-                return;
+                setSelected([]);
+                onChangeSelected([]);
             }
-            const selectedIndex = selected.indexOf(name);
-            let newSelected: string[] = [];
+        }, [mergeActive]);
 
-            if (selectedIndex === -1) {
-                newSelected = newSelected.concat(selected, name);
-            } else if (selectedIndex === 0) {
-                newSelected = newSelected.concat(selected.slice(1));
-            } else if (selectedIndex === selected.length - 1) {
-                newSelected = newSelected.concat(selected.slice(0, -1));
-            } else if (selectedIndex > 0) {
-                newSelected = newSelected.concat(
-                    selected.slice(0, selectedIndex),
-                    selected.slice(selectedIndex + 1),
-                );
-            }
+        function handleClick(name: string) {
+            return () => {
+                if (!mergeActive) {
+                    return;
+                }
+                const selectedIndex = selected.indexOf(name);
+                let newSelected: string[] = [];
 
-            setSelected(newSelected);
-            onChangeSelected(newSelected);
-        };
-    }
+                if (selectedIndex === -1) {
+                    newSelected = newSelected.concat(selected, name);
+                } else if (selectedIndex === 0) {
+                    newSelected = newSelected.concat(selected.slice(1));
+                } else if (selectedIndex === selected.length - 1) {
+                    newSelected = newSelected.concat(selected.slice(0, -1));
+                } else if (selectedIndex > 0) {
+                    newSelected = newSelected.concat(
+                        selected.slice(0, selectedIndex),
+                        selected.slice(selectedIndex + 1)
+                    );
+                }
 
-    const isSelected = (id: string) => selected.indexOf(id) !== -1;
+                setSelected(newSelected);
+                onChangeSelected(newSelected);
+            };
+        }
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+        const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
-    return (
-        <Paper className={clsx(styles.paper)}>
-            <div className={styles.tableWrapper}>
-                <EnhancedTableToolbar title="Sections" />
-                <Table
-                    className={styles.table}
-                    aria-labelledby="tableTitle"
-                    size="small"
-                >
-                    <EnhancedTableHead
-                        orderBy={orderBy}
-                        order={order}
-                        onRequestSort={handleRequestSort}
-                        headRows={headRows}
-                    />
-                    <TableBody>
-                        {
-                            stableSort(rows, getSorting(order, orderBy))
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+        return (
+            <Paper className={clsx(styles.paper)}>
+                <div className={styles.tableWrapper}>
+                    <EnhancedTableToolbar title="Sections" />
+                    <Table className={styles.table} aria-labelledby="tableTitle" size="small">
+                        <EnhancedTableHead
+                            orderBy={orderBy}
+                            order={order}
+                            onRequestSort={handleRequestSort}
+                            headRows={headRows}
+                        />
+                        <TableBody>
+                            {stableSort(rows, getSorting(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-
                                     const isItemSelected = isSelected(String(row.id));
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
-                                    const isAlreadyInProgress = Boolean(inProgressItems.find(({ id }: {id: string}) => id === String(row.id)));
+                                    const isAlreadyInProgress = Boolean(
+                                        inProgressItems.find(
+                                            ({ id }: { id: string }) => id === String(row.id)
+                                        )
+                                    );
 
-                                    const rowDisabled = (!isItemSelected && selected.length > 1) || (mergeActive && isAlreadyInProgress) || row.active === false;
+                                    const rowDisabled =
+                                        (!isItemSelected && selected.length > 1) ||
+                                        (mergeActive && isAlreadyInProgress) ||
+                                        row.active === false;
 
                                     return (
                                         <TableRow
@@ -226,49 +223,63 @@ const SectionTable: React.FC<SectionTableProps> = memo(({ rows, mergeActive, onC
                                             key={row.name}
                                             selected={isItemSelected}
                                             onClick={handleClick(String(row.id))}
+                                            data-testid={`section-row-item-${row.id}`}
                                         >
                                             <TableCell padding="checkbox">
-                                                {mergeActive && <Checkbox
-                                                    checked={isItemSelected}
-                                                    inputProps={{ 'aria-labelledby': labelId }}
-                                                />}
+                                                {mergeActive && (
+                                                    <Checkbox
+                                                        checked={isItemSelected}
+                                                        inputProps={{ 'aria-labelledby': labelId }}
+                                                    />
+                                                )}
                                             </TableCell>
 
-                                            <TableCell classes={{ root: styles.text }} id={labelId} scope="row" padding="none">
+                                            <TableCell
+                                                classes={{ root: styles.text }}
+                                                id={labelId}
+                                                scope="row"
+                                                padding="none"
+                                            >
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="right" classes={{ root: styles.actionCell }} >
-                                                <MoreActionsMenu rowId={row.id}/>
+                                            <TableCell
+                                                align="right"
+                                                classes={{ root: styles.actionCell }}
+                                            >
+                                                <MoreActionsMenu
+                                                    rowId={row.id}
+                                                    data-testid={`more-actions-menu-${row.id}`}
+                                                />
                                             </TableCell>
                                         </TableRow>
                                     );
                                 })}
-                        {emptyRows > 0 && (
-                            <TableRow style={{ height: 49 * emptyRows }}>
-                                <TableCell colSpan={6} />
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-            <TablePagination
-                rowsPerPageOptions={rowsPerPageOptions}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                backIconButtonProps={{
-                    'aria-label': 'Previous Page'
-                }}
-                nextIconButtonProps={{
-                    'aria-label': 'Next Page'
-                }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-        </Paper>
-    );
-});
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 49 * emptyRows }}>
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
+                <TablePagination
+                    rowsPerPageOptions={rowsPerPageOptions}
+                    component="div"
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    backIconButtonProps={{
+                        'aria-label': 'Previous Page'
+                    }}
+                    nextIconButtonProps={{
+                        'aria-label': 'Next Page'
+                    }}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+            </Paper>
+        );
+    }
+);
 
 export default SectionTable;
-

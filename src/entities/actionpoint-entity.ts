@@ -1,11 +1,12 @@
 import { EntityConfig } from 'entities';
-import { ActionPointEntity, EntityDisplay } from './types';
+import { ActionPoint, EntityDisplay } from './types';
+import { prop } from 'ramda';
 
-export default class ActionPointConfig implements EntityConfig<ActionPointEntity> {
-    public get displayProperties(): EntityDisplay<ActionPointEntity>[] {
+export default class ActionPointConfig implements EntityConfig<ActionPoint> {
+    public get displayProperties(): EntityDisplay<ActionPoint>[] {
         return [
-            { label: 'Reference Number', propName: 'reference_number' },
-            { label: 'Description', propName: 'description' }
+            { label: 'Reference Number', display: prop('reference_number') },
+            { label: 'Description', display: prop('description') }
         ];
     }
     public get title() {

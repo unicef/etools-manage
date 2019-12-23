@@ -16,7 +16,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(1)
         },
         description: {
-            flex: '1 1 50%%'
+            flex: '1 0 40%'
         },
         travel: {
             minHeight: 68,
@@ -30,7 +30,7 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(1)
         },
         containerPad: {
-            padding: `${theme.spacing(1.5)}px ${theme.spacing(3)}px`
+            padding: `${theme.spacing(1.5)}px ${theme.spacing(2)}px`
         },
         collapsableHeading: {
             '&:hover': {
@@ -61,7 +61,8 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
             paddingRight: 40
         },
         dropdown: {
-            minWidth: 335
+            minWidth: 335,
+            flex: 1
         },
         selectColumn: {
             marginLeft: theme.spacing(2)
@@ -89,6 +90,14 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
         secondaryHeading: {
             fontSize: 12,
             width: '90%'
+        },
+        engagementHeadings: {
+            '&>span': {
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                marginRight: theme.spacing(1)
+            }
         }
     })
 );

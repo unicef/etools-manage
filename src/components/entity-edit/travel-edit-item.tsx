@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { Dropdown, OptionType } from 'components/dropdown';
-import { selectSectionsAsOptions } from 'selectors';
+import { selectSectionsAsDropdownOptions } from 'selectors';
 import { prop } from 'ramda';
 import { ValueType } from 'react-select/src/types';
 import { onSelectTravelSection } from 'pages/close-section/actions';
@@ -17,7 +17,7 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
     const styles = useEditItemStyles();
     const dispatch = useDispatch();
 
-    const sectionsAsOptions = useSelector(selectSectionsAsOptions);
+    const sectionsAsOptions = useSelector(selectSectionsAsDropdownOptions);
 
     const { reference_number, traveler, purpose, section } = useSelector(
         (state: FullStoreShape) => state.closeSectionPayload.travels[id]
@@ -41,7 +41,7 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
     return (
         <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between">
-                <Box column>
+                <Box className={styles.description} column>
                     <Box>
                         <Typography variant="body2">
                             <b>{traveler}</b>
@@ -54,13 +54,7 @@ const TravelEditItem: React.FC<EditItemProps> = ({ id }) => {
                     <Typography>{purpose}</Typography>
                 </Box>
 
-                <Box
-                    className={clsx(
-                        styles.dropdown,
-                        styles.indicatorDropdown,
-                        styles.travelDropdown
-                    )}
-                >
+                <Box className={clsx(styles.dropdown, styles.travelDropdown)}>
                     <Dropdown
                         value={selectedSection}
                         onChange={onChange}

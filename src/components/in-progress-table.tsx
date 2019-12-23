@@ -57,7 +57,7 @@ const InProgressTable: React.FC<RouteComponentProps> = ({ history }) => {
     };
 
     useEffect(() => {
-        getInProgressItems(storageService, countryName, dispatch);
+        dispatch(getInProgressItems(storageService, countryName));
     }, []);
 
     return (
