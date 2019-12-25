@@ -7,7 +7,7 @@ import { useAppService } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
 import { keys, isEmpty, prop, filter, compose, find, propEq, map, includes } from 'ramda';
 import EntityConfigMapping from 'entities/config-map';
-import { MergeSectionsPayload, ZippedEntityResults, Section } from 'entities/types';
+import { MergeSectionsPayload, EntitiesAffected, Section } from 'entities/types';
 import { ConfirmButton } from 'components/buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSections, selectMergedSection } from 'selectors';
@@ -111,7 +111,7 @@ const MergeSummaryPage: React.FC = () => {
         <Box column>
             {mergedSection ? <SuccessBox {...getSuccessProps()} /> : <ConfirmBox />}
             {showSummaryList &&
-                keys(summary).map((entity: keyof ZippedEntityResults) => {
+                keys(summary).map((entity: keyof EntitiesAffected) => {
                     return (
                         <EntityChangesTable
                             key={entity as string}

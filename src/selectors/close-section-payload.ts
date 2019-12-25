@@ -7,7 +7,7 @@ import {
     Intervention,
     Normalized,
     Travel,
-    ModuleEntities,
+    EntitiesAffected,
     TPMActivity,
     SectionToEntity,
     Engagement
@@ -113,7 +113,7 @@ export const getCloseSectionBackendPayload = createSelector<
 
 export const deriveCloseSectionFetched = createSelector(
     [selectCloseSectionPayload],
-    (payload: ModuleEntities) => {
+    (payload: EntitiesAffected) => {
         if (!payload || equals(payload, initialState)) {
             return false;
         }

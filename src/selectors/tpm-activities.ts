@@ -1,13 +1,13 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { selectCloseSectionPayload } from 'selectors';
-import { TPMActivity, Normalized, ResolvedRatio, ModuleEntities } from 'entities/types';
+import { TPMActivity, Normalized, ResolvedRatio, EntitiesAffected } from 'entities/types';
 import { prop, reduce, keys } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { clearCurrentSection } from 'lib/sections';
 
 export const selectTPMFromPayload = createSelector<
     FullStoreShape,
-    ModuleEntities,
+    EntitiesAffected,
     Normalized<TPMActivity>
 >(
     [selectCloseSectionPayload],

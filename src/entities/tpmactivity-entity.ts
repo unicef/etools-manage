@@ -1,5 +1,4 @@
-import { EntityConfig } from 'entities';
-import { TPMActivity, EntityDisplay } from './types';
+import { TPMActivity, EntityDisplay, EntityConfig } from './types';
 import { prop } from 'ramda';
 
 export default class TPMActivityConfig implements EntityConfig<TPMActivity> {

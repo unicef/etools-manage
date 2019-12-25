@@ -1,5 +1,4 @@
-import { EntityConfig } from 'entities';
-import { Indicator, EntityDisplay } from './types';
+import { Indicator, EntityDisplay, EntityConfig } from './types';
 import { prop } from 'ramda';
 
 export default class IndicatorConfig implements Partial<EntityConfig<Indicator>> {
