@@ -15,7 +15,6 @@ import EntityChangesTable from 'components/entity-changes';
 import { isArrayOfObjects } from 'utils';
 import SuccessBox from 'components/success-box';
 
-// TODO: lazy load on route
 const MergeSummaryPage: React.FC = () => {
     const { sections: selected, newName } = queryString.parse(location.search);
 
@@ -116,7 +115,7 @@ const MergeSummaryPage: React.FC = () => {
                         <EntityChangesTable
                             key={entity as string}
                             // @ts-ignore
-                            config={EntityConfigMapping[entity]} //TODO: fix this typing
+                            config={EntityConfigMapping[entity]}
                             getOldSections={getOldSections}
                             getNewSections={() => newName as string}
                             entity={summary[entity]}

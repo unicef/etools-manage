@@ -18,7 +18,6 @@ const getCsrfToken = () => {
     return csrfToken || '';
 };
 
-// TODO: create type for config when tests are made
 export interface HttpClient {
     get: <T>(url: string, config?: any) => Promise<T>;
     post: <T>(url: string, data?: any, config?: any) => Promise<T>;
