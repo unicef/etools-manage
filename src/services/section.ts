@@ -13,7 +13,7 @@ export interface SectionsService {
     getSections(): Promise<Section[]>;
     createSection(data: CreateSectionPayload): Promise<SuccessResponse>;
     mergeSections(payload: MergeSectionsPayload): Promise<NewSectionFromMerged>;
-    closeSection(payload: CloseSectionBackendPayload): Promise<Response>; // TODO: check response on close and create type
+    closeSection(payload: CloseSectionBackendPayload): Promise<Response>;
 }
 
 const getSectionsUrl = process.env.REACT_APP_SECTIONS_ENDPOINT as string;
@@ -67,7 +67,7 @@ export default class SectionsApiService extends BaseService implements SectionsS
             );
             return response;
         } catch (err) {
-            throw new Error(err);
+            throw err;
         }
     }
 }

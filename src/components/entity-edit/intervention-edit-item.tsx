@@ -3,7 +3,7 @@ import {
     Intervention,
     GenericMultiSectionPayload,
     EditItemProps,
-    ModuleEntities
+    EntitiesAffected
 } from 'entities/types';
 import { useEditItemStyles } from './styles';
 import { OptionType, DropdownMulti } from 'components/dropdown';
@@ -32,7 +32,7 @@ const indicatorsConfig = EntityConfigMapping.indicators;
 export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     const styles = useEditItemStyles();
     const initialInterventionState = useSelector(
-        (state: FullStoreShape) => (state.closeSectionPayload as ModuleEntities).interventions[id]
+        (state: FullStoreShape) => (state.closeSectionPayload as EntitiesAffected).interventions[id]
     );
 
     const dispatch = useDispatch();

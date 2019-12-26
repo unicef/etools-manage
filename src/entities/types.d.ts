@@ -1,7 +1,6 @@
 import { EntityConfig } from 'entities';
 
-export interface ZippedEntityResults {
-    indicators: Normalized<Indicator>;
+export interface EntitiesAffected {
     tpmActivities: Normalized<TPMActivity>;
     actionPoints: Normalized<ActionPoint>;
     interventions: Normalized<Intervention>;
@@ -9,16 +8,18 @@ export interface ZippedEntityResults {
     engagements: Normalized<Engagement>;
 }
 
-export type ModuleEntities = Omit<ZippedEntityResults, 'indicators'>;
-
 export interface KeyToEntityMap {
     interventions: Intervention;
     tpmActivities: TPMActivity;
     actionPoints: ActionPoint;
     travels: Travel;
-    indicators: Indicator;
     engagements: Engagement;
 }
+
+export type ModuleKeys = keyof KeyToEntityMap;
+
+export type EditComponentMappings = { [key in ModuleKeys]: React.FC };
+export type EditComponentKeys = keyof EditComponentMappings | '';
 
 export type EntityWithSingleSection = Normalized<ActionPoint | Travel | Indicator | TPMActivity>;
 
@@ -26,10 +27,8 @@ export interface Normalized<T> {
     [id: string]: T;
 }
 
-export type NonEmptyEntityResults = Partial<ZippedEntityResults>;
-
 export interface CloseSectionPayload {
-    [id: string]: ModuleEntities;
+    [id: string]: EntitiesAffected;
 }
 
 export interface SectionToEntity {
@@ -57,11 +56,13 @@ export interface NewSectionFromSplitPayload {
 }
 
 export type SectionAction = 'close' | 'split';
+
 export interface ActionPointAsignee {
     id: number;
     name: string;
     email: string;
 }
+
 export interface ActionPoint {
     id: number;
     reference_number: string;
@@ -76,7 +77,9 @@ export interface Indicator {
     section: string;
     pk: number;
 }
+
 export type EngagementType = 'ma' | 'sa' | 'sc' | 'audit';
+
 export interface Engagement extends MultiSectionEntity {
     id: number;
     unique_id: string;
@@ -94,8 +97,10 @@ export interface Engagement extends MultiSectionEntity {
 
 export interface MultiSectionEntity {
     sections: string[];
-    existingSections: string[]; // we store sections that exist on the entity but cannot be removed at this property
+    existingSections: string[]; // since some entities like interventions can have multiple sections
+    //we display all sections not being closed/split by storing at this property
 }
+
 export interface Intervention extends MultiSectionEntity {
     id: number;
     number: string;
@@ -155,6 +160,7 @@ export interface GenericMultiSectionPayload {
     id: string;
     sections: string[];
 }
+
 export interface GenericSectionPayload {
     id: string;
     section: number | null;
@@ -176,9 +182,10 @@ export interface FetchStoragePayload {
     id: string;
     countryName: string;
 }
+
 export interface EntityDisplay<T> {
     label: string;
-    display(T): string;
+    display(prop: T): string;
 }
 
 export interface ResolvedRatio {
@@ -196,4 +203,15 @@ export type AllEntities =
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 
-export type EntityMap = { [K in keyof ZippedEntityResults]: WrapWithConfig<AllEntities> };
+export type EntityMap = { [K in keyof EntitiesAffected]: WrapWithConfig<AllEntities> };
+
+export interface EditProps<T> {
+    closeSectionPayloadKey: string;
+}
+
+export interface EntityConfig<T> {
+    displayProperties: EntityDisplay<T>[];
+    title: string;
+    sectionsProp: string;
+    moduleName: string;
+}

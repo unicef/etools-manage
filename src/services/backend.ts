@@ -7,10 +7,10 @@ import {
     ActionPoint,
     TPMActivity,
     Indicator,
-    NonEmptyEntityResults,
     Normalized,
     AllEntities,
-    Engagement
+    Engagement,
+    EntitiesAffected
 } from 'entities/types';
 import { normalize } from 'normalizr';
 import {
@@ -26,9 +26,9 @@ export interface BackendService {
     getTravels(query: string): Promise<Normalized<Travel>>;
     getTPMActivities(query: string): Promise<Normalized<TPMActivity>>;
     getActionPoints(query: string): Promise<Normalized<ActionPoint>>;
-    getEntitiesForMerge(query: string): Promise<NonEmptyEntityResults>;
-    getZippedEntities(query: string): Promise<NonEmptyEntityResults>;
-    getEntitiesForClose(query: string): Promise<NonEmptyEntityResults>;
+    getEntitiesForMerge(query: string): Promise<EntitiesAffected>;
+    getZippedEntities(query: string): Promise<EntitiesAffected>;
+    getEntitiesForClose(query: string): Promise<EntitiesAffected>;
     getInterventions(query: string): Promise<Normalized<Intervention>>;
 }
 
@@ -131,7 +131,7 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public async getEntitiesForMerge(query: string): Promise<NonEmptyEntityResults> {
+    public async getEntitiesForMerge(query: string): Promise<EntitiesAffected> {
         const zipped = await this.getZippedEntities(query);
         let withIndicators;
         if ('interventions' in zipped) {
@@ -143,16 +143,16 @@ export default class BackendApiService extends BaseService implements BackendSer
         return filter(notEmpty, withIndicators);
     }
 
-    public async getEntitiesForClose(query: string): Promise<NonEmptyEntityResults> {
+    public async getEntitiesForClose(query: string): Promise<EntitiesAffected> {
         try {
             const zipped = await this.getZippedEntities(query);
-            return filter(notEmpty, zipped);
+            return filter(notEmpty, zipped) as EntitiesAffected;
         } catch (err) {
             throw err;
         }
     }
 
-    public async getZippedEntities(query: string): Promise<NonEmptyEntityResults> {
+    public async getZippedEntities(query: string): Promise<EntitiesAffected> {
         const zip = zipObj(Object.keys(this.entityApiMap));
         const allEntities = await Promise.all(
             Object.keys(this.entityApiMap).map(entity => this.entityApiMap[entity](query))

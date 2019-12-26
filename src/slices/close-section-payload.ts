@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ModuleEntities } from 'entities/types';
+import { EntitiesAffected } from 'entities/types';
 import { renderSectionsList } from 'actions/action-constants';
 
-export const initialState: ModuleEntities = {
+export const initialState: EntitiesAffected = {
     interventions: {},
     travels: {},
     actionPoints: {},
