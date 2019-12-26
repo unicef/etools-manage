@@ -6,24 +6,28 @@ import { createSelector } from '@reduxjs/toolkit';
 import { ResolvedRatio } from 'entities/types';
 import { sum, map, prop } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
+import { getNumResolvedEngagements } from './engagements';
 
 export const selectNumItemsResolved = createSelector(
     [
         getNumResolvedInterventions,
         getNumResolvedTravels,
         getNumResolvedActionPoints,
-        getNumResolvedTPMActivities
+        getNumResolvedTPMActivities,
+        getNumResolvedEngagements
     ],
     (
         interventions: ResolvedRatio,
         travels: ResolvedRatio,
         actionPoints: ResolvedRatio,
-        tpmActivities: ResolvedRatio
-    ) => ({ interventions, travels, actionPoints, tpmActivities })
+        tpmActivities: ResolvedRatio,
+        engagements: ResolvedRatio
+    ) => ({ interventions, travels, actionPoints, tpmActivities, engagements })
 );
 
 export const selectTotalProgress = createSelector<
     FullStoreShape,
+    ResolvedRatio,
     ResolvedRatio,
     ResolvedRatio,
     ResolvedRatio,
@@ -34,7 +38,8 @@ export const selectTotalProgress = createSelector<
         getNumResolvedInterventions,
         getNumResolvedTravels,
         getNumResolvedActionPoints,
-        getNumResolvedTPMActivities
+        getNumResolvedTPMActivities,
+        getNumResolvedEngagements
     ],
     (...args: ResolvedRatio[]) => {
         const resolvedTotal = sum(map(prop('resolved'), args));

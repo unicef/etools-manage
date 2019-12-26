@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { selectCloseSectionPayload, selectCurrentActiveSection, selectSections } from 'selectors';
-import { Intervention, Normalized, ResolvedRatio, Section, ModuleEntities } from 'entities/types';
+import { Intervention, Normalized, ResolvedRatio, Section, EntitiesAffected } from 'entities/types';
 import { prop, map, without, keys, includes, reject, compose, lensProp, over, always } from 'ramda';
 
 import { normalize } from 'normalizr';
@@ -9,11 +9,13 @@ import { FullStoreShape } from 'contexts/app';
 
 export const selectInterventionsFromPayload = createSelector<
     FullStoreShape,
-    ModuleEntities,
+    EntitiesAffected,
     Normalized<Intervention>
 >(
     [selectCloseSectionPayload],
-    prop('interventions')
+    payload => {
+        return payload.interventions;
+    }
 );
 
 export const selectInterventionIds = createSelector(

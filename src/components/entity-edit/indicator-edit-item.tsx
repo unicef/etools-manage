@@ -26,7 +26,11 @@ const IndicatorEditItem: React.FC<IndicatorsProps> = memo(
         };
 
         return (
-            <Box className={styles.indicatorItem} align="center">
+            <Box
+                className={styles.indicatorItem}
+                align="center"
+                data-testid={`indicator-edit-${parentId}`}
+            >
                 <div className={styles.spacer} />
                 <Box column>
                     {indicators.map(({ title, section }, idx) => (

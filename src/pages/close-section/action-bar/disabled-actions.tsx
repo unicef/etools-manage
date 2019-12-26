@@ -5,16 +5,17 @@ import { Button } from '@material-ui/core';
 import CancelSectionActionButton from './cancel-button';
 import { useSummaryStyles } from '../summary-styles';
 
-
 function ActionBarDisabled() {
     const styles = useSummaryStyles();
     const btnStyles = useButtonStyles();
     return (
-        <Box className={styles.section} justify="between">
+        <Box className={styles.section} justify="between" data-testid="actionbar-disabled">
             <BackIconButton />
             <Box>
                 <CancelSectionActionButton />
-                <Button variant="outlined" disabled className={btnStyles.button}>Confirm</Button>
+                <Button variant="outlined" disabled className={btnStyles.button}>
+                    Confirm
+                </Button>
             </Box>
         </Box>
     );

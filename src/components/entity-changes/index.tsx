@@ -15,9 +15,9 @@ import clsx from 'clsx';
 import { EntityTableHeadProps, EntityChangesTableProps } from 'pages/merge-summary/types';
 import { useReviewTableStyles } from 'components/styles';
 
-function EntityTableHead<T>({ entityConfig }: EntityTableHeadProps<T>) {
+function EntityTableHead<T>(props: EntityTableHeadProps<T>) {
     const styles = useReviewTableStyles();
-
+    const { entityConfig } = props;
     return (
         <TableHead>
             <TableRow>
@@ -69,7 +69,7 @@ export default function EntityChangesTable<T>({
                             const changingSections = getOldSections(item, config.sectionsProp);
                             return (
                                 <TableRow key={`entityRow${idx}`}>
-                                    {config.displayProperties.map(({ label, propName }, idx) => (
+                                    {config.displayProperties.map(({ label, display }, idx) => (
                                         <TableCell
                                             size="small"
                                             className={clsx(
@@ -79,7 +79,7 @@ export default function EntityChangesTable<T>({
                                             key={label}
                                             align="left"
                                         >
-                                            {item[propName]}
+                                            {display(item)}
                                         </TableCell>
                                     ))}
                                     <TableCell

@@ -17,7 +17,7 @@ import {
     EntityWithSingleSection,
     ResolvedRatio,
     FetchStoragePayload,
-    ModuleEntities,
+    EntitiesAffected,
     Section
 } from 'entities/types';
 import { OptionType } from 'components/dropdown';
@@ -110,9 +110,9 @@ export const getSplitSectionUrl = (id: number) => `${SPLIT_SECTION_PATH}${id}`;
 
 export const getCloseSectionUrl = (id: string) => `${CLOSE_SECTION_PATH}${id}`;
 
-export const hasModulesData = (data: ModuleEntities) => {
+export const hasModulesData = (data: EntitiesAffected) => {
     return keys(data).reduce(
-        (notEmpty: boolean, key: keyof ModuleEntities) => notEmpty && !isEmpty(data[key]),
+        (notEmpty: boolean, key: keyof EntitiesAffected) => notEmpty && !isEmpty(data[key]),
         true
     );
 };

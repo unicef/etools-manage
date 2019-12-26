@@ -4,10 +4,9 @@ import thunk from 'redux-thunk';
 import { AppFrame } from '../app-frame';
 import { getInProgressSuccess } from '../../slices/in-progress-items';
 
-import { propEq } from 'ramda';
 import { onGetSectionsSuccess } from '../../slices/sections';
 import { requestStarted } from '../../slices/loading';
-import { renderWithRedux } from '../../../test/test-utils';
+import { renderWithRedux, findAction } from '../../../test/test-utils';
 
 const mockStorageService = {
     _storage: {},
@@ -38,9 +37,6 @@ const mockSectionsService = {
         return {};
     }
 };
-
-const findAction = (actionsList, actionToFind) =>
-    actionsList.find(propEq('type', actionToFind.type));
 
 describe('<AppFrame/>', () => {
     const mockStore = configureStore([thunk]);

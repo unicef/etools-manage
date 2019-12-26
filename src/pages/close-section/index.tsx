@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Box from 'components/box';
-import { KeyToEntityMap } from 'entities/types';
-import { CloseSectionsPage } from './close-section-page';
+import { CloseSectionPage } from './close-section-page';
 import InterventionsEdit from 'components/entity-edit/interventions-edit';
 import TravelsEdit from 'components/entity-edit/travels-edit';
 import ActionPointsEdit from 'components/entity-edit/action-points-edit';
@@ -17,22 +16,20 @@ import { onFetchDataCloseSection } from './actions';
 import { useAppService } from 'contexts/app';
 import { selectUserProfile } from 'selectors/user';
 import { MatchParams } from 'global-types';
+import { EditComponentMappings, EditComponentKeys } from 'entities/types';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
 import SuccessBox from 'components/success-box';
-import { updateCloseSectionPayload } from 'slices/close-section-payload';
-
-type ModuleKeys = keyof Omit<KeyToEntityMap, 'indicators'>;
-
-export type EditComponentMappings = { [key in ModuleKeys]: React.FC };
+import EngagementEdit from 'components/entity-edit/engagement-edit';
 
 const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     interventions: InterventionsEdit,
     travels: TravelsEdit,
     actionPoints: ActionPointsEdit,
-    tpmActivities: TPMActivitiesEdit
+    tpmActivities: TPMActivitiesEdit,
+    engagements: EngagementEdit
 };
 
-function getEditComponent(name: keyof EditComponentMappings | '') {
+function getEditComponent(name: EditComponentKeys) {
     if (name) {
         return EDIT_COMPONENT_MODULE_MAPPING[name];
     }
@@ -51,8 +48,6 @@ const CloseSummaryPage: React.FC<RouteComponentProps<MatchParams>> = ({ match })
             dispatch(currentActiveSectionChanged(Number(id)));
 
             const { name: countryName } = user.country;
-
-            dispatch(updateCloseSectionPayload(null));
             dispatch(
                 onFetchDataCloseSection({ backendService, storageService }, { id, countryName })
             );
@@ -80,7 +75,7 @@ export const CloseSectionRender: React.FC = () => {
             ) : closedSectionSuccess ? (
                 <SuccessBox {...successProps} />
             ) : (
-                <CloseSectionsPage />
+                <CloseSectionPage />
             )}
         </Box>
     );

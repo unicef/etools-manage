@@ -1,7 +1,7 @@
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
 import {
-    ZippedEntityResults,
+    EntitiesAffected,
     GenericMultiSectionPayload,
     IndicatorsPayload,
     GenericSectionPayload,
@@ -40,7 +40,7 @@ export const onFetchDataCloseSection = (
     const dataFromStorage = storageService.getStoredEntitiesData(key);
 
     if (!dataFromStorage) {
-        let dataFromServer: Partial<ZippedEntityResults>;
+        let dataFromServer: Partial<EntitiesAffected>;
         dispatch(requestStarted());
         try {
             dataFromServer = await backendService.getEntitiesForClose(payload.id);
@@ -48,7 +48,6 @@ export const onFetchDataCloseSection = (
             dispatch(onThrowError(err.message));
             return;
         }
-
         dispatch(closeSectionDataReceived(dataFromServer));
     } else {
         dispatch(dataFromStorageReceived(dataFromStorage));
@@ -59,14 +58,13 @@ export const onEditModuleSections = (payload: string, dispatch: Dispatch) => {
     dispatch(onSetModuleEditingName(payload));
 };
 
-export const onSelectInterventionSection = (
-    payload: GenericMultiSectionPayload,
+export const onSelectInterventionSection = (payload: GenericMultiSectionPayload) => (
     dispatch: Dispatch
 ) => {
     dispatch(onChangeInterventionSection(payload));
 };
 
-export const onSelectIndicatorSection = (payload: IndicatorsPayload, dispatch: Dispatch) => {
+export const onSelectIndicatorSection = (payload: IndicatorsPayload) => (dispatch: Dispatch) => {
     dispatch(onUpdateInterventionIndicatorsState(payload));
 };
 
@@ -82,11 +80,10 @@ export const onSelectTPMSections = (payload: GenericSectionPayload, dispatch: Di
     dispatch(onUpdateTPMSections(payload));
 };
 
-export const onSubmitCloseSection = async (
+export const onSubmitCloseSection = (
     service: SectionsService,
-    payload: CloseSectionBackendPayload,
-    dispatch: Dispatch
-) => {
+    payload: CloseSectionBackendPayload
+) => async (dispatch: Dispatch) => {
     try {
         dispatch(requestStarted());
         await service.closeSection(payload);

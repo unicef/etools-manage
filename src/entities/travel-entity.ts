@@ -1,16 +1,16 @@
-import { EntityConfig } from 'entities';
-import { Travel, EntityDisplay } from './types';
+import { Travel, EntityDisplay, EntityConfig } from './types';
+import { prop } from 'ramda';
 
 export default class TravelsConfig implements EntityConfig<Travel> {
     public get displayProperties(): EntityDisplay<Travel>[] {
         return [
             {
                 label: 'Reference number',
-                propName: 'reference_number'
+                display: prop('reference_number')
             },
             {
                 label: 'Purpose',
-                propName: 'purpose'
+                display: prop('purpose')
             }
         ];
     }

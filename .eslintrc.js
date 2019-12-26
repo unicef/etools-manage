@@ -6,18 +6,15 @@ module.exports = {
         'prettier',
         'prettier/@typescript-eslint'
     ],
-    plugins: ['@typescript-eslint', 'babel', 'react-hooks', 'prettier', 'cypress'],
+    plugins: ['@typescript-eslint', 'babel', 'react-hooks', 'prettier'],
     rules: {
-        '@typescript-eslint/no-unused-vars': 'error',
-        'no-unused-vars': 'off', // duplicate of @typescript-eslint/no-unused-vars
+        '@typescript-eslint/no-unused-vars': 'warn',
+        'no-unused-vars': 'warn', // duplicate of @typescript-eslint/no-unused-vars
         'no-console': 'warn',
         '@typescript-eslint/camelcase': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-var-requires': 'off', // dev purposes
         '@typescript-eslint/no-use-before-define': 'off'
-    },
-    env: {
-        'cypress/globals': true
     },
     overrides: [
         {

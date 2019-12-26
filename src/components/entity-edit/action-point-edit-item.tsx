@@ -42,7 +42,7 @@ const ActionPointEditItem: React.FC<EditItemProps> = ({ id }) => {
     return (
         <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
             <Box className={styles.travel} justify="between">
-                <Box column>
+                <Box className={styles.description} column>
                     <Box>
                         <Typography className={styles.refNum} variant="subtitle2">
                             {reference_number}

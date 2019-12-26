@@ -42,7 +42,6 @@ interface RowActionsProps {
     className?: string | undefined;
 }
 
-// TODO: add onClick to menu items
 export default function MoreActions({ rowId, className = '' }: RowActionsProps) {
     const styles = useTableStyles();
     const menuStyles = useMenuStyles();
@@ -114,17 +113,14 @@ export default function MoreActions({ rowId, className = '' }: RowActionsProps) 
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <Link to={getCloseSectionUrl(String(rowId))}>
-                    <MenuItem
-                        disabled={isDisabled('close')}
-                        classes={{ root: menuStyles.listItem }}
-                    >
+                <MenuItem disabled={isDisabled('close')} classes={{ root: menuStyles.listItem }}>
+                    <Link to={getCloseSectionUrl(String(rowId))}>
                         <Box>
                             <DeleteIcon className={menuStyles.icon} color="secondary" />
                             <Typography variant="body1">Close section</Typography>
                         </Box>
-                    </MenuItem>
-                </Link>
+                    </Link>
+                </MenuItem>
                 <MenuItem
                     disabled={isDisabled('split')}
                     classes={{ root: menuStyles.listItem }}
