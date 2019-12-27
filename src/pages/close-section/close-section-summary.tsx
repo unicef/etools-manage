@@ -3,7 +3,7 @@ import Box from 'components/box';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCloseSectionPayload, selectCurrentActiveSectionName } from 'selectors';
 import { keys, prop } from 'ramda';
-import { ModuleEntities, Indicator, AllEntities } from 'entities/types';
+import { EntitiesAffected, Indicator, AllEntities } from 'entities/types';
 import EntityChangesTable from 'components/entity-changes';
 import EntityConfigMapping from 'entities/config-map';
 import LoadingFallback from 'components/loading-fallback';
@@ -44,11 +44,11 @@ const CloseSectionSummary: React.FC = () => {
 
     return (
         <Box column>
-            {keys(closeSectionPayload).map((entity: keyof ModuleEntities) => (
+            {keys(closeSectionPayload).map((entity: keyof EntitiesAffected) => (
                 <EntityChangesTable
                     key={entity as string}
                     // @ts-ignore
-                    config={EntityConfigMapping[entity]} //TODO: fix this typing
+                    config={EntityConfigMapping[entity]}
                     getOldSections={() => oldSectionName}
                     getNewSections={getNewSections}
                     entity={closeSectionPayload[entity]}

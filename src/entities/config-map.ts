@@ -8,8 +8,6 @@ import EngagementsConfig from './engagement-entity';
 // tells us which config instance to use for each entity type,
 // EntityMap ensures only the listed types in AllConfigs can be used in the map
 
-// TODO: find way to make indicators optional and type this as EntityMap
-
 const EntityConfigMapping = {
     interventions: new InterventionConfig(),
     indicators: new IndicatorConfig(),

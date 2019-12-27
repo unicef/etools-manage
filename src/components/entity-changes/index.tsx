@@ -15,9 +15,9 @@ import clsx from 'clsx';
 import { EntityTableHeadProps, EntityChangesTableProps } from 'pages/merge-summary/types';
 import { useReviewTableStyles } from 'components/styles';
 
-function EntityTableHead<T>({ entityConfig }: EntityTableHeadProps<T>) {
+function EntityTableHead<T>(props: EntityTableHeadProps<T>) {
     const styles = useReviewTableStyles();
-
+    const { entityConfig } = props;
     return (
         <TableHead>
             <TableRow>

@@ -1,5 +1,4 @@
-import { EntityConfig } from 'entities';
-import { Engagement, EntityDisplay } from './types';
+import { Engagement, EntityDisplay, EntityConfig } from './types';
 import { ENGAGEMENT_TYPES } from 'components/entity-edit/engagement-edit-item';
 
 export default class EngagementsConfig implements EntityConfig<Engagement> {

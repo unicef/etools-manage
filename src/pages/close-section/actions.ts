@@ -1,7 +1,7 @@
 import { BackendService } from 'services/backend';
 import StorageService from 'services/storage';
 import {
-    ZippedEntityResults,
+    EntitiesAffected,
     GenericMultiSectionPayload,
     IndicatorsPayload,
     GenericSectionPayload,
@@ -40,7 +40,7 @@ export const onFetchDataCloseSection = (
     const dataFromStorage = storageService.getStoredEntitiesData(key);
 
     if (!dataFromStorage) {
-        let dataFromServer: Partial<ZippedEntityResults>;
+        let dataFromServer: Partial<EntitiesAffected>;
         dispatch(requestStarted());
         try {
             dataFromServer = await backendService.getEntitiesForClose(payload.id);
