@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { EntitiesAffected } from 'entities/types';
 import { renderSectionsList } from 'actions/action-constants';
 
@@ -16,7 +16,8 @@ export const closeSectionPayload = createSlice({
     reducers: {
         dataFromStorageReceived: (state, action) => action.payload,
         closeSectionDataReceived: (state, action) => action.payload,
-        updateCloseSectionPayload: (state, action) => action.payload,
+        updateCloseSectionPayload: (state, action: PayloadAction<EntitiesAffected>) =>
+            action.payload,
         onChangeInterventionSection: (state, action) => {
             const { id, sections } = action.payload;
             state.interventions[id].sections = sections;
