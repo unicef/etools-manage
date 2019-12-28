@@ -7,7 +7,7 @@ import SearchBar from 'components/search-bar';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
 import { Section } from 'entities/types';
-import { onSelectForMerge } from 'slices/modals';
+import { onSelectForMerge, onToggleSplitModal } from 'slices/modals';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSections, selectAllSections } from 'selectors';
 import Switch from '@material-ui/core/Switch';
@@ -16,8 +16,9 @@ import { useTableStyles } from 'components/table/styles';
 import { renderSectionsList } from 'actions/action-constants';
 import InProgressTable from 'components/in-progress-table';
 import { selectInProgress } from 'selectors/in-progress-items';
+import { currentActiveSectionChanged } from 'slices/current-active-section';
 
-const SectionsMainPage: React.FunctionComponent = () => {
+const SectionsMainPage: React.FunctionComponent = ({ location }: RouteComponentProps) => {
     const sections = useSelector(selectSections);
     const sectionsWithInactive = useSelector(selectAllSections);
 
@@ -62,6 +63,17 @@ const SectionsMainPage: React.FunctionComponent = () => {
     useEffect(() => {
         dispatch(renderSectionsList());
     });
+
+    // Pops up the split section modal if user attempts to
+    // enter a section id in url param for section which has no new names saved- location comes from
+    // the <Redirect/>
+    useEffect(() => {
+        if (location.state) {
+            const { splitId } = location.state;
+            dispatch(currentActiveSectionChanged(Number(splitId)));
+            modalsDispatch(onToggleSplitModal);
+        }
+    }, [location]);
 
     const onChangeSelected = useCallback(
         (selected: string[]) => modalsDispatch(onSelectForMerge(selected)),
