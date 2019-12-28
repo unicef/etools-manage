@@ -17,8 +17,10 @@ import { renderSectionsList } from 'actions/action-constants';
 import InProgressTable from 'components/in-progress-table';
 import { selectInProgress } from 'selectors/in-progress-items';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
+import { RouteComponentProps } from 'react-router';
+import { Maybe } from 'helpers';
 
-const SectionsMainPage: React.FunctionComponent = ({ location }: RouteComponentProps) => {
+const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location }) => {
     const sections = useSelector(selectSections);
     const sectionsWithInactive = useSelector(selectAllSections);
 
@@ -68,7 +70,7 @@ const SectionsMainPage: React.FunctionComponent = ({ location }: RouteComponentP
     // enter a section id in url param for section which has no new names saved- location comes from
     // the <Redirect/>
     useEffect(() => {
-        if (location.state) {
+        if (location) {
             const { splitId } = location.state;
             dispatch(currentActiveSectionChanged(Number(splitId)));
             modalsDispatch(onToggleSplitModal);
