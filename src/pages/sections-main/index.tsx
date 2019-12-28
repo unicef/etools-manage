@@ -70,7 +70,7 @@ const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location }) =>
     // enter a section id in url param for section which has no new names saved- location comes from
     // the <Redirect/>
     useEffect(() => {
-        if (location) {
+        if (location && location.state) {
             const { splitId } = location.state;
             dispatch(currentActiveSectionChanged(Number(splitId)));
             modalsDispatch(onToggleSplitModal);
