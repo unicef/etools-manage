@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import Box from 'components/box';
 import { useAppService } from 'contexts/app';
 import { onFetchMergeSummary, onSubmitMergeSections } from 'actions';
-import { keys, isEmpty, prop, filter, compose, find, propEq, map, includes } from 'ramda';
+import { keys, isEmpty, prop, propEq, map, includes } from 'ramda';
 import EntityConfigMapping from 'entities/config-map';
 import { MergeSectionsPayload, EntitiesAffected, Section } from 'entities/types';
 import { ConfirmButton } from 'components/buttons';
@@ -23,7 +23,7 @@ const MergeSummaryPage: React.FC = () => {
     const dispatch = useDispatch();
     const mergedSection = useSelector(selectMergedSection) as Section;
 
-    const [summary, setSummary] = useState();
+    const [summary, setSummary] = useState<EntitiesAffected>({});
 
     useEffect(() => {
         const fetchSummary = async () => {
@@ -61,31 +61,30 @@ const MergeSummaryPage: React.FC = () => {
 
     const getOldSections = useCallback(
         (item, sectionsProp): string => {
-            const sectionsOfEntity = prop(sectionsProp, item);
+            const sectionsOfEntity: Section[] | number = prop(sectionsProp, item);
 
             if (Array.isArray(sectionsOfEntity) && isArrayOfObjects(sectionsOfEntity)) {
-                return map(
+                const oldSections = map(
                     prop('name'),
                     sectionsOfEntity.filter(({ id }) => selectedSectionsIds.includes(id))
                 );
+
+                return oldSections.join(',');
             } else if (Array.isArray(sectionsOfEntity)) {
-                const idsOfSectionsChanging = filter(
-                    (id: number) => selectedSectionsIds.includes(id),
-                    sectionsOfEntity
-                );
+                const idsOfSectionsChanging = sectionsOfEntity
+                    .filter(({ id }) => selectedSectionsIds.includes(id))
+                    .map(prop('id'));
+
                 return sections
                     .filter(({ id }: { id: number }) => idsOfSectionsChanging.includes(id))
                     .map(prop('name'))
                     .join(',');
             } else if (typeof sectionsOfEntity === 'object') {
                 return prop('name', sectionsOfEntity);
+            } else {
+                const sectionFromId = sections.find(propEq('id', sectionsOfEntity as number));
+                return (sectionFromId && sectionFromId.name) || '';
             }
-            const sectionChangingName = compose(
-                prop('name'),
-                find(propEq('id', sectionsOfEntity))
-            )(sections);
-
-            return sectionChangingName;
         },
         [sections]
     );
@@ -110,7 +109,7 @@ const MergeSummaryPage: React.FC = () => {
         <Box column>
             {mergedSection ? <SuccessBox {...getSuccessProps()} /> : <ConfirmBox />}
             {showSummaryList &&
-                keys(summary).map((entity: keyof EntitiesAffected) => {
+                keys(summary).map(entity => {
                     return (
                         <EntityChangesTable
                             key={entity as string}

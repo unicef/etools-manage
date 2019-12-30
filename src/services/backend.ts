@@ -1,4 +1,4 @@
-import { zipObj, filter, prop, flatten, keys, flip, compose } from 'ramda';
+import { zipObj, filter, prop, values, flatten, keys, flip, compose } from 'ramda';
 import BaseService from 'services';
 import { notEmpty } from 'utils';
 import {
@@ -10,7 +10,8 @@ import {
     Normalized,
     AllEntities,
     Engagement,
-    EntitiesAffected
+    EntitiesAffected,
+    EntitySummary
 } from 'entities/types';
 import { normalize } from 'normalizr';
 import {
@@ -21,12 +22,13 @@ import {
     engagementsSchema
 } from 'entities/schemas';
 
+export type SummaryItems = EntitiesAffected | EntitySummary;
 export interface BackendService {
     getIndicators(interventions: Normalized<Intervention>): Indicator[];
     getTravels(query: string): Promise<Normalized<Travel>>;
     getTPMActivities(query: string): Promise<Normalized<TPMActivity>>;
     getActionPoints(query: string): Promise<Normalized<ActionPoint>>;
-    getEntitiesForMerge(query: string): Promise<EntitiesAffected>;
+    getEntitiesForMerge(query: string): Promise<SummaryItems>;
     getZippedEntities(query: string): Promise<EntitiesAffected>;
     getEntitiesForClose(query: string): Promise<EntitiesAffected>;
     getInterventions(query: string): Promise<Normalized<Intervention>>;
@@ -42,12 +44,12 @@ export interface TravelsResponse {
     data: Travel[];
 }
 
-export interface AllAffectedEntities {
+export interface EntityApiMap {
     [key: string]: (query: string) => Promise<Normalized<AllEntities>>;
 }
 
 export default class BackendApiService extends BaseService implements BackendService {
-    private entityApiMap: AllAffectedEntities = {
+    private entityApiMap: EntityApiMap = {
         tpmActivities: this.getTPMActivities.bind(this),
         actionPoints: this.getActionPoints.bind(this),
         interventions: this.getInterventions.bind(this),
@@ -66,18 +68,11 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public getIndicators(interventions: Normalized<Intervention>): Indicator[] {
-        const lookup = flip(prop);
-        return flatten(
-            keys(interventions)
-                .map(
-                    compose(
-                        prop('indicators'),
-                        lookup(interventions)
-                    )
-                )
-                .filter(notEmpty)
-        );
+    public getIndicators(normalized: Normalized<Intervention>): Indicator[] {
+        const interventions = values(normalized);
+        const allIndicators = interventions.map(prop('indicators'));
+        const flattenedIndicators = flatten(allIndicators).filter(notEmpty);
+        return flattenedIndicators;
     }
 
     public async getTravels(query: string): Promise<Normalized<Travel>> {
@@ -131,16 +126,17 @@ export default class BackendApiService extends BaseService implements BackendSer
         }
     }
 
-    public async getEntitiesForMerge(query: string): Promise<EntitiesAffected> {
+    public async getEntitiesForMerge(query: string): Promise<SummaryItems> {
         const zipped = await this.getZippedEntities(query);
         let withIndicators;
         if ('interventions' in zipped) {
+            const indicators = this.getIndicators(zipped.interventions as Normalized<Intervention>);
             withIndicators = {
                 ...zipped,
-                indicators: this.getIndicators(zipped.interventions as Normalized<Intervention>)
+                indicators: indicators
             };
         }
-        return filter(notEmpty, withIndicators);
+        return withIndicators || zipped;
     }
 
     public async getEntitiesForClose(query: string): Promise<EntitiesAffected> {

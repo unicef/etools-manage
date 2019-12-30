@@ -34,7 +34,8 @@ export const selectSections = createSelector<FullStoreShape, Section[], Section[
     [selectAllSections],
     sections => {
         const activeSection = propEq('active', true);
-        return filter(activeSection, sections);
+        const activeSections = filter(activeSection, sections);
+        return activeSections;
     }
 );
 

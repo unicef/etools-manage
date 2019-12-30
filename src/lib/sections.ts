@@ -87,7 +87,8 @@ export const filterDuplicateClose = (keys: string[]) => {
     return removeDuplicateClose(keys);
 };
 
-export const isCurrentCountry = (countryName: string) => (key: string) => key.includes(countryName);
+export const isCurrentCountry: (countryName: string) => (key: string) => boolean = countryName =>
+    includes(countryName);
 
 export const valueOrDefault = cond([[isNil, always([])], [T, map(prop('value'))]]);
 

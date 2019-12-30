@@ -6,7 +6,6 @@ import TravelsConfig from './travel-entity';
 import EngagementsConfig from './engagement-entity';
 
 // tells us which config instance to use for each entity type,
-// EntityMap ensures only the listed types in AllConfigs can be used in the map
 
 const EntityConfigMapping = {
     interventions: new InterventionConfig(),

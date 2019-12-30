@@ -29,7 +29,7 @@ import { HEADER_BACKGROUND_PRODUCTION, HEADER_BACKGROUND_DEV } from 'lib/theme';
 //     return [state, safeSetState];
 // }
 
-export function notEmpty(xs: unknown) {
+export function notEmpty<T>(xs: T): boolean {
     return !isEmpty(xs) && xs !== undefined;
 }
 

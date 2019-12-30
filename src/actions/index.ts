@@ -104,15 +104,14 @@ export const getInProgressItems = (storageService: StorageService, payload: stri
     dispatch: Dispatch
 ) => {
     let actionKeys = storageService.getAllItems();
-
+    let filteredKeys: string[] = [];
+    const currentCountry = isCurrentCountry(payload);
     if (actionKeys) {
-        actionKeys = compose(
-            filterDuplicateClose,
-            filter(isCurrentCountry(payload))
-        )(actionKeys);
+        const keysForCurrentCountry = actionKeys.filter(currentCountry);
+        filteredKeys = filterDuplicateClose(keysForCurrentCountry);
     }
 
-    dispatch(getInProgressSuccess(actionKeys));
+    dispatch(getInProgressSuccess(filteredKeys));
 };
 
 export const onRemoveItemInProgress = (dispatch: Dispatch, payload: string) => {

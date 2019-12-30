@@ -16,6 +16,8 @@ export interface KeyToEntityMap {
     engagements: Engagement;
 }
 
+export type EntitySummary = EntitiesAffected & { indicators: Indicator[] };
+
 export type ModuleKeys = keyof KeyToEntityMap;
 
 export type EditComponentMappings = { [key in ModuleKeys]: React.FC };
@@ -193,17 +195,9 @@ export interface ResolvedRatio {
     total: number;
 }
 
-export type AllEntities =
-    | Intervention
-    | TPMActivity
-    | ActionPoint
-    | Travel
-    | Indicator
-    | Engagement;
+export type AllEntities = Intervention | TPMActivity | ActionPoint | Travel | Engagement;
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
-
-export type EntityMap = { [K in keyof EntitiesAffected]: WrapWithConfig<AllEntities> };
 
 export interface EditProps<T> {
     closeSectionPayloadKey: string;
