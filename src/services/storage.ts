@@ -1,4 +1,4 @@
-import { ModuleEntities } from 'entities/types';
+import { EntitiesAffected } from 'entities/types';
 import { keys } from 'ramda';
 import { SPLIT_SECTION_PREFIX, CLOSE_SECTION_PREFIX } from 'global-constants';
 
@@ -9,12 +9,12 @@ export interface StorageClient {
 }
 
 interface CloseData {
-    [id: string]: ModuleEntities;
+    [id: string]: EntitiesAffected;
 }
 interface SplitData {
     [id: string]: {
         newName: string;
-        resolvedData: ModuleEntities;
+        resolvedData: EntitiesAffected;
     };
 }
 
@@ -28,19 +28,19 @@ abstract class BaseStorage {
 }
 
 export interface Storage {
-    storeEntitiesData(key: string, data: ModuleEntities): void;
-    getStoredEntitiesData(key: string): ModuleEntities | null;
+    storeEntitiesData(key: string, data: EntitiesAffected): void;
+    getStoredEntitiesData(key: string): EntitiesAffected | null;
     getAllItems(): string[] | null;
     removeItem(key: string): void;
 }
 
 export default class StorageService extends BaseStorage implements Storage {
-    public storeEntitiesData(key: string, data: ModuleEntities) {
+    public storeEntitiesData(key: string, data: EntitiesAffected) {
         const json = JSON.stringify(data);
         this._storage.setItem(key, json);
     }
 
-    public getStoredEntitiesData(key: string): ModuleEntities | null {
+    public getStoredEntitiesData(key: string): EntitiesAffected | null {
         const data = this._storage.getItem(key);
         if (data) {
             return JSON.parse(data);

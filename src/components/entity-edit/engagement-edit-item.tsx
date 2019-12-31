@@ -1,17 +1,12 @@
 import React from 'react';
 import { EditItemProps } from 'entities/types';
 import Box from 'components/box';
+import Tooltip from '@material-ui/core/Tooltip';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEditItemStyles } from './styles';
 import clsx from 'clsx';
 import { OptionType, DropdownMulti } from 'components/dropdown';
-import {
-    // selectSectionsAsDropdownOptions,
-    getSelectedOptions,
-    getOptionsWithoutExisting,
-    getExistingSectionsStr
-} from 'selectors';
-// import { lensPath, over, always } from 'ramda';
+import { getSelectedOptions, getOptionsWithoutExisting, getExistingSectionsStr } from 'selectors';
 import { ValueType } from 'react-select/src/types';
 import { valueOrDefault } from 'lib/sections';
 import { FullStoreShape } from 'contexts/app';
@@ -68,8 +63,12 @@ const EngagementEditItem: React.FC<EditItemProps> = ({ id }) => {
                 {/* <Box column> */}
                 <span className={engagementStyles.unique}>{unique_id}</span>
                 {/* </Box> */}
-                <span className={engagementStyles.audit}>{agreement.auditor_firm.name}</span>
-                <span className={engagementStyles.partner}>{partner.name}</span>
+                <Tooltip title={agreement.auditor_firm.name} placement="top">
+                    <span className={engagementStyles.audit}>{agreement.auditor_firm.name}</span>
+                </Tooltip>
+                <Tooltip title={partner.name} placement="top">
+                    <span className={engagementStyles.partner}>{partner.name}</span>
+                </Tooltip>
                 <span className={engagementStyles.type}>{ENGAGEMENT_TYPES[engagement_type]}</span>
                 <span className={engagementStyles.status}>{STATUS_TYPES[status]}</span>
                 <span className={engagementStyles.existing}>{existingSectionsStr}</span>

@@ -1,5 +1,4 @@
-import { Intervention, EntityDisplay } from './types';
-import { EntityConfig } from 'entities';
+import { Intervention, EntityDisplay, EntityConfig } from './types';
 import { prop } from 'ramda';
 
 export class InterventionConfig implements EntityConfig<Intervention> {

@@ -1,5 +1,4 @@
-import { EntityConfig } from 'entities';
-import { Travel, EntityDisplay } from './types';
+import { Travel, EntityDisplay, EntityConfig } from './types';
 import { prop } from 'ramda';
 
 export default class TravelsConfig implements EntityConfig<Travel> {

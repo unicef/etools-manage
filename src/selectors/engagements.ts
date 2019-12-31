@@ -1,14 +1,14 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { selectCurrentActiveSection, selectCloseSectionPayload, selectSections } from 'selectors';
 import { FullStoreShape } from 'contexts/app';
-import { ModuleEntities, Normalized, Engagement, Section, ResolvedRatio } from 'entities/types';
+import { EntitiesAffected, Normalized, Engagement, Section, ResolvedRatio } from 'entities/types';
 import { map, keys, prop, without, includes } from 'ramda';
 import { engagementsSchema } from 'entities/schemas';
 import { normalize } from 'normalizr';
 
 export const selectEngagementsFromPayload = createSelector<
     FullStoreShape,
-    ModuleEntities,
+    EntitiesAffected,
     Normalized<Engagement>
 >(
     [selectCloseSectionPayload],

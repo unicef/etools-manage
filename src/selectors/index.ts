@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { ModuleEntities, Section } from 'entities/types';
+import { EntitiesAffected, Section } from 'entities/types';
 import { propEq, reject, map, prop, includes, without, filter, keys, concat, sortBy } from 'ramda';
 import { OptionType } from 'components/dropdown';
 import { FullStoreShape } from 'contexts/app';
@@ -16,7 +16,7 @@ export const selectCreatedSection: (state: FullStoreShape) => Section | null = s
 export const selectClosedSectionSuccess: (state: FullStoreShape) => boolean = state =>
     state.closedSectionSuccess;
 
-export const selectCloseSectionPayload: (state: FullStoreShape) => ModuleEntities = state =>
+export const selectCloseSectionPayload: (state: FullStoreShape) => EntitiesAffected = state =>
     state.closeSectionPayload;
 
 export const selectLoading: (state: FullStoreShape) => boolean = state => state.loading;

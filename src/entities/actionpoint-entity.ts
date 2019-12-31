@@ -1,5 +1,4 @@
-import { EntityConfig } from 'entities';
-import { ActionPoint, EntityDisplay } from './types';
+import { ActionPoint, EntityDisplay, EntityConfig } from './types';
 import { prop } from 'ramda';
 
 export default class ActionPointConfig implements EntityConfig<ActionPoint> {
