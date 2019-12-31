@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { compose, includes, filter, prop, toLower } from 'ramda';
+import { compose, includes, filter, prop, toLower, propEq } from 'ramda';
 import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 import SectionsTable from 'components/sections-table';
@@ -19,8 +19,10 @@ import { selectInProgress } from 'selectors/in-progress-items';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
 import { RouteComponentProps } from 'react-router';
 import { Maybe } from 'helpers';
+import ErrorsSnackbar from 'components/errors-snackbar';
+import { INVALID_SECTION_MESSAGE } from 'global-constants';
 
-const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location }) => {
+const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location, history }) => {
     const sections = useSelector(selectSections);
     const sectionsWithInactive = useSelector(selectAllSections);
 
@@ -32,6 +34,9 @@ const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location }) =>
 
     const modalsDispatch = useModalsDispatch();
     const dispatch = useDispatch();
+
+    const [errorSnackbarOpen, setErrorSnackbarOpen] = useState<boolean>(false);
+    const [errorSnackbarMsg, setErrorSnackbarMsg] = useState<string>('');
 
     function handleToggleInactive(event: React.ChangeEvent<HTMLInputElement>) {
         const { checked } = event.target;
@@ -58,6 +63,11 @@ const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location }) =>
         [sections]
     );
 
+    const handleCloseSnackbar = () => {
+        history.replace('', null);
+        setErrorSnackbarOpen(false);
+    };
+
     useEffect(() => {
         setFilteredSections(sections);
     }, [sections]);
@@ -72,6 +82,12 @@ const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location }) =>
     useEffect(() => {
         if (prop('state', location)) {
             const { splitId } = location.state;
+            const correspondingSection = sections.find(propEq('id', splitId));
+            if (!correspondingSection) {
+                setErrorSnackbarMsg(INVALID_SECTION_MESSAGE);
+                setErrorSnackbarOpen(true);
+                return;
+            }
             dispatch(currentActiveSectionChanged(Number(splitId)));
             modalsDispatch(onToggleSplitModal);
         }
@@ -111,6 +127,11 @@ const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location }) =>
             {inProgress.length ? <InProgressTable /> : null}
 
             <PageModals />
+            <ErrorsSnackbar
+                open={errorSnackbarOpen}
+                handleClose={handleCloseSnackbar}
+                errorMessage={errorSnackbarMsg}
+            ></ErrorsSnackbar>
         </Container>
     );
 };

@@ -5,6 +5,7 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { mockStateForTable } from './fixtures/state-fixtures';
 import SectionsMainPage from '../../../pages/sections-main';
+import { MemoryRouter } from 'react-router-dom';
 
 // required for sections table element
 
@@ -14,7 +15,12 @@ describe('<SectionsMain/>', () => {
     let store, render;
     beforeEach(async () => {
         store = mockStore(mockStateForTable);
-        render = await renderWithRedux(<SectionsMainPage />, { store });
+        const Routed = (
+            <MemoryRouter>
+                <SectionsMainPage></SectionsMainPage>
+            </MemoryRouter>
+        );
+        render = await renderWithRedux(Routed, { store });
     });
     describe('<SectionsTable/>', () => {
         test('renders list of sections', async () => {
@@ -28,7 +34,7 @@ describe('<SectionsMain/>', () => {
             const mergeBtn = getByText('Merge');
             fireEvent.click(mergeBtn);
             const row = await waitForElement(() => getByTestId('section-row-item-47'));
-            expect(row.className).toContain('makeStyles-rowDisabled-263');
+            expect(row.className).toContain('makeStyles-rowDisabled');
         });
     });
 });
