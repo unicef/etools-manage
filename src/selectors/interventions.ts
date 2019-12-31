@@ -2,7 +2,6 @@ import { createSelector } from '@reduxjs/toolkit';
 import { selectCloseSectionPayload, selectCurrentActiveSection, selectSections } from 'selectors';
 import { Intervention, Normalized, ResolvedRatio, Section, EntitiesAffected } from 'entities/types';
 import { prop, map, without, keys, includes, reject, compose, lensProp, over, always } from 'ramda';
-
 import { normalize } from 'normalizr';
 import { interventionSchema } from 'entities/schemas';
 import { FullStoreShape } from 'contexts/app';
