@@ -6,6 +6,7 @@ import { actionPointsWithoutCurrentSection } from './action-points';
 import { notEmpty } from 'utils';
 import { filter } from 'ramda';
 import { engagementsWithoutCurrentSection } from './engagements';
+import { EntitiesAffected } from 'entities/types';
 
 export const selectWithoutCurrentSection = createSelector(
     [
@@ -22,7 +23,7 @@ export const selectWithoutCurrentSection = createSelector(
             tpmActivities,
             actionPoints,
             engagements
-        });
+        }) as EntitiesAffected;
         return res;
     }
 );

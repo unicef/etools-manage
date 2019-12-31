@@ -26,10 +26,10 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
     const selectedSection = getSelectedSection(sectionsAsOptions, section);
 
     const onChange = (value: ValueType<OptionType>) => {
-        let selectedSectionName = prop('value', value);
+        let selectedSectionName = null;
 
-        if (section === selectedSectionName) {
-            selectedSectionName = null;
+        if (value && 'value' in value) {
+            selectedSectionName = prop('value', value);
         }
 
         const payload = {

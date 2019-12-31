@@ -40,7 +40,7 @@ export const deriveRowsFromInProgress = createSelector<
             map(buildRowItem)
         );
 
-        return buildRowsFrom(items);
+        return buildRowsFrom(items) as InProgressItem[];
     }
 );
 

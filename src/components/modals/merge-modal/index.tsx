@@ -1,8 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import {
-    filter,
-    includes
-} from 'ramda';
+import { filter, includes } from 'ramda';
 import { useModalsState, useModalsDispatch } from 'contexts/page-modals';
 import LoadingFallback from 'components/loading-fallback';
 import { useSelector } from 'react-redux';
@@ -15,7 +12,7 @@ export const useMergeState = () => {
     const { mergeModalOpen, selectedForMerge } = useModalsState();
     const dispatch = useModalsDispatch();
 
-    const matchingSection = ({ id }: {id: number}) => includes(String(id), selectedForMerge);
+    const matchingSection = ({ id }: { id: number }) => includes(id, selectedForMerge);
     const selectedSectionsFromCollection = filter(matchingSection, sections);
 
     return {
@@ -27,16 +24,15 @@ export const useMergeState = () => {
     };
 };
 
-
 // Content components created for lazy loading modal content
 const MergeModal: React.FC = () => {
     const { mergeModalOpen } = useMergeState();
 
-    return mergeModalOpen ?
-        <Suspense fallback={ <LoadingFallback/> }>
+    return mergeModalOpen ? (
+        <Suspense fallback={<LoadingFallback />}>
             <MergeModalContent />
-        </Suspense> : null;
+        </Suspense>
+    ) : null;
 };
 
 export default MergeModal;
-

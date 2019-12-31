@@ -97,8 +97,11 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
     };
 
     const handleChangeIndicators = (idx: number) => (value: ValueType<OptionType>) => {
-        const selectedSection = find(propEq('label', prop('label', value)), optionsWithoutExisting);
-        const selectedSectionName = prop('label', selectedSection);
+        const selectedSection = find(
+            propEq('label', prop('label', value as OptionType)),
+            optionsWithoutExisting
+        );
+        const selectedSectionName = prop('label', selectedSection as OptionType);
 
         const sectionLens = lensPath(['indicators', idx, 'section']);
         const currentSelected = view(sectionLens, interventionState);

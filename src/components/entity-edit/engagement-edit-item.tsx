@@ -46,7 +46,7 @@ const EngagementEditItem: React.FC<EditItemProps> = ({ id }) => {
     const selectedSections = useSelector(getSelectedOptions(sections));
 
     const onChange = (value: ValueType<OptionType>) => {
-        const selectedSections = valueOrDefault(value);
+        const selectedSections = value && valueOrDefault(value);
         dispatch(engagementSectionSelected({ id, sections: selectedSections }));
     };
 

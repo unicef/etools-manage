@@ -1,4 +1,3 @@
-// import { useReducer, useEffect, useRef } from 'react';
 import { StateSetter } from 'global-types';
 import { values, head, compose, keys, flip, prop, replace, toUpper, isEmpty } from 'ramda';
 import {
@@ -10,31 +9,15 @@ import {
 } from 'global-constants';
 import { HEADER_BACKGROUND_PRODUCTION, HEADER_BACKGROUND_DEV } from 'lib/theme';
 
-// export function useSetState<T>(initialState: T) {
-//     return useReducer((state, newState) => ({ ...state, ...newState }), initialState);
-// }
-
-// export function useSafeSetState<T>(initialState: T) {
-//     const [state, setState] = useSetState(initialState);
-
-//     const mountedRef = useRef(false);
-//     useEffect((): (() => void) => {
-//         mountedRef.current = true;
-//         return () => (mountedRef.current = false);
-//     }, []);
-//     // @ts-ignore
-
-//     const safeSetState = (...args) => mountedRef.current && setState(...args);
-
-//     return [state, safeSetState];
-// }
-
 export function notEmpty<T>(xs: T): boolean {
     return !isEmpty(xs) && xs !== undefined;
 }
 
-export function getProperty<T, K extends keyof T>(o: T, name: K): T[K] {
-    return o[name];
+export function getProperty<T, K extends keyof T>(o: T, name: K): T[K] | undefined {
+    if (Boolean(o)) {
+        return o[name];
+    }
+    return undefined;
 }
 
 // eslint-disable-next-line

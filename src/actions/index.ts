@@ -1,7 +1,6 @@
-import { compose, filter } from 'ramda';
 import SectionsApiService, { SectionsService } from 'services/section';
-import { BackendService } from 'services/backend';
-import { CreateSectionPayload, MergeSectionsPayload, EntitiesAffected } from 'entities/types';
+import { BackendService, ZippedEntities } from 'services/backend';
+import { CreateSectionPayload, MergeSectionsPayload } from 'entities/types';
 import { Dispatch } from 'redux';
 import {
     isSectionsParamValid,
@@ -79,7 +78,7 @@ export const onFetchMergeSummary = async (
 
     dispatch(requestStarted());
 
-    let summary: EntitiesAffected;
+    let summary: ZippedEntities;
 
     try {
         summary = await service.getEntitiesForMerge(payload);

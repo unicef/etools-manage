@@ -52,7 +52,7 @@ export default function EntityChangesTable<T>({
         handleChangeRowsPerPage
     } = usePagination();
 
-    const entityIds = keys(entity);
+    const entityIds = keys(entity) as string[];
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, entityIds.length - page * rowsPerPage);
 
     return (

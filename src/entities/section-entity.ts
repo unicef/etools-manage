@@ -25,7 +25,7 @@ export class NewSection implements CreateSectionPayload {
             compose(
                 equals(toLower(trim(name))),
                 toLower,
-                prop('name')
+                (x: Section) => x.name
             )
         );
         const nameExists = findSameName(sections) !== undefined;

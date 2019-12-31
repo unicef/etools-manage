@@ -1,18 +1,4 @@
-import {
-    reduce,
-    keys,
-    always,
-    map,
-    T,
-    isNil,
-    cond,
-    prop,
-    propEq,
-    includes,
-    reject,
-    allPass,
-    isEmpty
-} from 'ramda';
+import { reduce, keys, map, isNil, prop, propEq, includes, reject, allPass, isEmpty } from 'ramda';
 import {
     EntityWithSingleSection,
     ResolvedRatio,
@@ -28,9 +14,10 @@ import {
     SPLIT_SECTION_PATH,
     CLOSE_SECTION_PATH
 } from 'global-constants';
+import { ValueType } from 'react-select/src/types';
 
 export const clearCurrentSection = (entity: EntityWithSingleSection = {}) => {
-    const res = keys(entity).reduce((newEntity: EntityWithSingleSection, id: number) => {
+    const res = keys(entity).reduce((newEntity: EntityWithSingleSection, id: string | number) => {
         return { ...newEntity, [id]: { ...newEntity[id], section: null } };
     }, entity);
     return res;
@@ -42,7 +29,7 @@ export const buildResolvedProgressString = ({ resolved, total }: ResolvedRatio):
 export const getNumResolved = (entity: EntityWithSingleSection = {}): ResolvedRatio => {
     const keysOfEntity = keys(entity);
     const resolved = reduce(
-        (sum: number, id: number) => {
+        (sum, id) => {
             const obj = entity[id];
             if (obj.section) {
                 sum++;
@@ -50,7 +37,7 @@ export const getNumResolved = (entity: EntityWithSingleSection = {}): ResolvedRa
             return sum;
         },
         0,
-        keysOfEntity
+        keysOfEntity as readonly number[]
     );
     return { resolved, total: keysOfEntity.length };
 };
@@ -90,8 +77,9 @@ export const filterDuplicateClose = (keys: string[]) => {
 export const isCurrentCountry: (countryName: string) => (key: string) => boolean = countryName =>
     includes(countryName);
 
-export const valueOrDefault = cond([[isNil, always([])], [T, map(prop('value'))]]);
-
+// export const valueOrDefault = cond([[isNil, always([])], [T, map(prop('value'))]]);
+export const valueOrDefault = (val: ValueType<OptionType>) =>
+    isNil(val) ? [] : map(prop('value'));
 export const getSelectedSection = (options: OptionType[], section: string) =>
     options.find(propEq('value', section)) || null;
 

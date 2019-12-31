@@ -1,6 +1,7 @@
 import { EntityConfig } from 'entities';
+import { ZippedEntities } from 'services/backend';
 
-export interface EntitiesAffected {
+interface EntitiesAffected {
     tpmActivities: Normalized<TPMActivity>;
     actionPoints: Normalized<ActionPoint>;
     interventions: Normalized<Intervention>;
@@ -8,7 +9,7 @@ export interface EntitiesAffected {
     engagements: Normalized<Engagement>;
 }
 
-export interface KeyToEntityMap {
+interface KeyToEntityMap {
     interventions: Intervention;
     tpmActivities: TPMActivity;
     actionPoints: ActionPoint;
@@ -16,30 +17,32 @@ export interface KeyToEntityMap {
     engagements: Engagement;
 }
 
-export type EntitySummary = EntitiesAffected & { indicators: Indicator[] };
+type EntitySummary = ZippedEntities & { indicators: Indicator[] };
 
-export type ModuleKeys = keyof KeyToEntityMap;
+type ModuleKeys = keyof KeyToEntityMap;
 
-export type EditComponentMappings = { [key in ModuleKeys]: React.FC };
-export type EditComponentKeys = keyof EditComponentMappings | '';
+type EditComponentMappings = { [key in ModuleKeys]: React.FC };
+type EditComponentKeys = keyof EditComponentMappings | '';
 
-export type EntityWithSingleSection = Normalized<ActionPoint | Travel | Indicator | TPMActivity>;
+type EntityWithSingleSection = Normalized<
+    ActionPoint | Travel | Indicator | TPMActivity | { section: null }
+>;
 
-export interface Normalized<T> {
+interface Normalized<T> {
     [id: string]: T;
 }
 
-export interface CloseSectionPayload {
+interface CloseSectionPayload {
     [id: string]: EntitiesAffected;
 }
 
-export interface SectionToEntity {
+interface SectionToEntity {
     [name: string]: {
         [key in BackendEntityNames]?: number[];
     };
 }
 
-export type BackendEntityNames =
+type BackendEntityNames =
     | 'interventions'
     | 'applied_indicators'
     | 'travels'
@@ -47,42 +50,40 @@ export type BackendEntityNames =
     | 'engagements'
     | 'action_points';
 
-export interface CloseSectionBackendPayload {
+interface CloseSectionBackendPayload {
     old_section: number;
     new_sections: SectionToEntity;
 }
 
-export interface NewSectionFromSplitPayload {
+interface NewSectionFromSplitPayload {
     name: string;
     active: boolean;
 }
 
-export type SectionAction = 'close' | 'split';
+type SectionAction = 'close' | 'split';
 
-export interface ActionPointAsignee {
+interface ActionPointAsignee {
     id: number;
     name: string;
     email: string;
 }
 
-export interface ActionPoint {
+interface ActionPoint extends SingleSectionEntity {
     id: number;
     reference_number: string;
     description: string;
     status: string;
-    section: string;
     assigned_to: ActionPointAsignee;
 }
 
-export interface Indicator {
+interface Indicator extends SingleSectionEntity {
     title: string;
-    section: string;
     pk: number;
 }
 
-export type EngagementType = 'ma' | 'sa' | 'sc' | 'audit';
+type EngagementType = 'ma' | 'sa' | 'sc' | 'audit';
 
-export interface Engagement extends MultiSectionEntity {
+interface Engagement extends MultiSectionEntity {
     id: number;
     unique_id: string;
     status: 'partner_contacted' | 'report_submitted';
@@ -97,113 +98,118 @@ export interface Engagement extends MultiSectionEntity {
     engagement_type: EngagementType;
 }
 
-export interface MultiSectionEntity {
+interface MultiSectionEntity {
     sections: string[];
     existingSections: string[]; // since some entities like interventions can have multiple sections
     //we display all sections not being closed/split by storing at this property
 }
+interface SingleSectionEntity {
+    section: string;
+}
 
-export interface Intervention extends MultiSectionEntity {
+type Entity = SingleSectionEntity | MultiSectionEntity;
+
+type SectionsProp<T> = T extends SingleSectionEntity ? 'section' : 'sections';
+
+interface Intervention extends MultiSectionEntity {
     id: number;
     number: string;
     title: string;
     indicators: Indicator[];
 }
 
-export interface TPMActivity {
+interface TPMActivity extends SingleSectionEntity {
     id: number;
     reference_number: string;
     status: string;
-    section: string;
     tpm_partner_name: string;
 }
 
-export type FormattedTPMActivityEntity = Omit<TPMActivity, 'section'> & {
+type FormattedTPMActivityEntity = Omit<TPMActivity, 'section'> & {
     section: string[];
 };
 
-export interface Section {
+interface Section {
     id: number;
     name: string;
     active: boolean;
 }
 
-export interface CreateSectionPayload {
+interface CreateSectionPayload {
     new_section_name: string;
 }
 
-export interface MergeSectionsPayload {
+interface MergeSectionsPayload {
     new_section_name: string;
     sections_to_merge: number[];
 }
-export interface Travel {
+interface Travel extends SingleSectionEntity {
     id: number;
-    section: string;
     reference_number: string;
     purpose: string;
     traveler: string;
 }
 
-export interface NewSectionFromMerged {
+interface NewSectionFromMerged {
     pk: number;
     name: string;
 }
 
-export type SectionServicePayload =
+type SectionServicePayload =
     | CreateSectionPayload
     | MergeSectionsPayload
     | CloseSectionBackendPayload;
 
-export interface EditItemProps {
+interface EditItemProps {
     id: string;
 }
 
-export interface GenericMultiSectionPayload {
+interface GenericMultiSectionPayload {
     id: string;
     sections: string[];
 }
 
-export interface GenericSectionPayload {
+interface GenericSectionPayload {
     id: string;
-    section: number | null;
+    section: string | number | null;
 }
 
-export interface InProgressItem {
+interface InProgressItem {
     action: SectionAction;
     name: string;
     id: string;
     storageKey: string;
 }
 
-export interface IndicatorsPayload {
+interface IndicatorsPayload {
     id: string;
     indicators: Indicator[];
 }
 
-export interface FetchStoragePayload {
+interface FetchStoragePayload {
     id: string;
     countryName: string;
 }
 
-export interface EntityDisplay<T> {
+interface EntityDisplay<T> {
     label: string;
     display(prop: T): string;
 }
 
-export interface ResolvedRatio {
+interface ResolvedRatio {
     resolved: number;
     total: number;
 }
 
-export type AllEntities = Intervention | TPMActivity | ActionPoint | Travel | Engagement;
+type AllEntities = Intervention | TPMActivity | ActionPoint | Travel | Engagement;
 
-export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
+type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 
-export interface EditProps<T> {
+interface EditProps<T> {
     closeSectionPayloadKey: string;
 }
 
-export interface EntityConfig<T> {
+interface EntityConfig<T> {
     displayProperties: EntityDisplay<T>[];
     title: string;
     sectionsProp: string;
