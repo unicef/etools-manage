@@ -40,7 +40,7 @@ export default class StorageService extends BaseStorage implements Storage {
         this._storage.setItem(key, json);
     }
 
-    public getStoredEntitiesData(key: string): EntitiesAffected | null {
+    public getStoredEntitiesData<T>(key: string): T | null {
         const data = this._storage.getItem(key);
         if (data) {
             return JSON.parse(data);

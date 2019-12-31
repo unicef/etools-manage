@@ -18,7 +18,9 @@ export const onFetchDataSplitSection = (
 
     const splitKey = getSplitSectionPrefixKey(payload);
 
-    const newNamesFromSplit = storageService.getStoredEntitiesData(splitKey);
+    const newNamesFromSplit = storageService.getStoredEntitiesData<NewSectionFromSplitPayload[]>(
+        splitKey
+    );
     dispatch(updateNamesFromSplit(newNamesFromSplit));
 
     dispatch(onFetchDataCloseSection(services, payload));
