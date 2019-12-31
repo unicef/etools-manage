@@ -7,7 +7,9 @@ import { CloseSectionRender } from '../../close-section/index';
 import { splitSectionState } from './fixtures/split-section-state';
 import { getOptionsWithoutExisting } from '../../../selectors';
 import { renderWithRedux } from '../../../../test/test-utils';
-
+import { MemoryRouter, Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { Routes } from '../../../components/router';
 describe('Split section page', () => {
     const mockStore = configureStore([thunk]);
     let state;
@@ -37,8 +39,12 @@ describe('Split section page', () => {
 
     test('displays old section name and new section names being created from split', async () => {
         const store = mockStore(state);
-
-        const { getByText } = await renderWithRedux(<CloseSectionRender />, {
+        const Routed = (
+            <MemoryRouter>
+                <CloseSectionRender />
+            </MemoryRouter>
+        );
+        const { getByText } = await renderWithRedux(Routed, {
             store
         });
 
@@ -47,5 +53,38 @@ describe('Split section page', () => {
 
         const newSections = getByText(/Strategic & Partnership/i);
         expect(newSections).toBeInTheDocument();
+    });
+
+    test('attempt to split invalid section id displays redirects to main and displays error', async () => {
+        const store = mockStore(state);
+        const history = createMemoryHistory();
+        const nonExistantSectionId = 7;
+        expect(splitSectionState.sections.find(s => s.id === nonExistantSectionId)).toBeUndefined();
+        history.push(`/split/${nonExistantSectionId}`);
+        const CustomRouter = () => (
+            <Router history={history}>
+                <Routes />
+            </Router>
+        );
+        const { getByText } = await renderWithRedux(<CustomRouter />, {
+            store
+        });
+        expect(getByText(/Invalid section id/i)).toBeInTheDocument();
+    });
+
+    test('attempt to split section without saved new names redirects to split section modal', async () => {
+        const store = mockStore(state);
+        const history = createMemoryHistory();
+        history.push(`/split/2`);
+        const CustomRouter = () => (
+            <Router history={history}>
+                <Routes />
+            </Router>
+        );
+        const { getByText } = await renderWithRedux(<CustomRouter />, {
+            store
+        });
+        const sectionName = state.sections[0].name;
+        expect(getByText(sectionName)).toBeInTheDocument();
     });
 });

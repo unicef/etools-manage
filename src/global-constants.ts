@@ -16,3 +16,4 @@ export const ETOOLS_ROOT_PATH = '/dash/';
 export const ENV_PRODUCTION = 'PRODUCTION';
 export const ENV_STAGING = 'STAGING';
 export const ENV_DEV = 'DEVELOP';
+export const INVALID_SECTION_MESSAGE = 'Invalid section id';

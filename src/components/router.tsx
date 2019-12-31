@@ -33,17 +33,22 @@ function NoMatch({ location }: { location: Location }) {
 export default function AppRouter() {
     return (
         <Router basename={process.env.PUBLIC_URL}>
-            <Switch>
-                <Route exact path="/" component={Main} />
-                <Route path="/merge/" component={MergeSummaryPage} />
-                <Route path={`${CLOSE_SECTION_PATH}:id?`} component={CloseSummaryPage} />
-                <Route path={`${SPLIT_SECTION_PATH}:id?`} component={ProtectedRouteSplitSection} />
-                <Route component={NoMatch} />
-            </Switch>
+            <Routes />
         </Router>
     );
 }
 
+export function Routes() {
+    return (
+        <Switch>
+            <Route exact path="/" component={Main} />
+            <Route path="/merge/" component={MergeSummaryPage} />
+            <Route path={`${CLOSE_SECTION_PATH}:id?`} component={CloseSummaryPage} />
+            <Route path={`${SPLIT_SECTION_PATH}:id?`} component={ProtectedRouteSplitSection} />
+            <Route component={NoMatch} />
+        </Switch>
+    );
+}
 export function ProtectedRouteSplitSection(props: RouteComponentProps<MatchParams> & RouteProps) {
     const user = useSelector(selectUserProfile);
     const { id } = props.match.params;
