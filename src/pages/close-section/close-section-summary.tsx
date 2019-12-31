@@ -48,7 +48,7 @@ const CloseSectionSummary: React.FC = () => {
                 <EntityChangesTable
                     key={entity as string}
                     // @ts-ignore
-                    config={EntityConfigMapping[entity]} //TODO: fix this typing
+                    config={EntityConfigMapping[entity]}
                     getOldSections={() => oldSectionName}
                     getNewSections={getNewSections}
                     entity={closeSectionPayload[entity]}
