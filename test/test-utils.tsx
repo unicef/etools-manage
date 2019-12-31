@@ -28,9 +28,7 @@ export function renderWithRedux(ui, { store }) {
         ...render(
             <Provider store={store}>
                 <AppServicesProvider>
-                    {/* <CustomRouter> */}
                     <Contexts>{ui}</Contexts>
-                    {/* </CustomRouter> */}
                 </AppServicesProvider>
             </Provider>
         ),
