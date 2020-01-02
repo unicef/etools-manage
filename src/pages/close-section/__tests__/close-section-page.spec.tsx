@@ -21,6 +21,8 @@ import {
     mockDataHalfResolvedCloseSectionPayload
 } from './fixtures/state-fixture';
 
+import { MemoryRouter } from 'react-router-dom';
+
 import { CloseSectionPage } from '../close-section-page';
 
 describe('Close Section Page', () => {
@@ -93,7 +95,12 @@ describe('Close Section Page', () => {
         test('renders only modules that are affected by close', async () => {
             store = mockStore(mockDataCloseSectionPayloadState);
 
-            rendered = await renderWithRedux(<CloseSectionPage />, { store });
+            rendered = await renderWithRedux(
+                <MemoryRouter>
+                    <CloseSectionPage />
+                </MemoryRouter>,
+                { store }
+            );
 
             const { getByText, queryByText } = rendered;
 
@@ -106,9 +113,14 @@ describe('Close Section Page', () => {
 
         test('displays correct resolved items number before and after a section is selected', async () => {
             const store = configureAppStore();
-            const { getByTestId } = await renderWithRedux(<CloseSectionPage />, {
-                store
-            });
+            const { getByTestId } = await renderWithRedux(
+                <MemoryRouter>
+                    <CloseSectionPage />
+                </MemoryRouter>,
+                {
+                    store
+                }
+            );
             await store.dispatch(
                 closeSectionDataReceived(mockDataCloseSectionPayloadState.closeSectionPayload)
             );
@@ -134,9 +146,14 @@ describe('Close Section Page', () => {
 
             beforeEach(async () => {
                 store = configureAppStore();
-                rendered = await renderWithRedux(<CloseSectionPage />, {
-                    store
-                });
+                rendered = await renderWithRedux(
+                    <MemoryRouter>
+                        <CloseSectionPage />
+                    </MemoryRouter>,
+                    {
+                        store
+                    }
+                );
             });
 
             test('action bar disables confirm when not all items resolved', async () => {
@@ -178,9 +195,14 @@ describe('Close Section Page', () => {
                     closeSectionPayload: { ...mockDataHalfResolvedCloseSectionPayload }
                 });
 
-                const { getByTestId } = await renderWithRedux(<CloseSectionPage />, {
-                    store
-                });
+                const { getByTestId } = await renderWithRedux(
+                    <MemoryRouter>
+                        <CloseSectionPage />
+                    </MemoryRouter>,
+                    {
+                        store
+                    }
+                );
 
                 const progressBar = getByTestId('resolved-items-progress');
                 expect(progressBar).toHaveTextContent('Resolved items progress 50%');

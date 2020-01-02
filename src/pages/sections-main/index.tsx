@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { compose, includes, filter, prop, toLower } from 'ramda';
+import { compose, includes, filter, prop, toLower, propEq } from 'ramda';
 import { useModalsDispatch } from 'contexts/page-modals';
 import Box from 'components/box';
 import SectionsTable from 'components/sections-table';
@@ -7,7 +7,7 @@ import SearchBar from 'components/search-bar';
 import ControlsBar from 'components/controls-bar';
 import PageModals from 'components/page-modals';
 import { Section } from 'entities/types';
-import { onSelectForMerge } from 'slices/modals';
+import { onSelectForMerge, onToggleSplitModal } from 'slices/modals';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSections, selectAllSections } from 'selectors';
 import Switch from '@material-ui/core/Switch';
@@ -16,8 +16,13 @@ import { useTableStyles } from 'components/table/styles';
 import { renderSectionsList } from 'actions/action-constants';
 import InProgressTable from 'components/in-progress-table';
 import { selectInProgress } from 'selectors/in-progress-items';
+import { currentActiveSectionChanged } from 'slices/current-active-section';
+import { RouteComponentProps } from 'react-router';
+import { Maybe } from 'helpers';
+import ErrorsSnackbar from 'components/errors-snackbar';
+import { INVALID_SECTION_MESSAGE } from 'global-constants';
 
-const SectionsMainPage: React.FunctionComponent = () => {
+const SectionsMainPage: React.FC<Maybe<RouteComponentProps>> = ({ location, history }) => {
     const sections = useSelector(selectSections);
     const sectionsWithInactive = useSelector(selectAllSections);
 
@@ -29,6 +34,9 @@ const SectionsMainPage: React.FunctionComponent = () => {
 
     const modalsDispatch = useModalsDispatch();
     const dispatch = useDispatch();
+
+    const [errorSnackbarOpen, setErrorSnackbarOpen] = useState<boolean>(false);
+    const [errorSnackbarMsg, setErrorSnackbarMsg] = useState<string>('');
 
     function handleToggleInactive(event: React.ChangeEvent<HTMLInputElement>) {
         const { checked } = event.target;
@@ -55,6 +63,11 @@ const SectionsMainPage: React.FunctionComponent = () => {
         [sections]
     );
 
+    const handleCloseSnackbar = () => {
+        history.replace('', null);
+        setErrorSnackbarOpen(false);
+    };
+
     useEffect(() => {
         setFilteredSections(sections);
     }, [sections]);
@@ -62,6 +75,23 @@ const SectionsMainPage: React.FunctionComponent = () => {
     useEffect(() => {
         dispatch(renderSectionsList());
     });
+
+    // Pops up the split section modal if user attempts to
+    // enter a section id in url param for section which has no new names saved- location comes from
+    // the <Redirect/>
+    useEffect(() => {
+        if (prop('state', location)) {
+            const { splitId } = location.state;
+            const correspondingSection = sections.find(propEq('id', splitId));
+            if (!correspondingSection) {
+                setErrorSnackbarMsg(INVALID_SECTION_MESSAGE);
+                setErrorSnackbarOpen(true);
+                return;
+            }
+            dispatch(currentActiveSectionChanged(Number(splitId)));
+            modalsDispatch(onToggleSplitModal);
+        }
+    }, [location]);
 
     const onChangeSelected = useCallback(
         (selected: string[]) => modalsDispatch(onSelectForMerge(selected)),
@@ -97,6 +127,11 @@ const SectionsMainPage: React.FunctionComponent = () => {
             {inProgress.length ? <InProgressTable /> : null}
 
             <PageModals />
+            <ErrorsSnackbar
+                open={errorSnackbarOpen}
+                handleClose={handleCloseSnackbar}
+                errorMessage={errorSnackbarMsg}
+            ></ErrorsSnackbar>
         </Container>
     );
 };

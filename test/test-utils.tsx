@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { propEq } from 'ramda';
 import { BrowserRouter as Router } from 'react-router-dom';
-
 import { render, RenderOptions } from '@testing-library/react';
 import { AppServicesProvider } from '../src/contexts/app';
 import { Modals as ModalsProvider } from '../src/contexts/page-modals';
@@ -29,9 +28,7 @@ export function renderWithRedux(ui, { store }) {
         ...render(
             <Provider store={store}>
                 <AppServicesProvider>
-                    <Router>
-                        <Contexts>{ui}</Contexts>
-                    </Router>
+                    <Contexts>{ui}</Contexts>
                 </AppServicesProvider>
             </Provider>
         ),
