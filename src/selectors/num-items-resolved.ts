@@ -7,6 +7,8 @@ import { ResolvedRatio } from 'entities/types';
 import { sum, map, prop } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { getNumResolvedEngagements } from './engagements';
+import {getNumResolvedFMActivities} from './fm-activities';
+import {getNumResolvedFMQuestions} from './fm-questions';
 
 export const selectNumItemsResolved = createSelector(
     [
@@ -14,6 +16,8 @@ export const selectNumItemsResolved = createSelector(
         getNumResolvedTravels,
         getNumResolvedActionPoints,
         getNumResolvedTPMActivities,
+        getNumResolvedFMActivities,
+        getNumResolvedFMQuestions,
         getNumResolvedEngagements
     ],
     (
@@ -21,12 +25,16 @@ export const selectNumItemsResolved = createSelector(
         travels: ResolvedRatio,
         actionPoints: ResolvedRatio,
         tpmActivities: ResolvedRatio,
-        engagements: ResolvedRatio
-    ) => ({ interventions, travels, actionPoints, tpmActivities, engagements })
+        fmActivities: ResolvedRatio,
+        fmQuestions: ResolvedRatio,
+        engagements: ResolvedRatio,
+    ) => ({ interventions, travels, actionPoints, tpmActivities, fmActivities, fmQuestions, engagements })
 );
 
 export const selectTotalProgress = createSelector<
     FullStoreShape,
+    ResolvedRatio,
+    ResolvedRatio,
     ResolvedRatio,
     ResolvedRatio,
     ResolvedRatio,
@@ -39,6 +47,8 @@ export const selectTotalProgress = createSelector<
         getNumResolvedTravels,
         getNumResolvedActionPoints,
         getNumResolvedTPMActivities,
+        getNumResolvedFMActivities,
+        getNumResolvedFMQuestions,
         getNumResolvedEngagements
     ],
     (...args: ResolvedRatio[]) => {

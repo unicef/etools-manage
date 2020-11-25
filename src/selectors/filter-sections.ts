@@ -6,20 +6,26 @@ import { actionPointsWithoutCurrentSection } from './action-points';
 import { notEmpty } from 'utils';
 import { filter } from 'ramda';
 import { engagementsWithoutCurrentSection } from './engagements';
+import {fmActivitiesWithoutCurrentSection} from './fm-activities';
+import {fmQuestionsWithoutCurrentSection} from './fm-questions';
 
 export const selectWithoutCurrentSection = createSelector(
     [
         interventionsWithoutCurrentSection,
         travelsWithoutCurrentSection,
         tpmActivitiesWithoutCurrentSection,
+        fmActivitiesWithoutCurrentSection,
+        fmQuestionsWithoutCurrentSection,
         actionPointsWithoutCurrentSection,
         engagementsWithoutCurrentSection
     ],
-    (interventions, travels, tpmActivities, actionPoints, engagements) => {
+    (interventions, travels, tpmActivities, fmActivities, fmQuestions, actionPoints, engagements) => {
         const res = filter(notEmpty, {
             interventions,
             travels,
             tpmActivities,
+            fmActivities,
+            fmQuestions,
             actionPoints,
             engagements
         });

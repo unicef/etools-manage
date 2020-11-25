@@ -1,8 +1,11 @@
 import { EntityConfig } from 'entities';
+import FMActivityConfig from './fmactivity-entity';
 
 export interface EntitiesAffected {
     tpmActivities: Normalized<TPMActivity>;
     actionPoints: Normalized<ActionPoint>;
+    fmActivities: Normalized<FMActivity>;
+    fmQuestions: Normalized<FMQuestion>;
     interventions: Normalized<Intervention>;
     travels: Normalized<Travel>;
     engagements: Normalized<Engagement>;
@@ -11,6 +14,8 @@ export interface EntitiesAffected {
 export interface KeyToEntityMap {
     interventions: Intervention;
     tpmActivities: TPMActivity;
+    fmActivities: FMActivity;
+    fmQuestions: FMQuestion;
     actionPoints: ActionPoint;
     travels: Travel;
     engagements: Engagement;
@@ -42,6 +47,8 @@ export type BackendEntityNames =
     | 'applied_indicators'
     | 'travels'
     | 'tpm_activities'
+    | 'fm_activities'
+    | 'fm_questions'
     | 'engagements'
     | 'action_points';
 
@@ -114,6 +121,19 @@ export interface TPMActivity {
     status: string;
     section: string;
     tpm_partner_name: string;
+}
+
+export interface FMActivity extends MultiSectionEntity {
+    id: number;
+    reference_number: string;
+    status: string;
+    tpm_partner: any;
+}
+
+export interface FMQuestion extends MultiSectionEntity {
+    id: number;
+    text: string;
+    options: any[];
 }
 
 export type FormattedTPMActivityEntity = Omit<TPMActivity, 'section'> & {
@@ -196,6 +216,8 @@ export interface ResolvedRatio {
 export type AllEntities =
     | Intervention
     | TPMActivity
+    | FMActivity
+    | FMQuestion
     | ActionPoint
     | Travel
     | Indicator

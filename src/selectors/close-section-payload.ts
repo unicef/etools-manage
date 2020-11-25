@@ -9,6 +9,8 @@ import {
     Travel,
     EntitiesAffected,
     TPMActivity,
+    FMActivity,
+    FMQuestion,
     SectionToEntity,
     Engagement
 } from 'entities/types';
@@ -21,6 +23,8 @@ import { FullStoreShape } from 'contexts/app';
 import { selectNamesFromsplit } from './split-section';
 import { initialState } from 'slices/close-section-payload';
 import { selectEngagementsFromPayload } from './engagements';
+import {selectFMActivitiesFromPayload} from './fm-activities';
+import {selectFMQuestionsFromPayload} from './fm-questions';
 
 // this defines the shape of the payload for the POST request, the specific format is required by the backend
 export const getCloseSectionBackendPayload = createSelector<
@@ -28,6 +32,8 @@ export const getCloseSectionBackendPayload = createSelector<
     Normalized<ActionPoint>,
     Normalized<Intervention>,
     Normalized<TPMActivity>,
+    Normalized<FMActivity>,
+    Normalized<FMQuestion>,
     Normalized<Travel>,
     Normalized<Engagement>,
     number,
@@ -38,6 +44,8 @@ export const getCloseSectionBackendPayload = createSelector<
         selectActionPointsFromPayload,
         selectInterventionsFromPayload,
         selectTPMFromPayload,
+        selectFMActivitiesFromPayload,
+        selectFMQuestionsFromPayload,
         selectTravelsFromPayload,
         selectEngagementsFromPayload,
         selectCurrentActiveSection,
@@ -47,6 +55,8 @@ export const getCloseSectionBackendPayload = createSelector<
         actionPoints,
         interventions,
         tpmActivities,
+        fmActivities,
+        fmQuestions,
         travels,
         engagements,
         oldSection,
@@ -79,6 +89,18 @@ export const getCloseSectionBackendPayload = createSelector<
         keys(tpmActivities).forEach((id: string) => {
             const { section } = tpmActivities[id];
             persistToPayload(payload, section, 'tpm_activities', Number(id));
+        });
+
+        keys(fmActivities).forEach((id: string) => {
+          // @dci need section in activities const { section } = fmActivities[id];
+            persistToPayload(payload, id, 'fm_activities', Number(id));
+        });
+
+        keys(fmQuestions).forEach((id: string) => {
+            const { sections } = fmQuestions[id];
+            sections.forEach((section: string) => {
+                persistToPayload(payload, section, 'fm_questions', Number(id));
+            });
         });
 
         keys(travels).forEach((id: string) => {
