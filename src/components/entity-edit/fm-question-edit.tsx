@@ -5,14 +5,12 @@ import { selectNumItemsResolved } from 'selectors/num-items-resolved';
 import { usePagination } from 'components/table/use-paginator';
 import { buildResolvedProgressString } from 'lib/sections';
 import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
-import { TablePagination, Typography } from '@material-ui/core';
+import { TablePagination } from '@material-ui/core';
 import { selectFMQuestionsIds } from 'selectors/fm-questions';
-import { useEditItemStyles } from './styles';
 import FMQuestionEditItem from './fm-question-edit-item';
 import { customLabel } from 'components/table/table-utils';
 
 const FMQuestionEdit: React.FC = memo(() => {
-    const styles = useEditItemStyles();
     const ids = useSelector(selectFMQuestionsIds);
     const { fmQuestions: numResolved } = useSelector(selectNumItemsResolved);
     const { page, handleChangePage, handleChangeRowsPerPage } = usePagination();

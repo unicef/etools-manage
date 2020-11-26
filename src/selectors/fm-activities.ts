@@ -3,7 +3,6 @@ import { selectCloseSectionPayload, selectCurrentActiveSection, selectSections }
 import { FMActivity, Normalized, ResolvedRatio, EntitiesAffected, Section } from 'entities/types';
 import { map, keys, prop, without, includes, reduce } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
-import { clearCurrentSection } from 'lib/sections';
 import { fmActivitiesSchema } from 'entities/schemas';
 import { normalize } from 'normalizr';
 
