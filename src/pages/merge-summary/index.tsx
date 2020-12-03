@@ -121,7 +121,7 @@ const MergeSummaryPage: React.FC = () => {
                             config={EntityConfigMapping[entity]}
                             getOldSections={getOldSections}
                             getNewSections={() => newName as string}
-                            entity={summary![entity]}
+                            entity={summary[entity]}
                         />
                     );
                 })}
