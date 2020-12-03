@@ -11,7 +11,7 @@ export const initialState: EntitiesAffected = {
     fmQuestions: {},
     engagements: {}
 };
-// @dci
+
 export const closeSectionPayload = createSlice({
     name: 'closeSectionPayload',
     initialState,
@@ -45,12 +45,10 @@ export const closeSectionPayload = createSlice({
             state.tpmActivities[id].section = section;
         },
         onUpdateFMActivitySections: (state, action) => {
-            // @dci
             const { sections, id } = action.payload;
             state.fmActivities[id].sections = sections;
         },
         onUpdateFMQuestionSections: (state, action) => {
-            //@dci
             const { sections, id } = action.payload;
             state.fmQuestions[id].sections = sections;
         }

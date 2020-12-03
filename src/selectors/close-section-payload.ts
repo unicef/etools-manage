@@ -92,8 +92,10 @@ export const getCloseSectionBackendPayload = createSelector<
         });
 
         keys(fmActivities).forEach((id: string) => {
-          // @dci need section in activities const { section } = fmActivities[id];
-            persistToPayload(payload, id, 'fm_activities', Number(id));
+            const { sections } = fmActivities[id];
+            sections.forEach((section: string) => {
+                persistToPayload(payload, section, 'fm_activities', Number(id));
+            });
         });
 
         keys(fmQuestions).forEach((id: string) => {

@@ -1,7 +1,6 @@
 import { FullStoreShape } from 'contexts/app';
 import { ACTION_BAR_DISABLED_ACTIONS } from 'pages/close-section/constants';
 
-//@dci
 export const intialRootState: FullStoreShape = {
     closeSectionPayload: {
         interventions: {},
