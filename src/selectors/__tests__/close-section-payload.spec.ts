@@ -3,6 +3,8 @@ import {
     actionPoints,
     interventions,
     tpmActivities,
+    fmActivities,
+    fmQuestions,
     travels,
     engagements,
     travelsSplit
@@ -14,6 +16,8 @@ import { selectTravelsFromPayload } from '../travels';
 import { selectCurrentActiveSection } from '..';
 import { selectNamesFromsplit } from '../split-section';
 import { getCloseSectionBackendPayload } from '../close-section-payload';
+import {selectFMActivitiesFromPayload} from '../fm-activities';
+import {selectFMQuestionsFromPayload} from '../fm-questions';
 
 describe('Selectors: Close section payload', () => {
     test('action points selector', () => {
@@ -27,6 +31,14 @@ describe('Selectors: Close section payload', () => {
     test('tpm selector', () => {
         const tpm = closeSectionState.closeSectionPayload.tpmActivities;
         expect(selectTPMFromPayload(closeSectionState)).toEqual(tpm);
+    });
+    test('fm activity selector', () => {
+        const fmActivities = closeSectionState.closeSectionPayload.fmActivities;
+        expect(selectFMActivitiesFromPayload(closeSectionState)).toEqual(fmActivities);
+    });
+    test('fm question selector', () => {
+        const fmQuestions = closeSectionState.closeSectionPayload.fmQuestions;
+        expect(selectFMQuestionsFromPayload(closeSectionState)).toEqual(fmQuestions);
     });
     test('travels selector', () => {
         const travels = closeSectionState.closeSectionPayload.travels;
@@ -56,6 +68,8 @@ describe('Selectors: Close section payload', () => {
                 actionPoints,
                 interventions,
                 tpmActivities,
+                fmActivities,
+                fmQuestions,
                 travels,
                 engagements,
                 4,
@@ -100,6 +114,8 @@ describe('Selectors: Close section payload', () => {
                 actionPoints,
                 interventions,
                 tpmActivities,
+                fmActivities,
+                fmQuestions,
                 travelsSplit,
                 engagements,
                 4,
