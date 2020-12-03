@@ -113,6 +113,7 @@ const MergeSummaryPage: React.FC = () => {
         <Box column>
             {mergedSection ? <SuccessBox {...getSuccessProps()} /> : <ConfirmBox />}
             {showSummaryList &&
+                summary &&
                 keys(summary).map((entity: keyof EntitiesAffected) => {
                     return (
                         <EntityChangesTable
