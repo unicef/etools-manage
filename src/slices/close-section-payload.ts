@@ -7,6 +7,8 @@ export const initialState: EntitiesAffected = {
     travels: {},
     actionPoints: {},
     tpmActivities: {},
+    fmActivities: {},
+    fmQuestions: {},
     engagements: {}
 };
 
@@ -41,6 +43,14 @@ export const closeSectionPayload = createSlice({
         onUpdateTPMSections: (state, action) => {
             const { section, id } = action.payload;
             state.tpmActivities[id].section = section;
+        },
+        onUpdateFMActivitySections: (state, action) => {
+            const { sections, id } = action.payload;
+            state.fmActivities[id].sections = sections;
+        },
+        onUpdateFMQuestionSections: (state, action) => {
+            const { sections, id } = action.payload;
+            state.fmQuestions[id].sections = sections;
         }
     },
     extraReducers: {
@@ -57,6 +67,8 @@ export const {
     engagementSectionSelected,
     onUpdateActionPointSection,
     onUpdateTPMSections,
+    onUpdateFMActivitySections,
+    onUpdateFMQuestionSections,
     onUpdateInterventionIndicatorsState
 } = closeSectionPayload.actions;
 

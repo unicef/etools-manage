@@ -66,7 +66,9 @@ export default function EntityChangesTable<T>({
                         .map((id: string, idx: number) => {
                             const item = entity[id];
 
-                            const changingSections = getOldSections(item, config.sectionsProp);
+                            const changingSections = item.existingSections
+                                ? item.existingSections
+                                : getOldSections(item, config.sectionsProp);
                             return (
                                 <TableRow key={`entityRow${idx}`}>
                                     {config.displayProperties.map(({ label, display }, idx) => (

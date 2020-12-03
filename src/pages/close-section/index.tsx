@@ -20,12 +20,16 @@ import { EditComponentMappings, EditComponentKeys } from 'entities/types';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
 import SuccessBox from 'components/success-box';
 import EngagementEdit from 'components/entity-edit/engagement-edit';
+import FMActivityEdit from 'components/entity-edit/fm-activity-edit';
+import FMQuestionEdit from 'components/entity-edit/fm-question-edit';
 
 const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     interventions: InterventionsEdit,
     travels: TravelsEdit,
     actionPoints: ActionPointsEdit,
     tpmActivities: TPMActivitiesEdit,
+    fmActivities: FMActivityEdit,
+    fmQuestions: FMQuestionEdit,
     engagements: EngagementEdit
 };
 
