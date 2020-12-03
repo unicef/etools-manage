@@ -82,7 +82,9 @@ describe('Selectors: Close section payload', () => {
                 },
                 Education: {
                     interventions: [2],
-                    engagements: [12]
+                    engagements: [12],
+                    fm_activities: [7],
+                    fm_questions: [3]
                 },
                 Health: {
                     applied_indicators: [770],
@@ -128,6 +130,8 @@ describe('Selectors: Close section payload', () => {
                 },
                 Education: {
                     interventions: [2],
+                    fm_activities: [7],
+                    fm_questions: [3],
                     travels: [6],
                     engagements: [12]
                 },
