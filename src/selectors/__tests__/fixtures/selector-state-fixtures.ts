@@ -271,12 +271,42 @@ export const travelsSplit = {
     }
 };
 
+export const fmActivities = {
+    '7': {
+        status: 'draft',
+        status_date: '2020-01-01',
+        end_date: '2020-12-31',
+        id: 6,
+        sections: ['Education'],
+        existingSections: ['C4D', 'Operations'],
+        tpm_partner: {id: 29,
+            email: "ALSAMI_COMPANY@YAHOO.COM",
+            name: "AL SAMI GENERAL TRADE CO LTD",
+            vendor_number: "2300013277"
+        }
+    }
+};
+
+export const fmQuestions = {
+    '3': {
+        id: 3,
+        text: "Focus Question",
+        answer_type: "text",
+        is_active: true,
+        sections: ['Education'],
+        existingSections: ['C4D', 'Operations'],
+    }
+};
+
+
 export const closeSectionState = {
     closeSectionPayload: {
         interventions,
         actionPoints,
         tpmActivities,
-        travels
+        travels,
+        fmActivities,
+        fmQuestions
     },
     sectionsFromSplit: [],
     currentActiveSectionId: 3

@@ -41,7 +41,7 @@ const AddSectionModalContent: React.FC<ModalContentProps> = ({ onClose }) => {
 
     const handleSubmit = async () => {
         const error = await dispatch(onSubmitCreateSection(service, sectionInstance.payload));
-        if (error) {
+        if (error !== undefined) {
             setNameError('Section name already exists');
         }
     };
