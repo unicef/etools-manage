@@ -17,7 +17,9 @@ import {
     onUpdateInterventionIndicatorsState,
     onUpdateTravelSection,
     onUpdateActionPointSection,
-    onUpdateTPMSections
+    onUpdateTPMSections,
+    onUpdateFMActivitySections,
+    onUpdateFMQuestionSections
 } from 'slices/close-section-payload';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
 import { requestStarted } from 'slices/loading';
@@ -79,6 +81,15 @@ export const onSelectActionPointSection = (payload: GenericSectionPayload, dispa
 export const onSelectTPMSections = (payload: GenericSectionPayload, dispatch: Dispatch) => {
     dispatch(onUpdateTPMSections(payload));
 };
+
+export const onSelectFMActivitySections = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateFMActivitySections(payload));
+};
+
+export const onSelectFMQuestionSections = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateFMQuestionSections(payload));
+};
+
 
 export const onSubmitCloseSection = (
     service: SectionsService,

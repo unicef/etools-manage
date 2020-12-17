@@ -6,7 +6,9 @@ export const intialRootState: FullStoreShape = {
         interventions: {},
         travels: {},
         actionPoints: {},
-        tpmActivities: {}
+        tpmActivities: {},
+        fmActivities: {},
+        fmQuestions: {}
     },
     sections: [],
     closedSectionSuccess: false,

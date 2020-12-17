@@ -23,11 +23,15 @@ const MergeSummaryPage: React.FC = () => {
     const dispatch = useDispatch();
     const mergedSection = useSelector(selectMergedSection) as Section;
 
-    const [summary, setSummary] = useState();
+    const [summary, setSummary] = useState<EntitiesAffected>();
 
     useEffect(() => {
         const fetchSummary = async () => {
-            const summary = await onFetchMergeSummary(service, selected as string, dispatch);
+            const summary = (await onFetchMergeSummary(
+                service,
+                selected as string,
+                dispatch
+            )) as EntitiesAffected;
             setSummary(summary);
         };
         fetchSummary();
@@ -62,7 +66,6 @@ const MergeSummaryPage: React.FC = () => {
     const getOldSections = useCallback(
         (item, sectionsProp): string => {
             const sectionsOfEntity = prop(sectionsProp, item);
-
             if (Array.isArray(sectionsOfEntity) && isArrayOfObjects(sectionsOfEntity)) {
                 return map(
                     prop('name'),
@@ -110,6 +113,7 @@ const MergeSummaryPage: React.FC = () => {
         <Box column>
             {mergedSection ? <SuccessBox {...getSuccessProps()} /> : <ConfirmBox />}
             {showSummaryList &&
+                summary &&
                 keys(summary).map((entity: keyof EntitiesAffected) => {
                     return (
                         <EntityChangesTable
