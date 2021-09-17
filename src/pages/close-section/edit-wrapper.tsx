@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Dispatch, useEffect } from 'react';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Box from 'components/box';
 import {
@@ -13,6 +13,11 @@ import {
 import { useDispatch } from 'react-redux';
 import { useIconButtonStyles } from 'components/table/styles';
 import { onSetModuleEditingName } from 'slices/module-editing-name';
+import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
+import { ValueType } from 'react-select/src/types';
+import { prop } from 'ramda';
+import { valueOrDefault } from 'lib/sections';
+import {GenericSectionPayload} from 'entities/types';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -35,6 +40,9 @@ interface WrapperProps {
     children: React.ReactNode;
     title: string;
     resolved: string;
+    options: OptionType[];
+    onSectionChange?: (payload: string, dispatch: Dispatch) => void;
+    onMultiSectionChange?: (payload: GenericSectionPayload, dispatch: Dispatch) => void;
     maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 }
 
@@ -44,6 +52,9 @@ const EditWrapper: React.FC<WrapperProps> = ({
     children,
     title,
     resolved,
+    options,
+    onSectionChange,
+    onMultiSectionChange,
     maxWidth = DEFAULT_WRAPPER_MAX_WIDTH
 }) => {
     const dispatch = useDispatch();
@@ -58,6 +69,30 @@ const EditWrapper: React.FC<WrapperProps> = ({
         },
         []
     );
+
+    const renderSelectAllElement = () => {
+        return onMultiSectionChange ? <DropdownMulti  onChange={onMultiChange}  options={options} /> :
+        <Dropdown onChange={onChange} options={options} />;
+    }
+
+    const onChange = (value: ValueType<OptionType>) => {
+        let selectedSectionName = prop('value', value);
+
+        // if (section === selectedSectionName) {
+        //     selectedSectionName = null;
+        // }
+        if(onSectionChange) {
+            onSectionChange(selectedSectionName, dispatch);
+        }
+    };
+
+    const onMultiChange = (value: ValueType<OptionType>) => {
+        const selectedSections = valueOrDefault(value);
+        if (onMultiSectionChange) {
+         onMultiSectionChange({ section: selectedSections, id: '' }, dispatch);
+        }
+    };
+
     return (
         <Container maxWidth={maxWidth}>
             <Box className={styles.section}>
@@ -70,6 +105,11 @@ const EditWrapper: React.FC<WrapperProps> = ({
                     <Typography className={styles.title} variant="subtitle1">
                         {title}{' '}
                     </Typography>
+
+                    <Box>
+                       {renderSelectAllElement()}
+                    </Box>
+
                     <Typography color="textPrimary" variant="body2">
                         Items resolved: {resolved}
                     </Typography>

@@ -10,6 +10,8 @@ import { TablePagination, Typography } from '@material-ui/core';
 import { useEditItemStyles } from './styles';
 import ActionPointEditItem from './action-point-edit-item';
 import { customLabel } from 'components/table/table-utils';
+import { selectSectionsAsDropdownOptions } from 'selectors';
+import { onSelectAllActionPointSection } from 'pages/close-section/actions';
 
 const ActionPointsEdit: React.FC = () => {
     const ids = useSelector(selectActionPointsIds);
@@ -22,8 +24,10 @@ const ActionPointsEdit: React.FC = () => {
     } = usePagination();
 
     const rowsPerPage = EDIT_ITEMS_ROWS_PER_PAGE;
+    const sectionsAsOptions = useSelector(selectSectionsAsDropdownOptions);
 
-    return (<EditWrapper title="Action Points" resolved={buildResolvedProgressString(numResolved)}>
+    return (<EditWrapper title="Action Points" resolved={buildResolvedProgressString(numResolved)}
+                options={sectionsAsOptions} onSectionChange={onSelectAllActionPointSection}>
         <Typography className={styles.editItemHeading} variant="body2">(reference number, description)</Typography>
         {ids
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

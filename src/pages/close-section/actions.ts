@@ -19,7 +19,8 @@ import {
     onUpdateActionPointSection,
     onUpdateTPMSections,
     onUpdateFMActivitySections,
-    onUpdateFMQuestionSections
+    onUpdateFMQuestionSections,
+    onUpdateAllActionPointSection
 } from 'slices/close-section-payload';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
 import { requestStarted } from 'slices/loading';
@@ -76,6 +77,10 @@ export const onSelectTravelSection = (payload: GenericSectionPayload, dispatch: 
 
 export const onSelectActionPointSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
     dispatch(onUpdateActionPointSection(payload));
+};
+
+export const onSelectAllActionPointSection = (payload: string, dispatch: Dispatch) => {
+    dispatch(onUpdateAllActionPointSection(payload));
 };
 
 export const onSelectTPMSections = (payload: GenericSectionPayload, dispatch: Dispatch) => {

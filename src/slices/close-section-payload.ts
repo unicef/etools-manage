@@ -40,6 +40,13 @@ export const closeSectionPayload = createSlice({
             const { section, id } = action.payload;
             state.actionPoints[id].section = section;
         },
+        onUpdateAllActionPointSection: (state, action) => {
+            const actionsPoints = {...state.actionPoints};
+            Object.keys(actionsPoints).forEach(key => {
+                actionsPoints[key].section = action.payload;
+            });
+            state.actionPoints = actionsPoints;
+        },
         onUpdateTPMSections: (state, action) => {
             const { section, id } = action.payload;
             state.tpmActivities[id].section = section;
@@ -66,6 +73,7 @@ export const {
     onChangeInterventionSection,
     engagementSectionSelected,
     onUpdateActionPointSection,
+    onUpdateAllActionPointSection,
     onUpdateTPMSections,
     onUpdateFMActivitySections,
     onUpdateFMQuestionSections,
