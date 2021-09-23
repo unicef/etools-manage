@@ -10,6 +10,7 @@ import { TablePagination } from '@material-ui/core';
 import { customLabel } from 'components/table/table-utils';
 import { selectEngagementIds } from 'selectors/engagements';
 import EngagementEditTableHeading from './engagement-table-head';
+import { onEngagementAllSectionSelected } from 'pages/close-section/actions';
 
 const EngagementEdit: React.FC = memo(() => {
     const ids = useSelector(selectEngagementIds);
@@ -23,6 +24,7 @@ const EngagementEdit: React.FC = memo(() => {
             title="Financial Assurance"
             resolved={buildResolvedProgressString(numResolved)}
             maxWidth="xl"
+            onMultiSectionChange={onEngagementAllSectionSelected}
         >
             <EngagementEditTableHeading></EngagementEditTableHeading>
             {ids

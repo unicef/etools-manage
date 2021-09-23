@@ -24,9 +24,25 @@ export const closeSectionPayload = createSlice({
             const { id, sections } = action.payload;
             state.interventions[id].sections = sections;
         },
+        onChangeAllInterventionSection: (state, action) => {
+            const interventions = {...state.interventions};
+            const { sections } = action.payload;
+            Object.keys(interventions).forEach(key => {
+                interventions[key].sections = sections;
+            });
+            state.interventions = interventions;
+        },
         engagementSectionSelected: (state, action) => {
             const { id, sections } = action.payload;
             state.engagements[id].sections = sections;
+        },
+        engagementAllSectionSelected: (state, action) => {
+            const engagements = {...state.engagements};
+            const { sections } = action.payload;
+            Object.keys(engagements).forEach(key => {
+                engagements[key].sections = sections;
+            });
+            state.engagements = engagements;
         },
         onUpdateInterventionIndicatorsState: (state, action) => {
             const { indicators, id } = action.payload;
@@ -35,6 +51,13 @@ export const closeSectionPayload = createSlice({
         onUpdateTravelSection: (state, action) => {
             const { section, id } = action.payload;
             state.travels[id].section = section;
+        },
+        onUpdateAllTravelSection: (state, action) => {
+            const travels = {...state.travels};
+            Object.keys(travels).forEach(key => {
+                travels[key].section = action.payload;
+            });
+            state.travels = travels;
         },
         onUpdateActionPointSection: (state, action) => {
             const { section, id } = action.payload;
@@ -51,14 +74,37 @@ export const closeSectionPayload = createSlice({
             const { section, id } = action.payload;
             state.tpmActivities[id].section = section;
         },
+        onUpdateAllTPMSections: (state, action) => {
+            const tpmActivities = {...state.tpmActivities};
+            Object.keys(tpmActivities).forEach(key => {
+                tpmActivities[key].section = action.payload;
+            });
+            state.tpmActivities = tpmActivities;
+        },
         onUpdateFMActivitySections: (state, action) => {
             const { sections, id } = action.payload;
             state.fmActivities[id].sections = sections;
         },
+        onUpdateAllFMActivitySections: (state, action) => {
+            const fmActivities = {...state.fmActivities};
+            const { sections } = action.payload;
+            Object.keys(fmActivities).forEach(key => {
+                fmActivities[key].sections = sections;
+            });
+            state.fmActivities = fmActivities;
+        },
         onUpdateFMQuestionSections: (state, action) => {
             const { sections, id } = action.payload;
             state.fmQuestions[id].sections = sections;
-        }
+        },
+        onUpdateAllFMQuestionSections: (state, action) => {
+            const fmQuestions = {...state.fmQuestions};
+            const { sections } = action.payload;
+            Object.keys(fmQuestions).forEach(key => {
+                fmQuestions[key].sections = sections;
+            });
+            state.fmQuestions = fmQuestions;
+        },
     },
     extraReducers: {
         [renderSectionsList.type]: () => initialState
@@ -70,13 +116,19 @@ export const {
     updateCloseSectionPayload,
     closeSectionDataReceived,
     onUpdateTravelSection,
+    onUpdateAllTravelSection,
     onChangeInterventionSection,
+    onChangeAllInterventionSection,
     engagementSectionSelected,
+    engagementAllSectionSelected,
     onUpdateActionPointSection,
     onUpdateAllActionPointSection,
     onUpdateTPMSections,
+    onUpdateAllTPMSections,
     onUpdateFMActivitySections,
+    onUpdateAllFMActivitySections,
     onUpdateFMQuestionSections,
+    onUpdateAllFMQuestionSections,
     onUpdateInterventionIndicatorsState
 } = closeSectionPayload.actions;
 

@@ -14,13 +14,19 @@ import {
     closeSectionDataReceived,
     dataFromStorageReceived,
     onChangeInterventionSection,
+    onChangeAllInterventionSection,
     onUpdateInterventionIndicatorsState,
     onUpdateTravelSection,
+    onUpdateAllTravelSection,
     onUpdateActionPointSection,
     onUpdateTPMSections,
+    onUpdateAllTPMSections,
     onUpdateFMActivitySections,
+    onUpdateAllFMActivitySections,
     onUpdateFMQuestionSections,
-    onUpdateAllActionPointSection
+    onUpdateAllFMQuestionSections,
+    onUpdateAllActionPointSection,
+    engagementAllSectionSelected
 } from 'slices/close-section-payload';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
 import { requestStarted } from 'slices/loading';
@@ -67,12 +73,20 @@ export const onSelectInterventionSection = (payload: GenericMultiSectionPayload)
     dispatch(onChangeInterventionSection(payload));
 };
 
+export const onSelectAllInterventionSection = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(onChangeAllInterventionSection(payload));
+};
+
 export const onSelectIndicatorSection = (payload: IndicatorsPayload) => (dispatch: Dispatch) => {
     dispatch(onUpdateInterventionIndicatorsState(payload));
 };
 
 export const onSelectTravelSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
     dispatch(onUpdateTravelSection(payload));
+};
+
+export const onSelectAllTravelSection = (payload: string, dispatch: Dispatch) => {
+    dispatch(onUpdateAllTravelSection(payload));
 };
 
 export const onSelectActionPointSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
@@ -87,12 +101,28 @@ export const onSelectTPMSections = (payload: GenericSectionPayload, dispatch: Di
     dispatch(onUpdateTPMSections(payload));
 };
 
+export const onSelectAllTPMSections = (payload: string, dispatch: Dispatch) => {
+    dispatch(onUpdateAllTPMSections(payload));
+};
+
 export const onSelectFMActivitySections = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
     dispatch(onUpdateFMActivitySections(payload));
 };
 
+export const onSelectAllFMActivitySections = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateAllFMActivitySections(payload));
+};
+
 export const onSelectFMQuestionSections = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
     dispatch(onUpdateFMQuestionSections(payload));
+};
+
+export const onSelectAllFMQuestionSections = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdateAllFMQuestionSections(payload));
+};
+
+export const onEngagementAllSectionSelected = (payload: GenericMultiSectionPayload, dispatch: Dispatch) => {
+    dispatch(engagementAllSectionSelected(payload));
 };
 
 

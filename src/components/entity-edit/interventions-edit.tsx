@@ -9,7 +9,7 @@ import { buildResolvedProgressString } from 'lib/sections';
 import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
 import { TablePagination } from '@material-ui/core';
 import { customLabel } from 'components/table/table-utils';
-
+import { onSelectAllInterventionSection } from 'pages/close-section/actions';
 
 const InterventionsEdit: React.FC = memo(() => {
     const ids = useSelector(selectInterventionIds);
@@ -23,8 +23,8 @@ const InterventionsEdit: React.FC = memo(() => {
     } = usePagination();
 
     return (
-        <EditWrapper title="Partnership Management Portal" resolved={buildResolvedProgressString(numResolved)}>
-
+        <EditWrapper title="Partnership Management Portal" resolved={buildResolvedProgressString(numResolved)}
+            onMultiSectionChange={onSelectAllInterventionSection}>
             {ids
                 .slice(page * EDIT_ITEMS_ROWS_PER_PAGE, page * EDIT_ITEMS_ROWS_PER_PAGE + EDIT_ITEMS_ROWS_PER_PAGE)
                 .map(

@@ -10,14 +10,18 @@ import {
     Typography,
     Container
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useIconButtonStyles } from 'components/table/styles';
 import { onSetModuleEditingName } from 'slices/module-editing-name';
 import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
 import { ValueType } from 'react-select/src/types';
 import { prop } from 'ramda';
+import clsx from 'clsx';
 import { valueOrDefault } from 'lib/sections';
-import {GenericSectionPayload} from 'entities/types';
+import { getSelectedSection } from 'lib/sections';
+import { GenericMultiSectionPayload } from 'entities/types';
+import { selectSectionsAsDropdownOptions } from 'selectors';
+import { useEditItemStyles } from '../../components/entity-edit/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,27 +44,28 @@ interface WrapperProps {
     children: React.ReactNode;
     title: string;
     resolved: string;
-    options: OptionType[];
     onSectionChange?: (payload: string, dispatch: Dispatch) => void;
-    onMultiSectionChange?: (payload: GenericSectionPayload, dispatch: Dispatch) => void;
+    onMultiSectionChange?: (payload: GenericMultiSectionPayload, dispatch: Dispatch) => void;
     maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 }
 
 const DEFAULT_WRAPPER_MAX_WIDTH = 'md';
+let selectedSection: OptionType | null = null;
 
 const EditWrapper: React.FC<WrapperProps> = ({
     children,
     title,
     resolved,
-    options,
     onSectionChange,
     onMultiSectionChange,
     maxWidth = DEFAULT_WRAPPER_MAX_WIDTH
 }) => {
     const dispatch = useDispatch();
     const styles = useStyles();
+    const dropdownStyles = useEditItemStyles();
     const iconStyles = useIconButtonStyles();
     const onClick = () => dispatch(onSetModuleEditingName(null));
+    const sectionOptions = useSelector(selectSectionsAsDropdownOptions);
 
     // reset the module editing name on unmount
     useEffect(
@@ -71,25 +76,26 @@ const EditWrapper: React.FC<WrapperProps> = ({
     );
 
     const renderSelectAllElement = () => {
-        return onMultiSectionChange ? <DropdownMulti  onChange={onMultiChange}  options={options} /> :
-        <Dropdown onChange={onChange} options={options} />;
+        return onMultiSectionChange ? <DropdownMulti onChange={onMultiChange} options={sectionOptions} /> :
+        <Dropdown value={selectedSection} onChange={onChange} options={sectionOptions} />;
     }
 
     const onChange = (value: ValueType<OptionType>) => {
-        let selectedSectionName = prop('value', value);
+        let selectedSectionValue = prop('value', value);
 
-        // if (section === selectedSectionName) {
-        //     selectedSectionName = null;
-        // }
+        if (selectedSection && selectedSection.value === selectedSectionValue) {
+            selectedSectionValue = null;
+        }
         if(onSectionChange) {
-            onSectionChange(selectedSectionName, dispatch);
+            selectedSection = getSelectedSection(sectionOptions, selectedSectionValue);
+            onSectionChange(selectedSectionValue, dispatch);
         }
     };
 
     const onMultiChange = (value: ValueType<OptionType>) => {
         const selectedSections = valueOrDefault(value);
         if (onMultiSectionChange) {
-         onMultiSectionChange({ section: selectedSections, id: '' }, dispatch);
+            onMultiSectionChange({ sections: selectedSections, id: '' }, dispatch);
         }
     };
 
@@ -106,15 +112,18 @@ const EditWrapper: React.FC<WrapperProps> = ({
                         {title}{' '}
                     </Typography>
 
-                    <Box>
-                       {renderSelectAllElement()}
-                    </Box>
-
                     <Typography color="textPrimary" variant="body2">
                         Items resolved: {resolved}
                     </Typography>
                 </Box>
-
+                <Box
+                    className={clsx(
+                        dropdownStyles.dropdown,
+                        dropdownStyles.headerDropdown
+                    )}
+                >
+                    {renderSelectAllElement()}
+                </Box>
                 <Box column className={styles.content}>
                     {children}
                 </Box>
