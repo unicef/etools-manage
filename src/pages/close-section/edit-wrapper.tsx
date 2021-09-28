@@ -16,10 +16,9 @@ import { onSetModuleEditingName } from 'slices/module-editing-name';
 import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
 import { ValueType } from 'react-select/src/types';
 import { prop } from 'ramda';
-import clsx from 'clsx';
 import { valueOrDefault } from 'lib/sections';
 import { getSelectedSection } from 'lib/sections';
-import { GenericMultiSectionPayload } from 'entities/types';
+import { GenericMultiSectionPayload, GenericSectionPayload } from 'entities/types';
 import { selectSectionsAsDropdownOptions } from 'selectors';
 import { useEditItemStyles } from '../../components/entity-edit/styles';
 
@@ -44,10 +43,8 @@ interface WrapperProps {
     children: React.ReactNode;
     title: string;
     resolved: string;
-    /* eslint-disable  @typescript-eslint/no-explicit-any */
-    onSectionChange?: (payload: string, dispatch: any) => void;
-    /* eslint-disable  @typescript-eslint/no-explicit-any */
-    onMultiSectionChange?: (payload: GenericMultiSectionPayload, dispatch: any) => void;
+    onSectionChange?: (payload: string, dispatch: Dispatch<GenericSectionPayload>) => void;
+    onMultiSectionChange?: (payload: GenericMultiSectionPayload, dispatch: Dispatch<GenericMultiSectionPayload>) => void;
     maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 }
 
