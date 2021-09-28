@@ -44,8 +44,10 @@ interface WrapperProps {
     children: React.ReactNode;
     title: string;
     resolved: string;
-    onSectionChange?: (payload: string, dispatch: Dispatch) => void;
-    onMultiSectionChange?: (payload: GenericMultiSectionPayload, dispatch: Dispatch) => void;
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    onSectionChange?: (payload: string, dispatch: any) => void;
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    onMultiSectionChange?: (payload: GenericMultiSectionPayload, dispatch: any) => void;
     maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 }
 
@@ -76,8 +78,8 @@ const EditWrapper: React.FC<WrapperProps> = ({
     );
 
     const renderSelectAllElement = () => {
-        return onMultiSectionChange ? <DropdownMulti onChange={onMultiChange} options={sectionOptions} /> :
-        <Dropdown value={selectedSection} onChange={onChange} options={sectionOptions} />;
+        return onMultiSectionChange ? <DropdownMulti className={dropdownStyles.headerDropdown} onChange={onMultiChange} options={sectionOptions} /> :
+        <Dropdown  className={dropdownStyles.headerDropdown} value={selectedSection} onChange={onChange} options={sectionOptions} />;
     }
 
     const onChange = (value: ValueType<OptionType>) => {
@@ -116,13 +118,13 @@ const EditWrapper: React.FC<WrapperProps> = ({
                         Items resolved: {resolved}
                     </Typography>
                 </Box>
-                <Box
-                    className={clsx(
-                        dropdownStyles.dropdown,
-                        dropdownStyles.headerDropdown
-                    )}
-                >
-                    {renderSelectAllElement()}
+                <Box className={styles.content} justify="between">
+                    <Typography color="textPrimary" variant="subtitle1">
+                        Use the following field if you want to set Section for all the records below or use the Section field from each record if you want to set individually
+                    </Typography>
+                    <Box>
+                        {renderSelectAllElement()}
+                    </Box>
                 </Box>
                 <Box column className={styles.content}>
                     {children}

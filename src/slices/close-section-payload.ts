@@ -27,8 +27,10 @@ export const closeSectionPayload = createSlice({
         onChangeAllInterventionSection: (state, action) => {
             const interventions = {...state.interventions};
             const { sections } = action.payload;
+            const indicatorSection = sections.length ? sections[0] : '';
             Object.keys(interventions).forEach(key => {
                 interventions[key].sections = sections;
+                interventions[key].indicators.forEach(ind => ind.section = indicatorSection);
             });
             state.interventions = interventions;
         },
