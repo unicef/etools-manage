@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import Box from 'components/box';
 import {
@@ -11,6 +11,7 @@ import {
     Container
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { Dispatch } from 'redux';
 import { useIconButtonStyles } from 'components/table/styles';
 import { onSetModuleEditingName } from 'slices/module-editing-name';
 import { OptionType, DropdownMulti, Dropdown } from 'components/dropdown';
@@ -43,8 +44,8 @@ interface WrapperProps {
     children: React.ReactNode;
     title: string;
     resolved: string;
-    onSectionChange?: (payload: string, dispatch: Dispatch<GenericSectionPayload>) => void;
-    onMultiSectionChange?: (payload: GenericMultiSectionPayload, dispatch: Dispatch<GenericMultiSectionPayload>) => void;
+    onSectionChange?: (payload: string, dispatch: Dispatch) => void;
+    onMultiSectionChange?: (payload: GenericMultiSectionPayload, dispatch: Dispatch) => void;
     maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
 }
 
