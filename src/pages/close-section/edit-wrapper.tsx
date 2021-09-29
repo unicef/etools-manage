@@ -19,7 +19,7 @@ import { ValueType } from 'react-select/src/types';
 import { prop } from 'ramda';
 import { valueOrDefault } from 'lib/sections';
 import { getSelectedSection } from 'lib/sections';
-import { GenericMultiSectionPayload, GenericSectionPayload } from 'entities/types';
+import { GenericMultiSectionPayload } from 'entities/types';
 import { selectSectionsAsDropdownOptions } from 'selectors';
 import { useEditItemStyles } from '../../components/entity-edit/styles';
 
