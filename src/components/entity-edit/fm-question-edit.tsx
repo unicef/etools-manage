@@ -9,6 +9,7 @@ import { TablePagination } from '@material-ui/core';
 import { selectFMQuestionsIds } from 'selectors/fm-questions';
 import FMQuestionEditItem from './fm-question-edit-item';
 import { customLabel } from 'components/table/table-utils';
+import { onSelectAllFMQuestionSections } from 'pages/close-section/actions';
 
 const FMQuestionEdit: React.FC = memo(() => {
     const ids = useSelector(selectFMQuestionsIds);
@@ -20,6 +21,7 @@ const FMQuestionEdit: React.FC = memo(() => {
         <EditWrapper
             title="Field Monitoring Question"
             resolved={buildResolvedProgressString(numResolved)}
+            onMultiSectionChange={onSelectAllFMQuestionSections}
         >
             {ids.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((id: string) => (
                 <FMQuestionEditItem id={id} key={id} />

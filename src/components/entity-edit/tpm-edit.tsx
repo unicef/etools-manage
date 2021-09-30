@@ -10,6 +10,7 @@ import { selectTPMActivitiesIds } from 'selectors/tpm-activities';
 import { useEditItemStyles } from './styles';
 import TPMActivityEditItem from './tpm-activity-edit-item';
 import { customLabel } from 'components/table/table-utils';
+import { onSelectAllTPMSections } from 'pages/close-section/actions';
 
 const TPMEdit: React.FC = memo(() => {
     const styles = useEditItemStyles();
@@ -22,6 +23,7 @@ const TPMEdit: React.FC = memo(() => {
         <EditWrapper
             title="Third Party Monitoring"
             resolved={buildResolvedProgressString(numResolved)}
+            onSectionChange={onSelectAllTPMSections}
         >
             <Typography className={styles.editItemHeading} variant="body2">
                 (reference number, tpm partner)
