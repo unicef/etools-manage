@@ -76,8 +76,8 @@ describe('Selectors: Close section payload', () => {
                 fmActivities,
                 fmQuestions,
                 travels,
-                engagements,
                 partners,
+                engagements,
                 4,
                 []
             )
@@ -126,8 +126,8 @@ describe('Selectors: Close section payload', () => {
                 fmActivities,
                 fmQuestions,
                 travelsSplit,
-                engagements,
                 partners,
+                engagements,
                 4,
                 ['Split_1', 'Split_2']
             )
@@ -141,8 +141,8 @@ describe('Selectors: Close section payload', () => {
                     fm_activities: [7],
                     fm_questions: [3],
                     travels: [6],
-                    engagements: [12],
                     partners: [3],
+                    engagements: [12]
                 },
                 Health: {
                     applied_indicators: [770],

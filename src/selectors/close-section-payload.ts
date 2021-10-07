@@ -33,11 +33,11 @@ export const getCloseSectionBackendPayload = createSelector<
     FullStoreShape,
     Normalized<ActionPoint>,
     Normalized<Intervention>,
-    Normalized<Partner>,
     Normalized<TPMActivity>,
     Normalized<FMActivity>,
     Normalized<FMQuestion>,
     Normalized<Travel>,
+    Normalized<Partner>,
     Normalized<Engagement>,
     number,
     string[],
@@ -46,11 +46,11 @@ export const getCloseSectionBackendPayload = createSelector<
     [
         selectActionPointsFromPayload,
         selectInterventionsFromPayload,
-        selectPartnersFromPayload,
         selectTPMFromPayload,
         selectFMActivitiesFromPayload,
         selectFMQuestionsFromPayload,
         selectTravelsFromPayload,
+        selectPartnersFromPayload,
         selectEngagementsFromPayload,
         selectCurrentActiveSection,
         selectNamesFromsplit
@@ -58,11 +58,11 @@ export const getCloseSectionBackendPayload = createSelector<
     (
         actionPoints,
         interventions,
-        partners,
         tpmActivities,
         fmActivities,
         fmQuestions,
         travels,
+        partners,
         engagements,
         oldSection,
         namesFromSplit: string[]
@@ -91,11 +91,6 @@ export const getCloseSectionBackendPayload = createSelector<
             });
         });
 
-        keys(partners).forEach((id: string) => {
-            const { lead_section } = partners[id];
-            persistToPayload(payload, lead_section, 'partners', Number(id));
-        });
-
         keys(tpmActivities).forEach((id: string) => {
             const { section } = tpmActivities[id];
             persistToPayload(payload, section, 'tpm_activities', Number(id));
@@ -118,6 +113,11 @@ export const getCloseSectionBackendPayload = createSelector<
         keys(travels).forEach((id: string) => {
             const { section } = travels[id];
             persistToPayload(payload, section, 'travels', Number(id));
+        });
+
+        keys(partners).forEach((id: string) => {
+            const { lead_section } = partners[id];
+            persistToPayload(payload, lead_section, 'partners', Number(id));
         });
 
         keys(engagements).forEach((id: string) => {

@@ -305,7 +305,6 @@ export const partners = {
         vendor_number: "1234567",
         lead_section: "Education",
         partner_type: 'Partner Type',
-        sections: ['Education'],
     }
 };
 
