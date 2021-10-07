@@ -9,7 +9,8 @@ export const initialState: EntitiesAffected = {
     tpmActivities: {},
     fmActivities: {},
     fmQuestions: {},
-    engagements: {}
+    engagements: {},
+    partners: {}
 };
 
 export const closeSectionPayload = createSlice({
@@ -107,6 +108,17 @@ export const closeSectionPayload = createSlice({
             });
             state.fmQuestions = fmQuestions;
         },
+        onUpdatePartnerSection: (state, action) => {
+            const { section, id } = action.payload;
+            state.partners[id].lead_section = section;
+        },
+        onUpdateAllPartnerSection: (state, action) => {
+            const partners = {...state.partners};
+            Object.keys(partners).forEach(key => {
+                partners[key].lead_section = action.payload;
+            });
+            state.partners = partners;
+        },
     },
     extraReducers: {
         [renderSectionsList.type]: () => initialState
@@ -131,7 +143,9 @@ export const {
     onUpdateAllFMActivitySections,
     onUpdateFMQuestionSections,
     onUpdateAllFMQuestionSections,
-    onUpdateInterventionIndicatorsState
+    onUpdateInterventionIndicatorsState,
+    onUpdatePartnerSection,
+    onUpdateAllPartnerSection
 } = closeSectionPayload.actions;
 
 export const { reducer: closeSectionPayloadReducer } = closeSectionPayload;

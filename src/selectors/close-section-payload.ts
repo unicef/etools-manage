@@ -12,12 +12,14 @@ import {
     FMActivity,
     FMQuestion,
     SectionToEntity,
-    Engagement
+    Engagement,
+    Partner
 } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
 import { selectTravelsFromPayload } from './travels';
 import { selectActionPointsFromPayload } from './action-points';
+import { selectPartnersFromPayload } from './partners';
 import { keys, equals } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { selectNamesFromsplit } from './split-section';
@@ -31,6 +33,7 @@ export const getCloseSectionBackendPayload = createSelector<
     FullStoreShape,
     Normalized<ActionPoint>,
     Normalized<Intervention>,
+    Normalized<Partner>,
     Normalized<TPMActivity>,
     Normalized<FMActivity>,
     Normalized<FMQuestion>,
@@ -43,6 +46,7 @@ export const getCloseSectionBackendPayload = createSelector<
     [
         selectActionPointsFromPayload,
         selectInterventionsFromPayload,
+        selectPartnersFromPayload,
         selectTPMFromPayload,
         selectFMActivitiesFromPayload,
         selectFMQuestionsFromPayload,
@@ -54,6 +58,7 @@ export const getCloseSectionBackendPayload = createSelector<
     (
         actionPoints,
         interventions,
+        partners,
         tpmActivities,
         fmActivities,
         fmQuestions,
@@ -84,6 +89,11 @@ export const getCloseSectionBackendPayload = createSelector<
             indicators.forEach(({ section, pk }) => {
                 persistToPayload(payload, section, 'applied_indicators', pk);
             });
+        });
+
+        keys(partners).forEach((id: string) => {
+            const { lead_section } = partners[id];
+            persistToPayload(payload, lead_section, 'partners', Number(id));
         });
 
         keys(tpmActivities).forEach((id: string) => {

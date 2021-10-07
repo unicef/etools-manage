@@ -8,10 +8,12 @@ import { filter } from 'ramda';
 import { engagementsWithoutCurrentSection } from './engagements';
 import {fmActivitiesWithoutCurrentSection} from './fm-activities';
 import {fmQuestionsWithoutCurrentSection} from './fm-questions';
+import {partnersWithoutCurrentSection} from './partners';
 
 export const selectWithoutCurrentSection = createSelector(
     [
         interventionsWithoutCurrentSection,
+        partnersWithoutCurrentSection,
         travelsWithoutCurrentSection,
         tpmActivitiesWithoutCurrentSection,
         fmActivitiesWithoutCurrentSection,
@@ -19,9 +21,10 @@ export const selectWithoutCurrentSection = createSelector(
         actionPointsWithoutCurrentSection,
         engagementsWithoutCurrentSection
     ],
-    (interventions, travels, tpmActivities, fmActivities, fmQuestions, actionPoints, engagements) => {
+    (interventions, partners, travels, tpmActivities, fmActivities, fmQuestions, actionPoints, engagements) => {
         const res = filter(notEmpty, {
             interventions,
+            partners,
             travels,
             tpmActivities,
             fmActivities,
