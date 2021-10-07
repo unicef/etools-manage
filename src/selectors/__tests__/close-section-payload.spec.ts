@@ -77,7 +77,7 @@ describe('Selectors: Close section payload', () => {
                 fmQuestions,
                 travels,
                 engagements,
-                partners
+                partners,
                 4,
                 []
             )
