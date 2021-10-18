@@ -26,7 +26,9 @@ import {
     onUpdateFMQuestionSections,
     onUpdateAllFMQuestionSections,
     onUpdateAllActionPointSection,
-    engagementAllSectionSelected
+    engagementAllSectionSelected,
+    onUpdatePartnerSection,
+    onUpdateAllPartnerSection,
 } from 'slices/close-section-payload';
 import { currentActiveSectionChanged } from 'slices/current-active-section';
 import { requestStarted } from 'slices/loading';
@@ -125,6 +127,13 @@ export const onEngagementAllSectionSelected = (payload: GenericMultiSectionPaylo
     dispatch(engagementAllSectionSelected(payload));
 };
 
+export const onSelectPartnerSection = (payload: GenericSectionPayload, dispatch: Dispatch) => {
+    dispatch(onUpdatePartnerSection(payload));
+};
+
+export const onSelectAllPartnerSection = (payload: string, dispatch: Dispatch) => {
+    dispatch(onUpdateAllPartnerSection(payload));
+};
 
 export const onSubmitCloseSection = (
     service: SectionsService,

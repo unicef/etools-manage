@@ -17,6 +17,6 @@ export class InterventionConfig implements EntityConfig<Intervention> {
     }
 
     public get moduleName() {
-        return 'PMP';
+        return 'PMP PDs';
     }
 }
