@@ -12,12 +12,14 @@ import {
     FMActivity,
     FMQuestion,
     SectionToEntity,
-    Engagement
+    Engagement,
+    Partner
 } from 'entities/types';
 import { selectInterventionsFromPayload } from './interventions';
 import { selectTPMFromPayload } from './tpm-activities';
 import { selectTravelsFromPayload } from './travels';
 import { selectActionPointsFromPayload } from './action-points';
+import { selectPartnersFromPayload } from './partners';
 import { keys, equals } from 'ramda';
 import { FullStoreShape } from 'contexts/app';
 import { selectNamesFromsplit } from './split-section';
@@ -35,6 +37,7 @@ export const getCloseSectionBackendPayload = createSelector<
     Normalized<FMActivity>,
     Normalized<FMQuestion>,
     Normalized<Travel>,
+    Normalized<Partner>,
     Normalized<Engagement>,
     number,
     string[],
@@ -47,6 +50,7 @@ export const getCloseSectionBackendPayload = createSelector<
         selectFMActivitiesFromPayload,
         selectFMQuestionsFromPayload,
         selectTravelsFromPayload,
+        selectPartnersFromPayload,
         selectEngagementsFromPayload,
         selectCurrentActiveSection,
         selectNamesFromsplit
@@ -58,6 +62,7 @@ export const getCloseSectionBackendPayload = createSelector<
         fmActivities,
         fmQuestions,
         travels,
+        partners,
         engagements,
         oldSection,
         namesFromSplit: string[]
@@ -108,6 +113,11 @@ export const getCloseSectionBackendPayload = createSelector<
         keys(travels).forEach((id: string) => {
             const { section } = travels[id];
             persistToPayload(payload, section, 'travels', Number(id));
+        });
+
+        keys(partners).forEach((id: string) => {
+            const { lead_section } = partners[id];
+            persistToPayload(payload, lead_section, 'partners', Number(id));
         });
 
         keys(engagements).forEach((id: string) => {

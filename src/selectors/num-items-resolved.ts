@@ -9,6 +9,7 @@ import { FullStoreShape } from 'contexts/app';
 import { getNumResolvedEngagements } from './engagements';
 import {getNumResolvedFMActivities} from './fm-activities';
 import {getNumResolvedFMQuestions} from './fm-questions';
+import {getNumResolvedPartners} from './partners';
 
 export const selectNumItemsResolved = createSelector(
     [
@@ -18,7 +19,8 @@ export const selectNumItemsResolved = createSelector(
         getNumResolvedTPMActivities,
         getNumResolvedFMActivities,
         getNumResolvedFMQuestions,
-        getNumResolvedEngagements
+        getNumResolvedEngagements,
+        getNumResolvedPartners
     ],
     (
         interventions: ResolvedRatio,
@@ -28,11 +30,13 @@ export const selectNumItemsResolved = createSelector(
         fmActivities: ResolvedRatio,
         fmQuestions: ResolvedRatio,
         engagements: ResolvedRatio,
-    ) => ({ interventions, travels, actionPoints, tpmActivities, fmActivities, fmQuestions, engagements })
+        partners: ResolvedRatio
+    ) => ({ interventions, travels, actionPoints, tpmActivities, fmActivities, fmQuestions, engagements, partners })
 );
 
 export const selectTotalProgress = createSelector<
     FullStoreShape,
+    ResolvedRatio,
     ResolvedRatio,
     ResolvedRatio,
     ResolvedRatio,
@@ -49,7 +53,8 @@ export const selectTotalProgress = createSelector<
         getNumResolvedTPMActivities,
         getNumResolvedFMActivities,
         getNumResolvedFMQuestions,
-        getNumResolvedEngagements
+        getNumResolvedEngagements,
+        getNumResolvedPartners
     ],
     (...args: ResolvedRatio[]) => {
         const resolvedTotal = sum(map(prop('resolved'), args));

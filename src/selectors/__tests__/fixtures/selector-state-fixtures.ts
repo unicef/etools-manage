@@ -298,6 +298,15 @@ export const fmQuestions = {
     }
 };
 
+export const partners = {
+    '3': {
+        id: 3,
+        name: "Test Partner",
+        vendor_number: "1234567",
+        lead_section: "Education",
+        partner_type: 'Partner Type',
+    }
+};
 
 export const closeSectionState = {
     closeSectionPayload: {
@@ -306,7 +315,8 @@ export const closeSectionState = {
         tpmActivities,
         travels,
         fmActivities,
-        fmQuestions
+        fmQuestions,
+        partners
     },
     sectionsFromSplit: [],
     currentActiveSectionId: 3

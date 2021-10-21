@@ -22,6 +22,7 @@ import SuccessBox from 'components/success-box';
 import EngagementEdit from 'components/entity-edit/engagement-edit';
 import FMActivityEdit from 'components/entity-edit/fm-activity-edit';
 import FMQuestionEdit from 'components/entity-edit/fm-question-edit';
+import PartnerEdit from 'components/entity-edit/partner-edit';
 
 const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     interventions: InterventionsEdit,
@@ -30,7 +31,8 @@ const EDIT_COMPONENT_MODULE_MAPPING: EditComponentMappings = {
     tpmActivities: TPMActivitiesEdit,
     fmActivities: FMActivityEdit,
     fmQuestions: FMQuestionEdit,
-    engagements: EngagementEdit
+    engagements: EngagementEdit,
+    partners: PartnerEdit
 };
 
 function getEditComponent(name: EditComponentKeys) {

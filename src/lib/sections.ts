@@ -44,7 +44,8 @@ export const getNumResolved = (entity: EntityWithSingleSection = {}): ResolvedRa
     const resolved = reduce(
         (sum: number, id: number) => {
             const obj = entity[id];
-            if (obj.section) {
+            // @ts-ignore
+            if (obj.section || obj.lead_section) {
                 sum++;
             }
             return sum;

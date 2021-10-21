@@ -2,20 +2,20 @@ import React from 'react';
 import { EDIT_ITEMS_ROWS_PER_PAGE } from 'global-constants';
 import { useSelector } from 'react-redux';
 import { selectNumItemsResolved } from 'selectors/num-items-resolved';
-import { selectActionPointsIds } from 'selectors/action-points';
+import { selectPartnerIds } from 'selectors/partners';
 import EditWrapper from 'pages/close-section/edit-wrapper';
 import { buildResolvedProgressString } from 'lib/sections';
 import { usePagination } from 'components/table/use-paginator';
 import { TablePagination, Typography } from '@material-ui/core';
 import { useEditItemStyles } from './styles';
-import ActionPointEditItem from './action-point-edit-item';
+import PartnerEditItem from './partner-edit-item';
 import { customLabel } from 'components/table/table-utils';
-import { onSelectAllActionPointSection } from 'pages/close-section/actions';
+import { onSelectAllPartnerSection } from 'pages/close-section/actions';
 
-const ActionPointsEdit: React.FC = () => {
-    const ids = useSelector(selectActionPointsIds);
+const PartnerEdit: React.FC = () => {
+    const ids = useSelector(selectPartnerIds);
     const styles = useEditItemStyles();
-    const { actionPoints: numResolved } = useSelector(selectNumItemsResolved);
+    const { partners: numResolved } = useSelector(selectNumItemsResolved);
     const {
         page,
         handleChangePage,
@@ -24,14 +24,14 @@ const ActionPointsEdit: React.FC = () => {
 
     const rowsPerPage = EDIT_ITEMS_ROWS_PER_PAGE;
 
-    return (<EditWrapper title="Action Points" resolved={buildResolvedProgressString(numResolved)}
-                onSectionChange={onSelectAllActionPointSection}>
-        <Typography className={styles.editItemHeading} variant="body2">(reference number, description)</Typography>
+    return (<EditWrapper title="PMP Partners" resolved={buildResolvedProgressString(numResolved)}
+                onSectionChange={onSelectAllPartnerSection}>
+        <Typography className={styles.editItemHeading} variant="body2">(vendor number, partner)</Typography>
         {ids
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map(
                 (id: string) => (
-                    <ActionPointEditItem
+                    <PartnerEditItem
                         id={id}
                         key={id} />
                 )
@@ -57,4 +57,4 @@ const ActionPointsEdit: React.FC = () => {
     </EditWrapper>);
 };
 
-export default ActionPointsEdit;
+export default PartnerEdit;

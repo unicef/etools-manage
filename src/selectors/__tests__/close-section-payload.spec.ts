@@ -7,7 +7,8 @@ import {
     fmQuestions,
     travels,
     engagements,
-    travelsSplit
+    travelsSplit,
+    partners
 } from './fixtures/selector-state-fixtures';
 import { selectActionPointsFromPayload } from '../action-points';
 import { selectInterventionsFromPayload } from '../interventions';
@@ -18,6 +19,7 @@ import { selectNamesFromsplit } from '../split-section';
 import { getCloseSectionBackendPayload } from '../close-section-payload';
 import {selectFMActivitiesFromPayload} from '../fm-activities';
 import {selectFMQuestionsFromPayload} from '../fm-questions';
+import {selectPartnersFromPayload} from '../partners';
 
 describe('Selectors: Close section payload', () => {
     test('action points selector', () => {
@@ -44,7 +46,10 @@ describe('Selectors: Close section payload', () => {
         const travels = closeSectionState.closeSectionPayload.travels;
         expect(selectTravelsFromPayload(closeSectionState)).toEqual(travels);
     });
-
+    test('partners selector', () => {
+        const partners = closeSectionState.closeSectionPayload.partners;
+        expect(selectPartnersFromPayload(closeSectionState)).toEqual(partners);
+    });
     test('current active section selector', () => {
         const currentSection = closeSectionState.currentActiveSectionId;
         expect(selectCurrentActiveSection(closeSectionState)).toEqual(currentSection);
@@ -71,6 +76,7 @@ describe('Selectors: Close section payload', () => {
                 fmActivities,
                 fmQuestions,
                 travels,
+                partners,
                 engagements,
                 4,
                 []
@@ -84,7 +90,8 @@ describe('Selectors: Close section payload', () => {
                     interventions: [2],
                     engagements: [12],
                     fm_activities: [7],
-                    fm_questions: [3]
+                    fm_questions: [3],
+                    partners: [3]
                 },
                 Health: {
                     applied_indicators: [770],
@@ -119,6 +126,7 @@ describe('Selectors: Close section payload', () => {
                 fmActivities,
                 fmQuestions,
                 travelsSplit,
+                partners,
                 engagements,
                 4,
                 ['Split_1', 'Split_2']
@@ -133,6 +141,7 @@ describe('Selectors: Close section payload', () => {
                     fm_activities: [7],
                     fm_questions: [3],
                     travels: [6],
+                    partners: [3],
                     engagements: [12]
                 },
                 Health: {

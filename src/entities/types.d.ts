@@ -9,6 +9,7 @@ export interface EntitiesAffected {
     interventions: Normalized<Intervention>;
     travels: Normalized<Travel>;
     engagements: Normalized<Engagement>;
+    partners: Normalized<Partner>;
 }
 
 export interface KeyToEntityMap {
@@ -19,6 +20,7 @@ export interface KeyToEntityMap {
     actionPoints: ActionPoint;
     travels: Travel;
     engagements: Engagement;
+    partners: Partner;
 }
 
 export type ModuleKeys = keyof KeyToEntityMap;
@@ -26,7 +28,7 @@ export type ModuleKeys = keyof KeyToEntityMap;
 export type EditComponentMappings = { [key in ModuleKeys]: React.FC };
 export type EditComponentKeys = keyof EditComponentMappings | '';
 
-export type EntityWithSingleSection = Normalized<ActionPoint | Travel | Indicator | TPMActivity>;
+export type EntityWithSingleSection = Normalized<ActionPoint | Travel | Indicator | TPMActivity | Partner>;
 
 export interface Normalized<T> {
     [id: string]: T;
@@ -50,7 +52,8 @@ export type BackendEntityNames =
     | 'fm_activities'
     | 'fm_questions'
     | 'engagements'
-    | 'action_points';
+    | 'action_points'
+    | 'partners';
 
 export interface CloseSectionBackendPayload {
     old_section: number;
@@ -161,6 +164,13 @@ export interface Travel {
     purpose: string;
     traveler: string;
 }
+export interface Partner {
+    id: number;
+    name: string;
+    lead_section: string;
+    partner_type: string;
+    vendor_number: string;
+}
 
 export interface NewSectionFromMerged {
     pk: number;
@@ -221,7 +231,8 @@ export type AllEntities =
     | ActionPoint
     | Travel
     | Indicator
-    | Engagement;
+    | Engagement
+    | Partner;
 
 export type WrapWithConfig<T> = T extends T ? EntityConfig<T> : never;
 

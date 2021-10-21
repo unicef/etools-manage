@@ -20,3 +20,4 @@ export const fmActivitiesSchema = new schema.Entity('fmActivities');
 export const fmQuestionsSchema = new schema.Entity('fmQuestions');
 export const actionPointsSchema = new schema.Entity('actionPoints');
 export const engagementsSchema = new schema.Entity('engagements');
+export const partnersSchema = new schema.Entity('partners');
