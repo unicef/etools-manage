@@ -88,6 +88,12 @@ export const InterventionEditItem: React.FC<EditItemProps> = memo(({ id }) => {
         }
     }, [interventionState]);
 
+    useEffect(() => {
+        if (!equals(initialInterventionState, interventionState)) {
+            setInterventionState(initialInterventionState);
+        }
+    }, [initialInterventionState]);
+
     const handleChangeInterventionSections = (value: ValueType<OptionType>) => {
         // use this instead of map(prop('value')) so that we can have null set as section for dropdown use
         const selectedSections = valueOrDefault(value);

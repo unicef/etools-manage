@@ -35,21 +35,16 @@ const FMQuestionEditItem: React.FC<EditItemProps> = ({ id }) => {
         onSelectFMQuestionSections(payload, dispatch);
     };
 
-    const headingStyle = clsx(
-        styles.collapsableHeading,
-        styles.itemBorderWrap,
-        styles.containerPad,
-        open && styles.halfBorder
-    );
-
     return (
-        <div className={styles.item}>
-            <Box className={headingStyle} align="center" justify="between">
-                <Box column className={styles.description}>
-                    <Typography className={styles.refNum} variant="subtitle2">
-                        {text}
-                    </Typography>
-                </Box>
+            <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
+                <Box className={styles.travel} justify="between" align="center">
+                    <Box className={styles.description} column>
+                        <Box>
+                            <Typography className={styles.refNum} variant="subtitle2">
+                                {text}
+                            </Typography>
+                        </Box>
+                    </Box>
 
                 <div className={clsx(styles.selectColumn, styles.description)}>
                     {existingSections.length ? (

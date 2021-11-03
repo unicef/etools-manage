@@ -35,21 +35,16 @@ const FMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
         onSelectFMActivitySections(payload, dispatch);
     };
 
-    const headingStyle = clsx(
-        styles.collapsableHeading,
-        styles.itemBorderWrap,
-        styles.containerPad,
-        open && styles.halfBorder
-    );
-
     return (
-        <div className={styles.item}>
-            <Box className={headingStyle} align="center" justify="between">
-                <Box column className={styles.description}>
-                    <Typography className={styles.refNum} variant="subtitle2">
-                        {reference_number}
-                    </Typography>
-                    <Typography>{tpm_partner ? tpm_partner.name : ''}</Typography>
+        <div className={clsx(styles.bottomMargin1, styles.itemBorderWrap)}>
+            <Box className={styles.travel} justify="between" align="center">
+                <Box className={styles.description} column>
+                    <Box>
+                        <Typography className={styles.refNum} variant="subtitle2">
+                            {reference_number}
+                        </Typography>
+                        <Typography>{tpm_partner ? tpm_partner.name : ''}</Typography>
+                    </Box>
                 </Box>
 
                 <div className={clsx(styles.selectColumn, styles.description)}>

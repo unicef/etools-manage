@@ -10,6 +10,7 @@ import { TablePagination, Typography } from '@material-ui/core';
 import TravelEditItem from './travel-edit-item';
 import { useEditItemStyles } from './styles';
 import { customLabel } from 'components/table/table-utils';
+import { onSelectAllTravelSection } from 'pages/close-section/actions';
 
 const TravelsEdit: React.FC = () => {
     const ids = useSelector(selectTravelsIds);
@@ -23,7 +24,8 @@ const TravelsEdit: React.FC = () => {
 
     const rowsPerPage = EDIT_ITEMS_ROWS_PER_PAGE;
 
-    return (<EditWrapper title="Trip Management" resolved={buildResolvedProgressString(numResolved)}>
+    return (<EditWrapper title="Trip Management" resolved={buildResolvedProgressString(numResolved)}
+                onSectionChange={onSelectAllTravelSection}>
         <Typography className={styles.editItemHeading} variant="body2">(traveler, reference number, purpose)</Typography>
         {ids
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

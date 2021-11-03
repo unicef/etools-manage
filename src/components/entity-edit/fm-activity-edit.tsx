@@ -10,6 +10,7 @@ import { selectFMActivitiesIds } from 'selectors/fm-activities';
 import { useEditItemStyles } from './styles';
 import FMActivityEditItem from './fm-activity-edit-item';
 import { customLabel } from 'components/table/table-utils';
+import { onSelectAllFMActivitySections } from 'pages/close-section/actions';
 
 const FMActivityEdit: React.FC = memo(() => {
     const styles = useEditItemStyles();
@@ -21,6 +22,7 @@ const FMActivityEdit: React.FC = memo(() => {
         <EditWrapper
             title="Field Monitoring Activity"
             resolved={buildResolvedProgressString(numResolved)}
+            onMultiSectionChange={onSelectAllFMActivitySections}
         >
             <Typography className={styles.editItemHeading} variant="body2">
                 (reference number, tpm partner)

@@ -4,6 +4,7 @@ import {notEmpty} from 'utils';
 import {
     Intervention,
     Travel,
+    Partner,
     ActionPoint,
     TPMActivity,
     FMActivity,
@@ -22,7 +23,8 @@ import {
     fmActivitiesSchema,
     fmQuestionsSchema,
     actionPointsSchema,
-    engagementsSchema
+    engagementsSchema,
+    partnersSchema
 } from 'entities/schemas';
 
 export interface BackendService {
@@ -38,6 +40,7 @@ export interface BackendService {
     getZippedEntities(query: string): Promise<EntitiesAffected>;
     getEntitiesForClose(query: string): Promise<EntitiesAffected>;
     getInterventions(query: string): Promise<Normalized<Intervention>>;
+    getPartners(query: string): Promise<Normalized<Partner>>;
 }
 
 export interface BackendResponse<T> {
@@ -64,7 +67,8 @@ export default class BackendApiService extends BaseService implements BackendSer
 
         interventions: this.getInterventions.bind(this),
         travels: this.getTravels.bind(this),
-        engagements: this.getEngagements.bind(this)
+        engagements: this.getEngagements.bind(this),
+        partners: this.getPartners.bind(this)
     };
 
     public async getInterventions(query: string): Promise<Normalized<Intervention>> {
@@ -90,6 +94,20 @@ export default class BackendApiService extends BaseService implements BackendSer
                 )
                 .filter(notEmpty)
         );
+    }
+
+    public async getPartners(query: string): Promise<Normalized<Partner>> {
+        try {
+            const url = `${process.env.REACT_APP_PARTNERS_ENDPOINT}${query}`;
+            const response = await this._http.get<Partner>(url);
+            const {entities} = normalize(response, [partnersSchema]);
+
+            return entities.partners as Normalized<Partner>;
+        } catch (err) {
+            // We don't throw because some entities might not have a section as a FK, in which case an emtpy object will be filtered
+            // out of the final summary results.
+            return {};
+        }
     }
 
     public async getTravels(query: string): Promise<Normalized<Travel>> {

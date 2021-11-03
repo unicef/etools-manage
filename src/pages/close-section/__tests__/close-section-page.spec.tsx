@@ -104,7 +104,7 @@ describe('Close Section Page', () => {
 
             const { getByText, queryByText } = rendered;
 
-            expect(getByText('PMP')).toBeInTheDocument();
+            expect(getByText('PMP PDs')).toBeInTheDocument();
             expect(getByText('Third Party Monitoring')).toBeInTheDocument();
             expect(getByText('Action Points')).toBeInTheDocument();
             // queryByText used since getByText throws when node doesn't exist
@@ -127,7 +127,7 @@ describe('Close Section Page', () => {
             //need profile for country.name used by a component of the page
             await store.dispatch(onUserProfileSuccess(mockDataUserProfile));
 
-            const ourTestNode = getByTestId('PMP');
+            const ourTestNode = getByTestId('PMP PDs');
 
             expect(ourTestNode).toHaveTextContent('Resolved items: 0/3');
 

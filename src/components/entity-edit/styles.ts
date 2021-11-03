@@ -87,6 +87,13 @@ export const useEditItemStyles = makeStyles((theme: Theme) =>
         errorMsg: {
             margin: `0 ${theme.spacing(1)}px`
         },
+        headerDropdown: {
+            marginRight: 8,
+            marginLeft: 24,
+            paddingTop: 5,
+            width: 360,
+            float: 'right'
+        },
         secondaryHeading: {
             fontSize: 12,
             width: '90%'

@@ -6,6 +6,7 @@ import TravelsConfig from './travel-entity';
 import EngagementsConfig from './engagement-entity';
 import FMActivityConfig from './fmactivity-entity';
 import FMQuestionConfig from './fmquestion-entity';
+import PartnersConfig from './partner-entity';
 
 // tells us which config instance to use for each entity type,
 // EntityMap ensures only the listed types in AllConfigs can be used in the map
@@ -18,7 +19,8 @@ const EntityConfigMapping = {
     fmActivities: new FMActivityConfig(),
     fmQuestions: new FMQuestionConfig(),
     travels: new TravelsConfig(),
-    engagements: new EngagementsConfig()
+    engagements: new EngagementsConfig(),
+    partners: new PartnersConfig()
 };
 
 export default EntityConfigMapping;
