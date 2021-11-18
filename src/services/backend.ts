@@ -175,10 +175,13 @@ export default class BackendApiService extends BaseService implements BackendSer
 
     public async getEngagements(query: string): Promise<Normalized<Engagement>> {
         try {
-            const url = `${process.env.REACT_APP_ENGAGEMENTS_ENDPOINT}${query}`;
-            const {results: response} = await this._http.get<BackendResponse<Engagement>>(url);
+            let url = `${process.env.REACT_APP_FAM_ENGAGEMENTS_ENDPOINT}${query}`;
+            const {results: engagements} = await this._http.get<BackendResponse<Engagement>>(url);
 
-            const {entities} = normalize(response, [engagementsSchema]);
+            url = `${process.env.REACT_APP_FAM_STAFF_SPOT_CHECKS_ENDPOINT}${query}`;
+            const {results: staffSpotChecks} = await this._http.get<BackendResponse<Engagement>>(url);
+
+            const {entities} = normalize([...engagements, ...staffSpotChecks], [engagementsSchema]);
             return entities.engagements as Normalized<Engagement>;
         } catch (err) {
             return {};
