@@ -19,7 +19,7 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
 
     const sectionsAsOptions = useSelector(selectSectionsAsDropdownOptions);
 
-    const { reference_number, tpm_partner_name, section } = useSelector(
+    const { visit_reference, tpm_partner_name, section } = useSelector(
         (state: FullStoreShape) => state.closeSectionPayload.tpmActivities[id]
     );
 
@@ -45,7 +45,7 @@ const TPMActivityEditItem: React.FC<EditItemProps> = ({ id }) => {
             <Box className={styles.travel} justify="between" align="center">
                 <Box column>
                     <Typography className={styles.refNum} variant="subtitle2">
-                        {reference_number}
+                        {visit_reference}
                     </Typography>
                     <Typography>{tpm_partner_name}</Typography>
                 </Box>

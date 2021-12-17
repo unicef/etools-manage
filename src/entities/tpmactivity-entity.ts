@@ -3,14 +3,14 @@ import { prop } from 'ramda';
 
 export default class TPMActivityConfig implements EntityConfig<TPMActivity> {
     public get displayProperties(): EntityDisplay<TPMActivity>[] {
-        return [{ label: 'Reference Number', display: prop('reference_number') }];
+        return [{ label: 'Reference Number', display: prop('visit_reference') }];
     }
 
     public get title() {
         return 'TPM Activities';
     }
     public get sectionsProp() {
-        return 'sections';
+        return 'section';
     }
 
     public get moduleName() {
