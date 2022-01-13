@@ -120,10 +120,10 @@ export interface Intervention extends MultiSectionEntity {
 
 export interface TPMActivity {
     id: number;
-    reference_number: string;
     status: string;
     section: string;
     tpm_partner_name: string;
+    visit_reference: string;
 }
 
 export interface FMActivity extends MultiSectionEntity {
