@@ -4,10 +4,9 @@ import { Link, Button, Container, Paper, Typography, makeStyles, Theme, createSt
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import { getHeaderBackground, getHeaderTitle } from 'utils';
-import theme from '../lib/theme';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { ETOOLS_ROOT_PATH } from 'global-constants';
 import logo from '../../public/etools-logo-color-white.svg';
+import { useSummaryStyles } from '../pages/close-section/summary-styles';
 import Box from './box';
 import clsx from 'clsx';
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,31 +29,29 @@ const useStyles = makeStyles((theme: Theme) =>
         container: {
             marginTop: '100px',
         },
-        paper: {
-            padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`
-        },
-        title: {
-            fontWeight: 500
-        },
-        msg: {
-            fontSize: '1rem'
-        },
         boxItem: {
             marginBottom: theme.spacing(4)
         },
         link: {
-            color: theme.palette.primary.main
+            color: '#fff'
         },
-         etoolsLogo: {
+        error: {
+            backgroundColor: theme.palette.error.dark,
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            color: theme.palette.primary.contrastText
+        },
+        etoolsLogo: {
         height: 32,
         marginRight: theme.spacing(2)
-    }
+        }
     })
 );
 
 export default function ErrorCard(errorProps: FallbackProps) {
-    const styles = useStyles(theme);
+    const styles = useStyles();
+    const summarySyles = useSummaryStyles();
     const { error } = errorProps;
+
     const getMessage = (error: Error | string) => {
         if(error) {
             if (typeof (error) === 'string') {
@@ -72,45 +69,48 @@ export default function ErrorCard(errorProps: FallbackProps) {
 
     return (
          <div className={styles.root}>
-              <CssBaseline />
               <AppBar
-                        position="fixed"
-                        elevation={0}
-                        className={clsx(styles.appBar)}
+                    position="fixed"
+                    elevation={0}
+                    className={clsx(styles.appBar)}
+                >
+                <Toolbar>
+
+                    <a href={ETOOLS_ROOT_PATH}>
+                        <img className={styles.etoolsLogo} src={logo} alt="UNICEF logo" />
+                    </a>
+
+                    <Typography
+                        className={styles.appName}
+                        color="primary"
+                        variant="h6"
+                        noWrap
                     >
-         <Toolbar>
-
-            <a href={ETOOLS_ROOT_PATH}>
-                <img className={styles.etoolsLogo} src={logo} alt="UNICEF logo" />
-            </a>
-
-            <Typography
-                className={styles.appName}
-                color="primary"
-                variant="h6"
-                noWrap
-            >
-                <Link className={styles.link} href="/manage/">
-                    {getHeaderTitle()}
-                </Link>
-            </Typography>
-        </Toolbar>
-</AppBar>
-         <Container maxWidth="sm" className={styles.container}>
-            <Paper className={styles.paper}>
-                <Typography className={clsx(styles.title, styles.boxItem)} variant="h5">
-                    An error occured
-                </Typography>
-
-                <Typography className={clsx(styles.msg, styles.boxItem)}>{error && getMessage(error)}</Typography>
-
-                <Box justify="center">
-                   <Link color="inherit" href="/manage/">
-                        <Button size="medium" color="primary">Go Back</Button>
-                    </Link>
+                        <Link className={styles.link} href="/manage/">
+                            {getHeaderTitle()}
+                        </Link>
+                    </Typography>
+                </Toolbar>
+              </AppBar>
+              <Container maxWidth="sm" className={styles.container}>
+                <Box column>
+                    <Paper>
+                        <Box className={clsx(summarySyles.heading, styles.error)} align="center">
+                            <Typography className={clsx(summarySyles.titleSize, styles.link)} variant="body1">
+                            An error occured
+                            </Typography>
+                        </Box>
+                        <Typography className={summarySyles.infoMsg}>
+                            {error && getMessage(error)}
+                        </Typography>
+                    <Box className={clsx(styles.boxItem)}justify="center">
+                        <Link color="inherit" href="/manage/">
+                                <Button size="medium" color="primary">Go Back</Button>
+                            </Link>
+                        </Box>
+                    </Paper>
                 </Box>
-            </Paper>
-        </Container>
+              </Container>
         </div>
     );
 }
