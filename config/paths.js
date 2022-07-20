@@ -14,12 +14,11 @@ const envPublicUrl = process.env.PUBLIC_URL;
 function ensureSlash(inputPath, needsSlash) {
     const hasSlash = inputPath.endsWith('/');
     if (hasSlash && !needsSlash) {
-        return inputPath.substr(0, inputPath.length - 1);
+        return inputPath.substring(0, inputPath.length - 1);
     } else if (!hasSlash && needsSlash) {
         return `${inputPath}/`;
     }
     return inputPath;
-
 }
 
 const getPublicUrl = appPackageJson =>
@@ -33,8 +32,7 @@ const getPublicUrl = appPackageJson =>
 // like /todos/42/static/js/bundle.7289d.js. We have to know the root.
 function getServedPath(appPackageJson) {
     const publicUrl = getPublicUrl(appPackageJson);
-    const servedUrl =
-    envPublicUrl || (publicUrl ? url.parse(publicUrl).pathname : '/');
+    const servedUrl = envPublicUrl || (publicUrl ? url.parse(publicUrl).pathname : '/');
     return ensureSlash(servedUrl, true);
 }
 
